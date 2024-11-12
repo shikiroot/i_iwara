@@ -22,11 +22,11 @@ class CommonConstants {
       '$iwaraBaseUrl/images/default-background.jpg';
 
   static const List<Sort> videoSorts = [
-    Sort(id: 'likes', label: '点赞数', icon: Icon(Icons.thumb_up)),
-    Sort(id: 'popularity', label: '受欢迎的', icon: Icon(Icons.star)),
-    Sort(id: 'views', label: '观看次数', icon: Icon(Icons.remove_red_eye)),
-    Sort(id: 'trending', label: '趋势', icon: Icon(Icons.trending_up)),
-    Sort(id: 'date', label: '最新', icon: Icon(Icons.new_releases)),
+    Sort(id: SortId.trending, label: '趋势', icon: Icon(Icons.trending_up)),
+    Sort(id: SortId.date, label: '最新', icon: Icon(Icons.new_releases)),
+    Sort(id: SortId.popularity, label: '受欢迎的', icon: Icon(Icons.star)),
+    Sort(id: SortId.likes, label: '点赞数', icon: Icon(Icons.thumb_up)),
+    Sort(id: SortId.views, label: '观看次数', icon: Icon(Icons.remove_red_eye)),
   ];
 
   // 获取用户背景URL
@@ -46,6 +46,7 @@ class KeyConstants {
   static const String accessToken = 'access_token';
 }
 
+@Deprecated('现在应用内使用的是push匿名路由，不再使用命名路由')
 class ApiConstants {
   // 视频列表
   static String videos() => '/videos';
@@ -78,4 +79,9 @@ class ApiConstants {
 
   // 用户评论
   static String userComments(String userId) => '/profile/$userId/comments';
+}
+
+// 视频接口的排序方式
+enum SortId {
+  trending, date, popularity, likes, views;
 }

@@ -1,8 +1,10 @@
 
 import 'package:flutter/material.dart';
 
+import '../../utils/constants.dart';
+
 class Sort {
-  final String id;
+  final SortId id;
   final String label;
   final StatelessWidget? icon;
 

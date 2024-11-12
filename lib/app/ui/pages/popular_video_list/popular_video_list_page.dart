@@ -38,13 +38,13 @@ class _PopularVideoListPageState extends State<PopularVideoListPage>
 
     for (var sort in widget.sorts) {
       _tabKeys.add(GlobalKey());
-      Get.put(PopularVideoController(sortId: sort.id), tag: sort.id);
+      Get.put(PopularVideoController(sortId: sort.id.name), tag: sort.id.name);
     }
 
     // 取出初始标签页的controller
     var initialSortId = widget.sorts[_tabController.index].id;
     var initialController =
-        Get.find<PopularVideoController>(tag: initialSortId);
+        Get.find<PopularVideoController>(tag: initialSortId.name);
     initialController.fetchVideos();
 
     // 添加切换标签页的监听器
@@ -54,7 +54,7 @@ class _PopularVideoListPageState extends State<PopularVideoListPage>
   void _onTabChange() {
     // 加载数据
     var sortId = widget.sorts[_tabController.index].id;
-    var controller = Get.find<PopularVideoController>(tag: sortId);
+    var controller = Get.find<PopularVideoController>(tag: sortId.name);
     // 如果是在初始化状态并且不是正在加载，则加载数据
     if (controller.isInit.value && !controller.isLoading.value) {
       controller.fetchVideos(refresh: true);
@@ -123,7 +123,7 @@ class _PopularVideoListPageState extends State<PopularVideoListPage>
     _tabBarScrollController.dispose();
     // 清理所有的controller
     for (var sort in widget.sorts) {
-      Get.delete<PopularVideoController>(tag: sort.id);
+      Get.delete<PopularVideoController>(tag: sort.id.name);
     }
   }
 
@@ -220,19 +220,19 @@ class _PopularVideoListPageState extends State<PopularVideoListPage>
             child: EasyRefresh(
               onRefresh: () async {
                 var sortId = widget.sorts[_tabController.index].id;
-                var controller = Get.find<PopularVideoController>(tag: sortId);
+                var controller = Get.find<PopularVideoController>(tag: sortId.name);
                 await controller.fetchVideos(refresh: true);
               },
               onLoad: () async {
                 var sortId = widget.sorts[_tabController.index].id;
-                var controller = Get.find<PopularVideoController>(tag: sortId);
+                var controller = Get.find<PopularVideoController>(tag: sortId.name);
                 await controller.fetchVideos();
               },
               child: TabBarView(
                 controller: _tabController,
                 children: widget.sorts.map((sort) {
                   return KeepAliveTabView(
-                    controller: Get.find<PopularVideoController>(tag: sort.id),
+                    controller: Get.find<PopularVideoController>(tag: sort.id.name),
                   );
                 }).toList(),
               ),

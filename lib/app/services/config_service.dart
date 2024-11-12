@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
+import '../../utils/constants.dart';
+
 class ConfigService extends GetxService {
   // 配置的键
   static const String AUTO_PLAY_KEY = 'auto_play'; // 自动播放
@@ -18,6 +20,7 @@ class ConfigService extends GetxService {
   static const String USE_PROXY = 'use_proxy'; // 使用代理
   static const String PROXY_URL = 'proxy_url'; // 代理地址
   static const String RENDER_VERTICAL_VIDEO_IN_VERTICAL_SCREEN = 'render_vertical_video_in_vertical_screen'; // 在竖屏中渲染竖向视频
+  static const String HOME_VIDEO_SORT_LIST = 'home_video_sort_list'; // 首页视频排序列表
 
   // 所有配置项的 Map
   final settings = <String, dynamic>{
@@ -36,6 +39,7 @@ class ConfigService extends GetxService {
     USE_PROXY: false.obs,
     PROXY_URL: ''.obs,
     RENDER_VERTICAL_VIDEO_IN_VERTICAL_SCREEN: true.obs,
+    HOME_VIDEO_SORT_LIST: SortId.values.map((e) => e.name).toList().obs, // List<String>
   }.obs;
 
   // 初始化配置
@@ -53,6 +57,7 @@ class ConfigService extends GetxService {
         if (value is RxDouble) value.value = storedValue;
         if (value is RxInt) value.value = storedValue;
         if (value is RxString) value.value = storedValue;
+        if (value is RxList) value.value = storedValue;
       }
     });
   }
