@@ -1,0 +1,342 @@
+import 'package:easy_refresh/easy_refresh.dart';
+import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:i_iwara/app/services/app_service.dart';
+import 'package:i_iwara/app/ui/pages/popular_video_list/controllers/popular_video_controller.dart';
+import 'package:i_iwara/utils/constants.dart';
+
+import '../../../models/sort.model.dart';
+import '../../widgets/title_bar_height_widget.dart';
+import 'widgets/video_card_list_item_widget.dart';
+
+class PopularVideoListPage extends StatefulWidget {
+  final List<Sort> sorts = CommonConstants.videoSorts;
+
+  const PopularVideoListPage({super.key});
+
+  @override
+  _PopularVideoListPageState createState() => _PopularVideoListPageState();
+}
+
+class _PopularVideoListPageState extends State<PopularVideoListPage>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+  late ScrollController _tabBarScrollController;
+  final List<GlobalKey> _tabKeys = [];
+
+  // 查询参数
+  List<String> tags = [];
+  int year = 2024;
+
+  @override
+  void initState() {
+    super.initState();
+    print('[热门视频列表] initState');
+    _tabController = TabController(length: widget.sorts.length, vsync: this);
+    _tabBarScrollController = ScrollController();
+
+    for (var sort in widget.sorts) {
+      _tabKeys.add(GlobalKey());
+      Get.put(PopularVideoController(sortId: sort.id), tag: sort.id);
+    }
+
+    // 取出初始标签页的controller
+    var initialSortId = widget.sorts[_tabController.index].id;
+    var initialController =
+        Get.find<PopularVideoController>(tag: initialSortId);
+    initialController.fetchVideos();
+
+    // 添加切换标签页的监听器
+    _tabController.addListener(_onTabChange);
+  }
+
+  void _onTabChange() {
+    // 加载数据
+    var sortId = widget.sorts[_tabController.index].id;
+    var controller = Get.find<PopularVideoController>(tag: sortId);
+    // 如果是在初始化状态并且不是正在加载，则加载数据
+    if (controller.isInit.value && !controller.isLoading.value) {
+      controller.fetchVideos(refresh: true);
+    }
+    // 滚动到选中的Tab
+    _scrollToSelectedTab();
+  }
+
+  void _scrollToSelectedTab() {
+    // 获取当前选中的tab的GlobalKey
+    final GlobalKey currentTabKey = _tabKeys[_tabController.index];
+
+    // 获取tab的RenderBox
+    final RenderBox? renderBox =
+        currentTabKey.currentContext?.findRenderObject() as RenderBox?;
+
+    if (renderBox != null) {
+      // 获取tab在ScrollView中的位置
+      final position = renderBox.localToGlobal(Offset.zero);
+
+      // 计算需要滚动的位置
+      final screenWidth = MediaQuery.of(context).size.width;
+      final tabWidth = renderBox.size.width;
+
+      // 计算目标滚动位置（使tab居中）
+      final targetScroll = _tabBarScrollController.offset +
+          position.dx -
+          (screenWidth / 2) +
+          (tabWidth / 2);
+
+      // 确保滚动位置在有效范围内
+      final double finalScroll = targetScroll.clamp(
+        0.0,
+        _tabBarScrollController.position.maxScrollExtent,
+      );
+
+      // 使用动画滚动到目标位置
+      _tabBarScrollController.animateTo(
+        finalScroll,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
+  void _handleScroll(double delta) {
+    if (_tabBarScrollController.hasClients) {
+      final double newOffset = _tabBarScrollController.offset + delta;
+      if (newOffset < 0) {
+        _tabBarScrollController.jumpTo(0);
+      } else if (newOffset > _tabBarScrollController.position.maxScrollExtent) {
+        _tabBarScrollController
+            .jumpTo(_tabBarScrollController.position.maxScrollExtent);
+      } else {
+        _tabBarScrollController.jumpTo(newOffset);
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    _tabController.removeListener(_onTabChange);
+    _tabController.dispose();
+    _tabBarScrollController.dispose();
+    // 清理所有的controller
+    for (var sort in widget.sorts) {
+      Get.delete<PopularVideoController>(tag: sort.id);
+    }
+    super.dispose();
+  }
+
+  // TODO: 修改tags、year等参数的Modal
+  void _openParamsModal() {
+    Get.bottomSheet(const Text("TODO: 修改tags、year等参数的Modal"));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Column(
+        children: [
+          TitleBarHeightWidget(),
+          // 一行，显示用户头像和搜索框
+          Row(
+            children: [
+              // 用户头像
+              IconButton(
+                icon: const Icon(Icons.account_circle),
+                onPressed: () {
+                  AppService.homeNavigatorKey.currentState!.push(
+                    MaterialPageRoute(builder: (context) {
+                      return const Center(child: Text('用户中心'));
+                    }),
+                  );
+                },
+              ),
+              // 搜索框
+              Expanded(
+                child: TextField(
+                  decoration: const InputDecoration(
+                    hintText: '搜索',
+                    prefixIcon: Icon(Icons.search),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          // 一行，显示TabBar和筛选按钮
+          Row(
+            children: [
+              // TabBar
+              Expanded(
+                // 支持鼠标滚动 以及 tabbar 变动后位置调整
+                child: MouseRegion(
+                  child: Listener(
+                    onPointerSignal: (pointerSignal) {
+                      if (pointerSignal is PointerScrollEvent) {
+                        _handleScroll(pointerSignal.scrollDelta.dy);
+                      }
+                    },
+                    child: SingleChildScrollView(
+                      controller: _tabBarScrollController,
+                      scrollDirection: Axis.horizontal,
+                      physics: const ClampingScrollPhysics(),
+                      child: TabBar(
+                        isScrollable: true,
+                        overlayColor:
+                            WidgetStateProperty.all(Colors.transparent),
+                        tabAlignment: TabAlignment.start,
+                        dividerColor: Colors.transparent,
+                        padding: EdgeInsets.zero,
+                        controller: _tabController,
+                        tabs: widget.sorts.asMap().entries.map((entry) {
+                          int index = entry.key;
+                          Sort sort = entry.value;
+                          return Container(
+                            key: _tabKeys[index], // 使用GlobalKey
+                            child: Tab(
+                              child: Row(
+                                children: [
+                                  sort.icon ?? const SizedBox(),
+                                  const SizedBox(width: 4),
+                                  Text(sort.label),
+                                ],
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              IconButton(
+                icon: const Icon(Icons.filter_list),
+                onPressed: _openParamsModal,
+              ),
+            ],
+          ),
+          // 使用 Expanded 包裹 EasyRefresh
+          Expanded(
+            child: EasyRefresh(
+              onRefresh: () async {
+                var sortId = widget.sorts[_tabController.index].id;
+                var controller = Get.find<PopularVideoController>(tag: sortId);
+                await controller.fetchVideos(refresh: true);
+              },
+              onLoad: () async {
+                var sortId = widget.sorts[_tabController.index].id;
+                var controller = Get.find<PopularVideoController>(tag: sortId);
+                await controller.fetchVideos();
+              },
+              child: TabBarView(
+                controller: _tabController,
+                children: widget.sorts.map((sort) {
+                  return KeepAliveTabView(
+                    controller: Get.find<PopularVideoController>(tag: sort.id),
+                  );
+                }).toList(),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// 单独抽取出来的TabView，用于保持 滚动状态
+class KeepAliveTabView extends StatefulWidget {
+  final PopularVideoController controller;
+
+  const KeepAliveTabView({super.key, required this.controller});
+
+  @override
+  _KeepAliveTabViewState createState() => _KeepAliveTabViewState();
+}
+
+class _KeepAliveTabViewState extends State<KeepAliveTabView>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final int columns = _calculateColumns(constraints.maxWidth);
+
+        return Obx(
+          () {
+            if (widget.controller.isLoading.value &&
+                widget.controller.videos.isEmpty) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (!widget.controller.isInit.value &&
+                widget.controller.videos.isEmpty) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text('暂无数据'),
+                  TextButton(
+                    onPressed: () {
+                      widget.controller.fetchVideos();
+                    },
+                    child: const Text('重新加载'),
+                  ),
+                ],
+              );
+            } else {
+              return CustomScrollView(
+                slivers: [
+                  SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (context, index) {
+                        return _buildRow(index, columns, constraints.maxWidth,
+                            widget.controller);
+                      },
+                      childCount:
+                          (widget.controller.videos.length / columns).ceil(),
+                    ),
+                  ),
+                ],
+              );
+            }
+          },
+        );
+      },
+    );
+  }
+
+  Widget _buildRow(int index, int columns, double maxWidth,
+      PopularVideoController controller) {
+    final startIndex = index * columns;
+    final endIndex = (startIndex + columns).clamp(0, controller.videos.length);
+    final rowItems = controller.videos.sublist(startIndex, endIndex);
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: rowItems
+            .map((video) => Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                    child: VideoCardListItemWidget(
+                      video: video,
+                      width: maxWidth / columns - 8,
+                    ),
+                  ),
+                ))
+            .toList(),
+      ),
+    );
+  }
+
+  int _calculateColumns(double availableWidth) {
+    if (availableWidth > 1200) return 5;
+    if (availableWidth > 900) return 4;
+    if (availableWidth > 600) return 3;
+    if (availableWidth > 300) return 2;
+    return 1;
+  }
+}

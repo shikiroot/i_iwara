@@ -1,0 +1,95 @@
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+
+class ConfigService extends GetxService {
+  // 配置的键
+  static const String AUTO_PLAY_KEY = 'auto_play'; // 自动播放
+  static const String DEFAULT_BRIGHTNESS_KEY = 'default_brightness'; // 默认亮度
+  static const String LONG_PRESS_PLAYBACK_SPEED_KEY = 'long_press_playback_speed'; // 长按播放速度
+  static const String FAST_FORWARD_SECONDS_KEY = 'fast_forward_seconds'; // 快进秒数
+  static const String REWIND_SECONDS_KEY = 'rewind_seconds'; // 倒退秒数
+  static const String DEFAULT_QUALITY_KEY = 'default_quality'; // 默认画质
+  static const String REPEAT_KEY = 'repeat'; // 重复播放
+  static const String VIDEO_LEFT_AND_RIGHT_CONTROL_AREA_RATIO = 'video_left_and_right_control_area_ratio'; // 视频左右控制区域比例
+  static const String BRIGHTNESS_KEY = 'brightness'; // 亮度
+  static const String KEEP_LAST_BRIGHTNESS_KEY = 'keep_last_brightness'; // 保持最后亮度
+  static const String VOLUME_KEY = 'volume'; // 音量
+  static const String KEEP_LAST_VOLUME_KEY = 'keep_last_volume'; // 保持最后音量
+  static const String USE_PROXY = 'use_proxy'; // 使用代理
+  static const String PROXY_URL = 'proxy_url'; // 代理地址
+  static const String RENDER_VERTICAL_VIDEO_IN_VERTICAL_SCREEN = 'render_vertical_video_in_vertical_screen'; // 在竖屏中渲染竖向视频
+
+  // 所有配置项的 Map
+  final settings = <String, dynamic>{
+    AUTO_PLAY_KEY: false.obs,
+    DEFAULT_BRIGHTNESS_KEY: 0.5.obs,
+    LONG_PRESS_PLAYBACK_SPEED_KEY: 2.0.obs,
+    FAST_FORWARD_SECONDS_KEY: 10.obs,
+    REWIND_SECONDS_KEY: 10.obs,
+    DEFAULT_QUALITY_KEY: '360'.obs, // 360、540、Source、预览
+    REPEAT_KEY: false.obs,
+    VIDEO_LEFT_AND_RIGHT_CONTROL_AREA_RATIO: .2.obs,
+    BRIGHTNESS_KEY: 0.5.obs,
+    KEEP_LAST_BRIGHTNESS_KEY: true.obs,
+    VOLUME_KEY: 0.4.obs,
+    KEEP_LAST_VOLUME_KEY: false.obs,
+    USE_PROXY: false.obs,
+    PROXY_URL: ''.obs,
+    RENDER_VERTICAL_VIDEO_IN_VERTICAL_SCREEN: true.obs,
+  }.obs;
+
+  // 初始化配置
+  Future<ConfigService> init() async {
+    await _loadSettings();
+    return this;
+  }
+
+  // 加载配置
+  Future<void> _loadSettings() async {
+    settings.forEach((key, value) {
+      final storedValue = GetStorage().read(key);
+      if (storedValue != null) {
+        if (value is RxBool) value.value = storedValue;
+        if (value is RxDouble) value.value = storedValue;
+        if (value is RxInt) value.value = storedValue;
+        if (value is RxString) value.value = storedValue;
+      }
+    });
+  }
+
+  // 保存配置
+  Future<void> _saveSetting(String key, dynamic value) async {
+    await GetStorage().write(key, value);
+  }
+
+  // 设置配置时自动更新 Map 和存储
+  Future<void> setSetting(String key, dynamic value) async {
+    if (settings.containsKey(key)) {
+      settings[key]!.value = value;
+      await _saveSetting(key, value);
+    } else {
+      throw Exception("未知的配置键: $key");
+    }
+  }
+
+  /// 动态访问配置
+  /// ```dart
+  /// ConfigService configService = Get.find();
+  /// bool autoPlay = configService[ConfigService.AUTO_PLAY_KEY];
+  /// ```
+  dynamic operator [](String key) {
+    if (settings.containsKey(key)) {
+      return settings[key]!.value;
+    }
+    throw Exception("未知的配置键: $key");
+  }
+
+  /// 设置配置
+  /// ```dart
+  /// ConfigService configService = Get.find();
+  /// configService[ConfigService.AUTO_PLAY_KEY] = true;
+  /// ```
+  void operator []=(String key, dynamic value) {
+    setSetting(key, value);
+  }
+}

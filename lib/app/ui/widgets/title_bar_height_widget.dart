@@ -1,0 +1,25 @@
+import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
+import 'package:i_iwara/app/services/app_service.dart';
+
+class TitleBarHeightWidget extends StatelessWidget {
+  final AppService appService = Get.find<AppService>();
+
+  TitleBarHeightWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    // 如果是DeskTop设备，且不是网页，则监听
+    if (GetPlatform.isDesktop && !GetPlatform.isWeb) {
+      return Obx(() {
+        if (appService.showTitleBar) {
+          return const SizedBox(height: AppService.titleBarHeight);
+        } else {
+          return const SizedBox.shrink();
+        }
+      });
+    } else {
+      return const SizedBox.shrink();
+    }
+  }
+}
