@@ -44,7 +44,7 @@ class VideoService extends GetxService {
       return ApiResult.success(data: pageData);
     } catch (e) {
       LogUtils.e('获取视频列表失败', tag: 'VideoService', error: e);
-      return ApiResult.fail('啊呕，获取视频列表失败');
+      return ApiResult.fail('噫嘘唏, 获取视频列表失败');
     }
   }
 }

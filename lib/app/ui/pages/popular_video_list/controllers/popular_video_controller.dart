@@ -1,10 +1,14 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:i_iwara/app/models/api_result.model.dart';
 import 'package:i_iwara/app/models/page_data.model.dart';
 import 'package:i_iwara/app/models/video.model.dart';
 import 'package:i_iwara/app/services/video_service.dart';
+import 'package:i_iwara/app/ui/widgets/error_widget.dart';
+import 'package:i_iwara/utils/proxy/proxy_util.dart';
 
 import '../../../../../utils/logger_utils.dart';
+import '../../../../routes/app_routes.dart';
 
 class PopularVideoController extends GetxController {
   final String sortId; // 当前controller的排序
@@ -14,6 +18,7 @@ class PopularVideoController extends GetxController {
   final RxBool isLoading = false.obs; // 是否正在加载
   final RxBool hasMore = true.obs; // 是否还有更多数据
   final RxBool isInit = true.obs; // 是否是初始化状态
+  final Rxn<Widget> errorWidget = Rxn<Widget>(); // 错误小部件
 
   final int pageSize = 20; // 每页数据量
   int page = 0; // 当前页码
@@ -39,8 +44,7 @@ class PopularVideoController extends GetxController {
       );
 
       if (result.isFail) {
-        Get.snackbar('错误', result.message);
-        return;
+        throw result.message;
       }
 
       List<Video> newVideos = result.data!.results;
@@ -60,6 +64,20 @@ class PopularVideoController extends GetxController {
     } catch (e) {
       LogUtils.e('获取视频列表失败', tag: 'PopularVideoController', error: e);
       Get.snackbar('错误', '处理请求时出现错误');
+      errorWidget.value = CommonErrorWidget(
+        text: '处理请求时出现错误',
+        children: [
+          if (ProxyUtil.isSupportedPlatform())
+            ElevatedButton(
+              onPressed: () => {Get.toNamed(Routes.PROXY_SETTINGS_PAGE)},
+              child: const Text('检查网络设置'),
+            ),
+          ElevatedButton(
+            onPressed: () => fetchVideos(refresh: true),
+            child: const Text('刷新'),
+          ),
+        ],
+      );
     } finally {
       isLoading.value = false;
       isInit.value = false;

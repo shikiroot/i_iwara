@@ -116,6 +116,8 @@ class _PopularVideoListPageState extends State<PopularVideoListPage>
 
   @override
   void dispose() {
+    super.dispose();
+    print('[热门视频列表] dispose');
     _tabController.removeListener(_onTabChange);
     _tabController.dispose();
     _tabBarScrollController.dispose();
@@ -123,7 +125,6 @@ class _PopularVideoListPageState extends State<PopularVideoListPage>
     for (var sort in widget.sorts) {
       Get.delete<PopularVideoController>(tag: sort.id);
     }
-    super.dispose();
   }
 
   // TODO: 修改tags、year等参数的Modal
@@ -268,7 +269,9 @@ class _KeepAliveTabViewState extends State<KeepAliveTabView>
 
         return Obx(
           () {
-            if (widget.controller.isLoading.value &&
+            if (widget.controller.errorWidget.value != null) {
+              return widget.controller.errorWidget.value!;
+            } else if (widget.controller.isLoading.value &&
                 widget.controller.videos.isEmpty) {
               return const Center(child: CircularProgressIndicator());
             } else if (!widget.controller.isInit.value &&
@@ -276,12 +279,31 @@ class _KeepAliveTabViewState extends State<KeepAliveTabView>
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text('暂无数据'),
-                  TextButton(
+                  const Icon(
+                    Icons.videocam_off,
+                    size: 80,
+                    color: Colors.grey,
+                  ),
+                  const SizedBox(height: 16),
+                  const Text(
+                    '没有内容哦',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  ElevatedButton.icon(
                     onPressed: () {
                       widget.controller.fetchVideos();
                     },
-                    child: const Text('重新加载'),
+                    icon: const Icon(Icons.refresh),
+                    label: const Text('刷新'),
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 24, vertical: 12),
+                      textStyle: const TextStyle(fontSize: 16),
+                    ),
                   ),
                 ],
               );
