@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:i_iwara/app/services/app_service.dart';
 import 'package:i_iwara/app/ui/pages/popular_video_list/controllers/popular_video_controller.dart';
+import 'package:i_iwara/app/ui/pages/popular_video_list/widgets/popular_video_search_config_widget.dart';
 import 'package:i_iwara/utils/constants.dart';
 
 import '../../../models/sort.model.dart';
+import '../../../models/tag.model.dart';
 import '../../widgets/title_bar_height_widget.dart';
 import 'widgets/video_card_list_item_widget.dart';
 
@@ -26,13 +28,13 @@ class _PopularVideoListPageState extends State<PopularVideoListPage>
   final List<GlobalKey> _tabKeys = [];
 
   // 查询参数
-  List<String> tags = [];
-  int year = 2024;
+  List<Tag> tags = [];
+  String year = '';
+  String rating = '';
 
   @override
   void initState() {
     super.initState();
-    print('[热门视频列表] initState');
     _tabController = TabController(length: widget.sorts.length, vsync: this);
     _tabBarScrollController = ScrollController();
 
@@ -49,6 +51,21 @@ class _PopularVideoListPageState extends State<PopularVideoListPage>
 
     // 添加切换标签页的监听器
     _tabController.addListener(_onTabChange);
+  }
+
+  // 设置查询参数
+  void setParams({List<Tag> tags = const [], String year = '', String rating = ''}) {
+    this.tags = tags;
+    this.year = year;
+    this.rating = rating;
+
+    // 设置每个controller的查询参数
+    for (var sort in widget.sorts) {
+      var controller = Get.find<PopularVideoController>(tag: sort.id.name);
+      controller.searchTagIds = tags.map((e) => e.id).toList();
+      controller.searchDate = year;
+      controller.searchRating = rating;
+    }
   }
 
   void _onTabChange() {
@@ -127,9 +144,16 @@ class _PopularVideoListPageState extends State<PopularVideoListPage>
     }
   }
 
-  // TODO: 修改tags、year等参数的Modal
+  // 打开搜索配置弹窗
   void _openParamsModal() {
-    Get.bottomSheet(const Text("TODO: 修改tags、year等参数的Modal"));
+    Get.dialog(PopularVideoSearchConfig(
+      searchTags: tags,
+      searchYear: year,
+      searchRating: rating,
+      onConfirm: (tags, year, rating) {
+        setParams(tags: tags, year: year, rating: rating);
+      },
+    ));
   }
 
   @override
@@ -220,19 +244,22 @@ class _PopularVideoListPageState extends State<PopularVideoListPage>
             child: EasyRefresh(
               onRefresh: () async {
                 var sortId = widget.sorts[_tabController.index].id;
-                var controller = Get.find<PopularVideoController>(tag: sortId.name);
+                var controller =
+                    Get.find<PopularVideoController>(tag: sortId.name);
                 await controller.fetchVideos(refresh: true);
               },
               onLoad: () async {
                 var sortId = widget.sorts[_tabController.index].id;
-                var controller = Get.find<PopularVideoController>(tag: sortId.name);
+                var controller =
+                    Get.find<PopularVideoController>(tag: sortId.name);
                 await controller.fetchVideos();
               },
               child: TabBarView(
                 controller: _tabController,
                 children: widget.sorts.map((sort) {
                   return KeepAliveTabView(
-                    controller: Get.find<PopularVideoController>(tag: sort.id.name),
+                    controller:
+                        Get.find<PopularVideoController>(tag: sort.id.name),
                   );
                 }).toList(),
               ),
@@ -295,7 +322,7 @@ class _KeepAliveTabViewState extends State<KeepAliveTabView>
                   const SizedBox(height: 16),
                   ElevatedButton.icon(
                     onPressed: () {
-                      widget.controller.fetchVideos();
+                      widget.controller.fetchVideos(refresh: true);
                     },
                     icon: const Icon(Icons.refresh),
                     label: const Text('刷新'),

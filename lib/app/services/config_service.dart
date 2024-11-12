@@ -1,26 +1,30 @@
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
-
-import '../../utils/constants.dart';
+import 'package:i_iwara/app/services/storage_service.dart';
+import 'package:i_iwara/utils/logger_utils.dart';
 
 class ConfigService extends GetxService {
+  late final StorageService storage;
+
   // 配置的键
   static const String AUTO_PLAY_KEY = 'auto_play'; // 自动播放
   static const String DEFAULT_BRIGHTNESS_KEY = 'default_brightness'; // 默认亮度
-  static const String LONG_PRESS_PLAYBACK_SPEED_KEY = 'long_press_playback_speed'; // 长按播放速度
+  static const String LONG_PRESS_PLAYBACK_SPEED_KEY =
+      'long_press_playback_speed'; // 长按播放速度
   static const String FAST_FORWARD_SECONDS_KEY = 'fast_forward_seconds'; // 快进秒数
   static const String REWIND_SECONDS_KEY = 'rewind_seconds'; // 倒退秒数
   static const String DEFAULT_QUALITY_KEY = 'default_quality'; // 默认画质
   static const String REPEAT_KEY = 'repeat'; // 重复播放
-  static const String VIDEO_LEFT_AND_RIGHT_CONTROL_AREA_RATIO = 'video_left_and_right_control_area_ratio'; // 视频左右控制区域比例
+  static const String VIDEO_LEFT_AND_RIGHT_CONTROL_AREA_RATIO =
+      'video_left_and_right_control_area_ratio'; // 视频左右控制区域比例
   static const String BRIGHTNESS_KEY = 'brightness'; // 亮度
-  static const String KEEP_LAST_BRIGHTNESS_KEY = 'keep_last_brightness'; // 保持最后亮度
+  static const String KEEP_LAST_BRIGHTNESS_KEY =
+      'keep_last_brightness'; // 保持最后亮度
   static const String VOLUME_KEY = 'volume'; // 音量
   static const String KEEP_LAST_VOLUME_KEY = 'keep_last_volume'; // 保持最后音量
   static const String USE_PROXY = 'use_proxy'; // 使用代理
   static const String PROXY_URL = 'proxy_url'; // 代理地址
-  static const String RENDER_VERTICAL_VIDEO_IN_VERTICAL_SCREEN = 'render_vertical_video_in_vertical_screen'; // 在竖屏中渲染竖向视频
-  static const String HOME_VIDEO_SORT_LIST = 'home_video_sort_list'; // 首页视频排序列表
+  static const String RENDER_VERTICAL_VIDEO_IN_VERTICAL_SCREEN =
+      'render_vertical_video_in_vertical_screen'; // 在竖屏中渲染竖向视频
 
   // 所有配置项的 Map
   final settings = <String, dynamic>{
@@ -39,32 +43,37 @@ class ConfigService extends GetxService {
     USE_PROXY: false.obs,
     PROXY_URL: ''.obs,
     RENDER_VERTICAL_VIDEO_IN_VERTICAL_SCREEN: true.obs,
-    HOME_VIDEO_SORT_LIST: SortId.values.map((e) => e.name).toList().obs, // List<String>
   }.obs;
 
   // 初始化配置
   Future<ConfigService> init() async {
+    storage = StorageService();
     await _loadSettings();
     return this;
   }
 
   // 加载配置
   Future<void> _loadSettings() async {
+    // 加载配置
     settings.forEach((key, value) {
-      final storedValue = GetStorage().read(key);
-      if (storedValue != null) {
-        if (value is RxBool) value.value = storedValue;
-        if (value is RxDouble) value.value = storedValue;
-        if (value is RxInt) value.value = storedValue;
-        if (value is RxString) value.value = storedValue;
-        if (value is RxList) value.value = storedValue;
+      try {
+        final storedValue = storage.readData(key);
+        if (storedValue != null) {
+          if (value is RxBool) value.value = storedValue;
+          if (value is RxDouble) value.value = storedValue;
+          if (value is RxInt) value.value = storedValue;
+          if (value is RxString) value.value = storedValue;
+          if (value is RxList) value.value = storedValue;
+        }
+      } catch (e) {
+        LogUtils.e('加载配置失败: $key', tag: 'ConfigService', error: e);
       }
     });
   }
 
   // 保存配置
   Future<void> _saveSetting(String key, dynamic value) async {
-    await GetStorage().write(key, value);
+    await storage.writeData(key, value);
   }
 
   // 设置配置时自动更新 Map 和存储

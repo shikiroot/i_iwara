@@ -19,12 +19,17 @@ class PopularVideoController extends GetxController {
   final RxBool hasMore = true.obs; // 是否还有更多数据
   final RxBool isInit = true.obs; // 是否是初始化状态
   final Rxn<Widget> errorWidget = Rxn<Widget>(); // 错误小部件
+  List<String> searchTagIds = []; // 搜索标签
+  String searchDate = ''; // 搜索日期 如2024、2023、
+  String searchRating = ''; // 内容评级
 
   final int pageSize = 20; // 每页数据量
   int page = 0; // 当前页码
 
   PopularVideoController({required this.sortId});
 
+  /// 获取视频列表
+  /// [refresh] 是否刷新
   Future<void> fetchVideos({bool refresh = false}) async {
     if (refresh) {
       // 刷新时重置分页和清空数据
@@ -35,10 +40,16 @@ class PopularVideoController extends GetxController {
 
     isLoading.value = true;
 
+    LogUtils.d('当前的查询参数: $searchTagIds, $searchDate, $searchRating', 'PopularVideoController');
     try {
       ApiResult<PageData<Video>> result =
           await _videoService.fetchVideosByParams(
-        params: {'sort': sortId},
+        params: {
+          'sort': sortId,
+          'tags': searchTagIds.join(','),
+          'date': searchDate,
+          'rating': searchRating,
+        },
         page: page,
         limit: pageSize,
       );
@@ -82,5 +93,15 @@ class PopularVideoController extends GetxController {
       isLoading.value = false;
       isInit.value = false;
     }
+  }
+
+  // 设置搜索标签
+  void setSearchTagIds(List<String> tagIds) {
+    searchTagIds = tagIds;
+  }
+
+  // 设置搜索日期
+  void setSearchDate(String date) {
+    searchDate = date;
   }
 }

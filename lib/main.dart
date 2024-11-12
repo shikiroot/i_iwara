@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:i_iwara/app/services/app_service.dart';
+import 'package:i_iwara/app/services/tag_service.dart';
 import 'package:i_iwara/app/services/video_service.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
 import 'package:i_iwara/utils/proxy/proxy_util.dart';
@@ -17,6 +18,7 @@ import 'app/services/api_service.dart';
 import 'app/services/auth_service.dart';
 import 'app/services/config_service.dart';
 import 'app/services/storage_service.dart';
+import 'app/services/user_preference_service.dart';
 import 'app/services/user_service.dart';
 
 void main() {
@@ -39,6 +41,8 @@ void main() {
     Get.put(AppService());
     var configService = await ConfigService().init();
     Get.put(configService);
+    var userPreferenceService = await UserPreferenceService().init();
+    Get.put(userPreferenceService);
     AuthService authService = await AuthService().init();
     Get.put(authService);
     ApiService apiService = await ApiService().init();
@@ -46,6 +50,7 @@ void main() {
     UserService userService = await UserService().init();
     Get.put(userService);
     Get.lazyPut(() => VideoService());
+    Get.lazyPut(() => TagService());
 
     // 尝试设置代理
     if (ProxyUtil.isSupportedPlatform()) {

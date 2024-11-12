@@ -19,7 +19,8 @@ class LogUtils {
         printEmojis: true, // 是否显示表情
       ),
     );
-    Logger.level = Level.info;
+    // TODO 临时设置为debug
+    Logger.level = Level.debug;
   }
 
   static void d(String message, [String tag = _TAG]) {

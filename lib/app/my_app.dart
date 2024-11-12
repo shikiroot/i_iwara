@@ -24,8 +24,8 @@ class MyApp extends StatelessWidget {
       title: "❤️ iwara",
       getPages: [
         GetPage(
-            name: Routes.HOME,
-            page: () => HomeNavigationLayout(),
+          name: Routes.HOME,
+          page: () => HomeNavigationLayout(),
         ),
         GetPage(
             name: Routes.SETTINGS_PAGE,
@@ -85,19 +85,17 @@ class MyAppLayout extends StatelessWidget {
               GetDelegate? rootDele = Get.nestedKey(null);
 
               if (homeDele?.canBack ?? false) {
-                print('[HomeDelegate 的返回]');
                 homeDele?.back();
               } else if (homeDele?.navigatorKey.currentState?.canPop() ??
                   false) {
-                print('[HomeDelegate 的naavigatorKey.currentState?.pop()返回]');
                 homeDele?.navigatorKey.currentState?.pop();
               } else if (rootDele?.canBack ?? false) {
-                print('[RootDelegate 的返回]');
                 rootDele?.back();
               } else if (Get.isDialogOpen ?? false) {
-                Get.back();
+                Get.closeAllDialogs();
+              } else if (Get.isBottomSheetOpen ?? false) {
+                Get.closeAllBottomSheets();
               } else {
-                print('[Get.back()返回]');
                 Get.back();
               }
             }

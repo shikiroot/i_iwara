@@ -1,0 +1,52 @@
+import 'package:get/get.dart';
+import 'package:i_iwara/app/models/tag.model.dart';
+import 'package:i_iwara/app/services/tag_service.dart';
+
+/// 标签控制器
+class TagController extends GetxController {
+  final TagService _tagService = Get.find<TagService>();
+
+  final RxBool isLoading = false.obs;
+  final RxList<Tag> tags = <Tag>[].obs; // 标签列表
+  final RxBool hasMore = true.obs; // 是否还有更多数据
+  final String searchInput = ''; // 搜索关键词
+
+  final int pageSize = 20; // 每页数据量
+  int page = 0; // 当前页码
+
+
+  // 获取标签
+  Future<void> getTags({bool refresh = false}) async {
+
+    if (refresh) {
+      // 刷新时重置分页和清空数据
+      page = 0;
+      hasMore.value = true;
+    }
+    if (!hasMore.value || isLoading.value) return;
+    isLoading.value = true;
+
+    final result = await _tagService.fetchTags(page: page, limit: pageSize, params: {
+      'filter': searchInput,
+    });
+    if (result.isFail) {
+      isLoading.value = false;
+      Get.snackbar('获取标签失败', result.message);
+      return;
+    }
+
+    if (refresh) {
+      tags.clear();
+    } else {
+      tags.addAll(result.data!.results);
+    }
+    page++;
+
+    if (result.data!.results.length < pageSize) {
+      hasMore.value = false;
+    }
+
+    isLoading.value = false;
+  }
+
+}

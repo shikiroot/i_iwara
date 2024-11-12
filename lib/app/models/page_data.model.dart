@@ -1,4 +1,3 @@
-
 class PageData<T> {
   final int count;
   final int page;
@@ -11,4 +10,10 @@ class PageData<T> {
     required this.limit,
     required this.results,
   });
+
+  PageData.fromJson(data)
+      : count = data['count'],
+        page = data['page'],
+        limit = data['limit'],
+        results = data['results'];
 }

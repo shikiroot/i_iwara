@@ -14,12 +14,16 @@ class VideoService extends GetxService {
   /// 此方法向 `/videos` 端点发送带有给定查询参数的 GET 请求，并返回包含视频列表的 `ApiResult`。
   ///
   /// [params] 一个用于过滤视频的查询参数映射。
+  /// - `sort` 排序方式。
+  /// - `tags` 标签。
+  /// - `date` 日期。
+  /// - `rating` 内容评级。 general, ecchi
   /// [page] 当前页码。
   /// [limit] 每页数据量。
   ///
   /// 返回一个包含 `Video` 对象列表、消息和状态码的 `ApiResult`。
   Future<ApiResult<PageData<Video>>> fetchVideosByParams({
-    required Map<String, dynamic> params,
+    Map<String, dynamic> params = const {},
     int page = 0,
     int limit = 20,
   }) async {
@@ -47,4 +51,16 @@ class VideoService extends GetxService {
       return ApiResult.fail('噫嘘唏, 获取视频列表失败');
     }
   }
+}
+
+enum VideoRating {
+  ALL('', '全部的'),
+  GENERAL('general', '大众的'),
+  ECCHI('ecchi', 'R18'),
+  ;
+
+  final String value;
+  final String label;
+
+  const VideoRating(this.value, this.label);
 }
