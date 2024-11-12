@@ -28,6 +28,9 @@ class VideoService extends GetxService {
     int limit = 20,
   }) async {
     try {
+      // [HACK_IMPLEMENT] 如果params里有的值为空字符串，则去掉key
+      // 我靠，iwara站的搜索居然连空字符串都用于搜索了，哎
+      params.removeWhere((key, value) => value == '');
       final response = await _apiService.get('/videos', queryParameters: {
         ...params,
         'page': page,
