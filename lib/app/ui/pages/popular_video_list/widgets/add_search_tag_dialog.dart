@@ -67,7 +67,7 @@ class _AddSearchTagDialogState extends State<AddSearchTagDialog> {
                     child: TextField(
                       controller: textEditingController,
                       decoration: const InputDecoration(
-                        hintText: 'Search tags...',
+                        hintText: '搜索标签...',
                       ),
                       onSubmitted: (value) {
                         tagController.getTags(refresh: true);

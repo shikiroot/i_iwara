@@ -2,13 +2,11 @@ class Tag {
   final String id;
   final String type;
   final bool sensitive;
-  bool favorite;
 
   Tag(
       {required this.id,
       required this.type,
-      this.sensitive = false,
-      this.favorite = false});
+      this.sensitive = false});
 
   factory Tag.fromJson(Map<String, dynamic> json) {
     return Tag(
@@ -23,7 +21,6 @@ class Tag {
       'id': id,
       'type': type,
       'sensitive': sensitive,
-      'favorite': favorite,
     };
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:i_iwara/app/services/user_preference_service.dart';
+import 'package:i_iwara/app/ui/pages/popular_video_list/widgets/remove_search_tag_dialog.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
 import 'package:i_iwara/utils/widget_extensions.dart';
 import '../../../../models/tag.model.dart';
@@ -238,20 +239,51 @@ class _PopularVideoSearchConfigState extends State<PopularVideoSearchConfig> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             const Text('标签: ', style: TextStyle(fontSize: 16)),
-            const SizedBox(width: 8),
-            IconButton(
-              icon: const Icon(Icons.add),
-              onPressed: () {
-                showModalBottomSheet(
-                  context: context,
-                  backgroundColor: Colors.transparent,
-                  isScrollControlled: true,
-                  builder: (context) {
-                    return const AddSearchTagDialog();
+            Row(
+              children: [
+                const SizedBox(width: 8),
+                IconButton(
+                  icon: const Icon(Icons.remove),
+                  onPressed: () {
+                    showModalBottomSheet(
+                      context: context,
+                      backgroundColor: Colors.transparent,
+                      isScrollControlled: true,
+                      builder: (context) {
+                        return RemoveSearchTagDialog(
+                          onRemoveIds: (List<String> removedTags) {
+                            for (var id in removedTags) {
+                              _userPreferenceService
+                                  .removeVideoSearchTagById(id);
+                            }
+                            setState(() {
+                              tags.removeWhere(
+                                  (tag) => removedTags.contains(tag.id));
+                            });
+                          },
+                          videoSearchTagHistory:
+                              _userPreferenceService.videoSearchTagHistory,
+                        );
+                      },
+                    );
                   },
-                );
-              },
-            ),
+                ),
+                const SizedBox(width: 8),
+                IconButton(
+                  icon: const Icon(Icons.add),
+                  onPressed: () {
+                    showModalBottomSheet(
+                      context: context,
+                      backgroundColor: Colors.transparent,
+                      isScrollControlled: true,
+                      builder: (context) {
+                        return const AddSearchTagDialog();
+                      },
+                    );
+                  },
+                ),
+              ],
+            )
           ],
         ).paddingBottom(8),
         Obx(() {

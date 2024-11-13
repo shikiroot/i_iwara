@@ -131,6 +131,12 @@ class UserPreferenceService extends GetxService {
         videoSearchTagHistory.map((e) => e.toJson()).toList());
   }
 
+  void removeVideoSearchTagById(String id) {
+    videoSearchTagHistory.removeWhere((element) => element.id == id);
+    storageService.writeData(_videoSearchTagHistoryKey,
+        videoSearchTagHistory.map((e) => e.toJson()).toList());
+  }
+
   // 清空视频搜索标签
   void clearVideoSearchTags() {
     videoSearchTagHistory.clear();
