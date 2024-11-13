@@ -46,7 +46,6 @@ class KeyConstants {
   static const String accessToken = 'access_token';
 }
 
-@Deprecated('现在应用内使用的是push匿名路由，不再使用命名路由')
 class ApiConstants {
   // 视频列表
   static String videos() => '/videos';

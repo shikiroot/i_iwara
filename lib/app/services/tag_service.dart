@@ -16,18 +16,30 @@ class TagService extends GetxService {
     Map<String, dynamic> params = const {},
     int page = 0,
     int limit = 20,
-  }) {
-    return _apiService.get('/tags', queryParameters: {
-      ...params,
-      'page': page,
-      'limit': limit,
-    }).then((res) {
-      return ApiResult<PageData<Tag>>.success(
-        data: PageData<Tag>.fromJson(res.data),
+  }) async {
+    try {
+      var response = await _apiService.get('/tags', queryParameters: {
+        ...params,
+        'page': page,
+        'limit': limit,
+      });
+
+      final List<Tag> results = (response.data['results'] as List)
+          .map((tag) => Tag.fromJson(tag))
+          .toList();
+
+      final PageData<Tag> pageData = PageData(
+        page: response.data['page'],
+        limit: response.data['limit'],
+        count: response.data['count'],
+        results: results,
       );
-    }).catchError((err) {
-      LogUtils.e('抓取标签失败', tag: 'TagService', error: err);
-      return ApiResult<PageData<Tag>>.fail(err);
-    });
+
+      return ApiResult.success(data: pageData);
+    } catch (e) {
+      LogUtils.e('获取标签列表失败', tag: 'TagService', error: e);
+      return ApiResult.fail('噫嘘唏, 获取标签列表失败');
+    }
+
   }
 }

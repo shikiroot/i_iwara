@@ -78,6 +78,7 @@ class AuthService extends GetxService {
     _accessToken = null;
     await _storage.deleteSecureData(KeyConstants.authToken);
     await _storage.deleteSecureData(KeyConstants.accessToken);
+    // TODO review
     LogUtils.d('用户已登出', _tag);
   }
 

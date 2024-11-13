@@ -9,7 +9,7 @@ class TagController extends GetxController {
   final RxBool isLoading = false.obs;
   final RxList<Tag> tags = <Tag>[].obs; // 标签列表
   final RxBool hasMore = true.obs; // 是否还有更多数据
-  final String searchInput = ''; // 搜索关键词
+  String searchInput = ''; // 搜索关键词
 
   final int pageSize = 20; // 每页数据量
   int page = 0; // 当前页码
@@ -18,35 +18,41 @@ class TagController extends GetxController {
   // 获取标签
   Future<void> getTags({bool refresh = false}) async {
 
-    if (refresh) {
-      // 刷新时重置分页和清空数据
-      page = 0;
-      hasMore.value = true;
-    }
-    if (!hasMore.value || isLoading.value) return;
-    isLoading.value = true;
+    try {
+      if (refresh) {
+        // 刷新时重置分页和清空数据
+        page = 0;
+        hasMore.value = true;
+      }
+      if (!hasMore.value || isLoading.value) return;
+      isLoading.value = true;
 
-    final result = await _tagService.fetchTags(page: page, limit: pageSize, params: {
-      'filter': searchInput,
-    });
-    if (result.isFail) {
+      final result = await _tagService.fetchTags(
+          page: page, limit: pageSize, params: {
+        'filter': searchInput,
+      });
+      if (result.isFail) {
+        isLoading.value = false;
+        Get.snackbar('获取标签失败', result.message);
+        return;
+      }
+      List<Tag> newTags = result.data!.results;
+
+      if (refresh) {
+        tags.clear();
+      }
+      tags.addAll(newTags);
+      page++;
+
+      if (result.data!.results.length < pageSize) {
+        hasMore.value = false;
+      }
+
       isLoading.value = false;
-      Get.snackbar('获取标签失败', result.message);
-      return;
+    } catch (e) {
+      isLoading.value = false;
+      Get.snackbar('获取标签失败', e.toString());
     }
-
-    if (refresh) {
-      tags.clear();
-    } else {
-      tags.addAll(result.data!.results);
-    }
-    page++;
-
-    if (result.data!.results.length < pageSize) {
-      hasMore.value = false;
-    }
-
-    isLoading.value = false;
   }
 
 }
