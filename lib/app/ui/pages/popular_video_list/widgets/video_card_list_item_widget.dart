@@ -9,7 +9,6 @@ import 'package:vibration/vibration.dart';
 import '../../../../../utils/constants.dart';
 import '../../../../models/video.model.dart';
 import '../../../../routes/app_routes.dart';
-import 'home_dialog_route_animation.dart';
 
 class VideoCardListItemWidget extends StatelessWidget {
   final Video video;
