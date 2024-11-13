@@ -21,13 +21,15 @@ class CommonConstants {
   static const String defaultProfileHeaderUrl =
       '$iwaraBaseUrl/images/default-background.jpg';
 
-  static const List<Sort> videoSorts = [
+  static const List<Sort> mediaSorts = [
     Sort(id: SortId.trending, label: '趋势', icon: Icon(Icons.trending_up)),
     Sort(id: SortId.date, label: '最新', icon: Icon(Icons.new_releases)),
     Sort(id: SortId.popularity, label: '受欢迎的', icon: Icon(Icons.star)),
     Sort(id: SortId.likes, label: '点赞数', icon: Icon(Icons.thumb_up)),
     Sort(id: SortId.views, label: '观看次数', icon: Icon(Icons.remove_red_eye)),
   ];
+
+  static String defaultThumbnailUrl = '$iwaraBaseUrl/images/default-thumbnail.jpg';
 
   // 获取用户背景URL
   static userProfileHeaderUrl(String? headerId) {
@@ -49,6 +51,9 @@ class KeyConstants {
 class ApiConstants {
   // 视频列表
   static String videos() => '/videos';
+
+  // 图片
+  static String images() => '/images';
 
   // 作者详情
   static String profilePrefix() => '/profile';

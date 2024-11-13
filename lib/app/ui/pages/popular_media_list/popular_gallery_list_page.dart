@@ -3,25 +3,25 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:i_iwara/app/services/app_service.dart';
-import 'package:i_iwara/app/ui/pages/popular_video_list/controllers/popular_video_controller.dart';
-import 'package:i_iwara/app/ui/pages/popular_video_list/widgets/popular_video_search_config_widget.dart';
+import 'package:i_iwara/app/ui/pages/popular_media_list/widgets/image_model_card_list_item_widget.dart';
 import 'package:i_iwara/utils/constants.dart';
 
 import '../../../models/sort.model.dart';
 import '../../../models/tag.model.dart';
 import '../../widgets/title_bar_height_widget.dart';
-import 'widgets/video_card_list_item_widget.dart';
+import 'widgets/popular_media_search_config_widget.dart';
+import 'controllers/popular_gallery_controller.dart';
 
-class PopularVideoListPage extends StatefulWidget {
-  final List<Sort> sorts = CommonConstants.videoSorts;
+class PopularGalleryListPage extends StatefulWidget {
+  final List<Sort> sorts = CommonConstants.mediaSorts;
 
-  const PopularVideoListPage({super.key});
+  const PopularGalleryListPage({super.key});
 
   @override
-  _PopularVideoListPageState createState() => _PopularVideoListPageState();
+  _PopularGalleryListPageState createState() => _PopularGalleryListPageState();
 }
 
-class _PopularVideoListPageState extends State<PopularVideoListPage>
+class _PopularGalleryListPageState extends State<PopularGalleryListPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   late ScrollController _tabBarScrollController;
@@ -40,14 +40,14 @@ class _PopularVideoListPageState extends State<PopularVideoListPage>
 
     for (var sort in widget.sorts) {
       _tabKeys.add(GlobalKey());
-      Get.put(PopularVideoController(sortId: sort.id.name), tag: sort.id.name);
+      Get.put(PopularGalleryController(sortId: sort.id.name), tag: sort.id.name);
     }
 
     // 取出初始标签页的controller
     var initialSortId = widget.sorts[_tabController.index].id;
     var initialController =
-        Get.find<PopularVideoController>(tag: initialSortId.name);
-    initialController.fetchVideos();
+        Get.find<PopularGalleryController>(tag: initialSortId.name);
+    initialController.fetchImageModels();
 
     // 添加切换标签页的监听器
     _tabController.addListener(_onTabChange);
@@ -61,7 +61,7 @@ class _PopularVideoListPageState extends State<PopularVideoListPage>
 
     // 设置每个controller的查询参数
     for (var sort in widget.sorts) {
-      var controller = Get.find<PopularVideoController>(tag: sort.id.name);
+      var controller = Get.find<PopularGalleryController>(tag: sort.id.name);
       controller.searchTagIds = tags.map((e) => e.id).toList();
       controller.searchDate = year;
       controller.searchRating = rating;
@@ -71,10 +71,10 @@ class _PopularVideoListPageState extends State<PopularVideoListPage>
   void _onTabChange() {
     // 加载数据
     var sortId = widget.sorts[_tabController.index].id;
-    var controller = Get.find<PopularVideoController>(tag: sortId.name);
+    var controller = Get.find<PopularGalleryController>(tag: sortId.name);
     // 如果是在初始化状态并且不是正在加载，则加载数据
     if (controller.isInit.value && !controller.isLoading.value) {
-      controller.fetchVideos(refresh: true);
+      controller.fetchImageModels(refresh: true);
     }
     // 滚动到选中的Tab
     _scrollToSelectedTab();
@@ -134,19 +134,19 @@ class _PopularVideoListPageState extends State<PopularVideoListPage>
   @override
   void dispose() {
     super.dispose();
-    print('[热门视频列表] dispose');
+    print('[热门图片列表] dispose');
     _tabController.removeListener(_onTabChange);
     _tabController.dispose();
     _tabBarScrollController.dispose();
     // 清理所有的controller
     for (var sort in widget.sorts) {
-      Get.delete<PopularVideoController>(tag: sort.id.name);
+      Get.delete<PopularGalleryController>(tag: sort.id.name);
     }
   }
 
   // 打开搜索配置弹窗
   void _openParamsModal() {
-    Get.dialog(PopularVideoSearchConfig(
+    Get.dialog(PopularMediaSearchConfig(
       searchTags: tags,
       searchYear: year,
       searchRating: rating,
@@ -245,21 +245,21 @@ class _PopularVideoListPageState extends State<PopularVideoListPage>
               onRefresh: () async {
                 var sortId = widget.sorts[_tabController.index].id;
                 var controller =
-                    Get.find<PopularVideoController>(tag: sortId.name);
-                await controller.fetchVideos(refresh: true);
+                    Get.find<PopularGalleryController>(tag: sortId.name);
+                await controller.fetchImageModels(refresh: true);
               },
               onLoad: () async {
                 var sortId = widget.sorts[_tabController.index].id;
                 var controller =
-                    Get.find<PopularVideoController>(tag: sortId.name);
-                await controller.fetchVideos();
+                    Get.find<PopularGalleryController>(tag: sortId.name);
+                await controller.fetchImageModels();
               },
               child: TabBarView(
                 controller: _tabController,
                 children: widget.sorts.map((sort) {
                   return KeepAliveTabView(
                     controller:
-                        Get.find<PopularVideoController>(tag: sort.id.name),
+                        Get.find<PopularGalleryController>(tag: sort.id.name),
                   );
                 }).toList(),
               ),
@@ -273,7 +273,7 @@ class _PopularVideoListPageState extends State<PopularVideoListPage>
 
 // 单独抽取出来的TabView，用于保持 滚动状态
 class KeepAliveTabView extends StatefulWidget {
-  final PopularVideoController controller;
+  final PopularGalleryController controller;
 
   const KeepAliveTabView({super.key, required this.controller});
 
@@ -299,15 +299,15 @@ class _KeepAliveTabViewState extends State<KeepAliveTabView>
             if (widget.controller.errorWidget.value != null) {
               return widget.controller.errorWidget.value!;
             } else if (widget.controller.isLoading.value &&
-                widget.controller.videos.isEmpty) {
+                widget.controller.images.isEmpty) {
               return const Center(child: CircularProgressIndicator());
             } else if (!widget.controller.isInit.value &&
-                widget.controller.videos.isEmpty) {
+                widget.controller.images.isEmpty) {
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Icon(
-                    Icons.videocam_off,
+                    Icons.image_not_supported,
                     size: 80,
                     color: Colors.grey,
                   ),
@@ -322,7 +322,7 @@ class _KeepAliveTabViewState extends State<KeepAliveTabView>
                   const SizedBox(height: 16),
                   ElevatedButton.icon(
                     onPressed: () {
-                      widget.controller.fetchVideos(refresh: true);
+                      widget.controller.fetchImageModels(refresh: true);
                     },
                     icon: const Icon(Icons.refresh),
                     label: const Text('刷新'),
@@ -344,7 +344,7 @@ class _KeepAliveTabViewState extends State<KeepAliveTabView>
                             widget.controller);
                       },
                       childCount:
-                          (widget.controller.videos.length / columns).ceil(),
+                          (widget.controller.images.length / columns).ceil(),
                     ),
                   ),
                 ],
@@ -357,21 +357,21 @@ class _KeepAliveTabViewState extends State<KeepAliveTabView>
   }
 
   Widget _buildRow(int index, int columns, double maxWidth,
-      PopularVideoController controller) {
+      PopularGalleryController controller) {
     final startIndex = index * columns;
-    final endIndex = (startIndex + columns).clamp(0, controller.videos.length);
-    final rowItems = controller.videos.sublist(startIndex, endIndex);
+    final endIndex = (startIndex + columns).clamp(0, controller.images.length);
+    final rowItems = controller.images.sublist(startIndex, endIndex);
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: rowItems
-            .map((video) => Expanded(
+            .map((imageModel) => Expanded(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                    child: VideoCardListItemWidget(
-                      video: video,
+                    child: ImageModelCardListItemWidget(
+                      imageModel: imageModel,
                       width: maxWidth / columns - 8,
                     ),
                   ),

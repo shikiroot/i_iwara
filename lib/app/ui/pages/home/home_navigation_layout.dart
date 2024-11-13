@@ -3,10 +3,11 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:i_iwara/app/ui/pages/popular_video_list/popular_video_list_page.dart';
 
 import '../../../routes/app_routes.dart';
 import '../../../services/app_service.dart';
+import '../popular_media_list/popular_gallery_list_page.dart';
+import '../popular_media_list/popular_video_list_page.dart';
 
 /// 侧边栏、底部导航栏、主要内容
 class HomeNavigationLayout extends StatelessWidget {
@@ -83,7 +84,7 @@ class HomeNavigationLayout extends StatelessWidget {
                           );
                           break;
                         case Routes.GALLERY:
-                          builder = (BuildContext context) => const Center(child: Text('图库'));
+                          builder = (BuildContext context) => const PopularGalleryListPage();
                           route = PageRouteBuilder(
                             pageBuilder: (context, animation, secondaryAnimation) => builder(context),
                             settings: settings,

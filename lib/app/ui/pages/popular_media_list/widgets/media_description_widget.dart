@@ -3,13 +3,13 @@ import 'package:get/get.dart';
 
 import '../../../widgets/custom_markdown_body_widget.dart';
 
-class VideoDescriptionWidget extends StatelessWidget {
+class MediaDescriptionWidget extends StatelessWidget {
   final String? description;
   final RxBool isDescriptionExpanded;
   final VoidCallback onToggleDescription;
   final int defaultMaxLines;
 
-  const VideoDescriptionWidget({
+  const MediaDescriptionWidget({
     super.key,
     required this.description,
     required this.isDescriptionExpanded,

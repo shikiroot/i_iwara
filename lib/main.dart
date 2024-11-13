@@ -17,6 +17,7 @@ import 'app/my_app.dart';
 import 'app/services/api_service.dart';
 import 'app/services/auth_service.dart';
 import 'app/services/config_service.dart';
+import 'app/services/gallery_service.dart';
 import 'app/services/storage_service.dart';
 import 'app/services/user_preference_service.dart';
 import 'app/services/user_service.dart';
@@ -50,6 +51,7 @@ void main() {
     UserService userService = await UserService().init();
     Get.put(userService);
     Get.lazyPut(() => VideoService());
+    Get.lazyPut(() => GalleryService());
     Get.lazyPut(() => TagService());
 
     // 尝试设置代理

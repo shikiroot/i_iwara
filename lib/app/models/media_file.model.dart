@@ -1,7 +1,7 @@
 
-class VideoFile {
+class MediaFile {
   final String id;
-  final String type;
+  final String type; // image, video
   final String path;
   final String name;
   final String mime;
@@ -14,7 +14,7 @@ class VideoFile {
   final DateTime createdAt;
   final DateTime updatedAt;
 
-  VideoFile({
+  MediaFile({
     required this.id,
     required this.type,
     required this.path,
@@ -30,8 +30,8 @@ class VideoFile {
     required this.updatedAt,
   });
 
-  factory VideoFile.fromJson(Map<String, dynamic> json) {
-    return VideoFile(
+  factory MediaFile.fromJson(Map<String, dynamic> json) {
+    return MediaFile(
       id: json['id'],
       type: json['type'],
       path: json['path'],

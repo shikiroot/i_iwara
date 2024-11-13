@@ -2,22 +2,22 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:i_iwara/app/services/user_preference_service.dart';
-import 'package:i_iwara/app/ui/pages/popular_video_list/widgets/remove_search_tag_dialog.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
 import 'package:i_iwara/utils/widget_extensions.dart';
 import '../../../../models/tag.model.dart';
 import '../../../../services/video_service.dart';
 import '../../../widgets/empty_widget.dart';
 import 'add_search_tag_dialog.dart';
+import 'remove_search_tag_dialog.dart';
 
 /// 热门视频的搜索配置
-class PopularVideoSearchConfig extends StatefulWidget {
+class PopularMediaSearchConfig extends StatefulWidget {
   final List<Tag> searchTags; // 此时用作搜索的标签
   final String searchYear;
   final String searchRating;
   final Function(List<Tag> tags, String year, String rating) onConfirm;
 
-  const PopularVideoSearchConfig({
+  const PopularMediaSearchConfig({
     super.key,
     required this.searchTags,
     required this.searchYear,
@@ -26,15 +26,15 @@ class PopularVideoSearchConfig extends StatefulWidget {
   });
 
   @override
-  _PopularVideoSearchConfigState createState() =>
-      _PopularVideoSearchConfigState();
+  _PopularMediaSearchConfigState createState() =>
+      _PopularMediaSearchConfigState();
 }
 
-class _PopularVideoSearchConfigState extends State<PopularVideoSearchConfig> {
+class _PopularMediaSearchConfigState extends State<PopularMediaSearchConfig> {
   late List<Tag> tags; // 选中的标签
   late String year; // 选中的年份
   late String rating;
-  late VideoRating _selectedRating;
+  late MediaRating _selectedRating;
   late UserPreferenceService _userPreferenceService;
   final ScrollController _scrollController = ScrollController();
 
@@ -45,8 +45,8 @@ class _PopularVideoSearchConfigState extends State<PopularVideoSearchConfig> {
     tags = List.from(widget.searchTags);
     year = widget.searchYear;
     rating = widget.searchRating;
-    _selectedRating = VideoRating.values.firstWhere(
-        (VideoRating rating) => rating.value == widget.searchRating);
+    _selectedRating = MediaRating.values.firstWhere(
+        (MediaRating rating) => rating.value == widget.searchRating);
     LogUtils.d(
         'tags: $tags, year: $year rating: $rating', 'PopularVideoSearchConfig');
   }
@@ -137,15 +137,15 @@ class _PopularVideoSearchConfigState extends State<PopularVideoSearchConfig> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text('内容评级: ', style: TextStyle(fontSize: 16)).paddingBottom(8),
-        SegmentedButton<VideoRating>(
-          segments: VideoRating.values.map((VideoRating rating) {
-            return ButtonSegment<VideoRating>(
+        SegmentedButton<MediaRating>(
+          segments: MediaRating.values.map((MediaRating rating) {
+            return ButtonSegment<MediaRating>(
               value: rating,
               label: Text(rating.label),
             );
           }).toList(),
           selected: {_selectedRating},
-          onSelectionChanged: (Set<VideoRating> selected) {
+          onSelectionChanged: (Set<MediaRating> selected) {
             LogUtils.d('选择的元素: ${selected.first}', 'PopularVideoSearchConfig');
             setState(() {
               _selectedRating = selected.first;

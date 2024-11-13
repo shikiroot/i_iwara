@@ -95,13 +95,4 @@ class PopularVideoController extends GetxController {
     }
   }
 
-  // 设置搜索标签
-  void setSearchTagIds(List<String> tagIds) {
-    searchTagIds = tagIds;
-  }
-
-  // 设置搜索日期
-  void setSearchDate(String date) {
-    searchDate = date;
-  }
 }

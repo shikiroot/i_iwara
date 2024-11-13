@@ -12,7 +12,7 @@ import '../../../services/user_service.dart';
 import '../../widgets/sliding_card_widget.dart';
 import '../comment/widgets/comment_entry_area_widget.dart';
 import '../comment/widgets/comment_section_widget.dart';
-import '../popular_video_list/widgets/video_description_widget.dart';
+import '../popular_media_list/widgets/media_description_widget.dart';
 import 'controllers/authro_profile_controller.dart';
 
 class AuthorProfilePage extends StatefulWidget {
@@ -435,7 +435,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                     SliverToBoxAdapter(
                       child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                          child: VideoDescriptionWidget(
+                          child: MediaDescriptionWidget(
                               defaultMaxLines: 1,
                               description:
                                   profileController.authorDescription.value,

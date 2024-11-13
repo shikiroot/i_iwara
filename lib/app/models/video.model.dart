@@ -1,7 +1,7 @@
 
 import 'package:i_iwara/app/models/tag.model.dart';
 import 'package:i_iwara/app/models/user.model.dart';
-import 'package:i_iwara/app/models/video_file.model.dart';
+import 'package:i_iwara/app/models/media_file.model.dart';
 import 'package:i_iwara/app/models/video_source.model.dart';
 
 import 'custom_thumbnail.model.dart';
@@ -21,7 +21,7 @@ class Video {
   final int? numLikes;
   final int? numViews;
   final int? numComments;
-  final VideoFile? file;
+  final MediaFile? file;
   final CustomThumbnail? customThumbnail;
   final User? user;
   final List<Tag>? tags;
@@ -72,7 +72,7 @@ class Video {
       numLikes: json['numLikes'],
       numViews: json['numViews'],
       numComments: json['numComments'],
-      file: json['file'] != null ? VideoFile.fromJson(json['file']) : null,
+      file: json['file'] != null ? MediaFile.fromJson(json['file']) : null,
       customThumbnail: json['customThumbnail'] != null
           ? CustomThumbnail.fromJson(json['customThumbnail'])
           : null,
@@ -140,7 +140,7 @@ class Video {
     int? numLikes,
     int? numViews,
     int? numComments,
-    VideoFile? file,
+    MediaFile? file,
     CustomThumbnail? customThumbnail,
     User? user,
     List<Tag>? tags,

@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
 
 import '../../../../models/video.model.dart';
-import '../../popular_video_list/widgets/video_tile_list_item_widget.dart';
+import '../../popular_media_list/widgets/video_tile_list_item_widget.dart';
 import '../controllers/userz_video_list_controller.dart';
 
 class ProfileVideoTabListWidget extends StatefulWidget {

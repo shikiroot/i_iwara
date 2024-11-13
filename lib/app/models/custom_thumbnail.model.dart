@@ -5,9 +5,9 @@ class CustomThumbnail {
   final String path;
   final String name;
   final String mime;
-  final int size;
-  final int width;
-  final int height;
+  final int? size;
+  final int? width;
+  final int? height;
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -17,9 +17,9 @@ class CustomThumbnail {
     required this.path,
     required this.name,
     required this.mime,
-    required this.size,
-    required this.width,
-    required this.height,
+    this.size,
+    this.width,
+    this.height,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -31,9 +31,9 @@ class CustomThumbnail {
       path: json['path'],
       name: json['name'],
       mime: json['mime'],
-      size: json['size'],
-      width: json['width'],
-      height: json['height'],
+      size: json['size'] ?? 0,
+      width: json['width'] ?? 0,
+      height: json['height'] ?? 0,
       createdAt: DateTime.parse(json['createdAt']),
       updatedAt: DateTime.parse(json['updatedAt']),
     );

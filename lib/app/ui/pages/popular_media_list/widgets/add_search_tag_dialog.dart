@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:i_iwara/app/services/user_preference_service.dart';
-import 'package:i_iwara/app/ui/pages/popular_video_list/controllers/tag_controller.dart';
 import 'package:i_iwara/app/ui/widgets/empty_widget.dart';
 
 import '../../../../models/tag.model.dart';
 import '../../../../services/video_service.dart';
+import '../controllers/tag_controller.dart';
 
 class AddSearchTagDialog extends StatefulWidget {
   const AddSearchTagDialog({super.key});
@@ -150,12 +150,12 @@ class _AddSearchTagDialogState extends State<AddSearchTagDialog> {
     bool sensitive = tag.sensitive;
     return Row(
       children: [
-        if (tag.type == VideoRating.GENERAL.value) ...[
+        if (tag.type == MediaRating.GENERAL.value) ...[
           const Icon(Icons.local_offer, size: 16),
           const SizedBox(width: 4),
           const Text('大众的', style: TextStyle(fontSize: 12)),
         ],
-        if (tag.type == VideoRating.ECCHI.value) ...[
+        if (tag.type == MediaRating.ECCHI.value) ...[
           const Icon(Icons.local_offer, size: 16, color: Colors.red),
           const SizedBox(width: 4),
           const Text('R18', style: TextStyle(fontSize: 12, color: Colors.red)),
