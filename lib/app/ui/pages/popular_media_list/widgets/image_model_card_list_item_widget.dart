@@ -79,10 +79,16 @@ class ImageModelCardListItemWidget extends StatelessWidget {
                   const Center(child: Icon(Icons.error, size: 50)),
             ),
           ),
-          // 左下角显示图片数量
-          Positioned(
+          if (imageModel.rating == 'ecchi')
+            Positioned(
               left: 0,
               bottom: 0,
+              child: _buildRatingTag(context),
+            ),
+          // 左下角显示图片数量
+          Positioned(
+              right: 0,
+              top: 0,
               child: _buildImageNums(context, imageModel.numImages)),
           // 右下角显示观看数量
           Positioned(
@@ -102,6 +108,30 @@ class ImageModelCardListItemWidget extends StatelessWidget {
   }
 
   Widget _buildPlaceholder() => Container(color: Colors.grey[300]);
+
+  Widget _buildRatingTag(BuildContext context) {
+    return ClipRRect(
+      borderRadius: const BorderRadius.only(
+        topRight: Radius.circular(14),
+        bottomLeft: Radius.circular(12),
+      ),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        decoration: const BoxDecoration(
+          color: Colors.red,
+        ),
+        child: Text(
+          'R18',
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onSecondary,
+            fontWeight: FontWeight.bold,
+            fontSize: Theme.of(context).textTheme.bodySmall?.fontSize,
+            decoration: TextDecoration.none,
+          ),
+        ),
+      ),
+    );
+  }
 
   Widget _buildLikeNums(BuildContext context, int likes) {
     return ClipRRect(

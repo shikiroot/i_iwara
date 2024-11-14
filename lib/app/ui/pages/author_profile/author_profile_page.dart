@@ -3,6 +3,7 @@ import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:i_iwara/app/ui/pages/author_profile/widgets/author_profile_skeleton_widget.dart';
+import 'package:i_iwara/app/ui/pages/author_profile/widgets/profile_image_model_tab_list_widget.dart';
 import 'package:i_iwara/app/ui/pages/author_profile/widgets/profile_video_tab_list_widget.dart';
 import 'package:i_iwara/utils/date_time_extension.dart';
 import 'package:shimmer/shimmer.dart';
@@ -30,7 +31,8 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
   late final AuthorProfileController profileController;
   final UserService userService = Get.find<UserService>();
   late TabController primaryTC;
-  late TabController secondaryTC;
+  late TabController videoSecondaryTC;
+  late TabController imageSecondaryTC;
   late String username;
 
   final GlobalKey<ExtendedNestedScrollViewState> _key =
@@ -45,14 +47,16 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
     profileController =
         Get.put(AuthorProfileController(username: username), tag: uniqueTag);
     primaryTC = TabController(length: 2, vsync: this);
-    secondaryTC = TabController(length: 5, vsync: this);
+    videoSecondaryTC = TabController(length: 5, vsync: this);
+    imageSecondaryTC = TabController(length: 5, vsync: this);
   }
 
   @override
   void dispose() {
     profileController.dispose();
     primaryTC.dispose();
-    secondaryTC.dispose();
+    videoSecondaryTC.dispose();
+    imageSecondaryTC.dispose();
     super.dispose();
   }
 
@@ -472,7 +476,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                       tabAlignment: TabAlignment.start,
                       dividerColor: Colors.transparent,
                       controller: primaryTC,
-                      tabs: [
+                      tabs: const [
                         Tab(
                           child: Row(
                             children: [
@@ -487,7 +491,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                             children: [
                               Icon(Icons.image),
                               SizedBox(width: 8),
-                              Text("图片"),
+                              Text("图库"),
                             ],
                           ),
                         ),
@@ -502,29 +506,20 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                                   key: const Key('video'),
                                   userId: profileController.author.value!.id,
                                   tabKey: '视频',
-                                  tc: secondaryTC,
+                                  tc: videoSecondaryTC,
                                   onFetchFinished: ({int? count}) {
                                     profileController.videoCounts.value = count;
                                   })
                               : const SizedBox.shrink()),
-                          ExtendedVisibilityDetector(
-                            uniqueKey: const Key('Tab1'),
-                            child: ListView.builder(
-                              //store Page state
-                              key: const PageStorageKey<String>('Tab1'),
-                              physics: const ClampingScrollPhysics(),
-                              itemCount: 50,
-                              itemBuilder: (BuildContext c, int i) {
-                                return Container(
-                                  alignment: Alignment.center,
-                                  height: 60.0,
-                                  child: Text(
-                                    '${const Key('Tab1')}: ListView$i',
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
+                          Obx(() => profileController.author.value?.id != null
+                              ? ProfileImageModelTabListWidget(
+                              key: const Key('image'),
+                              userId: profileController.author.value!.id,
+                              tabKey: '图库',
+                              tc: imageSecondaryTC,
+                              onFetchFinished: ({int? count}) {
+                              })
+                              : const SizedBox.shrink()),
                         ],
                       ),
                     )

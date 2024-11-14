@@ -3,17 +3,18 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
 
-import '../../../../models/video.model.dart';
-import '../../popular_media_list/widgets/video_tile_list_item_widget.dart';
-import '../controllers/userz_video_list_controller.dart';
+import '../../../../models/image.model.dart';
+import '../../popular_media_list/widgets/image_model_tile_list_item_widget.dart';
+import '../controllers/userz_image_model_list_controller.dart';
 
-class ProfileVideoTabListWidget extends StatefulWidget {
+
+class ProfileImageModelTabListWidget extends StatefulWidget {
   final String tabKey;
   final TabController tc;
   final String userId;
   final Function({int? count})? onFetchFinished;
 
-  const ProfileVideoTabListWidget({
+  const ProfileImageModelTabListWidget({
     super.key,
     required this.tabKey,
     required this.tc,
@@ -22,14 +23,14 @@ class ProfileVideoTabListWidget extends StatefulWidget {
   });
 
   @override
-  _ProfileVideoTabListWidgetState createState() =>
-      _ProfileVideoTabListWidgetState();
+  _ProfileImageModelTabListWidgetState createState() =>
+      _ProfileImageModelTabListWidgetState();
 }
 
-class _ProfileVideoTabListWidgetState extends State<ProfileVideoTabListWidget>
+class _ProfileImageModelTabListWidgetState extends State<ProfileImageModelTabListWidget>
     with AutomaticKeepAliveClientMixin {
   final String uniqueKey = UniqueKey().toString();
-  late UserzVideoListController videoListController;
+  late UserzImageModelListController imageModelListController;
 
   String getSort() {
     switch (widget.tc.index) {
@@ -52,28 +53,28 @@ class _ProfileVideoTabListWidgetState extends State<ProfileVideoTabListWidget>
   void initState() {
     super.initState();
     widget.tc.addListener(_handleTabSelection);
-    videoListController = Get.put(
-      UserzVideoListController(onFetchFinished: widget.onFetchFinished),
+    imageModelListController = Get.put(
+      UserzImageModelListController(onFetchFinished: widget.onFetchFinished),
       tag: uniqueKey,
     );
-    LogUtils.d('[详情视频列表] 初始化，当前的用户ID是：${widget.userId}, 排序是：${getSort()}');
-    videoListController.userId.value = widget.userId;
-    videoListController.sort.value = getSort();
+    LogUtils.d('[详情图片列表] 初始化，当前的用户ID是：${widget.userId}, 排序是：${getSort()}');
+    imageModelListController.userId.value = widget.userId;
+    imageModelListController.sort.value = getSort();
   }
 
   @override
   void dispose() {
     widget.tc.removeListener(_handleTabSelection);
-    Get.delete<UserzVideoListController>(tag: uniqueKey);
+    Get.delete<UserzImageModelListController>(tag: uniqueKey);
     super.dispose();
   }
 
   // 获取当前选择的
   void _handleTabSelection() {
     if (widget.tc.indexIsChanging) {
-      videoListController.sort.value = getSort();
+      imageModelListController.sort.value = getSort();
 
-      LogUtils.d('[详情视频列表] 切换排序，当前选择的是：${widget.tc.index}, 排序是：${getSort()}');
+      LogUtils.d('[详情图片列表] 切换排序，当前选择的是：${widget.tc.index}, 排序是：${getSort()}');
     }
   }
 
@@ -109,55 +110,55 @@ class _ProfileVideoTabListWidgetState extends State<ProfileVideoTabListWidget>
               child: secondaryTabBar,
             ),
             // 一个刷新按钮
-            Obx(() => videoListController.isLoading.value
+            Obx(() => imageModelListController.isLoading.value
                 ? const IconButton(icon: Icon(Icons.refresh), onPressed: null)
-                    .animate(
-                      onPlay: (controller) => controller.repeat(), // loop
-                    )
-                    .addEffect(
-                      const RotateEffect(
-                        duration: Duration(seconds: 1),
-                        curve: Curves.linear,
-                      ),
-                    )
+                .animate(
+              onPlay: (controller) => controller.repeat(), // loop
+            )
+                .addEffect(
+              const RotateEffect(
+                duration: Duration(seconds: 1),
+                curve: Curves.linear,
+              ),
+            )
                 : IconButton(
-                    icon: const Icon(Icons.refresh),
-                    onPressed: () {
-                      videoListController.fetchVideos(refresh: true);
-                    },
-                  )),
+              icon: const Icon(Icons.refresh),
+              onPressed: () {
+                imageModelListController.fetchImageModels(refresh: true);
+              },
+            )),
             const SizedBox(width: 16),
           ],
         ),
         Expanded(
-          child: Obx(() => _buildVideoList()),
+          child: Obx(() => _buildImageModelList()),
         )
       ],
     );
   }
 
-  // 构建视频列表视图
-  Widget _buildVideoList() {
+  // 构建图片列表视图
+  Widget _buildImageModelList() {
     return NotificationListener<ScrollNotification>(
       onNotification: (scrollInfo) {
-        if (!videoListController.isLoading.value &&
+        if (!imageModelListController.isLoading.value &&
             scrollInfo.metrics.pixels >=
                 scrollInfo.metrics.maxScrollExtent - 100 &&
-            videoListController.hasMore.value) {
+            imageModelListController.hasMore.value) {
           // 接近底部时加载更多评论
-          videoListController.fetchVideos();
+          imageModelListController.fetchImageModels();
         }
         return false;
       },
       child: ListView.separated(
         physics: const AlwaysScrollableScrollPhysics(),
         shrinkWrap: true,
-        itemCount: videoListController.videos.length + 1,
+        itemCount: imageModelListController.imageModels.length + 1,
         separatorBuilder: (context, index) => const Divider(height: 1),
         itemBuilder: (context, index) {
-          if (index < videoListController.videos.length) {
-            Video video = videoListController.videos[index];
-            return VideoTileListItem(video: video);
+          if (index < imageModelListController.imageModels.length) {
+            ImageModel imageModel = imageModelListController.imageModels[index];
+            return ImageModelTileListItem(imageModel: imageModel);
           } else {
             // 最后一项显示加载指示器或结束提示
             return _buildLoadMoreIndicator();
@@ -169,7 +170,7 @@ class _ProfileVideoTabListWidgetState extends State<ProfileVideoTabListWidget>
 
   // 构建加载更多指示器
   Widget _buildLoadMoreIndicator() {
-    if (videoListController.isLoading.value) {
+    if (imageModelListController.isLoading.value) {
       return const Padding(
         padding: EdgeInsets.symmetric(vertical: 16.0),
         child: Center(
@@ -181,7 +182,7 @@ class _ProfileVideoTabListWidgetState extends State<ProfileVideoTabListWidget>
         padding: EdgeInsets.symmetric(vertical: 16.0),
         child: Center(
           child: Text(
-            '没有更多视频了',
+            '没有更多图片了',
             style: TextStyle(color: Colors.grey),
           ),
         ),

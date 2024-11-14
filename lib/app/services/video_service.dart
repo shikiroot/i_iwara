@@ -19,6 +19,7 @@ class VideoService extends GetxService {
   /// - `tags` 标签。
   /// - `date` 日期。
   /// - `rating` 内容评级。 general, ecchi
+  /// - `user` 用户ID。
   /// [page] 当前页码。
   /// [limit] 每页数据量。
   ///
