@@ -1,0 +1,520 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
+import 'package:i_iwara/app/ui/pages/video_detail/widgets/volume_control_widget.dart';
+import 'package:logger/logger.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+
+import '../../../../../utils/common_utils.dart';
+import '../../../../services/config_service.dart';
+import '../controllers/my_video_state_controller.dart';
+import 'custom_slider_bar_shape_widget.dart';
+
+class BottomToolbar extends StatelessWidget {
+  final MyVideoStateController myVideoStateController;
+  final Logger logger = Logger();
+  final bool currentScreenIsFullScreen;
+  final ConfigService _configService = Get.find();
+
+  BottomToolbar({
+    super.key,
+    required this.myVideoStateController,
+    required this.currentScreenIsFullScreen,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SlideTransition(
+      position: myVideoStateController.bottomBarAnimation,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Colors.transparent,
+              Colors.black.withOpacity(0.7),
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.5), // 阴影颜色
+              offset: const Offset(0, 60), // 阴影偏移，向上偏移60像素
+              blurRadius: 60.0, // 阴影模糊半径
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // 第一行：进度条
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0), // 添加水平内边距
+              child: CustomVideoProgressbar(
+                controller: myVideoStateController,
+              ),
+            ),
+            // 第二行：播放按钮、进度信息和其他控制按钮
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // 左侧：播放/暂停按钮、音量控制和进度信息
+                Row(
+                  children: [
+                    // 播放/暂停按钮
+                    Obx(() => _buildSwitchIconButton(
+                          tooltip: myVideoStateController.videoPlaying.value
+                              ? '暂停'
+                              : '播放',
+                          icon: myVideoStateController.videoPlaying.value
+                              ? const Icon(
+                                  Icons.pause,
+                                  key: ValueKey('pause'),
+                                  color: Colors.white,
+                                )
+                              : const Icon(
+                                  Icons.play_arrow,
+                                  key: ValueKey('play'),
+                                  color: Colors.white,
+                                ),
+                          onPressed: () {
+                            if (myVideoStateController.videoPlaying.value) {
+                              myVideoStateController.videoController.player
+                                  .pause();
+                            } else {
+                              myVideoStateController.videoController.player
+                                  .play();
+                            }
+                          },
+                        )),
+                    // 仅在桌面平台显示音量控制
+                    if (GetPlatform.isDesktop)
+                      VolumeControl(
+                        configService: _configService,
+                        myVideoStateController: myVideoStateController,
+                      ),
+
+                    const SizedBox(width: 8.0), // 播放按钮与进度信息之间的间距
+                    // 进度信息，并添加点击事件
+                    TextButton(
+                      onPressed: () {
+                        _showSeekDialog(context);
+                      },
+                      child: Obx(
+                        () => Text(
+                          '${CommonUtils.formatDuration(myVideoStateController.currentPosition.value)} / ${CommonUtils.formatDuration(myVideoStateController.totalDuration.value)}',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                // 右侧：播放速度切换、分辨率切换和全屏按钮
+                Row(
+                  children: [
+                    // 播放速度切换按钮
+                    _buildPlaybackSpeedSwitcher(context),
+                    // 分辨率切换按钮
+                    _buildResolutionSwitcher(context),
+                    // 桌面端的应用全屏
+                    if (GetPlatform.isDesktop && !currentScreenIsFullScreen)
+                      _buildIconButton(
+                        tooltip:
+                            myVideoStateController.isDesktopAppFullScreen.value
+                                ? '退出应用全屏'
+                                : '应用全屏',
+                        icon: Obx(() {
+                          return SizedBox(
+                            width: 24,
+                            height: 24,
+                            child: (myVideoStateController
+                                    .isDesktopAppFullScreen.value)
+                                ? SvgPicture.asset(
+                                    'assets/svg/app_exit_fullscreen.svg',
+                                    colorFilter: const ColorFilter.mode(
+                                        Colors.white, BlendMode.srcIn),
+                                    semanticsLabel: myVideoStateController
+                                            .isDesktopAppFullScreen.value
+                                        ? '退出应用全屏'
+                                        : '应用全屏',
+                                  )
+                                : SvgPicture.asset(
+                                    'assets/svg/app_enter_fullscreen.svg',
+                                    colorFilter: const ColorFilter.mode(
+                                        Colors.white, BlendMode.srcIn),
+                                    semanticsLabel: myVideoStateController
+                                            .isDesktopAppFullScreen.value
+                                        ? '退出应用全屏'
+                                        : '应用全屏',
+                                  ),
+                          );
+                        }),
+                        onPressed: () {
+                          myVideoStateController.isDesktopAppFullScreen
+                              .toggle();
+                        },
+                      ),
+                    // 全屏按钮
+                    _buildIconButton(
+                      tooltip: currentScreenIsFullScreen ? '退出系统全屏' : '系统全屏',
+                      icon: Icon(
+                        currentScreenIsFullScreen
+                            ? Icons.fullscreen_exit
+                            : Icons.fullscreen,
+                        color: Colors.white,
+                      ),
+                      onPressed: () {
+                        if (currentScreenIsFullScreen) {
+                          // 退出系统全屏
+                          Get.back();
+                        } else {
+                          // 进入系统全屏
+                          myVideoStateController.enterFullscreen();
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// 显示跳转进度的对话框
+  void _showSeekDialog(BuildContext context) {
+    // 获取当前和总时长
+    final Duration currentPosition =
+        myVideoStateController.currentPosition.value;
+    final Duration totalDuration = myVideoStateController.totalDuration.value;
+
+    // 将总时长拆分为小时、分钟和秒
+    final int totalHours = totalDuration.inHours;
+    final int totalMinutes = totalDuration.inMinutes.remainder(60);
+    final int totalSeconds = totalDuration.inSeconds.remainder(60);
+
+    // 初始化滑块的值为当前播放位置
+    int selectedHours = currentPosition.inHours;
+    int selectedMinutes = currentPosition.inMinutes.remainder(60);
+    int selectedSeconds = currentPosition.inSeconds.remainder(60);
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('跳转到指定时间'),
+          content: StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // 小时滑块
+                  if (totalHours > 0)
+                    Row(
+                      children: [
+                        const Text('时'),
+                        Expanded(
+                          child: Slider(
+                            value: selectedHours.toDouble(),
+                            min: 0,
+                            max: totalHours.toDouble(),
+                            divisions: totalHours > 0 ? totalHours : 1,
+                            label: '$selectedHours 时',
+                            onChanged: (double value) {
+                              setState(() {
+                                selectedHours = value.round();
+                                // 确保总时长不被超过
+                                if (selectedHours == totalHours &&
+                                    (selectedMinutes > totalMinutes ||
+                                        (selectedMinutes == totalMinutes &&
+                                            selectedSeconds > totalSeconds))) {
+                                  selectedMinutes = totalMinutes;
+                                  selectedSeconds = totalSeconds;
+                                }
+                              });
+                            },
+                          ),
+                        ),
+                        Text('$selectedHours'),
+                      ],
+                    ),
+                  // 分钟滑块
+                  if (totalMinutes > 0)
+                    Row(
+                      children: [
+                        const Text('分'),
+                        Expanded(
+                          child: Slider(
+                            value: selectedMinutes.toDouble(),
+                            min: 0,
+                            max: (selectedHours < totalHours)
+                                ? 59
+                                : totalMinutes.toDouble(),
+                            divisions: (selectedHours < totalHours)
+                                ? 59
+                                : (totalMinutes > 0 ? totalMinutes : 1),
+                            label: '$selectedMinutes 分',
+                            onChanged: (double value) {
+                              setState(() {
+                                selectedMinutes = value.round();
+                                // 确保总时长不被超过
+                                if (selectedHours == totalHours &&
+                                    selectedMinutes == totalMinutes &&
+                                    selectedSeconds > totalSeconds) {
+                                  selectedSeconds = totalSeconds;
+                                }
+                              });
+                            },
+                          ),
+                        ),
+                        Text('$selectedMinutes'),
+                      ],
+                    ),
+                  // 秒钟滑块
+                  Row(
+                    children: [
+                      const Text('秒'),
+                      Expanded(
+                        child: Slider(
+                          value: selectedSeconds.toDouble(),
+                          min: 0,
+                          max: (selectedHours < totalHours ||
+                                  selectedMinutes < totalMinutes)
+                              ? 59
+                              : totalSeconds.toDouble(),
+                          divisions: (selectedHours < totalHours ||
+                                  selectedMinutes < totalMinutes)
+                              ? 59
+                              : (totalSeconds > 0 ? totalSeconds : 1),
+                          label: '$selectedSeconds 秒',
+                          onChanged: (double value) {
+                            setState(() {
+                              selectedSeconds = value.round();
+                            });
+                          },
+                        ),
+                      ),
+                      Text('$selectedSeconds'),
+                    ],
+                  ),
+                ],
+              );
+            },
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                // 关闭对话框
+                Navigator.of(context).pop();
+              },
+              child: const Text('取消'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                // 构建新的跳转时间
+                final Duration newPosition = Duration(
+                  hours: selectedHours,
+                  minutes: selectedMinutes,
+                  seconds: selectedSeconds,
+                );
+
+                // 确保跳转时间不超过总时长
+                final Duration clampedPosition =
+                    newPosition > totalDuration ? totalDuration : newPosition;
+
+                // 执行跳转
+                myVideoStateController.player.seek(clampedPosition);
+
+                // 关闭对话框
+                Navigator.of(context).pop();
+              },
+              child: const Text('跳转'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  /// 创建一个IconButton
+  Widget _buildIconButton({
+    required Widget icon,
+    required VoidCallback onPressed,
+    String? tooltip, // 可选的tooltip参数
+  }) {
+    Widget button = InkWell(
+      onTap: onPressed,
+      borderRadius: BorderRadius.circular(24.0),
+      splashColor: Colors.white24,
+      highlightColor: Colors.white10,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: icon,
+      ),
+    );
+
+    if (tooltip != null && tooltip.isNotEmpty) {
+      button = Tooltip(
+        triggerMode: TooltipTriggerMode.tap,
+        preferBelow: true,
+        message: tooltip,
+        child: button,
+      );
+    }
+
+    return button;
+  }
+
+  /// 创建一个带切换动画的IconButton
+  Widget _buildSwitchIconButton({
+    required Icon icon,
+    required VoidCallback onPressed,
+    String? tooltip, // 添加tooltip参数
+  }) {
+    return Tooltip(
+      triggerMode: TooltipTriggerMode.tap, // 设置触发模式为点击
+      preferBelow: true,
+      message: tooltip, // 提示信息
+      child: Material(
+        color: Colors.transparent, // 使背景透明以显示水波纹效果
+        child: InkWell(
+          onTap: onPressed,
+          onLongPress: () {
+            // 可选：在此处添加长按时的逻辑
+            // 例如显示更多选项或执行其他操作
+          },
+          borderRadius: BorderRadius.circular(32.0), // 设置圆角以匹配按钮形状
+          child: Padding(
+            padding: const EdgeInsets.all(12.0), // 增加内边距以增大点击区域
+            child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 300),
+              transitionBuilder: (Widget child, Animation<double> animation) {
+                return FadeTransition(
+                  opacity: animation,
+                  child: ScaleTransition(scale: animation, child: child),
+                );
+              },
+              child: icon,
+            ).animate().fadeIn(duration: 300.ms).scale(),
+          ),
+        ),
+      ),
+    );
+  }
+
+  /// 分辨率切换器
+  Widget _buildResolutionSwitcher(BuildContext context) {
+    return Obx(() {
+      String? currentResolution =
+          myVideoStateController.currentResolutionTag.value;
+      List<VideoResolution> resolutions =
+          myVideoStateController.videoResolutions;
+
+      Map<String, IconData> resolutionIcons = {
+        '360': Icons.sd,
+        '540': Icons.hd,
+        '720': Icons.hd,
+        '1080': Icons.high_quality,
+        'Source': Icons.video_label,
+      };
+
+      return PopupMenuButton<String>(
+        initialValue: currentResolution,
+        tooltip: '切换分辨率',
+        icon: Icon(
+          resolutionIcons[currentResolution] ?? Icons.settings,
+          color: Colors.white,
+        ),
+        onSelected: (String selected) {
+          if (selected != currentResolution) {
+            myVideoStateController.switchResolution(selected);
+          }
+        },
+        itemBuilder: (BuildContext context) {
+          return resolutions.map((VideoResolution resolution) {
+            return PopupMenuItem<String>(
+              value: resolution.label,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Icon(
+                        resolutionIcons[resolution.label] ?? Icons.settings,
+                        color: Theme.of(context).iconTheme.color,
+                      ),
+                      const SizedBox(width: 8),
+                      Text(resolution.label),
+                    ],
+                  ),
+                  if (resolution.label == currentResolution)
+                    const Icon(Icons.check, color: Colors.blue),
+                ],
+              ),
+            );
+          }).toList();
+        },
+      );
+    });
+  }
+
+  /// 播放速度切换器
+  Widget _buildPlaybackSpeedSwitcher(BuildContext context) {
+    return Obx(() {
+      double currentSpeed = myVideoStateController.playerPlaybackSpeed.value;
+      List<double> speeds = [
+        0.25,
+        0.5,
+        0.75,
+        1.0,
+        1.25,
+        1.5,
+        1.75,
+        2.0,
+        2.5,
+        3.0
+      ];
+
+      // 只在全屏下显示
+      if (!currentScreenIsFullScreen) {
+        return const SizedBox.shrink();
+      }
+
+      return PopupMenuButton<double>(
+        initialValue: currentSpeed,
+        tooltip: '切换播放倍速',
+        icon: const Icon(
+          Icons.speed,
+          color: Colors.white,
+        ),
+        onSelected: (double selected) {
+          if (selected != currentSpeed) {
+            myVideoStateController.playerPlaybackSpeed.value = selected;
+            myVideoStateController.videoController.player.setRate(selected);
+          }
+        },
+        itemBuilder: (BuildContext context) {
+          return speeds.map((double speed) {
+            return PopupMenuItem<double>(
+              value: speed,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('${speed}x'),
+                  if (speed == currentSpeed)
+                    const Icon(Icons.check, color: Colors.blue),
+                ],
+              ),
+            );
+          }).toList();
+        },
+      );
+    });
+  }
+}

@@ -13,6 +13,7 @@ import 'package:i_iwara/app/ui/widgets/global_drawer_content_widget.dart';
 import 'package:i_iwara/app/ui/widgets/window_layout_widget.dart';
 
 import '../utils/proxy/proxy_util.dart';
+final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

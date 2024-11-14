@@ -2,6 +2,10 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:i_iwara/app/models/video_source.model.dart';
+
+import '../app/ui/pages/video_detail/controllers/my_video_state_controller.dart';
 
 class CommonUtils {
   /// 格式化Duration 为 mm:ss
@@ -45,5 +49,49 @@ class CommonUtils {
       debugPrint(exception.toString());
       debugPrint(stacktrace.toString());
     }
+  }
+
+  /// 将videoSources转换成videoResolutions
+  static List<VideoResolution> convertVideoSourcesToResolutions(
+      List<VideoSource>? videoSources,
+      {filterPreview = false}) {
+    // VideoSource#src#view 是视频播放源
+    final List<VideoResolution> videoResolutions = [];
+    if (videoSources == null) {
+      return videoResolutions;
+    }
+
+    for (final VideoSource videoSource in videoSources) {
+      if (videoSource.src != null && videoSource.src!.view != null) {
+        if (filterPreview) {
+          if (videoSource.name == 'preview') {
+            continue;
+          }
+        }
+        videoResolutions.add(
+          VideoResolution(
+            label: videoSource.name ?? '',
+            url: 'https:${videoSource.src!.view}',
+          ),
+        );
+      }
+    }
+
+    return videoResolutions;
+  }
+
+  /// 根据清晰度标签查找对应的视频源
+  static String? findUrlByResolutionTag(
+      List<VideoResolution>? videoResolutions, String? resolutionTag) {
+    if (videoResolutions == null || resolutionTag == null) {
+      return null;
+    }
+    return videoResolutions
+        .firstWhere(
+          (element) =>
+      element.label.toLowerCase() == resolutionTag.toLowerCase(),
+      orElse: () => VideoResolution(label: '', url: ''),
+    )
+        .url;
   }
 }
