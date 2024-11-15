@@ -80,9 +80,11 @@ class ApiConstants {
 
   // 视频评论
   static String videoComments(String videoId) => '/video/$videoId/comments';
+  static const String rawVideoComments = '/video/{id}/comments';
 
   // 用户评论
   static String userComments(String userId) => '/profile/$userId/comments';
+  static const String rawProfileComments = '/profile/{id}/comments';
 }
 
 // 视频接口的排序方式

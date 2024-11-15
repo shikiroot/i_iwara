@@ -5,9 +5,20 @@ import '../../../../../utils/constants.dart';
 import '../../../../models/comment.model.dart';
 import '../../../../services/api_service.dart';
 
-class CommentController extends GetxController {
-  final String? videoId;
-  final String? profileId;
+enum CommentType {
+  video(apiPath: ApiConstants.rawVideoComments),
+  profile(apiPath: ApiConstants.rawProfileComments),;
+
+  final String apiPath;
+  const CommentType({required this.apiPath});
+
+  // 获取完整的API路径
+  String getApiEndpoint(String id) => apiPath.replaceAll('{id}', id);
+}
+
+class CommentController<T extends CommentType> extends GetxController {
+  final String id;
+  final T type;
 
   var comments = <Comment>[].obs;
   var isLoading = false.obs;
@@ -21,18 +32,22 @@ class CommentController extends GetxController {
   // API 服务实例
   final ApiService _apiService = Get.find<ApiService>();
 
-  CommentController({this.videoId, this.profileId});
+  CommentController({
+    required this.id,
+    required this.type,
+  });
 
   @override
   void onInit() {
     super.onInit();
-    LogUtils.d('初始化', 'CommentController');
+    LogUtils.d('初始化', 'CommentController<${type.toString()}>');
     fetchComments(refresh: true);
   }
 
   // 从 API 获取评论
   Future<void> fetchComments({bool refresh = false}) async {
-    LogUtils.d('获取评论', 'CommentController');
+    LogUtils.d('获取评论', 'CommentController<${type.toString()}>');
+
     // 如果是刷新操作，重置分页并清除现有数据
     if (refresh) {
       doneFirstTime.value = false;
@@ -48,11 +63,8 @@ class CommentController extends GetxController {
     isLoading.value = true;
 
     try {
-      var api = (videoId != null && videoId!.isNotEmpty)
-          ? ApiConstants.videoComments(videoId!)
-          : ApiConstants.userComments(profileId!);
       final response = await _apiService.get(
-        api,
+        type.getApiEndpoint(id),
         queryParameters: {
           'page': currentPage,
           'limit': pageSize,
@@ -69,10 +81,10 @@ class CommentController extends GetxController {
 
         // 解析评论
         List<Map<String, dynamic>> commentList =
-            List<Map<String, dynamic>>.from(data['results'] ?? []);
+        List<Map<String, dynamic>>.from(data['results'] ?? []);
 
         List<Comment> fetchedComments =
-            commentList.map((json) => Comment.fromJson(json)).toList();
+        commentList.map((json) => Comment.fromJson(json)).toList();
 
         // 如果返回的评论为空，设置hasMore为false
         if (fetchedComments.isEmpty) {
@@ -82,11 +94,7 @@ class CommentController extends GetxController {
           comments.addAll(fetchedComments);
           // 增加页码以便下次获取
           currentPage += 1;
-
-          // 根据获取的评论数量更新hasMore标志
-          if (fetchedComments.length < pageSize) {
-            hasMore.value = false;
-          }
+          hasMore.value = fetchedComments.length >= pageSize;
         }
 
         errorMessage.value = '';
@@ -94,7 +102,7 @@ class CommentController extends GetxController {
         errorMessage.value = '加载评论失败：${response.statusMessage}';
       }
     } catch (e) {
-      LogUtils.e('获取评论时出错', tag: 'CommentController', error: e);
+      LogUtils.e('获取评论时出错', tag: 'CommentController<${type.toString()}>', error: e);
       errorMessage.value = '获取评论时出错，请检查网络连接。';
     } finally {
       isLoading.value = false;

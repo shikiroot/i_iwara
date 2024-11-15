@@ -47,7 +47,7 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> with RouteAware {
     );
 
     commentController = Get.put(
-      CommentController(videoId: videoId),
+      CommentController(id: videoId, type: CommentType.video),
       tag: uniqueTag,
     );
 

@@ -61,7 +61,8 @@ class AuthorProfileController extends GetxController {
       author.value = User.fromJson(authorData.data['user']);
       commentController = Get.put(
         CommentController(
-          profileId: author.value!.id,
+          id: author.value!.id,
+          type: CommentType.profile,
         ),
         tag: author.value!.id,
       );
