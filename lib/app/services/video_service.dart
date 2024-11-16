@@ -35,7 +35,7 @@ class VideoService extends GetxService {
     try {
       // [HACK_IMPLEMENT] 如果params里有的值为空字符串，则去掉key
       // 我靠，iwara站的搜索居然连空字符串都用于搜索了，哎
-      params.removeWhere((key, value) => value == '');
+      params = Map<String, dynamic>.from(params)..removeWhere((key, value) => value == '');
       url ??= ApiConstants.videos();
       final response = await _apiService.get(url, queryParameters: {
         ...params,
@@ -100,7 +100,7 @@ class VideoService extends GetxService {
       );
 
       final List<User> results = (response.data['results'] as List)
-          .map((user) => User.fromJson(user['user']))
+          .map((userJson) => User.fromJson(userJson['user']))
           .toList();
 
       final PageData<User> pageData = PageData(

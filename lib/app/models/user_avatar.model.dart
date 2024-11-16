@@ -5,7 +5,7 @@ class UserAvatar {
   final String path;
   final String name;
   final String mime;
-  final int size;
+  final int? size;
   final int? width;
   final int? height;
   final DateTime createdAt;

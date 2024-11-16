@@ -47,6 +47,7 @@ class _LikeAvatarsWidgetState extends State<LikeAvatarsWidget> {
               await _videoService.fetchLikeVideoUsers(widget.mediaId);
           if (response.isSuccess) {
             _users = response.data!.results;
+            count = response.data!.count;
           }
           break;
         case MediaType.IMAGE:
@@ -54,6 +55,7 @@ class _LikeAvatarsWidgetState extends State<LikeAvatarsWidget> {
               await _galleryService.fetchLikeImageUsers(widget.mediaId);
           if (response.isSuccess) {
             _users = response.data!.results;
+            count = response.data!.count;
           }
           break;
       }

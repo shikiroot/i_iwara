@@ -42,6 +42,7 @@ class RelatedMediasController extends GetxController {
           if (response.isSuccess) {
             videos.value = response.data!.results;
           } else {
+            LogUtils.e('相关: 获取相关视频失败', tag: 'RelatedMediasController');
             hasError.value = true;
             errorMessage.value = response.message;
           }
@@ -51,10 +52,12 @@ class RelatedMediasController extends GetxController {
           if (response.isSuccess) {
             imageModels.value = response.data!.results;
           } else {
+            LogUtils.e('相关: 获取相关图片失败', tag: 'RelatedMediasController', error: response.message);
             hasError.value = true;
             errorMessage.value = response.message;
           }
       }
+      LogUtils.d('相关: 获取到的数量有 ${videos.length}', 'RelatedMediasController');
     } finally {
       isLoading.value = false;
     }
@@ -102,6 +105,7 @@ class OtherAuthorzMediasController extends GetxController {
           if (response.isSuccess) {
             videos.value = response.data!.results;
           } else {
+            LogUtils.e('其他: 获取作者其他视频失败', tag: 'OtherAuthorzMediasController');
             hasError.value = true;
             errorMessage.value = response.message;
           }
@@ -111,10 +115,13 @@ class OtherAuthorzMediasController extends GetxController {
           if (response.isSuccess) {
             imageModels.value = response.data!.results;
           } else {
+            LogUtils.e('其他: 获取作者其他图片失败', tag: 'OtherAuthorzMediasController');
             hasError.value = true;
             errorMessage.value = response.message;
           }
       }
+
+      LogUtils.d('其他: 获取到的数量有 ${videos.length}', 'OtherAuthorzMediasController');
     } finally {
       isLoading.value = false;
     }

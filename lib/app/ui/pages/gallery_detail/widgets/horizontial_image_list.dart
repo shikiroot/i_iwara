@@ -1,0 +1,395 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
+
+class ImageItem {
+  final String url;
+  final dynamic data;
+  double? width;
+  double? height;
+
+  ImageItem({
+    required this.url,
+    this.width,
+    this.height,
+    this.data,
+  });
+}
+
+class MenuItem {
+  final IconData icon;
+  final String title;
+  final VoidCallback onTap;
+
+  MenuItem({
+    required this.icon,
+    required this.title,
+    required this.onTap,
+  });
+}
+
+class HorizontalImageList extends StatefulWidget {
+  final List<ImageItem> images;
+  final double defaultAspectRatio; // 默认宽高比
+  final double? itemSpacing;
+  final BoxDecoration? itemDecoration;
+  final Function(ImageItem item)? onItemTap;
+  final Widget Function(BuildContext, String)? placeholderBuilder;
+  final Widget Function(BuildContext, String, dynamic)? errorBuilder;
+  final BoxFit imageFit;
+  final Color? scrollButtonColor;
+  final double scrollOffset;
+  final Color? backgroundColor; // 背景色
+  final double wheelScrollFactor; // 滚轮滚动系数
+  final Widget Function(BuildContext, ImageItem, Offset)?
+  menuBuilder; // 自定义菜单构建器
+  final List<MenuItem> Function(BuildContext, ImageItem)? menuItemsBuilder; // 动态菜单项生成器
+
+  const HorizontalImageList({
+    super.key,
+    required this.images,
+    this.defaultAspectRatio = 1.0, // 默认正方形
+    this.itemSpacing = 8.0, // 减小默认间距
+    this.itemDecoration,
+    this.onItemTap,
+    this.placeholderBuilder,
+    this.errorBuilder,
+    this.imageFit = BoxFit.contain,
+    this.scrollButtonColor,
+    this.scrollOffset = 300,
+    this.backgroundColor,
+    this.wheelScrollFactor = 5.0, // 修改默认滚动系数为更小的值
+    this.menuBuilder,
+    this.menuItemsBuilder, // 使用动态菜单项生成器
+  });
+
+  @override
+  State<HorizontalImageList> createState() => _HorizontalImageListState();
+}
+
+class _HorizontalImageListState extends State<HorizontalImageList> {
+  final ScrollController _scrollController = ScrollController();
+  bool _showLeftButton = false;
+  late bool _showRightButton;
+  final Map<String, double> _loadedAspectRatios = {};
+  OverlayEntry? _overlayEntry;
+
+  @override
+  void initState() {
+    super.initState();
+    _showRightButton = widget.images.length > 1;
+    _scrollController.addListener(_updateButtonVisibility);
+  }
+
+  @override
+  void dispose() {
+    _hideMenu();
+    super.dispose();
+  }
+
+  void _updateButtonVisibility() {
+    setState(() {
+      _showLeftButton = _scrollController.offset > 0;
+      _showRightButton =
+          _scrollController.offset < _scrollController.position.maxScrollExtent;
+    });
+  }
+
+  void _handleMouseScroll(PointerSignalEvent event) {
+    if (event is PointerScrollEvent) {
+      // 优化滚动计算逻辑
+      final scrollAmount = event.scrollDelta.dy * widget.wheelScrollFactor;
+      final targetOffset = _scrollController.offset + scrollAmount;
+
+      // 添加最小滚动距离
+      if (scrollAmount.abs() < 1.0) return;
+
+      _scrollController.animateTo(
+        targetOffset.clamp(0.0, _scrollController.position.maxScrollExtent),
+        duration: const Duration(milliseconds: 100), // 缩短动画时间提高响应度
+        curve: Curves.easeOutCubic,
+      );
+    }
+  }
+
+  void _hideMenu() {
+    _overlayEntry?.remove();
+    _overlayEntry = null;
+  }
+
+  void _showImageMenu(BuildContext context, ImageItem item, Offset position,
+      Size containerSize) {
+    _hideMenu();
+
+    // 获取父级容器的RenderBox，而不是图片项本身
+    final RenderBox renderBox = context.findAncestorRenderObjectOfType<RenderBox>()!;
+
+    // 获取容器的相对位置
+    final containerOffset = renderBox.localToGlobal(Offset.zero);
+
+    // 计算相对于容器的位置
+    double dx = position.dx - containerOffset.dx;
+    double dy = position.dy - containerOffset.dy;
+
+    // 动态生成菜单项
+    final menuItems = widget.menuItemsBuilder != null
+        ? widget.menuItemsBuilder!(context, item)
+        : widget.menuItemsBuilder!(context, item);
+
+    // 创建菜单
+    final menuWidget = DefaultImageMenu(
+      item: item,
+      onDismiss: _hideMenu,
+      customBuilder: widget.menuBuilder,
+      constraints: BoxConstraints(
+        maxWidth: containerSize.width * 0.3, // 限制菜单最大宽度为容器的30%
+        maxHeight: containerSize.height * 0.8, // 限制菜单最大高度为容器的80%
+      ),
+      position: Offset(dx, dy), // 使用计算后的相对位置
+      menuItems: menuItems, // 传递菜单项列表
+    );
+
+    // 插入菜单到Overlay
+    _overlayEntry = OverlayEntry(
+      builder: (context) => Stack(
+        children: [
+          // 添加透明层，点击时关闭菜单
+          Positioned.fill(
+            child: GestureDetector(
+              onTap: _hideMenu,
+              child: Container(
+                color: Colors.transparent,
+              ),
+            ),
+          ),
+          // 显示菜单
+          Positioned(
+            left: dx,
+            top: dy,
+            child: Material(
+              color: Colors.transparent,
+              child: menuWidget,
+            ),
+          ),
+        ],
+      ),
+    );
+
+    Overlay.of(context).insert(_overlayEntry!);
+  }
+
+
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return Stack(
+          alignment: Alignment.center,
+          children: [
+            Listener(
+              onPointerSignal: _handleMouseScroll,
+              child: ListView.builder(
+                controller: _scrollController,
+                scrollDirection: Axis.horizontal,
+                itemCount: widget.images.length,
+                itemBuilder: (context, index) {
+                  final imageInfo = widget.images[index];
+                  return _buildImageItem(context, imageInfo, index,
+                      Size(constraints.maxWidth, constraints.maxHeight));
+                },
+              ),
+            ),
+            if (_showLeftButton)
+              Positioned(
+                left: 8,
+                child: _buildScrollButton(
+                  Icons.arrow_back_ios_rounded,
+                      () => _scrollController.animateTo(
+                    _scrollController.offset - widget.scrollOffset,
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeOutCubic,
+                  ),
+                ),
+              ),
+            if (_showRightButton)
+              Positioned(
+                right: 8,
+                child: _buildScrollButton(
+                  Icons.arrow_forward_ios_rounded,
+                      () => _scrollController.animateTo(
+                    _scrollController.offset + widget.scrollOffset,
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeOutCubic,
+                  ),
+                ),
+              ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildScrollButton(IconData icon, VoidCallback onPressed) {
+    return Material(
+      color: Colors.transparent,
+      child: Ink(
+        decoration: BoxDecoration(
+          color: widget.scrollButtonColor ?? Colors.black54,
+          shape: BoxShape.circle,
+        ),
+        child: InkWell(
+          onTap: onPressed,
+          customBorder: const CircleBorder(),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Icon(icon, color: Colors.white, size: 20),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildImageItem(BuildContext context, ImageItem imageInfo, int index,
+      Size containerSize) {
+    final aspectRatio =
+        _loadedAspectRatios[imageInfo.url] ?? widget.defaultAspectRatio;
+
+    return GestureDetector(
+      onLongPressStart: (details) {
+        _showImageMenu(
+            context, imageInfo, details.globalPosition, containerSize);
+      },
+      onSecondaryTapDown: (details) {
+        _showImageMenu(
+            context, imageInfo, details.globalPosition, containerSize);
+      },
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: widget.itemSpacing ?? 8.0, // 减小水平padding
+          vertical: 4.0,
+        ),
+        child: SizedBox(
+          height: containerSize.height,
+          child: AspectRatio(
+            aspectRatio: aspectRatio,
+            child: Material(
+              color: widget.backgroundColor ?? Colors.transparent,
+              borderRadius: BorderRadius.circular(8), // 添加圆角
+              clipBehavior: Clip.antiAlias, // 确保圆角裁剪生效
+              child: InkWell(
+                onTap: () => widget.onItemTap?.call(imageInfo),
+                child: CachedNetworkImage(
+                  imageUrl: imageInfo.url,
+                  placeholder: (context, url) =>
+                  widget.placeholderBuilder?.call(context, url) ??
+                      _buildPlaceholder(context, url),
+                  errorWidget: (context, url, error) =>
+                  widget.errorBuilder?.call(context, url, error) ??
+                      Icon(Icons.error,
+                          color: Theme.of(context).colorScheme.error),
+                  fit: widget.imageFit,
+                  imageBuilder: (context, imageProvider) {
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      _updateImageSize(imageProvider, imageInfo.url);
+                    });
+                    return Container(
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: imageProvider,
+                          fit: widget.imageFit,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPlaceholder(BuildContext context, String url) {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey[300]!,
+      highlightColor: Colors.grey[100]!,
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.grey[200],
+          borderRadius: BorderRadius.circular(8), // 占位图也添加圆角
+        ),
+      ),
+    );
+  }
+
+  void _updateImageSize(ImageProvider provider, String url) {
+    // 获取图片实际尺寸并更新状态
+    provider.resolve(const ImageConfiguration()).addListener(
+      ImageStreamListener((ImageInfo info, bool _) {
+        final double width = info.image.width.toDouble();
+        final double height = info.image.height.toDouble();
+        if (_loadedAspectRatios[url] != width / height) {
+          setState(() {
+            _loadedAspectRatios[url] = width / height;
+          });
+        }
+      }),
+    );
+  }
+}
+
+class DefaultImageMenu extends StatelessWidget {
+  final ImageItem item;
+  final VoidCallback onDismiss;
+  final Widget Function(BuildContext, ImageItem, Offset)? customBuilder;
+  final BoxConstraints constraints;
+  final Offset position;
+  final List<MenuItem> menuItems;
+
+  const DefaultImageMenu({
+    super.key,
+    required this.item,
+    required this.onDismiss,
+    this.customBuilder,
+    required this.constraints,
+    required this.position,
+    required this.menuItems,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    if (customBuilder != null) {
+      return customBuilder!(context, item, position);
+    }
+
+    return Material(
+      elevation: 4,
+      borderRadius: BorderRadius.circular(4),
+      child: IntrinsicWidth(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: menuItems.map((menuItem) {
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ListTile(
+                  dense: true,
+                  leading: Icon(menuItem.icon),
+                  title: Text(menuItem.title),
+                  onTap: () {
+                    onDismiss();
+                    menuItem.onTap();
+                  },
+                ),
+                const Divider(height: 1),
+              ],
+            );
+          }).toList(),
+        ),
+      ),
+    );
+  }
+}

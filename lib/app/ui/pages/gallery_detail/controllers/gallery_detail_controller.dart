@@ -18,6 +18,7 @@ class GalleryDetailController extends GetxController {
   final RxBool isImageModelInfoLoading = true.obs; // 是否正在加载图片模型信息
   final RxBool isCommentSheetVisible = false.obs;
   final RxBool isDescriptionExpanded = false.obs;
+  final RxBool isHoveringHorizontalList = false.obs;
 
   OtherAuthorzMediasController? otherAuthorzImageModelsController;
 

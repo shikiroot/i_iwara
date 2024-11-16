@@ -178,7 +178,7 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> with RouteAware {
                 // 左侧视频详情
                 SizedBox(
                   width: renderVideoSize.width,
-                  child: VideoDetailInfoSkeletonWidget(),
+                  child: MediaDetailInfoSkeletonWidget(),
                 ),
                 // 右侧评论列表
                 Expanded(child: MediaTileListSkeletonWidget()),
@@ -326,7 +326,7 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> with RouteAware {
         } else {
           // 窄屏布局，使用Stack 覆盖整个屏幕
           if (controller.isVideoInfoLoading.value) {
-            return VideoDetailInfoSkeletonWidget();
+            return MediaDetailInfoSkeletonWidget();
           }
           return PopScope(
             canPop: !controller.isCommentSheetVisible.value,

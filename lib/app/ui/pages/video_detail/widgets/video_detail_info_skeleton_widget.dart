@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
-class VideoDetailInfoSkeletonWidget extends StatelessWidget {
-  const VideoDetailInfoSkeletonWidget({super.key});
+class MediaDetailInfoSkeletonWidget extends StatelessWidget {
+  const MediaDetailInfoSkeletonWidget({super.key});
 
   @override
   Widget build(context) {

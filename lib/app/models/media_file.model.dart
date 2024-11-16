@@ -1,4 +1,6 @@
 
+import 'package:i_iwara/common/constants.dart';
+
 class MediaFile {
   final String id;
   final String type; // image, video
@@ -47,4 +49,7 @@ class MediaFile {
       updatedAt: DateTime.parse(json['updatedAt']),
     );
   }
+
+  String getLargeImageUrl() => '${CommonConstants.iwaraImageBaseUrl}/image/large/$id/$name';
+  String getOriginalImageUrl() => '${CommonConstants.iwaraImageBaseUrl}/image/original/$id/$name';
 }
