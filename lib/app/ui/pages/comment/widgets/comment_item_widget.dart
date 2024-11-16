@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:i_iwara/app/services/app_service.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../../../../../utils/constants.dart';
+import '../../../../../common/constants.dart';
 import '../../../../models/comment.model.dart';
 import '../../../../routes/app_routes.dart';
 import '../../../widgets/custom_markdown_body_widget.dart';

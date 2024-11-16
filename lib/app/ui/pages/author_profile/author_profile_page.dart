@@ -8,7 +8,7 @@ import 'package:i_iwara/app/ui/pages/author_profile/widgets/profile_video_tab_li
 import 'package:i_iwara/utils/date_time_extension.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../../../../utils/constants.dart';
+import '../../../../common/constants.dart';
 import '../../../services/user_service.dart';
 import '../../widgets/sliding_card_widget.dart';
 import '../comment/widgets/comment_entry_area_widget.dart';
@@ -445,9 +445,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                                   profileController.authorDescription.value,
                               isDescriptionExpanded:
                                   profileController.isDescriptionExpanded,
-                              onToggleDescription: () => profileController
-                                  .isDescriptionExpanded
-                                  .toggle())),
+                              )),
                     ),
                     SliverToBoxAdapter(
                       child: Container(

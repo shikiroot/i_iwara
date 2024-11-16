@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../../../../../utils/constants.dart';
+import '../../../../../common/constants.dart';
 import '../../../../services/user_service.dart';
 import '../controllers/comment_controller.dart';
 

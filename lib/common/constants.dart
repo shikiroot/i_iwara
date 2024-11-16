@@ -85,6 +85,21 @@ class ApiConstants {
   // 用户评论
   static String userComments(String userId) => '/profile/$userId/comments';
   static const String rawProfileComments = '/profile/{id}/comments';
+
+  // 图片评论
+  static const String rawImageComments= '/image/{id}/comments';
+
+  static String tags() => '/tags';
+
+  static String imageDetail(String imageModelId) => '/image/$imageModelId';
+
+  static String relatedVideos(String id) => '/video/$id/related';
+
+  static relatedImages(String mediaId) => '/image/$mediaId/related';
+
+  static String videoLikes(String videoId) => '/video/$videoId/likes';
+
+  static String imageLikes(String imageId) => '/image/$imageId/likes';
 }
 
 // 视频接口的排序方式

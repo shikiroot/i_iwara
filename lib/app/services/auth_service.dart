@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:dio/dio.dart' as dio;
 import 'package:dio/io.dart';
 import 'package:get/get.dart';
-import '../../utils/constants.dart';
+import '../../common/constants.dart';
 import '../../utils/logger_utils.dart';
 import '../models/api_result.model.dart';
 import '../models/captcha.model.dart';

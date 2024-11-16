@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../../utils/constants.dart';
+import '../../../common/constants.dart';
 import '../../routes/app_routes.dart';
 
 class CustomMarkdownBody extends StatelessWidget {

@@ -10,6 +10,7 @@ abstract class Routes {
   static const SUBSCRIPTIONS = _Paths.HOME + _Paths.SUBSCRIPTIONS;
   static const VIDEO_DETAIL = _Paths.HOME + _Paths.VIDEO_DETAIL;
   static String AUTHOR_PROFILE(String userName) => _Paths.HOME + _Paths.AUTHOR_PROFILE.replaceAll(':userName', userName);
+  static String GALLERY_DETAIL(String galleryId) => _Paths.HOME + _Paths.GALLERY_DETAIL.replaceAll(':galleryId', galleryId);
 
   static const LOGIN = _Paths.LOGIN;
   static const SETTINGS_PAGE = _Paths.SETTINGS_PAGE;
@@ -34,8 +35,8 @@ abstract class _Paths {
   static const AUTHOR_PROFILE = '/author_profile/:userName';
   static const NOT_FOUND = '/not_found';
 
-  static const POPULAR_VIDEOS = '/popular_videos';
   static const GALLERY = '/gallery';
+  static const GALLERY_DETAIL = '/gallery_detail/:galleryId';
   static const SUBSCRIPTIONS = '/subscriptions';
 
   static const  ROOT = '/';

@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-import '../../../../../utils/constants.dart';
+import '../../../../../common/constants.dart';
 import '../../../../models/comment.model.dart';
 import '../../../../services/api_service.dart';
 

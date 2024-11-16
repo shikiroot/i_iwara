@@ -4,7 +4,7 @@ import 'package:i_iwara/app/services/app_service.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
-import '../../../../../utils/constants.dart';
+import '../../../../../common/constants.dart';
 import '../../../../models/video.model.dart';
 import 'package:i_iwara/utils/date_time_extension.dart';
 import '../../../../routes/app_routes.dart';

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
-class VideoTileListSkeletonWidget extends StatelessWidget {
-  const VideoTileListSkeletonWidget({super.key});
+class MediaTileListSkeletonWidget extends StatelessWidget {
+  const MediaTileListSkeletonWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -10,7 +10,7 @@ class VideoTileListSkeletonWidget extends StatelessWidget {
     return ListView.builder(
       itemCount: 5,
       shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       itemExtent: 120,
       itemBuilder: (context, index) {
         return Shimmer.fromColors(

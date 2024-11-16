@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:get/get.dart';
+import 'package:i_iwara/app/services/gallery_service.dart';
+import 'package:i_iwara/app/services/video_service.dart';
+import 'package:i_iwara/common/enums/media_enums.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../../../../../utils/constants.dart';
+import '../../../../../common/constants.dart';
 import '../../../../models/user.model.dart';
-import '../../../../services/api_service.dart';
 
 class LikeAvatarsWidget extends StatefulWidget {
-  final String videoId;
+  final String mediaId;
+  final MediaType mediaType;
 
-  const LikeAvatarsWidget({super.key, required this.videoId});
+  const LikeAvatarsWidget(
+      {super.key, required this.mediaId, required this.mediaType});
 
   @override
   _LikeAvatarsWidgetState createState() => _LikeAvatarsWidgetState();
@@ -19,8 +23,10 @@ class LikeAvatarsWidget extends StatefulWidget {
 class _LikeAvatarsWidgetState extends State<LikeAvatarsWidget> {
   List<User> _users = [];
   bool _isLoading = true;
-  final ApiService _apiService = Get.find();
   int count = 0;
+
+  final GalleryService _galleryService = Get.find();
+  final VideoService _videoService = Get.find();
 
   @override
   void initState() {
@@ -35,26 +41,27 @@ class _LikeAvatarsWidgetState extends State<LikeAvatarsWidget> {
 
   Future<void> _fetchLikes() async {
     try {
-      final response = await _apiService.get(
-        'https://api.iwara.tv/video/${widget.videoId}/likes',
-        queryParameters: {'page': 0, 'limit': 6},
-      );
-
-      if (response.statusCode == 200) {
-        final Map<String, dynamic> data = response.data;
-        if (!mounted) return; // 检查组件是否仍然挂载
-        setState(() {
-          _users = (data['results'] as List)
-              .map((userJson) => User.fromJson(userJson['user']))
-              .toList();
-          _isLoading = false;
-          count = data['count'];
-        });
-      } else {
-        if (mounted) {
-          setState(() => _isLoading = false);
-        }
+      switch (widget.mediaType) {
+        case MediaType.VIDEO:
+          final response =
+              await _videoService.fetchLikeVideoUsers(widget.mediaId);
+          if (response.isSuccess) {
+            _users = response.data!.results;
+          }
+          break;
+        case MediaType.IMAGE:
+          final response =
+              await _galleryService.fetchLikeImageUsers(widget.mediaId);
+          if (response.isSuccess) {
+            _users = response.data!.results;
+          }
+          break;
       }
+
+      if (!mounted) return; // 检查组件是否仍然挂载
+      setState(() {
+        _isLoading = false;
+      });
     } catch (e) {
       if (mounted) {
         setState(() => _isLoading = false);

@@ -6,7 +6,7 @@ import 'package:i_iwara/app/ui/pages/popular_media_list/widgets/video_preview_mo
 import 'package:i_iwara/utils/date_time_extension.dart';
 import 'package:vibration/vibration.dart';
 
-import '../../../../../utils/constants.dart';
+import '../../../../../common/constants.dart';
 import '../../../../models/video.model.dart';
 import '../../../../routes/app_routes.dart';
 

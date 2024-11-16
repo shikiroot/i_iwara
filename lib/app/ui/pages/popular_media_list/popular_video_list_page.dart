@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:i_iwara/app/services/app_service.dart';
 import 'package:i_iwara/app/ui/pages/popular_media_list/widgets/popular_media_search_config_widget.dart';
-import 'package:i_iwara/utils/constants.dart';
+import 'package:i_iwara/common/constants.dart';
 
 import '../../../models/sort.model.dart';
 import '../../../models/tag.model.dart';

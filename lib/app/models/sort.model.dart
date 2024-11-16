@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 
-import '../../utils/constants.dart';
+import '../../common/constants.dart';
 
 class Sort {
   final SortId id;

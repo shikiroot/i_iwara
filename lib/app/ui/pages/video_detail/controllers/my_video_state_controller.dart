@@ -3,7 +3,8 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:i_iwara/app/ui/pages/video_detail/controllers/related_video_controller.dart';
+import 'package:i_iwara/app/ui/pages/video_detail/controllers/related_media_controller.dart';
+import 'package:i_iwara/common/enums/media_enums.dart';
 import 'package:logger/logger.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:media_kit_video/media_kit_video.dart';
@@ -34,7 +35,7 @@ class MyVideoStateController extends GetxController
 
   // 视频详情页信息
   RxBool isCommentSheetVisible = false.obs; // 评论面板是否可见
-  OtherAuthorzVideosController? otherAuthorzVideosController; // 作者的其他视频控制器
+  OtherAuthorzMediasController? otherAuthorzVideosController; // 作者的其他视频控制器
 
   // 状态
   // 播放器状态
@@ -214,11 +215,9 @@ class MyVideoStateController extends GetxController
       }
       String? authorId = videoInfo.value!.user?.id;
       if (authorId != null) {
-        otherAuthorzVideosController = OtherAuthorzVideosController(
-          videoId: videoId,
-          userId: authorId,
-        );
-        otherAuthorzVideosController!.fetchRelatedVideos();
+        otherAuthorzVideosController = OtherAuthorzMediasController(
+            mediaId: videoId, userId: authorId, mediaType: MediaType.VIDEO);
+        otherAuthorzVideosController!.fetchRelatedMedias();
       }
 
       // 如果视频不是私密的且有文件URL，则获取视频源
@@ -415,9 +414,9 @@ class MyVideoStateController extends GetxController
     bool renderVerticalVideoInVerticalScreen =
         _configService[ConfigService.RENDER_VERTICAL_VIDEO_IN_VERTICAL_SCREEN];
     Get.to(() => MyVideoScreen(
-      isFullScreen: true,
-      myVideoStateController: this,
-    ));
+          isFullScreen: true,
+          myVideoStateController: this,
+        ));
     if (renderVerticalVideoInVerticalScreen && aspectRatio.value < 1) {
       await CommonUtils.defaultEnterNativeFullscreen(toVerticalScreen: true);
     } else {

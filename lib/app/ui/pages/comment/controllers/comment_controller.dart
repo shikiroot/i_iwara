@@ -1,13 +1,15 @@
 import 'package:get/get.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
 
-import '../../../../../utils/constants.dart';
+import '../../../../../common/constants.dart';
 import '../../../../models/comment.model.dart';
 import '../../../../services/api_service.dart';
 
 enum CommentType {
   video(apiPath: ApiConstants.rawVideoComments),
-  profile(apiPath: ApiConstants.rawProfileComments),;
+  profile(apiPath: ApiConstants.rawProfileComments),
+  image(apiPath: ApiConstants.rawImageComments),
+  ;
 
   final String apiPath;
   const CommentType({required this.apiPath});

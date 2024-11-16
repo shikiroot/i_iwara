@@ -5,7 +5,7 @@ import 'package:i_iwara/app/models/image.model.dart';
 import 'package:i_iwara/app/services/app_service.dart';
 import 'package:i_iwara/utils/date_time_extension.dart';
 
-import '../../../../../utils/constants.dart';
+import '../../../../../common/constants.dart';
 import '../../../../routes/app_routes.dart';
 
 class ImageModelCardListItemWidget extends StatelessWidget {
@@ -29,7 +29,7 @@ class ImageModelCardListItemWidget extends StatelessWidget {
         clipBehavior: Clip.antiAlias,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         child: InkWell(
-          onTap: () => _navigateToDetailPage(context),
+          onTap: () => _navigateToDetailPage(),
           hoverColor: Theme.of(context).hoverColor.withOpacity(0.1),
           splashColor: Theme.of(context).splashColor.withOpacity(0.2),
           highlightColor: Theme.of(context).highlightColor.withOpacity(0.1),
@@ -286,11 +286,7 @@ class ImageModelCardListItemWidget extends StatelessWidget {
     );
   }
 
-  void _navigateToDetailPage(BuildContext context) {
-    context.delegate.toNamed(
-      Routes.VIDEO_DETAIL,
-      parameters: {'videoId': imageModel.id},
-      preventDuplicates: false,
-    );
+  void _navigateToDetailPage() {
+    NaviService.navigateToGalleryDetailPage(imageModel.id);
   }
 }

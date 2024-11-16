@@ -1,7 +1,7 @@
 import 'package:i_iwara/app/models/media_file.model.dart';
 import 'package:i_iwara/app/models/tag.model.dart';
 import 'package:i_iwara/app/models/user.model.dart';
-import 'package:i_iwara/utils/constants.dart';
+import 'package:i_iwara/common/constants.dart';
 
 import 'custom_thumbnail.model.dart';
 

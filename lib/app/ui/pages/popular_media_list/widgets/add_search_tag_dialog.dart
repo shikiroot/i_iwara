@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 import 'package:i_iwara/app/services/user_preference_service.dart';
 import 'package:i_iwara/app/ui/widgets/empty_widget.dart';
 
+import '../../../../../common/enums/media_enums.dart';
 import '../../../../models/tag.model.dart';
-import '../../../../services/video_service.dart';
 import '../controllers/tag_controller.dart';
 
 class AddSearchTagDialog extends StatefulWidget {

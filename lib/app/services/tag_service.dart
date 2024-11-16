@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:i_iwara/common/constants.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
 
 import '../models/api_result.model.dart';
@@ -18,7 +19,7 @@ class TagService extends GetxService {
     int limit = 20,
   }) async {
     try {
-      var response = await _apiService.get('/tags', queryParameters: {
+      var response = await _apiService.get(ApiConstants.tags(), queryParameters: {
         ...params,
         'page': page,
         'limit': limit,

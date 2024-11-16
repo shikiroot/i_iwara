@@ -6,14 +6,12 @@ import '../../../widgets/custom_markdown_body_widget.dart';
 class MediaDescriptionWidget extends StatelessWidget {
   final String? description;
   final RxBool isDescriptionExpanded;
-  final VoidCallback onToggleDescription;
   final int defaultMaxLines;
 
   const MediaDescriptionWidget({
     super.key,
     required this.description,
     required this.isDescriptionExpanded,
-    required this.onToggleDescription,
     this.defaultMaxLines = 3,
   });
 
@@ -51,7 +49,7 @@ class MediaDescriptionWidget extends StatelessWidget {
                 duration: const Duration(milliseconds: 300),
                 child: const Icon(Icons.keyboard_arrow_down),
               ),
-              onPressed: onToggleDescription,
+              onPressed: isDescriptionExpanded.toggle,
             ),
           ),
         ],

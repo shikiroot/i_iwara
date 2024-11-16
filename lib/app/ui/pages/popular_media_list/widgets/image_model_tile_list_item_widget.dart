@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:i_iwara/app/services/app_service.dart';
 import 'package:i_iwara/utils/date_time_extension.dart';
 
 import '../../../../models/image.model.dart';
@@ -12,7 +13,7 @@ class ImageModelTileListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => _navigateToDetailPage(context),
+      onTap: () => _navigateToDetailPage(),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
         child: Row(
@@ -32,7 +33,7 @@ class ImageModelTileListItem extends StatelessWidget {
     return Stack(
       children: [
         GestureDetector(
-          onTap: () => _navigateToDetailPage(context),
+          onTap: () => _navigateToDetailPage(),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(8),
             child: CachedNetworkImage(
@@ -183,8 +184,7 @@ class ImageModelTileListItem extends StatelessWidget {
   }
 
   /// 导航到详情页
-  void _navigateToDetailPage(BuildContext context) {
-    // Get.toNamed(Routes.IMAGE_DETAIL,
-    //     parameters: {'imageId': imageModel.id}, preventDuplicates: false);
+  void _navigateToDetailPage() {
+    NaviService.navigateToGalleryDetailPage(imageModel.id);
   }
 }

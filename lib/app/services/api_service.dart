@@ -3,7 +3,7 @@
 import 'package:dio/dio.dart' as dio;
 import 'package:dio/io.dart';
 import 'package:get/get.dart';
-import '../../utils/constants.dart';
+import '../../common/constants.dart';
 import '../../utils/logger_utils.dart';
 import '../routes/app_routes.dart';
 import 'auth_service.dart';

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:i_iwara/app/ui/pages/video_detail/widgets/viddeo_tile_list_loading_widget.dart';
+import 'package:i_iwara/app/ui/pages/video_detail/widgets/media_tile_list_loading_widget.dart';
 import 'package:i_iwara/app/ui/pages/video_detail/widgets/video_detail_content_widget.dart';
 import 'package:i_iwara/app/ui/pages/video_detail/widgets/video_detail_info_skeleton_widget.dart';
 import 'package:logger/logger.dart';
+import '../../../../common/enums/media_enums.dart';
 import '../../../my_app.dart';
 import '../../widgets/error_widget.dart';
 import '../../widgets/sliding_card_widget.dart';
@@ -12,7 +13,7 @@ import '../comment/widgets/comment_entry_area_widget.dart';
 import '../comment/widgets/comment_section_widget.dart';
 import '../popular_media_list/widgets/video_tile_list_item_widget.dart';
 import 'controllers/my_video_state_controller.dart';
-import 'controllers/related_video_controller.dart';
+import 'controllers/related_media_controller.dart';
 
 class MyVideoDetailPage extends StatefulWidget {
   const MyVideoDetailPage({super.key});
@@ -28,7 +29,7 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> with RouteAware {
 
   late MyVideoStateController controller;
   late CommentController commentController;
-  late RelatedVideoController relatedVideoController;
+  late RelatedMediasController relatedVideoController;
 
   @override
   void initState() {
@@ -52,7 +53,7 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> with RouteAware {
     );
 
     relatedVideoController = Get.put(
-      RelatedVideoController(videoId: videoId),
+      RelatedMediasController(mediaId: videoId, mediaType: MediaType.VIDEO),
       tag: uniqueTag,
     );
   }
@@ -180,7 +181,7 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> with RouteAware {
                   child: VideoDetailInfoSkeletonWidget(),
                 ),
                 // 右侧评论列表
-                Expanded(child: VideoTileListSkeletonWidget()),
+                Expanded(child: MediaTileListSkeletonWidget()),
               ],
             );
           }
@@ -245,7 +246,7 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> with RouteAware {
                                         EdgeInsets.symmetric(horizontal: 16),
                                     child: Text('作者的其他视频',
                                         style: TextStyle(fontSize: 18))),
-                                VideoTileListSkeletonWidget()
+                                MediaTileListSkeletonWidget()
                               ] else if (controller
                                   .otherAuthorzVideosController!.videos.isEmpty)
                                 const SizedBox.shrink()
@@ -267,7 +268,7 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> with RouteAware {
                                         EdgeInsets.symmetric(horizontal: 16),
                                     child: Text('相关视频',
                                         style: TextStyle(fontSize: 18))),
-                                VideoTileListSkeletonWidget()
+                                MediaTileListSkeletonWidget()
                               ] else if (relatedVideoController.videos.isEmpty)
                                 const SizedBox.shrink()
                               else ...[
@@ -365,7 +366,7 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> with RouteAware {
                               padding: EdgeInsets.symmetric(horizontal: 16),
                               child: Text('作者的其他视频',
                                   style: TextStyle(fontSize: 18))),
-                          VideoTileListSkeletonWidget()
+                          MediaTileListSkeletonWidget()
                         ] else if (controller
                             .otherAuthorzVideosController!.videos.isEmpty)
                           const SizedBox.shrink()
@@ -386,7 +387,7 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> with RouteAware {
                               padding: EdgeInsets.symmetric(horizontal: 16),
                               child:
                                   Text('相关视频', style: TextStyle(fontSize: 18))),
-                          VideoTileListSkeletonWidget()
+                          MediaTileListSkeletonWidget()
                         ] else if (relatedVideoController.videos.isEmpty)
                           const SizedBox.shrink()
                         else ...[

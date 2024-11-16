@@ -4,8 +4,9 @@ import 'package:get/get.dart';
 import 'package:i_iwara/app/services/app_service.dart';
 import 'package:i_iwara/app/ui/pages/video_detail/widgets/video_description_widget.dart';
 import 'package:i_iwara/app/ui/pages/video_detail/widgets/video_like_widget.dart';
+import 'package:i_iwara/common/enums/media_enums.dart';
 import 'package:i_iwara/utils/date_time_extension.dart';
-import '../../../../../utils/constants.dart';
+import '../../../../../common/constants.dart';
 import '../../../widgets/error_widget.dart';
 import '../controllers/my_video_state_controller.dart';
 import 'expandable_tags_widget.dart';
@@ -178,7 +179,7 @@ class VideoDetailContent extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: SizedBox(
                         height: 40,
-                        child: LikeAvatarsWidget(videoId: videoId),
+                        child: LikeAvatarsWidget(mediaId: videoId, mediaType: MediaType.VIDEO,),
                       ),
                     );
                   } else {

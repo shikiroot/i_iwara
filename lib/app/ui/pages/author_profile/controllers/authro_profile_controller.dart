@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
 
-import '../../../../../utils/constants.dart';
+import '../../../../../common/constants.dart';
 import '../../../../models/api_result.model.dart';
 import '../../../../models/user.model.dart';
 import '../../../../services/api_service.dart';

@@ -1,10 +1,11 @@
 import 'package:get/get.dart';
 import 'package:i_iwara/app/models/api_result.model.dart';
 import 'package:i_iwara/app/models/page_data.model.dart';
+import 'package:i_iwara/app/models/user.model.dart';
 import 'package:i_iwara/app/models/video.model.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
 
-import '../../utils/constants.dart';
+import '../../common/constants.dart';
 import 'api_service.dart';
 
 class VideoService extends GetxService {
@@ -20,6 +21,7 @@ class VideoService extends GetxService {
   /// - `date` 日期。
   /// - `rating` 内容评级。 general, ecchi
   /// - `user` 用户ID。
+  /// - `exclude` 排除的视频ID。
   /// [page] 当前页码。
   /// [limit] 每页数据量。
   ///
@@ -28,12 +30,14 @@ class VideoService extends GetxService {
     Map<String, dynamic> params = const {},
     int page = 0,
     int limit = 20,
+    String? url,
   }) async {
     try {
       // [HACK_IMPLEMENT] 如果params里有的值为空字符串，则去掉key
       // 我靠，iwara站的搜索居然连空字符串都用于搜索了，哎
       params.removeWhere((key, value) => value == '');
-      final response = await _apiService.get(ApiConstants.videos(), queryParameters: {
+      url ??= ApiConstants.videos();
+      final response = await _apiService.get(url, queryParameters: {
         ...params,
         'page': page,
         'limit': limit,
@@ -56,16 +60,60 @@ class VideoService extends GetxService {
       return ApiResult.fail('噫嘘唏, 获取视频列表失败');
     }
   }
-}
 
-enum MediaRating {
-  ALL('', '全部的'),
-  GENERAL('general', '大众的'),
-  ECCHI('ecchi', 'R18'),
-  ;
+  /// 根据视频ID获取相关视频列表。
+  Future<ApiResult<PageData<Video>>> fetchRelatedVideosByVideoId(String mediaId,
+      {int page = 0, int limit = 20}) async {
+    try {
+      return await fetchVideosByParams(
+          page: page, limit: limit, url: ApiConstants.relatedVideos(mediaId));
+    } catch (e) {
+      LogUtils.e('获取相关视频列表失败', tag: 'VideoService', error: e);
+      return ApiResult.fail('噫嘘唏, 获取相关视频列表失败');
+    }
+  }
 
-  final String value;
-  final String label;
+  /// 作者的适配
+  Future<ApiResult<PageData<Video>>> fetchAuthorVideos(String userId,
+      {required String excludeVideoId, int limit = 6}) async {
+    try {
+      return await fetchVideosByParams(
+        params: {
+          'user': userId,
+          'exclude': excludeVideoId,
+        },
+        limit: limit,
+      );
+    } catch (e) {
+      LogUtils.e('获取作者视频列表失败', tag: 'VideoService', error: e);
+      return ApiResult.fail('噫嘘唏, 获取作者视频列表失败');
+    }
+  }
 
-  const MediaRating(this.value, this.label);
+  /// 获取给这个视频点赞的用户列表
+  Future<ApiResult<PageData<User>>> fetchLikeVideoUsers(String videoId,
+      {int page = 0, int limit = 6}) async {
+    try {
+      final response = await _apiService.get(
+        ApiConstants.videoLikes(videoId),
+        queryParameters: {'page': page, 'limit': limit},
+      );
+
+      final List<User> results = (response.data['results'] as List)
+          .map((user) => User.fromJson(user['user']))
+          .toList();
+
+      final PageData<User> pageData = PageData(
+        page: response.data['page'],
+        limit: response.data['limit'],
+        count: response.data['count'],
+        results: results,
+      );
+
+      return ApiResult.success(data: pageData);
+    } catch (e) {
+      LogUtils.e('获取视频点赞用户列表失败', tag: 'VideoService', error: e);
+      return ApiResult.fail('噫嘘唏, 获取视频点赞用户列表失败');
+    }
+  }
 }

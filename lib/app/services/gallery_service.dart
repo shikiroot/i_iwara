@@ -1,14 +1,28 @@
 import 'package:get/get.dart';
 import 'package:i_iwara/app/models/api_result.model.dart';
 import 'package:i_iwara/app/models/image.model.dart';
-import 'package:i_iwara/app/models/page_data.model.dart';
-import 'package:i_iwara/utils/constants.dart';
-import 'package:i_iwara/utils/logger_utils.dart';
+import 'package:i_iwara/app/models/user.model.dart';
+import 'package:i_iwara/app/services/api_service.dart';
+import 'package:i_iwara/common/constants.dart';
 
-import 'api_service.dart';
+import '../../utils/logger_utils.dart';
+import '../models/page_data.model.dart';
 
 class GalleryService extends GetxService {
-  final ApiService _apiService = Get.find<ApiService>();
+  final ApiService _apiService = Get.find();
+
+  /// 获取图库的详情
+  Future<ApiResult<ImageModel>> fetchGalleryDetail(String imageModelId) async {
+    try {
+      var response =
+          await _apiService.get(ApiConstants.imageDetail(imageModelId));
+      ImageModel imageModel = ImageModel.fromJson(response.data);
+      return ApiResult.success(data: imageModel);
+    } catch (e) {
+      LogUtils.e('获取图库详情失败', tag: 'GalleryService', error: e);
+      return ApiResult.fail('获取图库详情失败');
+    }
+  }
 
   /// 根据提供的查询参数获取图片列表。
   ///
@@ -27,12 +41,14 @@ class GalleryService extends GetxService {
     Map<String, dynamic> params = const {},
     int page = 0,
     int limit = 20,
+    String? url,
   }) async {
     try {
       // [HACK_IMPLEMENT] 如果params里有的值为空字符串，则去掉key
       // 我靠，iwara站的搜索居然连空字符串都用于搜索了，哎
       params.removeWhere((key, value) => value == '');
-      final response = await _apiService.get(ApiConstants.images(), queryParameters: {
+      url ??= ApiConstants.images();
+      final response = await _apiService.get(url, queryParameters: {
         ...params,
         'page': page,
         'limit': limit,
@@ -55,5 +71,60 @@ class GalleryService extends GetxService {
       return ApiResult.fail('噫嘘唏, 获取图片列表失败');
     }
   }
-}
 
+  /// 根据图库ID获取相关图库列表。
+  Future<ApiResult<PageData<ImageModel>>> fetchRelatedImagesByImageId(
+      String mediaId,
+      {int page = 0,
+      int limit = 20}) async {
+    try {
+      return await fetchImageModelsByParams(
+          page: page, limit: limit, url: ApiConstants.relatedImages(mediaId));
+    } catch (e) {
+      LogUtils.e('获取相关图库列表失败', tag: 'ImageModelService', error: e);
+      return ApiResult.fail('噫嘘唏, 获取相关图库列表失败');
+    }
+  }
+
+  /// 根据作者ID获取作者图库列表。
+  Future<ApiResult<PageData<ImageModel>>> fetchAuthorImages(String userId,
+      {required String excludeImageId, int limit = 6}) async {
+    try {
+      return await fetchImageModelsByParams(
+        params: {'user': userId, 'exclude': excludeImageId},
+        limit: limit,
+      );
+    } catch (e) {
+      LogUtils.e('获取作者图库列表失败', tag: 'ImageModelService', error: e);
+      return ApiResult.fail('噫嘘唏, 获取作者图库列表失败');
+    }
+  }
+
+  /// 获取图库的点赞用户列表
+  Future<ApiResult<PageData<User>>> fetchLikeImageUsers(String mediaId,
+      {int page = 0, int limit = 6}) async {
+    try {
+      final response = await _apiService.get(
+        ApiConstants.imageLikes(mediaId),
+        queryParameters: {'page': page, 'limit': limit},
+      );
+
+      final List<User> results = (response.data['results'] as List)
+          .map((user) => User.fromJson(user))
+          .toList();
+
+      final PageData<User> pageData = PageData(
+        page: response.data['page'],
+        limit: response.data['limit'],
+        count: response.data['count'],
+        results: results,
+      );
+
+      return ApiResult.success(data: pageData);
+    } catch (e) {
+      LogUtils.e('获取点赞用户列表失败', tag: 'ImageModelService', error: e);
+      return ApiResult.fail('噫嘘唏, 获取点赞用户列表失败');
+    }
+
+  }
+}
