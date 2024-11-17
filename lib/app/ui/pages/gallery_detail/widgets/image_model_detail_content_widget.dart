@@ -9,6 +9,7 @@ import 'package:i_iwara/utils/widget_extensions.dart';
 import '../../../../../common/constants.dart';
 import '../../../../../common/enums/media_enums.dart';
 import '../../../../models/image.model.dart';
+import '../../../../models/media_file.model.dart';
 import '../../../../services/app_service.dart';
 import '../../../widgets/error_widget.dart';
 import '../../popular_media_list/widgets/media_description_widget.dart';
@@ -16,6 +17,7 @@ import '../../video_detail/widgets/expandable_tags_widget.dart';
 import '../../video_detail/widgets/like_avatars_widget.dart';
 import '../controllers/gallery_detail_controller.dart';
 import 'horizontial_image_list.dart';
+import 'my_gallery_photo_view_wrapper.dart';
 
 class ImageModelDetailContent extends StatelessWidget {
   final GalleryDetailController controller;
@@ -111,6 +113,21 @@ class ImageModelDetailContent extends StatelessWidget {
                           controller.isHoveringHorizontalList.value = false,
                       child: HorizontalImageList(
                           images: imageItems,
+                          onItemTap: (item) {
+                            // TODO 继续施工 详情图页
+                            MediaFile mediaFile = item.data as MediaFile;
+                            LogUtils.d('点击了图片：${mediaFile.id}',
+                                'ImageModelDetailContent');
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MyGalleryPhotoViewWrapper(
+                                  galleryItems: imageItems.map((e) => e.url).toList(),
+                                  initialIndex: 0
+                                ),
+                              ),
+                            );
+                          },
                           menuItemsBuilder: (context, item) {
                             return [
                               MenuItem(

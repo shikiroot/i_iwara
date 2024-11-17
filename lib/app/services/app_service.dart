@@ -96,6 +96,18 @@ class AppService extends GetxService {
       }
     }
   }
+
+  void hideSystemUI({hideTitleBar = true, hideRailNavi = true}) {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+    showTitleBar = !hideTitleBar;
+    showRailNavi = !hideRailNavi;
+  }
+
+  void showSystemUI() {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+    showTitleBar = true;
+    showRailNavi = true;
+  }
 }
 
 class NaviService {
