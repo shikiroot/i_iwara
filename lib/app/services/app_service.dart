@@ -62,37 +62,37 @@ class AppService extends GetxService {
   }
 
   static void tryPop() {
-    LogUtils.d('tryPop', 'AppService');
+    LogUtils.i('tryPop', 'AppService');
     if (AppService.globalDrawerKey.currentState!.isDrawerOpen) {
       AppService.globalDrawerKey.currentState!.openEndDrawer();
-      LogUtils.d('关闭Drawer', 'AppService');
+      LogUtils.i('关闭Drawer', 'AppService');
     } else {
       GetDelegate? homeDele = Get.nestedKey(Routes.HOME);
       GetDelegate? rootDele = Get.nestedKey(null);
 
       if (homeDele?.canBack ?? false) {
         homeDele?.back();
-        LogUtils.d('关闭homeDele?.canBack', 'AppService');
+        LogUtils.i('关闭homeDele?.canBack', 'AppService');
       } else if (homeDele?.navigatorKey.currentState?.canPop() ??
           false) {
         homeDele?.navigatorKey.currentState?.pop();
-        LogUtils.d('关闭homeDele?.navigatorKey.currentState?.canPop()', 'AppService');
+        LogUtils.i('关闭homeDele?.navigatorKey.currentState?.canPop()', 'AppService');
       } else if (rootDele?.canBack ?? false) {
         rootDele?.back();
-        LogUtils.d('关闭rootDele?.canBack', 'AppService');
+        LogUtils.i('关闭rootDele?.canBack', 'AppService');
       } else if (Get.isDialogOpen ?? false) {
         Get.closeAllDialogs();
-        LogUtils.d('关闭Get.isDialogOpen', 'AppService');
+        LogUtils.i('关闭Get.isDialogOpen', 'AppService');
       } else if (Get.isBottomSheetOpen ?? false) {
         Get.closeAllBottomSheets();
-        LogUtils.d('关闭Get.isBottomSheetOpen', 'AppService');
+        LogUtils.i('关闭Get.isBottomSheetOpen', 'AppService');
       } else if (Get.nestedKey(null)?.canBack ?? false) {
         Get.nestedKey(null)?.back();
-        LogUtils.d('关闭Get.nestedKey(null)?.canBack', 'AppService');
+        LogUtils.i('关闭Get.nestedKey(null)?.canBack', 'AppService');
       } else {
         // 退出应用
         SystemNavigator.pop();
-        LogUtils.d('关闭Get.back()', 'AppService');
+        LogUtils.i('关闭Get.back()', 'AppService');
       }
     }
   }

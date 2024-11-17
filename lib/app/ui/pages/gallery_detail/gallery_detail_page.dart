@@ -192,6 +192,8 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
             return PopScope(
               canPop: !detailController.isCommentSheetVisible.value,
               onPopInvokedWithResult: (bool didPop, dynamic result) {
+                LogUtils.i('图库内部的PopScope被触发 $didPop, $result, ${!detailController.isCommentSheetVisible.value}',
+                    'GalleryDetailPage');
                 if (detailController.isCommentSheetVisible.value) {
                   detailController.isCommentSheetVisible.toggle();
                 }

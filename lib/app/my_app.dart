@@ -20,6 +20,23 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+    var brightness = Theme.of(context).brightness;
+    SystemUiOverlayStyle systemUiStyle;
+    if (brightness == Brightness.light) {
+      systemUiStyle = SystemUiOverlayStyle.dark.copyWith(
+        statusBarColor: Colors.transparent,
+        systemNavigationBarColor: Colors.transparent,
+      );
+    } else {
+      systemUiStyle = SystemUiOverlayStyle.light.copyWith(
+        statusBarColor: Colors.transparent,
+        systemNavigationBarColor: Colors.transparent,
+      );
+    }
+
+    SystemChrome.setSystemUIOverlayStyle(systemUiStyle);
+
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: "❤️ iwara",

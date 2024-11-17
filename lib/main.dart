@@ -27,13 +27,6 @@ void main() {
     // 日志初始化
     LogUtils.init();
 
-    // 透明状态栏、导航栏
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-      systemNavigationBarColor: Colors.transparent,
-      statusBarIconBrightness: Brightness.dark,
-    ));
-
     // 确保Flutter初始化
     WidgetsFlutterBinding.ensureInitialized();
 
