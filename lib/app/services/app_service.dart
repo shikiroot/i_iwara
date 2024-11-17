@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:i_iwara/utils/logger_utils.dart';
 
 import '../routes/app_routes.dart';
 import '../ui/pages/author_profile/author_profile_page.dart';
@@ -16,9 +18,6 @@ class AppService extends GetxService {
 
   static final GlobalKey<ScaffoldState> globalDrawerKey =
       GlobalKey<ScaffoldState>();
-
-  // 获取navigatorKey
-  static final GlobalKey<NavigatorState> globalNavigatorKey = Get.key;
 
   // 获取Home页面的navigatorKey
   static final GlobalKey<NavigatorState> homeNavigatorKey =
@@ -60,6 +59,42 @@ class AppService extends GetxService {
 
   updateIndex(int value) {
     _currentIndex.value = value;
+  }
+
+  static void tryPop() {
+    LogUtils.d('tryPop', 'AppService');
+    if (AppService.globalDrawerKey.currentState!.isDrawerOpen) {
+      AppService.globalDrawerKey.currentState!.openEndDrawer();
+      LogUtils.d('关闭Drawer', 'AppService');
+    } else {
+      GetDelegate? homeDele = Get.nestedKey(Routes.HOME);
+      GetDelegate? rootDele = Get.nestedKey(null);
+
+      if (homeDele?.canBack ?? false) {
+        homeDele?.back();
+        LogUtils.d('关闭homeDele?.canBack', 'AppService');
+      } else if (homeDele?.navigatorKey.currentState?.canPop() ??
+          false) {
+        homeDele?.navigatorKey.currentState?.pop();
+        LogUtils.d('关闭homeDele?.navigatorKey.currentState?.canPop()', 'AppService');
+      } else if (rootDele?.canBack ?? false) {
+        rootDele?.back();
+        LogUtils.d('关闭rootDele?.canBack', 'AppService');
+      } else if (Get.isDialogOpen ?? false) {
+        Get.closeAllDialogs();
+        LogUtils.d('关闭Get.isDialogOpen', 'AppService');
+      } else if (Get.isBottomSheetOpen ?? false) {
+        Get.closeAllBottomSheets();
+        LogUtils.d('关闭Get.isBottomSheetOpen', 'AppService');
+      } else if (Get.nestedKey(null)?.canBack ?? false) {
+        Get.nestedKey(null)?.back();
+        LogUtils.d('关闭Get.nestedKey(null)?.canBack', 'AppService');
+      } else {
+        // 退出应用
+        SystemNavigator.pop();
+        LogUtils.d('关闭Get.back()', 'AppService');
+      }
+    }
   }
 }
 

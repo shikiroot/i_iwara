@@ -185,47 +185,50 @@ class _HorizontalImageListState extends State<HorizontalImageList> {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        return Stack(
-          alignment: Alignment.center,
-          children: [
-            Listener(
-              onPointerSignal: _handleMouseScroll,
-              child: ListView.builder(
-                controller: _scrollController,
-                scrollDirection: Axis.horizontal,
-                itemCount: widget.images.length,
-                itemBuilder: (context, index) {
-                  final imageInfo = widget.images[index];
-                  return _buildImageItem(context, imageInfo, index,
-                      Size(constraints.maxWidth, constraints.maxHeight));
-                },
-              ),
-            ),
-            if (_showLeftButton)
-              Positioned(
-                left: 8,
-                child: _buildScrollButton(
-                  Icons.arrow_back_ios_rounded,
-                      () => _scrollController.animateTo(
-                    _scrollController.offset - widget.scrollOffset,
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeOutCubic,
-                  ),
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(8.0),
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              Listener(
+                onPointerSignal: _handleMouseScroll,
+                child: ListView.builder(
+                  controller: _scrollController,
+                  scrollDirection: Axis.horizontal,
+                  itemCount: widget.images.length,
+                  itemBuilder: (context, index) {
+                    final imageInfo = widget.images[index];
+                    return _buildImageItem(context, imageInfo, index,
+                        Size(constraints.maxWidth, constraints.maxHeight));
+                  },
                 ),
               ),
-            if (_showRightButton)
-              Positioned(
-                right: 8,
-                child: _buildScrollButton(
-                  Icons.arrow_forward_ios_rounded,
-                      () => _scrollController.animateTo(
-                    _scrollController.offset + widget.scrollOffset,
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeOutCubic,
+              if (_showLeftButton)
+                Positioned(
+                  left: 8,
+                  child: _buildScrollButton(
+                    Icons.arrow_back_ios_rounded,
+                        () => _scrollController.animateTo(
+                      _scrollController.offset - widget.scrollOffset,
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeOutCubic,
+                    ),
                   ),
                 ),
-              ),
-          ],
+              if (_showRightButton)
+                Positioned(
+                  right: 8,
+                  child: _buildScrollButton(
+                    Icons.arrow_forward_ios_rounded,
+                        () => _scrollController.animateTo(
+                      _scrollController.offset + widget.scrollOffset,
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeOutCubic,
+                    ),
+                  ),
+                ),
+            ],
+          )
         );
       },
     );
@@ -268,7 +271,6 @@ class _HorizontalImageListState extends State<HorizontalImageList> {
       child: Padding(
         padding: EdgeInsets.symmetric(
           horizontal: widget.itemSpacing ?? 8.0, // 减小水平padding
-          vertical: 4.0,
         ),
         child: SizedBox(
           height: containerSize.height,

@@ -18,7 +18,6 @@ import 'app/my_app.dart';
 import 'app/services/api_service.dart';
 import 'app/services/auth_service.dart';
 import 'app/services/config_service.dart';
-import 'app/services/gallery_service.dart';
 import 'app/services/storage_service.dart';
 import 'app/services/user_preference_service.dart';
 import 'app/services/user_service.dart';
@@ -32,6 +31,7 @@ void main() {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
       systemNavigationBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.dark,
     ));
 
     // 确保Flutter初始化

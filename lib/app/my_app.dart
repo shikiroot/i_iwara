@@ -79,27 +79,7 @@ class MyAppLayout extends StatelessWidget {
       shortcuts: {
         LogicalKeySet(LogicalKeyboardKey.escape): VoidCallbackIntent(
           () {
-            if (AppService.globalDrawerKey.currentState!.isDrawerOpen) {
-              AppService.globalDrawerKey.currentState!.openEndDrawer();
-            } else {
-              GetDelegate? homeDele = Get.nestedKey(Routes.HOME);
-              GetDelegate? rootDele = Get.nestedKey(null);
-
-              if (homeDele?.canBack ?? false) {
-                homeDele?.back();
-              } else if (homeDele?.navigatorKey.currentState?.canPop() ??
-                  false) {
-                homeDele?.navigatorKey.currentState?.pop();
-              } else if (rootDele?.canBack ?? false) {
-                rootDele?.back();
-              } else if (Get.isDialogOpen ?? false) {
-                Get.closeAllDialogs();
-              } else if (Get.isBottomSheetOpen ?? false) {
-                Get.closeAllBottomSheets();
-              } else {
-                Get.back();
-              }
-            }
+            AppService.tryPop();
           },
         ),
       },

@@ -33,9 +33,11 @@ class ImageModelDetailContent extends StatelessWidget {
   Widget _contentLayout(BuildContext context, Widget child) {
     return Column(
       children: [
-        if (!GetPlatform.isWeb && GetPlatform.isDesktop)
-          // 模拟appbar
-          ...[
+        Container(
+          height: paddingTop,
+          color: Colors.transparent,
+        ),
+        if (!GetPlatform.isWeb && GetPlatform.isDesktop) ...[
           Container(
             height: AppService.titleBarHeight,
             color: Colors.transparent,
