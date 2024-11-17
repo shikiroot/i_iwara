@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:i_iwara/app/ui/pages/gallery_detail/widgets/image_model_detail_content_widget.dart';
-import 'package:i_iwara/app/ui/pages/popular_media_list/widgets/popular_media_search_config_widget.dart';
 import 'package:i_iwara/app/ui/pages/video_detail/widgets/media_tile_list_loading_widget.dart';
 import 'package:i_iwara/app/ui/pages/video_detail/widgets/video_detail_info_skeleton_widget.dart';
 import 'package:i_iwara/app/ui/widgets/empty_widget.dart';
@@ -92,7 +91,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
     // 图库的高度
     final imageModelHeight = screenWidth / imageModelRatio;
     // 如果图库高度超过屏幕高度的70%，并且屏幕宽度足够
-    return imageModelHeight > screenHeight * 0.7;
+    return imageModelHeight > screenHeight * 0.5;
   }
 
   Size _calcImageModelColumnWidthAndHeight(double screenWidth,
@@ -101,7 +100,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
     LogUtils.d(
         '[DEBUG] screenWidth: $screenWidth, screenHeight: $screenHeight, imageModelRatio: $imageModelRatio, sideColumnMinWidth: $sideColumnMinWidth');
 
-    double imageModelWidth = (screenHeight * 0.7) * imageModelRatio;
+    double imageModelWidth = (screenHeight * 0.5) * imageModelRatio;
     double renderImageModelWidth;
     double renderImageModelHeight;
 
@@ -168,6 +167,10 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
           Size renderImageModelSize = _calcImageModelColumnWidthAndHeight(
               screenWidth, screenHeight, sideColumnMinWidth, paddingTop);
 
+          LogUtils.d(
+              '[DEBUG] 是否使用宽屏布局: $isWide, 图库宽度: ${renderImageModelSize.width}, 图库高度: ${renderImageModelSize.height}',
+              'GalleryDetailPage');
+
           if (isWide) {
             // 宽屏布局
             if (detailController.isImageModelInfoLoading.value) {
@@ -192,7 +195,8 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
             return PopScope(
               canPop: !detailController.isCommentSheetVisible.value,
               onPopInvokedWithResult: (bool didPop, dynamic result) {
-                LogUtils.i('图库内部的PopScope被触发 $didPop, $result, ${!detailController.isCommentSheetVisible.value}',
+                LogUtils.i(
+                    '图库内部的PopScope被触发 $didPop, $result, ${!detailController.isCommentSheetVisible.value}',
                     'GalleryDetailPage');
                 if (detailController.isCommentSheetVisible.value) {
                   detailController.isCommentSheetVisible.toggle();
@@ -219,8 +223,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                           CommentEntryAreaButtonWidget(
                               commentController: commentController,
                               onClickButton: () {
-                                detailController.isCommentSheetVisible
-                                    .toggle();
+                                detailController.isCommentSheetVisible.toggle();
                               }).paddingVertical(16),
                         ],
                       ),
@@ -360,14 +363,13 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                         ),
                         // 评论区域
                         Container(
-                          padding: const EdgeInsets.all(16),
-                          child: CommentEntryAreaButtonWidget(
-                            commentController: commentController,
-                            onClickButton: () {
-                              detailController.isCommentSheetVisible.toggle();
-                            },
-                          ).paddingVertical(16)
-                        ),
+                            padding: const EdgeInsets.all(16),
+                            child: CommentEntryAreaButtonWidget(
+                              commentController: commentController,
+                              onClickButton: () {
+                                detailController.isCommentSheetVisible.toggle();
+                              },
+                            ).paddingVertical(16)),
                         // 作者的其他图库
                         Container(
                             padding: const EdgeInsets.symmetric(horizontal: 16),

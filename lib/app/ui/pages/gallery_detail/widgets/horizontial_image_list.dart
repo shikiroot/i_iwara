@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ImageItem {
@@ -43,8 +44,9 @@ class HorizontalImageList extends StatefulWidget {
   final Color? backgroundColor; // 背景色
   final double wheelScrollFactor; // 滚轮滚动系数
   final Widget Function(BuildContext, ImageItem, Offset)?
-  menuBuilder; // 自定义菜单构建器
-  final List<MenuItem> Function(BuildContext, ImageItem)? menuItemsBuilder; // 动态菜单项生成器
+      menuBuilder; // 自定义菜单构建器
+  final List<MenuItem> Function(BuildContext, ImageItem)?
+      menuItemsBuilder; // 动态菜单项生成器
 
   const HorizontalImageList({
     super.key,
@@ -121,16 +123,9 @@ class _HorizontalImageListState extends State<HorizontalImageList> {
   void _showImageMenu(BuildContext context, ImageItem item, Offset position,
       Size containerSize) {
     _hideMenu();
-
-    // 获取父级容器的RenderBox，而不是图片项本身
-    final RenderBox renderBox = context.findAncestorRenderObjectOfType<RenderBox>()!;
-
-    // 获取容器的相对位置
-    final containerOffset = renderBox.localToGlobal(Offset.zero);
-
-    // 计算相对于容器的位置
-    double dx = position.dx - containerOffset.dx;
-    double dy = position.dy - containerOffset.dy;
+    // 计算菜单显示位置
+    final dx = position.dx;
+    final dy = position.dy;
 
     // 动态生成菜单项
     final menuItems = widget.menuItemsBuilder != null
@@ -146,7 +141,8 @@ class _HorizontalImageListState extends State<HorizontalImageList> {
         maxWidth: containerSize.width * 0.3, // 限制菜单最大宽度为容器的30%
         maxHeight: containerSize.height * 0.8, // 限制菜单最大高度为容器的80%
       ),
-      position: Offset(dx, dy), // 使用计算后的相对位置
+      position: Offset(dx, dy),
+      // 使用计算后的相对位置
       menuItems: menuItems, // 传递菜单项列表
     );
 
@@ -175,61 +171,62 @@ class _HorizontalImageListState extends State<HorizontalImageList> {
         ],
       ),
     );
-
-    Overlay.of(context).insert(_overlayEntry!);
+    BuildContext? overlay = Get.overlayContext;
+    if (overlay != null) {
+      Overlay.of(overlay).insert(_overlayEntry!);
+    } else {
+      Overlay.of(context).insert(_overlayEntry!);
+    }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
         return ClipRRect(
-          borderRadius: BorderRadius.circular(8.0),
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              Listener(
-                onPointerSignal: _handleMouseScroll,
-                child: ListView.builder(
-                  controller: _scrollController,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: widget.images.length,
-                  itemBuilder: (context, index) {
-                    final imageInfo = widget.images[index];
-                    return _buildImageItem(context, imageInfo, index,
-                        Size(constraints.maxWidth, constraints.maxHeight));
-                  },
-                ),
-              ),
-              if (_showLeftButton)
-                Positioned(
-                  left: 8,
-                  child: _buildScrollButton(
-                    Icons.arrow_back_ios_rounded,
-                        () => _scrollController.animateTo(
-                      _scrollController.offset - widget.scrollOffset,
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeOutCubic,
-                    ),
+            borderRadius: BorderRadius.circular(8.0),
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                Listener(
+                  onPointerSignal: _handleMouseScroll,
+                  child: ListView.builder(
+                    controller: _scrollController,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: widget.images.length,
+                    itemBuilder: (context, index) {
+                      final imageInfo = widget.images[index];
+                      return _buildImageItem(context, imageInfo, index,
+                          Size(constraints.maxWidth, constraints.maxHeight));
+                    },
                   ),
                 ),
-              if (_showRightButton)
-                Positioned(
-                  right: 8,
-                  child: _buildScrollButton(
-                    Icons.arrow_forward_ios_rounded,
-                        () => _scrollController.animateTo(
-                      _scrollController.offset + widget.scrollOffset,
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeOutCubic,
+                if (_showLeftButton)
+                  Positioned(
+                    left: 8,
+                    child: _buildScrollButton(
+                      Icons.arrow_back_ios_rounded,
+                      () => _scrollController.animateTo(
+                        _scrollController.offset - widget.scrollOffset,
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeOutCubic,
+                      ),
                     ),
                   ),
-                ),
-            ],
-          )
-        );
+                if (_showRightButton)
+                  Positioned(
+                    right: 8,
+                    child: _buildScrollButton(
+                      Icons.arrow_forward_ios_rounded,
+                      () => _scrollController.animateTo(
+                        _scrollController.offset + widget.scrollOffset,
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeOutCubic,
+                      ),
+                    ),
+                  ),
+              ],
+            ));
       },
     );
   }
@@ -285,10 +282,10 @@ class _HorizontalImageListState extends State<HorizontalImageList> {
                 child: CachedNetworkImage(
                   imageUrl: imageInfo.url,
                   placeholder: (context, url) =>
-                  widget.placeholderBuilder?.call(context, url) ??
+                      widget.placeholderBuilder?.call(context, url) ??
                       _buildPlaceholder(context, url),
                   errorWidget: (context, url, error) =>
-                  widget.errorBuilder?.call(context, url, error) ??
+                      widget.errorBuilder?.call(context, url, error) ??
                       Icon(Icons.error,
                           color: Theme.of(context).colorScheme.error),
                   fit: widget.imageFit,

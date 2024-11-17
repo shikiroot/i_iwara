@@ -17,7 +17,6 @@ class RelatedMediasController extends GetxController {
   var videos = <Video>[].obs;
   var imageModels = <ImageModel>[].obs;
   var isLoading = true.obs;
-  var hasError = false.obs;
   var errorMessage = ''.obs;
 
   RelatedMediasController({required this.mediaId, required this.mediaType});
@@ -32,7 +31,6 @@ class RelatedMediasController extends GetxController {
   Future<void> fetchRelatedMedias() async {
     try {
       isLoading.value = true;
-      hasError.value = false;
       errorMessage.value = '';
 
       switch (mediaType) {
@@ -43,7 +41,6 @@ class RelatedMediasController extends GetxController {
             videos.value = response.data!.results;
           } else {
             LogUtils.e('相关: 获取相关视频失败', tag: 'RelatedMediasController');
-            hasError.value = true;
             errorMessage.value = response.message;
           }
         case MediaType.IMAGE:
@@ -53,7 +50,6 @@ class RelatedMediasController extends GetxController {
             imageModels.value = response.data!.results;
           } else {
             LogUtils.e('相关: 获取相关图片失败', tag: 'RelatedMediasController', error: response.message);
-            hasError.value = true;
             errorMessage.value = response.message;
           }
       }

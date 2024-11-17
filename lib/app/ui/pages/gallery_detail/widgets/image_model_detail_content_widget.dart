@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:i_iwara/app/ui/widgets/empty_widget.dart';
 import 'package:i_iwara/utils/date_time_extension.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
+import 'package:i_iwara/utils/widget_extensions.dart';
 
 import '../../../../../common/constants.dart';
 import '../../../../../common/enums/media_enums.dart';
@@ -38,10 +39,6 @@ class ImageModelDetailContent extends StatelessWidget {
           color: Colors.transparent,
         ),
         if (!GetPlatform.isWeb && GetPlatform.isDesktop) ...[
-          Container(
-            height: AppService.titleBarHeight,
-            color: Colors.transparent,
-          ),
           Row(
             children: [
               IconButton(
@@ -60,9 +57,8 @@ class ImageModelDetailContent extends StatelessWidget {
         SizedBox(
             width: imageModelWidth,
             height:
-                (imageModelHeight ?? MediaQuery.sizeOf(context).width / 1.7) +
-                    paddingTop,
-            child: child),
+                (imageModelHeight ?? MediaQuery.sizeOf(context).width / 1.7),
+            child: child.paddingHorizontal(16)),
       ],
     );
   }
