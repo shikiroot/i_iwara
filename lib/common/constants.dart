@@ -31,6 +31,8 @@ class CommonConstants {
 
   static String defaultThumbnailUrl = '$iwaraBaseUrl/images/default-thumbnail.jpg';
 
+  static var enableR18 = false;
+
   // 获取用户背景URL
   static userProfileHeaderUrl(String? headerId) {
     if (headerId == null) {

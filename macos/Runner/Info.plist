@@ -28,5 +28,11 @@
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	 <!-- 允许任意网络连接 -->
+    <key>com.apple.security.network.client</key>
+    <true/>
+    <!-- 允许本地网络连接 -->
+    <key>com.apple.security.network.server</key>
+    <true/>
 </dict>
 </plist>

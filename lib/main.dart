@@ -9,6 +9,7 @@ import 'package:i_iwara/app/services/app_service.dart';
 import 'package:i_iwara/app/services/gallery_service.dart';
 import 'package:i_iwara/app/services/tag_service.dart';
 import 'package:i_iwara/app/services/video_service.dart';
+import 'package:i_iwara/common/constants.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
 import 'package:i_iwara/utils/proxy/proxy_util.dart';
 import 'package:media_kit/media_kit.dart';
@@ -26,6 +27,9 @@ void main() {
   runZonedGuarded(() async {
     // 日志初始化
     LogUtils.init();
+
+    // TODO 临时禁用R18
+    CommonConstants.enableR18 = false;
 
     // 确保Flutter初始化
     WidgetsFlutterBinding.ensureInitialized();

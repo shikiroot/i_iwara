@@ -45,5 +45,23 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<!-- 允许 HTTP 访问 -->
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsArbitraryLoads</key>
+        <true/>
+    </dict>
+
+    <!-- 本地网络访问权限描述 -->
+    <key>NSLocalNetworkUsageDescription</key>
+    <string>App需要访问本地网络</string>
+
+    <!-- WiFi 权限描述 -->
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>App需要访问位置来获取WiFi信息</string>
+
+    <!-- 蜂窝网络权限描述 -->
+    <key>UIRequiresPersistentWiFi</key>
+    <true/>
 </dict>
 </plist>

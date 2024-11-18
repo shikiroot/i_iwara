@@ -3,6 +3,7 @@
 import 'package:dio/dio.dart' as dio;
 import 'package:dio/io.dart';
 import 'package:get/get.dart';
+import 'package:i_iwara/common/enums/media_enums.dart';
 
 import '../../common/constants.dart';
 import '../../utils/logger_utils.dart';
@@ -33,6 +34,10 @@ class ApiService extends GetxService {
     // 添加拦截器
     _dio.interceptors.add(dio.InterceptorsWrapper(
       onRequest: (options, handler) {
+        options.queryParameters = {
+          ...options.queryParameters,
+          'rating': CommonConstants.enableR18 ? MediaRating.ALL.value : MediaRating.GENERAL.value,
+        };
         LogUtils.d(
             '请求: Method: ${options.method} Path: ${options.path} Params: ${options.queryParameters} Body: ${options.data}',
             _tag);
