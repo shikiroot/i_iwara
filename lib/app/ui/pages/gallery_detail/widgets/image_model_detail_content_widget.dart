@@ -71,7 +71,7 @@ class ImageModelDetailContent extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        // 图库播放器区域
+        // 图库区域
         ClipRect(
           child: Stack(
             children: [
@@ -101,7 +101,7 @@ class ImageModelDetailContent extends StatelessWidget {
 
                 List<ImageItem> imageItems = controller
                     .imageModelInfo.value!.files
-                    .map((e) => ImageItem(url: e.getLargeImageUrl(), data: e))
+                    .map((e) => ImageItem(url: e.getLargeImageUrl(), data: ImageItemData(id: e.id, url: e.getLargeImageUrl(), originalUrl: e.getOriginalImageUrl())))
                     .toList();
 
                 return _contentLayout(
@@ -115,15 +115,38 @@ class ImageModelDetailContent extends StatelessWidget {
                           images: imageItems,
                           onItemTap: (item) {
                             // TODO 继续施工 详情图页
-                            MediaFile mediaFile = item.data as MediaFile;
-                            LogUtils.d('点击了图片：${mediaFile.id}',
+                            ImageItemData iid = item.data;
+                            LogUtils.d('点击了图片：${iid.id}',
                                 'ImageModelDetailContent');
+                            // 获取index 根据url或id
+                            int index = imageItems
+                                .indexWhere((element) => element.url == item.url);
+                            if (index == -1) {
+                              index = imageItems
+                                  .indexWhere((element) => element.data.id == iid.id);
+                            }
                             Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => MyGalleryPhotoViewWrapper(
-                                  galleryItems: imageItems.map((e) => e.url).toList(),
-                                  initialIndex: 0
+                                  galleryItems: imageItems,
+                                  initialIndex: index,
+                                  menuItemsBuilder: (context, item) {
+                                    return [
+                                      MenuItem(
+                                        title: '下载原图',
+                                        icon: Icons.download,
+                                        onTap: () {
+                                          // TODO 下载图片
+                                          Get.snackbar('提示', '暂不支持下载图片');
+                                          LogUtils.d(
+                                              '下载图片：${item.data.originalUrl}',
+                                              'ImageModelDetailContent');
+                                          // AppService.downloadFile(item.url);
+                                        },
+                                      ),
+                                    ];
+                                  },
                                 ),
                               ),
                             );
@@ -137,7 +160,7 @@ class ImageModelDetailContent extends StatelessWidget {
                                   // TODO 下载图片
                                   Get.snackbar('提示', '暂不支持下载图片');
                                   LogUtils.d(
-                                      '下载图片：${item.data.getLargeImageUrl()}',
+                                      '下载图片：${item.data.originalUrl}',
                                       'ImageModelDetailContent');
                                   // AppService.downloadFile(item.url);
                                 },

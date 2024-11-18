@@ -8,7 +8,7 @@ import 'menu_item_widget.dart';
 
 class ImageItem {
   final String url;
-  final dynamic data;
+  final ImageItemData data;
   double? width;
   double? height;
 
@@ -16,7 +16,21 @@ class ImageItem {
     required this.url,
     this.width,
     this.height,
-    this.data,
+    required this.data,
+  });
+}
+
+class ImageItemData {
+  final String id;
+  final String? title;
+  final String url;
+  final String originalUrl;
+
+  ImageItemData({
+    required this.id,
+    this.title,
+    required this.url,
+    required this.originalUrl,
   });
 }
 
@@ -197,8 +211,8 @@ class _HorizontalImageListState extends State<HorizontalImageList> {
                     scrollDirection: Axis.horizontal,
                     itemCount: widget.images.length,
                     itemBuilder: (context, index) {
-                      final imageInfo = widget.images[index];
-                      return _buildImageItem(context, imageInfo, index,
+                      final imageItem = widget.images[index];
+                      return _buildImageItem(context, imageItem, index,
                           Size(constraints.maxWidth, constraints.maxHeight));
                     },
                   ),
@@ -253,19 +267,19 @@ class _HorizontalImageListState extends State<HorizontalImageList> {
     );
   }
 
-  Widget _buildImageItem(BuildContext context, ImageItem imageInfo, int index,
+  Widget _buildImageItem(BuildContext context, ImageItem imageItem, int index,
       Size containerSize) {
     final aspectRatio =
-        _loadedAspectRatios[imageInfo.url] ?? widget.defaultAspectRatio;
+        _loadedAspectRatios[imageItem.url] ?? widget.defaultAspectRatio;
 
     return GestureDetector(
       onLongPressStart: (details) {
         _showImageMenu(
-            context, imageInfo, details.globalPosition, containerSize);
+            context, imageItem, details.globalPosition, containerSize);
       },
       onSecondaryTapDown: (details) {
         _showImageMenu(
-            context, imageInfo, details.globalPosition, containerSize);
+            context, imageItem, details.globalPosition, containerSize);
       },
       child: Padding(
         padding: EdgeInsets.symmetric(
@@ -280,9 +294,9 @@ class _HorizontalImageListState extends State<HorizontalImageList> {
               borderRadius: BorderRadius.circular(8), // 添加圆角
               clipBehavior: Clip.antiAlias, // 确保圆角裁剪生效
               child: InkWell(
-                onTap: () => widget.onItemTap?.call(imageInfo),
+                onTap: () => widget.onItemTap?.call(imageItem),
                 child: CachedNetworkImage(
-                  imageUrl: imageInfo.url,
+                  imageUrl: imageItem.url,
                   placeholder: (context, url) =>
                       widget.placeholderBuilder?.call(context, url) ??
                       _buildPlaceholder(context, url),
@@ -293,20 +307,18 @@ class _HorizontalImageListState extends State<HorizontalImageList> {
                   fit: widget.imageFit,
                   imageBuilder: (context, imageProvider) {
                     WidgetsBinding.instance.addPostFrameCallback((_) {
-                      _updateImageSize(imageProvider, imageInfo.url);
+                      _updateImageSize(imageProvider, imageItem.url);
                     });
-                    // TODO 继续施工 详情图页
                     return Hero(
-                        tag: imageInfo.data?.id ?? imageInfo.url,
+                        tag: imageItem.data.id,
                         child: Container(
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: imageProvider,
-                          fit: widget.imageFit,
-                        ),
-                      ),
-                    )
-                    );
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: imageProvider,
+                              fit: widget.imageFit,
+                            ),
+                          ),
+                        ));
                   },
                 ),
               ),
