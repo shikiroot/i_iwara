@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:i_iwara/app/services/app_service.dart';
 import 'package:i_iwara/app/ui/pages/gallery_detail/widgets/horizontial_image_list.dart';
+import 'package:i_iwara/utils/logger_utils.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
@@ -216,7 +217,7 @@ class _MyGalleryPhotoViewWrapperState extends State<MyGalleryPhotoViewWrapper> {
             TextButton(
               child: const Text('关闭'),
               onPressed: () {
-                Get.back();
+                Navigator.of(context).pop();
               },
             ),
           ],
@@ -314,37 +315,12 @@ class _MyGalleryPhotoViewWrapperState extends State<MyGalleryPhotoViewWrapper> {
             }
           },
           child: GestureDetector(
-            onHorizontalDragStart: (details) {
-              isDragging = true;
-              dragStartX = details.globalPosition.dx;
-            },
-            onHorizontalDragUpdate: (details) {
-              if (!isDragging) return;
-              final currentX = details.globalPosition.dx;
-              final diff = currentX - dragStartX;
-
-              if (diff.abs() > 50) {
-                if (diff > 0) {
-                  goToPreviousPage();
-                } else {
-                  goToNextPage();
-                }
-                isDragging = false;
-              }
-            },
-            onHorizontalDragEnd: (details) {
-              isDragging = false;
-            },
             onLongPressStart: (details) {
-              _showImageMenu(
-                  context, widget.galleryItems[currentIndex],
-                  details.globalPosition
-              );
+              _showImageMenu(context, widget.galleryItems[currentIndex],
+                  details.globalPosition);
             },
             onSecondaryTapDown: (details) {
-              _showImageMenu(
-                  context,
-                  widget.galleryItems[currentIndex],
+              _showImageMenu(context, widget.galleryItems[currentIndex],
                   details.globalPosition);
             },
             child: Stack(
@@ -407,6 +383,33 @@ class _MyGalleryPhotoViewWrapperState extends State<MyGalleryPhotoViewWrapper> {
                             );
                           },
                           errorBuilder: (context, error, stackTrace) {
+                            // 如果是Invalid image data错误，说明图片格式不支持
+                            if (error is Exception &&
+                                error.toString().contains('Invalid image data')) {
+
+                              LogUtils.e('图片格式不支持, 当前的图片地址是: $imageUrl', tag: 'MyGalleryPhotoViewWrapper', error: error);
+
+                              return Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Icon(
+                                      Icons.error_outline,
+                                      color: Colors.white,
+                                      size: 48,
+                                    ),
+                                    const SizedBox(height: 16),
+                                    const Text(
+                                      '尚不支持此格式的图片',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }
                             return Center(
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
