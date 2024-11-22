@@ -29,7 +29,8 @@ class CommonConstants {
     Sort(id: SortId.views, label: '观看次数', icon: Icon(Icons.remove_red_eye)),
   ];
 
-  static String defaultThumbnailUrl = '$iwaraBaseUrl/images/default-thumbnail.jpg';
+  static String defaultThumbnailUrl =
+      '$iwaraBaseUrl/images/default-thumbnail.jpg';
 
   static var enableR18 = false;
 
@@ -60,6 +61,9 @@ class ApiConstants {
   // 作者详情
   static String profilePrefix() => '/profile';
 
+  // 图库详情
+  static String galleryDetail() => '/image';
+
   // 用户详情
   static String userProfile(String userName) => '/profile/$userName';
 
@@ -89,7 +93,7 @@ class ApiConstants {
   static const String rawProfileComments = '/profile/{id}/comments';
 
   // 图片评论
-  static const String rawImageComments= '/image/{id}/comments';
+  static const String rawImageComments = '/image/{id}/comments';
 
   static String tags() => '/tags';
 
@@ -106,5 +110,9 @@ class ApiConstants {
 
 // 视频接口的排序方式
 enum SortId {
-  trending, date, popularity, likes, views;
+  trending,
+  date,
+  popularity,
+  likes,
+  views;
 }

@@ -161,11 +161,7 @@ class _PopularVideoListPageState extends State<PopularVideoListPage>
     return Scaffold(
       body: Column(
         children: [
-          Container(
-            height: MediaQuery.paddingOf(context).top,
-            color: Colors.transparent,
-          ),
-          TitleBarHeightWidget(),
+          TopPaddingHeightWidget(),
           // 一行，显示用户头像和搜索框
           Row(
             children: [

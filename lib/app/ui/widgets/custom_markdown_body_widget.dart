@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:get/get.dart';
+import 'package:i_iwara/app/services/app_service.dart';
+import 'package:i_iwara/utils/logger_utils.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -44,8 +46,25 @@ class CustomMarkdownBody extends StatelessWidget {
     final mentionPattern = RegExp(r'(?<!\/)@([\w\u4e00-\u9fa5]+)'); // 怎么会有url
     return data.replaceAllMapped(mentionPattern, (match) {
       final mention = match.group(0);
-      return '[$mention](${CommonConstants.iwaraBaseUrl}/${ApiConstants.profilePrefix}/${match.group(1)})';
+      return '[$mention](${CommonConstants.iwaraBaseUrl}/${ApiConstants.profilePrefix()}/${match.group(1)})';
     });
+  }
+
+  void _onTapLink(String text, String? href, String title) {
+    if (href != null) {
+      // 如果是iwara域名加上前缀 startWith
+      if (href.startsWith(
+          '${CommonConstants.iwaraBaseUrl}${ApiConstants.profilePrefix()}')) {
+        final userName = href.split('/').last;
+        NaviService.navigateToAuthorProfilePage(userName);
+      } else if (href.startsWith(
+          '${CommonConstants.iwaraBaseUrl}${ApiConstants.galleryDetail()}')) {
+        final imageId = href.split('/').last;
+        NaviService.navigateToGalleryDetailPage(imageId);
+      } else {
+        launchUrl(Uri.parse(href));
+      }
+    }
   }
 
   @override
@@ -57,20 +76,7 @@ class CustomMarkdownBody extends StatelessWidget {
     return MarkdownBody(
       data: processMarkdown(data),
       styleSheet: markdownStyleSheet,
-      onTapLink: (text, href, title) {
-        if (href != null) {
-          // 如果是profile页，则直接跳转应用内的profile页
-          if (href.contains(ApiConstants.profilePrefix())) {
-            final userName = href.split('/').last;
-            context.delegate.toNamed(
-              Routes.AUTHOR_PROFILE(userName),
-              preventDuplicates: false,
-            );
-          } else {
-            launchUrl(Uri.parse(href));
-          }
-        }
-      },
+      onTapLink: _onTapLink,
       selectable: true,
       imageBuilder: (uri, title, alt) {
         return Padding(

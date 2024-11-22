@@ -464,7 +464,7 @@ class _MyGalleryPhotoViewWrapperState extends State<MyGalleryPhotoViewWrapper> {
                       children: [
                         IconButton(
                           icon: const Icon(Icons.close, color: Colors.white),
-                          onPressed: () => Navigator.pop(context),
+                          onPressed: () => Navigator.of(context).pop(),
                         ),
                         Row(
                           children: [

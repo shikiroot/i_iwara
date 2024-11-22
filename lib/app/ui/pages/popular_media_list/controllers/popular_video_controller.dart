@@ -6,6 +6,7 @@ import 'package:i_iwara/app/models/video.model.dart';
 import 'package:i_iwara/app/services/video_service.dart';
 import 'package:i_iwara/app/ui/widgets/error_widget.dart';
 import 'package:i_iwara/utils/proxy/proxy_util.dart';
+import 'package:i_iwara/utils/widget_extensions.dart';
 
 import '../../../../../utils/logger_utils.dart';
 import '../../../../routes/app_routes.dart';
@@ -40,7 +41,8 @@ class PopularVideoController extends GetxController {
 
     isLoading.value = true;
 
-    LogUtils.d('当前的查询参数: $searchTagIds, $searchDate, $searchRating', 'PopularVideoController');
+    LogUtils.d('当前的查询参数: $searchTagIds, $searchDate, $searchRating',
+        'PopularVideoController');
     try {
       ApiResult<PageData<Video>> result =
           await _videoService.fetchVideosByParams(
@@ -82,7 +84,7 @@ class PopularVideoController extends GetxController {
             ElevatedButton(
               onPressed: () => {Get.toNamed(Routes.PROXY_SETTINGS_PAGE)},
               child: const Text('检查网络设置'),
-            ),
+            ).paddingRight(10),
           ElevatedButton(
             onPressed: () => fetchVideos(refresh: true),
             child: const Text('刷新'),
@@ -94,5 +96,4 @@ class PopularVideoController extends GetxController {
       isInit.value = false;
     }
   }
-
 }

@@ -2,24 +2,25 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:i_iwara/app/services/app_service.dart';
 
-class TitleBarHeightWidget extends StatelessWidget {
+class TopPaddingHeightWidget extends StatelessWidget {
   final AppService appService = Get.find<AppService>();
 
-  TitleBarHeightWidget({super.key});
+  TopPaddingHeightWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
     // 如果是DeskTop设备，且不是网页，则监听
+    var paddingTop = MediaQuery.paddingOf(context).top;
     if (GetPlatform.isDesktop && !GetPlatform.isWeb) {
       return Obx(() {
         if (appService.showTitleBar) {
           return const SizedBox(height: AppService.titleBarHeight);
         } else {
-          return const SizedBox.shrink();
+          return const SizedBox(height: 0);
         }
       });
     } else {
-      return const SizedBox.shrink();
+      return SizedBox(height: paddingTop);
     }
   }
 }

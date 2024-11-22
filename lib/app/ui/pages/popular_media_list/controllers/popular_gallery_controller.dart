@@ -5,6 +5,7 @@ import 'package:i_iwara/app/models/image.model.dart';
 import 'package:i_iwara/app/models/page_data.model.dart';
 import 'package:i_iwara/app/ui/widgets/error_widget.dart';
 import 'package:i_iwara/utils/proxy/proxy_util.dart';
+import 'package:i_iwara/utils/widget_extensions.dart';
 
 import '../../../../../utils/logger_utils.dart';
 import '../../../../routes/app_routes.dart';
@@ -82,7 +83,7 @@ class PopularGalleryController extends GetxController {
             ElevatedButton(
               onPressed: () => {Get.toNamed(Routes.PROXY_SETTINGS_PAGE)},
               child: const Text('检查网络设置'),
-            ),
+            ).paddingRight(10),
           ElevatedButton(
             onPressed: () => fetchImageModels(refresh: true),
             child: const Text('刷新'),
