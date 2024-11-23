@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:i_iwara/utils/logger_utils.dart';
 import 'package:shimmer/shimmer.dart';
 
 import 'menu_item_widget.dart';
@@ -170,6 +171,7 @@ class _HorizontalImageListState extends State<HorizontalImageList> {
           Positioned.fill(
             child: GestureDetector(
               onTap: _hideMenu,
+              onSecondaryTap: _hideMenu,
               child: Container(
                 color: Colors.transparent,
               ),
@@ -300,10 +302,12 @@ class _HorizontalImageListState extends State<HorizontalImageList> {
                   placeholder: (context, url) =>
                       widget.placeholderBuilder?.call(context, url) ??
                       _buildPlaceholder(context, url),
-                  errorWidget: (context, url, error) =>
-                      widget.errorBuilder?.call(context, url, error) ??
-                      Icon(Icons.error,
-                          color: Theme.of(context).colorScheme.error),
+                  errorWidget: (context, url, error) {
+                    LogUtils.e('加载图片失败: $url', tag: 'ImageList', error: error);
+                    return widget.errorBuilder?.call(context, url, error) ??
+                        Icon(Icons.error,
+                            color: Theme.of(context).colorScheme.error);
+                  },
                   fit: widget.imageFit,
                   imageBuilder: (context, imageProvider) {
                     WidgetsBinding.instance.addPostFrameCallback((_) {

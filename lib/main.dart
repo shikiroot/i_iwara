@@ -44,7 +44,7 @@ void main() {
     Get.put(userPreferenceService);
     AuthService authService = await AuthService().init();
     Get.put(authService);
-    ApiService apiService = await ApiService().init();
+    ApiService apiService = await ApiService.getInstance();
     Get.put(apiService);
     UserService userService = await UserService().init();
     Get.put(userService);

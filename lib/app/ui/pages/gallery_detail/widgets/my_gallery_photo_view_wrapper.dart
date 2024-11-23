@@ -264,6 +264,7 @@ class _MyGalleryPhotoViewWrapperState extends State<MyGalleryPhotoViewWrapper> {
           Positioned.fill(
             child: GestureDetector(
               onTap: _hideMenu,
+              onSecondaryTap: _hideMenu,
               child: Container(
                 color: Colors.transparent,
               ),

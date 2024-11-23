@@ -34,5 +34,7 @@
     <!-- 允许本地网络连接 -->
     <key>com.apple.security.network.server</key>
     <true/>
+    <key>com.apple.security.files.user-selected.read-write</key>
+    <true/>
 </dict>
 </plist>
