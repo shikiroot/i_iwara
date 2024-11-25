@@ -18,6 +18,7 @@ abstract class Routes {
   static const PROXY_SETTINGS_PAGE = _Paths.PROXY_SETTINGS_PAGE;
   static const THEME_SETTINGS_PAGE = _Paths.THEME_SETTINGS_PAGE;
   static const NOT_FOUND = _Paths.NOT_FOUND;
+  static const SIGN_IN = _Paths.SIGN_IN;
 
   static const ROOT = _Paths.ROOT;
 }
@@ -38,6 +39,7 @@ abstract class _Paths {
   static const GALLERY = '/gallery';
   static const GALLERY_DETAIL = '/gallery_detail/:galleryId';
   static const SUBSCRIPTIONS = '/subscriptions';
+  static const SIGN_IN = '/sign_in';
 
   static const  ROOT = '/';
 }

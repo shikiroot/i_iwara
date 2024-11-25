@@ -22,6 +22,7 @@ import 'app/services/config_service.dart';
 import 'app/services/storage_service.dart';
 import 'app/services/user_preference_service.dart';
 import 'app/services/user_service.dart';
+import 'db/database_service.dart';
 
 void main() {
   runZonedGuarded(() async {
@@ -33,6 +34,12 @@ void main() {
 
     // 确保Flutter初始化
     WidgetsFlutterBinding.ensureInitialized();
+
+    final dbService = DatabaseService();
+    // 删除旧数据库，仅用于开发
+    await dbService.deleteOldDatabase();
+
+    await dbService.init();
 
     // 初始化Getx和视频组件
     await GetStorage.init();

@@ -25,7 +25,7 @@ class GlobalDrawerColumns extends StatelessWidget {
             padding: EdgeInsets.zero,
             children: [
               _buildMenuItem(Icons.settings, '设置', () {
-                appService.closeDrawer();
+                AppService.switchGlobalDrawer();
                 Get.toNamed(Routes.SETTINGS_PAGE);
               }),
               _buildMenuItem(Icons.info, '关于', () {
@@ -35,6 +35,11 @@ class GlobalDrawerColumns extends StatelessWidget {
               _buildMenuItem(Icons.star, '切换隐藏状态栏', () {
                 Get.snackbar('操作', '你点击了切换隐藏状态栏');
                 appService.toggleTitleBar();
+              }),
+              // 日历
+              _buildMenuItem(Icons.calendar_today, '戒律签到', () {
+                NaviService.navigateToSignInPage();
+                AppService.switchGlobalDrawer();
               }),
               Obx(() => userService.isLogin
                   ? Column(
@@ -56,7 +61,7 @@ class GlobalDrawerColumns extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         if (!userService.isLogin) {
-          globalDrawerService.closeDrawer();
+          AppService.switchGlobalDrawer();
           Get.toNamed(
             Routes.LOGIN,
           );
@@ -139,30 +144,42 @@ class GlobalDrawerColumns extends StatelessWidget {
   }
 
   void _showLogoutDialog(AppService globalDrawerService) {
-    globalDrawerService.closeDrawer();
-    Get.dialog(
-      AlertDialog(
-        title: const Text('退出'),
-        content: const Text('你确定要退出吗？'),
-        actions: [
-          TextButton(
-            child: const Text('取消'),
-            onPressed: () => Get.back(),
-          ),
-          ElevatedButton(
-            child: const Text('确定'),
-            onPressed: () async {
-              Get.back();
-              try {
-                await userService.logout();
-                Get.snackbar('操作', '你已退出');
-              } catch (e) {
-                Get.snackbar('错误', '退出失败: $e');
-              }
-            },
-          ),
-        ],
-      ),
+    AppService.switchGlobalDrawer();
+    showDialog(
+      context: Get.context!,
+      builder: (context) => LogoutDialog(userService: userService),
+    );
+  }
+}
+
+class LogoutDialog extends StatelessWidget {
+  final UserService userService;
+
+  const LogoutDialog({required this.userService, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('退出'),
+      content: const Text('你确定要退出吗？'),
+      actions: [
+        TextButton(
+          child: const Text('取消'),
+          onPressed: () => Navigator.pop(context),
+        ),
+        ElevatedButton(
+          child: const Text('确定'),
+          onPressed: () async {
+            Navigator.pop(context);
+            try {
+              await userService.logout();
+              Get.snackbar('操作', '你已退出');
+            } catch (e) {
+              Get.snackbar('错误', '退出失败: $e');
+            }
+          },
+        ),
+      ],
     );
   }
 }

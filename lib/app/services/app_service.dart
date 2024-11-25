@@ -45,12 +45,15 @@ class AppService extends GetxService {
 
   set currentIndex(int value) => _currentIndex.value = value;
 
-  void openGlobalDrawer() {
-    globalDrawerKey.currentState?.openDrawer();
-  }
+  static void switchGlobalDrawer() {
 
-  void closeDrawer() {
-    globalDrawerKey.currentState?.openEndDrawer();
+    if (globalDrawerKey.currentState!.isDrawerOpen) {
+      globalDrawerKey.currentState!.openEndDrawer();
+      LogUtils.i('关闭Drawer', 'AppService');
+    } else {
+      globalDrawerKey.currentState!.openDrawer();
+      LogUtils.i('打开Drawer', 'AppService');
+    }
   }
 
   void toggleTitleBar() {
@@ -73,10 +76,10 @@ class AppService extends GetxService {
       if (homeDele?.canBack ?? false) {
         homeDele?.back();
         LogUtils.i('关闭homeDele?.canBack', 'AppService');
-      } else if (homeDele?.navigatorKey.currentState?.canPop() ??
-          false) {
+      } else if (homeDele?.navigatorKey.currentState?.canPop() ?? false) {
         homeDele?.navigatorKey.currentState?.pop();
-        LogUtils.i('关闭homeDele?.navigatorKey.currentState?.canPop()', 'AppService');
+        LogUtils.i(
+            '关闭homeDele?.navigatorKey.currentState?.canPop()', 'AppService');
       } else if (rootDele?.canBack ?? false) {
         rootDele?.back();
         LogUtils.i('关闭rootDele?.canBack', 'AppService');
@@ -155,5 +158,10 @@ class NaviService {
         );
       },
     ));
+  }
+
+  // SignInPage()
+  static void navigateToSignInPage() {
+    Get.toNamed(Routes.SIGN_IN);
   }
 }

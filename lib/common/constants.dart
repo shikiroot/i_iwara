@@ -34,6 +34,8 @@ class CommonConstants {
 
   static var enableR18 = false;
 
+  static String? applicationName = 'i_iwara';
+
   // 获取用户背景URL
   static userProfileHeaderUrl(String? headerId) {
     if (headerId == null) {

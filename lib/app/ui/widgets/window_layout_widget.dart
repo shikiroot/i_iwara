@@ -102,7 +102,7 @@ class WindowTitleBarLayout extends StatelessWidget {
   Widget _buildMenuButton(AppService controller, BuildContext context) {
     return InkWell(
         onTap: () {
-          controller.openGlobalDrawer();
+          AppService.switchGlobalDrawer();
         },
         child: SizedBox(
           width: 42,

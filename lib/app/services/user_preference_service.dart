@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:get/get.dart';
 import 'package:i_iwara/app/models/tag.model.dart';
 import 'package:i_iwara/app/services/storage_service.dart';
@@ -70,11 +72,15 @@ class UserPreferenceService extends GetxService {
       storageService.deleteData('videoSearchHistory');
     }
 
-    // 视频搜索标签
+    // 视频搜索标签 TODO 改用数据库存储
     try {
       final String? tags = storageService.readData(_videoSearchTagHistoryKey);
       if (tags != null) {
-        List<Tag> list = (tags as List).map((e) => Tag.fromJson(e)).toList();
+        // 反序列化 为List<Tag>
+        List<Tag> list = (jsonDecode(tags) as List)
+            .map((e) => Tag.fromJson(e as Map<String, dynamic>))
+            .toList();
+
         videoSearchTagHistory.addAll(list);
       }
     } catch (e) {
