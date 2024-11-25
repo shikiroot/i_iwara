@@ -40,18 +40,6 @@ void main() {
     Get.put(AppService());
     var configService = await ConfigService().init();
     Get.put(configService);
-    var userPreferenceService = await UserPreferenceService().init();
-    Get.put(userPreferenceService);
-    AuthService authService = await AuthService().init();
-    Get.put(authService);
-    ApiService apiService = await ApiService.getInstance();
-    Get.put(apiService);
-    UserService userService = await UserService().init();
-    Get.put(userService);
-    Get.lazyPut(() => VideoService());
-    Get.lazyPut(() => GalleryService());
-    Get.lazyPut(() => TagService());
-    Get.lazyPut(() => GalleryService());
 
     // 尝试设置代理
     if (ProxyUtil.isSupportedPlatform()) {
@@ -65,6 +53,19 @@ void main() {
         LogUtils.i('未启用代理', '启动初始化');
       }
     }
+
+    var userPreferenceService = await UserPreferenceService().init();
+    Get.put(userPreferenceService);
+    AuthService authService = await AuthService().init();
+    Get.put(authService);
+    ApiService apiService = await ApiService.getInstance();
+    Get.put(apiService);
+    UserService userService = await UserService().init();
+    Get.put(userService);
+    Get.lazyPut(() => VideoService());
+    Get.lazyPut(() => GalleryService());
+    Get.lazyPut(() => TagService());
+    Get.lazyPut(() => GalleryService());
 
     // 初始化 MediaKit
     MediaKit.ensureInitialized();

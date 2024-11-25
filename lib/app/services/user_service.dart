@@ -26,15 +26,15 @@ class UserService extends GetxService {
     if (_authService.hasToken) {
       try {
         LogUtils.d('$_tag 存在TOKEN，尝试获取用户资料');
-        await fetchUserProfile();
+        fetchUserProfile();
       } on UnauthorizedException {
         LogUtils.d('$_tag TOKEN失效，重新登录');
-        await _authService.logout();
+        _authService.logout();
         Get.offAllNamed(Routes.LOGIN);
       } on AuthServiceException catch (e) {
         LogUtils.e('$_tag 初始化用户失败', error: e);
         Get.snackbar("错误", e.message);
-        await _authService.logout();
+        _authService.logout();
         Get.offAllNamed(Routes.LOGIN);
       }
     } else {

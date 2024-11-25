@@ -9,6 +9,7 @@ import '../../../routes/app_routes.dart';
 import '../../../services/app_service.dart';
 import '../popular_media_list/popular_gallery_list_page.dart';
 import '../popular_media_list/popular_video_list_page.dart';
+import '../subscriptions/subscriptions_page.dart';
 
 /// 侧边栏、底部导航栏、主要内容
 class HomeNavigationLayout extends StatelessWidget {
@@ -113,7 +114,7 @@ class HomeNavigationLayout extends StatelessWidget {
                             break;
                           case Routes.SUBSCRIPTIONS:
                             builder = (BuildContext context) =>
-                                const Center(child: Text('订阅'));
+                                const SubscriptionsPage();
                             route = PageRouteBuilder(
                               pageBuilder:
                                   (context, animation, secondaryAnimation) =>
