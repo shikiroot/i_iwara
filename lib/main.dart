@@ -25,6 +25,8 @@ import 'app/services/user_service.dart';
 import 'db/database_service.dart';
 
 void main() {
+
+  // 确保Flutter初始化
   runZonedGuarded(() async {
     // 日志初始化
     LogUtils.init();
@@ -36,7 +38,6 @@ void main() {
     WidgetsFlutterBinding.ensureInitialized();
 
     final dbService = DatabaseService();
-
     await dbService.init();
 
     // 初始化Getx和视频组件
