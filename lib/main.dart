@@ -36,8 +36,6 @@ void main() {
     WidgetsFlutterBinding.ensureInitialized();
 
     final dbService = DatabaseService();
-    // 删除旧数据库，仅用于开发
-    await dbService.deleteOldDatabase();
 
     await dbService.init();
 

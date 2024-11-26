@@ -1,5 +1,5 @@
 import 'package:i_iwara/utils/logger_utils.dart';
-import 'package:sqlite3/sqlite3.dart';
+import 'package:sqlite3/common.dart';
 import 'migration.dart';
 
 class MigrationV1Initial extends Migration {
@@ -10,7 +10,7 @@ class MigrationV1Initial extends Migration {
   String get description => "初始迁移：创建戒律签到表";
 
   @override
-  void up(Database db) {
+  void up(CommonDatabase db) {
     // 创建戒律签到记录表
     db.execute('''
       CREATE TABLE IF NOT EXISTS sign_in_records(
@@ -48,7 +48,7 @@ class MigrationV1Initial extends Migration {
   }
 
   @override
-  void down(Database db) {
+  void down(CommonDatabase db) {
     db.execute('DROP TRIGGER IF EXISTS trigger_sign_in_records_updated_at;');
     db.execute('DROP INDEX IF EXISTS idx_sign_in_records_user_date;');
     db.execute('DROP TABLE IF EXISTS sign_in_records;');

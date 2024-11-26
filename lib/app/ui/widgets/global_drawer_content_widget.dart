@@ -32,10 +32,11 @@ class GlobalDrawerColumns extends StatelessWidget {
                 userService.fetchUserProfile();
                 Get.snackbar('操作', '你点击了关于');
               }),
-              _buildMenuItem(Icons.star, '切换隐藏状态栏', () {
-                Get.snackbar('操作', '你点击了切换隐藏状态栏');
-                appService.toggleTitleBar();
-              }),
+              if (GetPlatform.isDesktop && !GetPlatform.isWeb)
+                _buildMenuItem(Icons.star, '切换隐藏状态栏', () {
+                  Get.snackbar('操作', '你点击了切换隐藏状态栏');
+                  appService.toggleTitleBar();
+                }),
               // 日历
               _buildMenuItem(Icons.calendar_today, '戒律签到', () {
                 NaviService.navigateToSignInPage();

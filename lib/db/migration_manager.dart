@@ -1,7 +1,7 @@
 // lib/migrations/migration_manager.dart
 
 import 'package:i_iwara/utils/logger_utils.dart';
-import 'package:sqlite3/sqlite3.dart';
+import 'package:sqlite3/common.dart';
 
 import 'database_service.dart';
 import 'migrations/migration.dart';
@@ -16,7 +16,7 @@ class MigrationManager {
   ];
 
   /// 获取当前数据库版本
-  int getCurrentVersion(Database db) {
+  int getCurrentVersion(CommonDatabase db) {
     final stmt = db.prepare('PRAGMA user_version;');
     final ResultSet result = stmt.select([]);
     stmt.dispose();
@@ -24,7 +24,7 @@ class MigrationManager {
   }
 
   /// 运行所有需要的迁移
-  void runMigrations(Database db) {
+  void runMigrations(CommonDatabase db) {
     final currentVersion = getCurrentVersion(db);
     final pendingMigrations = migrations.where((m) => m.version > currentVersion).toList()
       ..sort((a, b) => a.version.compareTo(b.version));

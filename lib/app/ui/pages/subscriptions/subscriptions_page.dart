@@ -43,11 +43,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
                   IconButton(
                     icon: const Icon(Icons.account_circle),
                     onPressed: () {
-                      AppService.homeNavigatorKey.currentState!.push(
-                        MaterialPageRoute(builder: (context) {
-                          return const Center(child: Text('用户中心'));
-                        }),
-                      );
+                      AppService.switchGlobalDrawer();
                     },
                   ),
                   // 搜索框
