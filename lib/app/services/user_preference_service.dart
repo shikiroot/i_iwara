@@ -2,12 +2,11 @@ import 'dart:convert';
 
 import 'package:get/get.dart';
 import 'package:i_iwara/app/models/tag.model.dart';
-import 'package:i_iwara/app/services/storage_service.dart';
+import 'package:i_iwara/app/repositories/commons_repository.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
 
 class UserPreferenceService extends GetxService {
-  late final StorageService storageService;
-  final String _TAG = 'userPreferenceService';
+  final String _TAG = 'UserPreferenceService';
 
   // 视频搜索历史
   final RxList<String> videoSearchHistory = <String>[].obs;
@@ -18,15 +17,14 @@ class UserPreferenceService extends GetxService {
   // 用户喜欢的作者
   final RxSet<String> userLikeUsernames = <String>{}.obs;
 
-  final maxSearchRecordCount = 20.obs;
+  final int maxSearchRecordCount = 20;
 
   final String _videoSearchHistoryKey = 'videoSearchHistory';
   final String _videoSearchTagHistoryKey = 'videoSearchTagHistory';
   final String _userLikeUsernamesKey = 'userLikeUsernames';
 
   Future<UserPreferenceService> init() async {
-    storageService = StorageService();
-    _loadVideoSearchHistory();
+    await _loadUserPreferences();
     LogUtils.i('用户偏好服务初始化完成', _TAG);
     return this;
   }
@@ -46,130 +44,188 @@ class UserPreferenceService extends GetxService {
     return videoSearchTagHistory.any((element) => element.id == tagId);
   }
 
-  void _loadVideoSearchHistory() {
-    // 用户喜欢的作者
+  Future<void> _loadUserPreferences() async {
+    await _loadUserLikeUsernames();
+    await _loadVideoSearchHistory();
+    await _loadVideoSearchTagHistory();
+  }
+
+  // 加载用户喜欢的作者
+  Future<void> _loadUserLikeUsernames() async {
     try {
-      var likeUsernames = storageService.readData(_userLikeUsernamesKey);
-      if (likeUsernames != null) {
-        // 反序列化
-        List<String> list = likeUsernames.split(',');
-        userLikeUsernames.addAll(list);
+      final String? data = await CommonsRepository.instance.getData(_userLikeUsernamesKey);
+      if (data != null && data.isNotEmpty) {
+        List<dynamic> list = jsonDecode(data);
+        userLikeUsernames.addAll(list.cast<String>());
       }
     } catch (e) {
       LogUtils.e('加载用户喜欢的作者失败', tag: _TAG, error: e);
-      storageService.deleteData(_userLikeUsernamesKey);
+      await CommonsRepository.instance.deleteData(_userLikeUsernamesKey);
     }
+  }
 
-    // 视频搜索历史
+  // 加载视频搜索历史
+  Future<void> _loadVideoSearchHistory() async {
     try {
-      final String? history = storageService.readData(_videoSearchHistoryKey);
-      if (history != null) {
-        List<String> list = history.split(',');
-        videoSearchHistory.addAll(list);
+      final String? data = await CommonsRepository.instance.getData(_videoSearchHistoryKey);
+      if (data != null && data.isNotEmpty) {
+        List<dynamic> list = jsonDecode(data);
+        videoSearchHistory.addAll(list.cast<String>());
       }
     } catch (e) {
       LogUtils.e('加载视频搜索历史失败', tag: _TAG, error: e);
-      storageService.deleteData('videoSearchHistory');
+      await CommonsRepository.instance.deleteData(_videoSearchHistoryKey);
     }
+  }
 
-    // 视频搜索标签 TODO 改用数据库存储
+  // 加载视频搜索标签
+  Future<void> _loadVideoSearchTagHistory() async {
     try {
-      final String? tags = storageService.readData(_videoSearchTagHistoryKey);
-      if (tags != null) {
-        // 反序列化 为List<Tag>
-        List<Tag> list = (jsonDecode(tags) as List)
-            .map((e) => Tag.fromJson(e as Map<String, dynamic>))
-            .toList();
-
-        videoSearchTagHistory.addAll(list);
+      final String? data = await CommonsRepository.instance.getData(_videoSearchTagHistoryKey);
+      if (data != null && data.isNotEmpty) {
+        List<dynamic> list = jsonDecode(data);
+        List<Tag> tags = list.map((e) => Tag.fromJson(e as Map<String, dynamic>)).toList();
+        videoSearchTagHistory.addAll(tags);
       }
     } catch (e) {
       LogUtils.e('加载视频搜索标签失败', tag: _TAG, error: e);
-      storageService.deleteData(_videoSearchHistoryKey);
+      await CommonsRepository.instance.deleteData(_videoSearchTagHistoryKey);
     }
   }
 
   // 添加视频搜索历史
-  void addVideoSearchHistory(String keyword) {
+  Future<void> addVideoSearchHistory(String keyword) async {
     if (videoSearchHistory.contains(keyword)) {
       videoSearchHistory.remove(keyword);
     }
     videoSearchHistory.insert(0, keyword);
-    if (videoSearchHistory.length > maxSearchRecordCount.value) {
+    if (videoSearchHistory.length > maxSearchRecordCount) {
       videoSearchHistory.removeLast();
     }
-    storageService.writeData(
-        _videoSearchHistoryKey, videoSearchHistory.join(','));
+    try {
+      await CommonsRepository.instance.setData(
+        _videoSearchHistoryKey,
+        jsonEncode(videoSearchHistory.toList()),
+      );
+    } catch (e) {
+      LogUtils.e('保存视频搜索历史失败', tag: _TAG, error: e);
+    }
   }
 
   // 删除视频搜索历史
-  void removeVideoSearchHistory(String keyword) {
+  Future<void> removeVideoSearchHistory(String keyword) async {
     videoSearchHistory.remove(keyword);
-    storageService.writeData(
-        _videoSearchHistoryKey, videoSearchHistory.join(','));
+    try {
+      await CommonsRepository.instance.setData(
+        _videoSearchHistoryKey,
+        jsonEncode(videoSearchHistory.toList()),
+      );
+    } catch (e) {
+      LogUtils.e('删除视频搜索历史失败', tag: _TAG, error: e);
+    }
   }
 
   // 清空视频搜索历史
-  void clearVideoSearchHistory() {
+  Future<void> clearVideoSearchHistory() async {
     videoSearchHistory.clear();
-    storageService.deleteData(_videoSearchHistoryKey);
+    try {
+      await CommonsRepository.instance.deleteData(_videoSearchHistoryKey);
+    } catch (e) {
+      LogUtils.e('清空视频搜索历史失败', tag: _TAG, error: e);
+    }
   }
 
   // 添加视频搜索标签
-  void addVideoSearchTag(Tag tag) {
-    // 如果已经存在则删除
+  Future<void> addVideoSearchTag(Tag tag) async {
     String id = tag.id;
     if (videoSearchTagHistory.any((element) => element.id == id)) {
       videoSearchTagHistory.removeWhere((element) => element.id == id);
     }
-    // 加载到第一个
     videoSearchTagHistory.insert(0, tag);
-    storageService.writeData(_videoSearchTagHistoryKey,
-        videoSearchTagHistory.map((e) => e.toJson()).toList());
+    try {
+      List<Map<String, dynamic>> tagList = videoSearchTagHistory.map((e) => e.toJson()).toList();
+      await CommonsRepository.instance.setData(
+        _videoSearchTagHistoryKey,
+        jsonEncode(tagList),
+      );
+    } catch (e) {
+      LogUtils.e('保存视频搜索标签失败', tag: _TAG, error: e);
+    }
   }
 
   // 删除视频搜索标签
-  void removeVideoSearchTag(Tag tag) {
-    // 通过Id删除
+  Future<void> removeVideoSearchTag(Tag tag) async {
     String id = tag.id;
     videoSearchTagHistory.removeWhere((element) => element.id == id);
-    storageService.writeData(_videoSearchTagHistoryKey,
-        videoSearchTagHistory.map((e) => e.toJson()).toList());
+    await _saveVideoSearchTagHistory();
   }
 
-  void removeVideoSearchTagById(String id) {
+  // 通过ID删除视频搜索标签
+  Future<void> removeVideoSearchTagById(String id) async {
     videoSearchTagHistory.removeWhere((element) => element.id == id);
-    storageService.writeData(_videoSearchTagHistoryKey,
-        videoSearchTagHistory.map((e) => e.toJson()).toList());
+    await _saveVideoSearchTagHistory();
+  }
+
+  // 保存视频搜索标签到数据库
+  Future<void> _saveVideoSearchTagHistory() async {
+    try {
+      List<Map<String, dynamic>> tagList = videoSearchTagHistory.map((e) => e.toJson()).toList();
+      await CommonsRepository.instance.setData(
+        _videoSearchTagHistoryKey,
+        jsonEncode(tagList),
+      );
+    } catch (e) {
+      LogUtils.e('保存视频搜索标签失败', tag: _TAG, error: e);
+    }
   }
 
   // 清空视频搜索标签
-  void clearVideoSearchTags() {
+  Future<void> clearVideoSearchTags() async {
     videoSearchTagHistory.clear();
-    storageService.deleteData(_videoSearchTagHistoryKey);
+    try {
+      await CommonsRepository.instance.deleteData(_videoSearchTagHistoryKey);
+    } catch (e) {
+      LogUtils.e('清空视频搜索标签失败', tag: _TAG, error: e);
+    }
   }
 
   // 添加用户喜欢的作者
-  void addUserLikeUsername(String username) {
+  Future<void> addUserLikeUsername(String username) async {
     if (!userLikeUsernames.contains(username)) {
       userLikeUsernames.add(username);
-      storageService.writeData(
-          _userLikeUsernamesKey, userLikeUsernames.join(','));
+      try {
+        await CommonsRepository.instance.setData(
+          _userLikeUsernamesKey,
+          jsonEncode(userLikeUsernames.toList()),
+        );
+      } catch (e) {
+        LogUtils.e('保存用户喜欢的作者失败', tag: _TAG, error: e);
+      }
     }
   }
 
   // 删除用户喜欢的作者
-  void removeUserLikeUsername(String username) {
+  Future<void> removeUserLikeUsername(String username) async {
     if (userLikeUsernames.contains(username)) {
       userLikeUsernames.remove(username);
-      storageService.writeData(
-          _userLikeUsernamesKey, userLikeUsernames.join(','));
+      try {
+        await CommonsRepository.instance.setData(
+          _userLikeUsernamesKey,
+          jsonEncode(userLikeUsernames.toList()),
+        );
+      } catch (e) {
+        LogUtils.e('删除用户喜欢的作者失败', tag: _TAG, error: e);
+      }
     }
   }
 
   // 清空用户喜欢的作者
-  void clearUserLikeUsernames() {
+  Future<void> clearUserLikeUsernames() async {
     userLikeUsernames.clear();
-    storageService.deleteData(_userLikeUsernamesKey);
+    try {
+      await CommonsRepository.instance.deleteData(_userLikeUsernamesKey);
+    } catch (e) {
+      LogUtils.e('清空用户喜欢的作者失败', tag: _TAG, error: e);
+    }
   }
 }

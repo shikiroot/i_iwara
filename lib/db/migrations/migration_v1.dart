@@ -43,8 +43,30 @@ class MigrationV1Initial extends Migration {
       END;
     ''');
 
+    // 创建通用配置表
+    db.execute('''
+      CREATE TABLE IF NOT EXISTS commons(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        key TEXT NOT NULL UNIQUE,
+        data TEXT NOT NULL,
+        created_at TEXT NOT NULL DEFAULT(datetime('now')),
+        updated_at TEXT NOT NULL DEFAULT(datetime('now'))
+      );
+    ''');
+
+    // 创建commons表的触发器
+    db.execute('''
+      CREATE TRIGGER trigger_commons_updated_at
+      AFTER UPDATE ON commons
+      BEGIN
+        UPDATE commons
+        SET updated_at = datetime('now')
+        WHERE id = NEW.id;
+      END;
+    ''');
+
     db.execute('PRAGMA user_version=1;');
-    LogUtils.i('已应用迁移v1：创建戒律签到表');
+    LogUtils.i('已应用迁移v1：创建戒律签到表和通用配置表');
   }
 
   @override
@@ -52,7 +74,9 @@ class MigrationV1Initial extends Migration {
     db.execute('DROP TRIGGER IF EXISTS trigger_sign_in_records_updated_at;');
     db.execute('DROP INDEX IF EXISTS idx_sign_in_records_user_date;');
     db.execute('DROP TABLE IF EXISTS sign_in_records;');
+    db.execute('DROP TRIGGER IF EXISTS trigger_commons_updated_at;');
+    db.execute('DROP TABLE IF EXISTS commons;');
     db.execute('PRAGMA user_version=0;');
-    LogUtils.i('已回滚迁移v1：删除戒律签到表');
+    LogUtils.i('已回滚迁移v1：删除戒律签到表和通用配置表');
   }
 }
