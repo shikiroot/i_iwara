@@ -74,13 +74,13 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> {
   Widget _buildNotLoggedIn() {
     return Scaffold(
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           TopPaddingHeightWidget(),
           Center(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(
                     Icons.lock_outline,

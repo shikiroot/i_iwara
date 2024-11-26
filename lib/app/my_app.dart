@@ -12,8 +12,10 @@ import 'package:i_iwara/app/ui/pages/settings/theme_settings_page.dart';
 import 'package:i_iwara/app/ui/pages/sign_in/sing_in_page.dart';
 import 'package:i_iwara/app/ui/widgets/global_drawer_content_widget.dart';
 import 'package:i_iwara/app/ui/widgets/window_layout_widget.dart';
+import 'package:i_iwara/utils/logger_utils.dart';
 
 import '../utils/proxy/proxy_util.dart';
+
 final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 
 class MyApp extends StatelessWidget {
@@ -85,15 +87,95 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyAppLayout extends StatelessWidget {
+class PrivacyOverlay extends StatelessWidget {
+  const PrivacyOverlay({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      child: Container(
+        color: Colors.white, // 白色背景
+        child: const Center(
+          child: Text(
+            '隐私内容，不予展示',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class MyAppLayout extends StatefulWidget {
   final Widget child;
 
   const MyAppLayout({super.key, required this.child});
 
   @override
+  State<MyAppLayout> createState() => _MyAppLayoutState();
+}
+
+class _MyAppLayoutState extends State<MyAppLayout> with WidgetsBindingObserver {
+  bool _showPrivacyOverlay = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    switch (state) {
+      case AppLifecycleState.resumed:
+        LogUtils.d('应用resumed', 'AppLifecycleState');
+        setState(() {
+          _showPrivacyOverlay = false;
+        });
+        break;
+      case AppLifecycleState.inactive:
+        LogUtils.d('应用inactive', 'AppLifecycleState');
+        setState(() {
+          _showPrivacyOverlay = true;
+        });
+        break;
+      case AppLifecycleState.paused:
+        LogUtils.d('应用paused', 'AppLifecycleState');
+        break;
+      case AppLifecycleState.hidden:
+        LogUtils.d('应用hidden', 'AppLifecycleState');
+        setState(() {
+          _showPrivacyOverlay = true;
+        });
+        break;
+      case AppLifecycleState.detached:
+        LogUtils.d('应用detached', 'AppLifecycleState');
+        break;
+      default:
+        LogUtils.d('应用default', 'AppLifecycleState');
+        break;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _shortCutsWrapper(context, _windowTitleBarFrame(context, child)),
+    return Stack(
+      children: [
+        Scaffold(
+          body: _shortCutsWrapper(
+              context, _windowTitleBarFrame(context, widget.child)),
+        ),
+        if (_showPrivacyOverlay) const PrivacyOverlay(),
+      ],
     );
   }
 

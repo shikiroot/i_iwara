@@ -44,8 +44,29 @@ class HomeNavigationLayout extends StatelessWidget {
                   if (!isWide) return const SizedBox.shrink();
 
                   return NavigationRail(
+                    // 居中
+                    groupAlignment: 0.0,
                     labelType: NavigationRailLabelType.all,
                     selectedIndex: appService.currentIndex,
+                    trailing: Column(
+                      children: [
+                        const SizedBox(height: 16),
+                        IconButton(
+                          icon: const Icon(Icons.settings),
+                          tooltip: '设置',
+                          onPressed: () {
+                            AppService.switchGlobalDrawer();
+                          },
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.exit_to_app),
+                          tooltip: '退出',
+                          onPressed: () {
+                            AppService.tryPop();
+                          },
+                        ),
+                      ],
+                    ),
                     onDestinationSelected: (value) {
                       if (appService.currentIndex == value) return;
                       appService.currentIndex = value;
