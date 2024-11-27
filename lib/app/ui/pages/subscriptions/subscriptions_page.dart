@@ -21,7 +21,7 @@ class SubscriptionsPage extends StatefulWidget {
 }
 
 class _SubscriptionsPageState extends State<SubscriptionsPage>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   final UserService userService = Get.find<UserService>();
   final UserPreferenceService userPreferenceService =
       Get.find<UserPreferenceService>();
@@ -33,6 +33,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage>
 
   final ScrollController _scrollController = ScrollController();
   bool _showBackToTop = false;
+  late AnimationController _refreshIconController;
 
   @override
   void initState() {
@@ -46,6 +47,10 @@ class _SubscriptionsPageState extends State<SubscriptionsPage>
         setState(() {});
       }
     });
+    _refreshIconController = AnimationController(
+      duration: const Duration(seconds: 1),
+      vsync: this,
+    );
   }
 
   void _scrollListener() {
@@ -87,6 +92,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage>
     _scrollController.dispose();
     Get.delete<SubscriptionVideoController>();
     Get.delete<SubscriptionImageController>();
+    _refreshIconController.dispose();
     super.dispose();
   }
 
@@ -112,113 +118,80 @@ class _SubscriptionsPageState extends State<SubscriptionsPage>
   }
 
   Widget _buildContent() {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final isWideScreen = constraints.maxWidth > 600;
-        return NestedScrollView(
-          controller: _scrollController,
-          headerSliverBuilder: (context, innerBoxIsScrolled) => [
-            SliverToBoxAdapter(
-              child: Column(
-                children: [
-                  TopPaddingHeightWidget(),
-                  Center(
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints(
-                          maxWidth: isWideScreen ? 1200 : double.infinity),
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: isWideScreen ? 24.0 : 16.0,
-                        ),
-                        child: Row(
-                          children: [
-                            IconButton(
-                              icon: const Icon(Icons.account_circle),
-                              onPressed: () {
-                                AppService.switchGlobalDrawer();
-                              },
-                            ),
-                            const Expanded(
-                              child: Text(
-                                '订阅',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ],
+    return NestedScrollView(
+      controller: _scrollController,
+      headerSliverBuilder: (context, innerBoxIsScrolled) => [
+        SliverToBoxAdapter(
+          child: Column(
+            children: [
+              TopPaddingHeightWidget(),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Row(
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.account_circle),
+                      onPressed: () {
+                        AppService.switchGlobalDrawer();
+                      },
+                    ),
+                    const Expanded(
+                      child: Text(
+                        '订阅',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
-                  ),
-                  Obx(() {
-                    RxSet<UserDTO> likedUsers = userPreferenceService.likedUsers;
-                    List<SubscriptionSelectItem> selectionList = likedUsers
-                        .map((userDto) => SubscriptionSelectItem(
-                              id: userDto.id,
-                              label: userDto.name,
-                              avatarUrl: userDto.avatarUrl,
-                            ))
-                        .toList();
-                    return SubscriptionSelectList(
-                      selectionList: selectionList,
-                      selectedId: selectedId,
-                      onIdSelected: _onIdSelected,
-                    );
-                  }),
-                  Row(
-                    children: [
-                      TabBar(
-                        isScrollable: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        overlayColor:
-                            WidgetStateProperty.all(Colors.transparent),
-                        tabAlignment: TabAlignment.start,
-                        dividerColor: Colors.transparent,
-                        controller: _tabController,
-                        tabs: const [
-                          Tab(text: '视频'),
-                          Tab(text: '图库'),
-                        ],
-                      ),
-                      const Spacer(),
-                      Obx(() => (videoController.isLoading.value ||
-                              imageController.isLoading.value)
-                          ? const IconButton(
-                                  icon: Icon(Icons.refresh), onPressed: null)
-                              .animate(
-                                onPlay: (controller) =>
-                                    controller.repeat(), // loop
-                              )
-                              .addEffect(
-                                const RotateEffect(
-                                  duration: Duration(seconds: 1),
-                                  curve: Curves.linear,
-                                ),
-                              )
-                          : IconButton(
-                              icon: const Icon(Icons.refresh),
-                              onPressed: () {
-                                videoController.loadVideos(refresh: true);
-                              },
-                            )),
-                      const SizedBox(width: 16),
-                    ],
-                  )
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
-          body: TabBarView(
-            controller: _tabController,
-            children: [
-              SubscriptionVideoList(controller: videoController),
-              SubscriptionImageList(controller: imageController),
+              Obx(() {
+                RxSet<UserDTO> likedUsers = userPreferenceService.likedUsers;
+                List<SubscriptionSelectItem> selectionList = likedUsers
+                    .map((userDto) => SubscriptionSelectItem(
+                          id: userDto.id,
+                          label: userDto.name,
+                          avatarUrl: userDto.avatarUrl,
+                        ))
+                    .toList();
+                return SubscriptionSelectList(
+                  selectionList: selectionList,
+                  selectedId: selectedId,
+                  onIdSelected: _onIdSelected,
+                );
+              }),
+              Row(
+                children: [
+                  TabBar(
+                    isScrollable: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    overlayColor: WidgetStateProperty.all(Colors.transparent),
+                    tabAlignment: TabAlignment.start,
+                    dividerColor: Colors.transparent,
+                    controller: _tabController,
+                    tabs: const [
+                      Tab(text: '视频'),
+                      Tab(text: '图库'),
+                    ],
+                  ),
+                  const Spacer(),
+                  _buildRefreshButton(),
+                  const SizedBox(width: 16),
+                ],
+              )
             ],
           ),
-        );
-      },
+        ),
+      ],
+      body: TabBarView(
+        controller: _tabController,
+        children: [
+          SubscriptionVideoList(controller: videoController),
+          SubscriptionImageList(controller: imageController),
+        ],
+      ),
     );
   }
 
@@ -241,75 +214,100 @@ class _SubscriptionsPageState extends State<SubscriptionsPage>
   }
 
   Widget _buildNotLoggedIn() {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final isWideScreen = constraints.maxWidth > 600;
-        return Scaffold(
-          body: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TopPaddingHeightWidget(),
-              Center(
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    maxWidth: isWideScreen ? 400 : double.infinity,
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.all(isWideScreen ? 24.0 : 16.0),
-                    child: Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(24.0),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(
-                              Icons.lock_outline,
-                              size: 80,
-                              color: Colors.grey[400],
-                            ),
-                            const SizedBox(height: 20),
-                            const Text(
-                              '您尚未登录',
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            Text(
-                              '请登录以查看您的订阅内容。',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.grey[600],
-                              ),
-                            ),
-                            const SizedBox(height: 30),
-                            ElevatedButton(
-                              onPressed: () => Get.toNamed('/login'),
-                              style: ElevatedButton.styleFrom(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 40,
-                                  vertical: 15,
-                                ),
-                                minimumSize: const Size(200, 0),
-                              ),
-                              child: const Text(
-                                '前往登录',
-                                style: TextStyle(fontSize: 16),
-                              ),
-                            ),
-                          ],
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            TopPaddingHeightWidget(),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(24.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.lock_outline,
+                        size: 80,
+                        color: Colors.grey[400],
+                      ),
+                      const SizedBox(height: 20),
+                      const Text(
+                        '您尚未登录',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                    ),
+                      const SizedBox(height: 10),
+                      Text(
+                        '请登录以查看您的订阅内容。',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                      const SizedBox(height: 30),
+                      ElevatedButton(
+                        onPressed: () => Get.toNamed('/login'),
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 40,
+                            vertical: 15,
+                          ),
+                          minimumSize: const Size(200, 0),
+                        ),
+                        child: const Text(
+                          '前往登录',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
-            ],
-          ),
-        );
-      },
+            ),
+          ],
+        ),
+      ),
     );
+  }
+
+  Widget _buildRefreshButton() {
+    return Obx(() {
+      if (_tabController.index == 0) {
+        if (videoController.isLoading.value) {
+          _refreshIconController.repeat();
+        } else {
+          _refreshIconController.stop();
+          _refreshIconController.reset();
+        }
+      } else {
+        if (imageController.isLoading.value) {
+          _refreshIconController.repeat();
+        } else {
+          _refreshIconController.stop();
+          _refreshIconController.reset();
+        }
+      }
+
+      return IconButton(
+        icon: RotationTransition(
+          turns: _refreshIconController,
+          child: const Icon(Icons.refresh),
+        ),
+        onPressed: () {
+          if (_tabController.index == 0) {
+            videoController.loadVideos(refresh: true);
+          } else {
+            imageController.loadImages(refresh: true);
+          }
+        },
+      );
+    });
   }
 }

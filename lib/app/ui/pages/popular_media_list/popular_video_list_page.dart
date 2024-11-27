@@ -229,6 +229,15 @@ class _PopularVideoListPageState extends State<PopularVideoListPage>
                   ),
                 ),
               ),
+              // 添加刷新按钮
+              IconButton(
+                icon: const Icon(Icons.refresh),
+                onPressed: () {
+                  var sortId = widget.sorts[_tabController.index].id;
+                  var controller = Get.find<PopularVideoController>(tag: sortId.name);
+                  controller.fetchVideos(refresh: true);
+                },
+              ),
               IconButton(
                 icon: const Icon(Icons.filter_list),
                 onPressed: _openParamsModal,
@@ -237,28 +246,14 @@ class _PopularVideoListPageState extends State<PopularVideoListPage>
           ),
           // 使用 Expanded 包裹 EasyRefresh
           Expanded(
-            child: EasyRefresh(
-              onRefresh: () async {
-                var sortId = widget.sorts[_tabController.index].id;
-                var controller =
-                    Get.find<PopularVideoController>(tag: sortId.name);
-                await controller.fetchVideos(refresh: true);
-              },
-              onLoad: () async {
-                var sortId = widget.sorts[_tabController.index].id;
-                var controller =
-                    Get.find<PopularVideoController>(tag: sortId.name);
-                await controller.fetchVideos();
-              },
-              child: TabBarView(
-                controller: _tabController,
-                children: widget.sorts.map((sort) {
-                  return KeepAliveTabView(
-                    controller:
-                        Get.find<PopularVideoController>(tag: sort.id.name),
-                  );
-                }).toList(),
-              ),
+            child: TabBarView(
+              controller: _tabController,
+              children: widget.sorts.map((sort) {
+                return KeepAliveTabView(
+                  controller:
+                      Get.find<PopularVideoController>(tag: sort.id.name),
+                );
+              }).toList(),
             ),
           ),
         ],
@@ -290,63 +285,43 @@ class _KeepAliveTabViewState extends State<KeepAliveTabView>
       builder: (context, constraints) {
         final int columns = _calculateColumns(constraints.maxWidth);
 
-        return Obx(
-          () {
-            if (widget.controller.errorWidget.value != null) {
-              return widget.controller.errorWidget.value!;
-            } else if (widget.controller.isLoading.value &&
-                widget.controller.videos.isEmpty) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (!widget.controller.isInit.value &&
-                widget.controller.videos.isEmpty) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(
-                    Icons.videocam_off,
-                    size: 80,
-                    color: Colors.grey,
-                  ),
-                  const SizedBox(height: 16),
-                  const Text(
-                    '没有内容哦',
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.grey,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      widget.controller.fetchVideos(refresh: true);
-                    },
-                    icon: const Icon(Icons.refresh),
-                    label: const Text('刷新'),
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 24, vertical: 12),
-                      textStyle: const TextStyle(fontSize: 16),
-                    ),
-                  ),
-                ],
-              );
-            } else {
-              return CustomScrollView(
-                slivers: [
-                  SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      (context, index) {
-                        return _buildRow(index, columns, constraints.maxWidth,
-                            widget.controller);
-                      },
-                      childCount:
-                          (widget.controller.videos.length / columns).ceil(),
-                    ),
-                  ),
-                ],
-              );
+        return NotificationListener<ScrollNotification>(
+          onNotification: (scrollInfo) {
+            if (!widget.controller.isLoading.value &&
+                scrollInfo.metrics.pixels >= scrollInfo.metrics.maxScrollExtent - 100 &&
+                !widget.controller.isInit.value) {
+              widget.controller.fetchVideos();
             }
+            return false;
           },
+          child: Obx(
+            () {
+              if (widget.controller.errorWidget.value != null) {
+                return widget.controller.errorWidget.value!;
+              } else if (widget.controller.isLoading.value &&
+                  widget.controller.videos.isEmpty) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (!widget.controller.isInit.value &&
+                  widget.controller.videos.isEmpty) {
+                return _buildEmptyView();
+              } else {
+                final itemCount = (widget.controller.videos.length / columns).ceil() + 1;
+                
+                return ListView.builder(
+                  padding: EdgeInsets.zero,
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  itemCount: itemCount,
+                  itemBuilder: (context, index) {
+                    if (index < itemCount - 1) {
+                      return _buildRow(index, columns, constraints.maxWidth, widget.controller);
+                    } else {
+                      return _buildLoadMoreIndicator();
+                    }
+                  },
+                );
+              }
+            },
+          ),
         );
       },
     );
@@ -383,5 +358,59 @@ class _KeepAliveTabViewState extends State<KeepAliveTabView>
     if (availableWidth > 600) return 3;
     if (availableWidth > 300) return 2;
     return 1;
+  }
+
+  // 添加加载更多指示器组件
+  Widget _buildLoadMoreIndicator() {
+    return Obx(() => widget.controller.hasMore.value
+        ? const Padding(
+            padding: EdgeInsets.symmetric(vertical: 16.0),
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          )
+        : const Padding(
+            padding: EdgeInsets.symmetric(vertical: 16.0),
+            child: Center(
+              child: Text(
+                '没有更多视频了',
+                style: TextStyle(color: Colors.grey),
+              ),
+            ),
+          ));
+  }
+
+  // 添加空视图组件
+  Widget _buildEmptyView() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Icon(
+          Icons.videocam_off,
+          size: 80,
+          color: Colors.grey,
+        ),
+        const SizedBox(height: 16),
+        const Text(
+          '没有内容哦',
+          style: TextStyle(
+            fontSize: 18,
+            color: Colors.grey,
+          ),
+        ),
+        const SizedBox(height: 16),
+        ElevatedButton.icon(
+          onPressed: () {
+            widget.controller.fetchVideos(refresh: true);
+          },
+          icon: const Icon(Icons.refresh),
+          label: const Text('刷新'),
+          style: ElevatedButton.styleFrom(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+            textStyle: const TextStyle(fontSize: 16),
+          ),
+        ),
+      ],
+    );
   }
 }
