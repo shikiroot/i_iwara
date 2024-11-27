@@ -49,10 +49,10 @@ class AppService extends GetxService {
 
     if (globalDrawerKey.currentState!.isDrawerOpen) {
       globalDrawerKey.currentState!.openEndDrawer();
-      LogUtils.i('关闭Drawer', 'AppService');
+      LogUtils.d('关闭Drawer', 'AppService');
     } else {
       globalDrawerKey.currentState!.openDrawer();
-      LogUtils.i('打开Drawer', 'AppService');
+      LogUtils.d('打开Drawer', 'AppService');
     }
   }
 
@@ -65,37 +65,37 @@ class AppService extends GetxService {
   }
 
   static void tryPop() {
-    LogUtils.i('tryPop', 'AppService');
+    LogUtils.d('tryPop', 'AppService');
     if (AppService.globalDrawerKey.currentState!.isDrawerOpen) {
       AppService.globalDrawerKey.currentState!.openEndDrawer();
-      LogUtils.i('关闭Drawer', 'AppService');
+      LogUtils.d('关闭Drawer', 'AppService');
     } else {
       GetDelegate? homeDele = Get.nestedKey(Routes.HOME);
       GetDelegate? rootDele = Get.nestedKey(null);
 
       if (homeDele?.canBack ?? false) {
         homeDele?.back();
-        LogUtils.i('关闭homeDele?.canBack', 'AppService');
+        LogUtils.d('关闭homeDele?.canBack', 'AppService');
       } else if (homeDele?.navigatorKey.currentState?.canPop() ?? false) {
         homeDele?.navigatorKey.currentState?.pop();
-        LogUtils.i(
+        LogUtils.d(
             '关闭homeDele?.navigatorKey.currentState?.canPop()', 'AppService');
       } else if (rootDele?.canBack ?? false) {
         rootDele?.back();
-        LogUtils.i('关闭rootDele?.canBack', 'AppService');
+        LogUtils.d('关闭rootDele?.canBack', 'AppService');
       } else if (Get.isDialogOpen ?? false) {
         Get.closeAllDialogs();
-        LogUtils.i('关闭Get.isDialogOpen', 'AppService');
+        LogUtils.d('关闭Get.isDialogOpen', 'AppService');
       } else if (Get.isBottomSheetOpen ?? false) {
         Get.closeAllBottomSheets();
-        LogUtils.i('关闭Get.isBottomSheetOpen', 'AppService');
+        LogUtils.d('关闭Get.isBottomSheetOpen', 'AppService');
       } else if (Get.nestedKey(null)?.canBack ?? false) {
         Get.nestedKey(null)?.back();
-        LogUtils.i('关闭Get.nestedKey(null)?.canBack', 'AppService');
+        LogUtils.d('关闭Get.nestedKey(null)?.canBack', 'AppService');
       } else {
         // 退出应用
         SystemNavigator.pop();
-        LogUtils.i('关闭Get.back()', 'AppService');
+        LogUtils.d('关闭Get.back()', 'AppService');
       }
     }
   }

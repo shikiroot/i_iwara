@@ -66,6 +66,9 @@ class GlobalDrawerColumns extends StatelessWidget {
           Get.toNamed(
             Routes.LOGIN,
           );
+        } else {
+          AppService.switchGlobalDrawer();
+          NaviService.navigateToAuthorProfilePage(userService.currentUser.value!.username);
         }
       },
       child: Container(

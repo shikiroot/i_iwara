@@ -108,6 +108,16 @@ class ApiConstants {
   static String videoLikes(String videoId) => '/video/$videoId/likes';
 
   static String imageLikes(String imageId) => '/image/$imageId/likes';
+
+  static String lightVideo(String videoId) => '/light/video/$videoId';
+
+  static String lightForum(String forumId) => '/light/forum/$forumId';
+
+  static String lightImage(String imageId) => '/light/image/$imageId';
+
+  static String lightProfile(String userId) => '/light/profile/$userId';
+
+  static String lightPlaylist(String playlistId) => '/light/playlist/$playlistId';
 }
 
 // 视频接口的排序方式
