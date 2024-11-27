@@ -2,6 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:i_iwara/app/models/dto/user_dto.dart';
+import 'package:i_iwara/app/services/user_preference_service.dart';
 import 'package:i_iwara/app/ui/pages/author_profile/widgets/author_profile_skeleton_widget.dart';
 import 'package:i_iwara/app/ui/pages/author_profile/widgets/profile_image_model_tab_list_widget.dart';
 import 'package:i_iwara/app/ui/pages/author_profile/widgets/profile_video_tab_list_widget.dart';
@@ -30,6 +32,8 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
     with TickerProviderStateMixin {
   late final AuthorProfileController profileController;
   final UserService userService = Get.find<UserService>();
+  final UserPreferenceService userPreferenceService =
+      Get.find<UserPreferenceService>();
   late TabController primaryTC;
   late TabController videoSecondaryTC;
   late TabController imageSecondaryTC;
@@ -391,7 +395,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                                                   .currentUser.value?.id ==
                                               profileController
                                                   .author.value?.id) {
-                                            return SizedBox.shrink();
+                                            return const SizedBox.shrink();
                                           }
 
                                           // 处于代办状态
@@ -402,7 +406,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                                               highlightColor: Colors.grey[100]!,
                                               child: ElevatedButton(
                                                 onPressed: () {},
-                                                child: Text('加载中'),
+                                                child: const Text('加载中'),
                                               ),
                                             );
                                           } else if (profileController
@@ -426,6 +430,84 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                                               child: Text('关注'),
                                             );
                                           }
+                                        }),
+                                        // 特别关注
+                                        Obx(() {
+                                          // 如果是本人，则不显示按钮
+                                          if (userService
+                                                  .currentUser.value?.id ==
+                                              profileController
+                                                  .author.value?.id) {
+                                            return const SizedBox.shrink();
+                                          }
+
+                                          // 判断author是否存在
+                                          if (profileController.author.value == null) {
+                                            return const SizedBox.shrink();
+                                          }
+
+                                          UserDTO? likedUser =
+                                              userPreferenceService
+                                                  .getLikedUser(
+                                                      profileController.author
+                                                              .value?.id ??
+                                                          '');
+
+                                          if (likedUser != null) {
+                                            return ElevatedButton(
+                                              onPressed: () {
+                                                // 取消特别关注
+                                                userPreferenceService
+                                                    .removeLikedUser(UserDTO(
+                                                  id: profileController
+                                                          .author.value?.id ??
+                                                      '',
+                                                  name: profileController
+                                                          .author.value?.name ??
+                                                      '',
+                                                  username: profileController
+                                                          .author
+                                                          .value
+                                                          ?.username ??
+                                                      '',
+                                                  avatarUrl: profileController
+                                                          .author
+                                                          .value
+                                                          ?.avatar
+                                                          ?.avatarUrl ??
+                                                      '',
+                                                ));
+                                              },
+                                              child: const Text('已特别关注'),
+                                            );
+                                          } else {
+                                            return ElevatedButton(
+                                              onPressed: () {
+                                                // 特别关注
+                                                userPreferenceService
+                                                    .addLikedUser(UserDTO(
+                                                  id: profileController
+                                                          .author.value?.id ??
+                                                      '',
+                                                  name: profileController
+                                                          .author.value?.name ??
+                                                      '',
+                                                  username: profileController
+                                                          .author
+                                                          .value
+                                                          ?.username ??
+                                                      '',
+                                                  avatarUrl: profileController
+                                                          .author
+                                                          .value
+                                                          ?.avatar
+                                                          ?.avatarUrl ??
+                                                      '',
+                                                ));
+                                              },
+                                              child: const Text('特别关注'),
+                                            );
+                                          }
                                         })
                                       ],
                                     )
@@ -440,12 +522,12 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                       child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16.0),
                           child: MediaDescriptionWidget(
-                              defaultMaxLines: 1,
-                              description:
-                                  profileController.authorDescription.value,
-                              isDescriptionExpanded:
-                                  profileController.isDescriptionExpanded,
-                              )),
+                            defaultMaxLines: 1,
+                            description:
+                                profileController.authorDescription.value,
+                            isDescriptionExpanded:
+                                profileController.isDescriptionExpanded,
+                          )),
                     ),
                     SliverToBoxAdapter(
                       child: Container(
@@ -511,12 +593,11 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                               : const SizedBox.shrink()),
                           Obx(() => profileController.author.value?.id != null
                               ? ProfileImageModelTabListWidget(
-                              key: const Key('image'),
-                              userId: profileController.author.value!.id,
-                              tabKey: '图库',
-                              tc: imageSecondaryTC,
-                              onFetchFinished: ({int? count}) {
-                              })
+                                  key: const Key('image'),
+                                  userId: profileController.author.value!.id,
+                                  tabKey: '图库',
+                                  tc: imageSecondaryTC,
+                                  onFetchFinished: ({int? count}) {})
                               : const SizedBox.shrink()),
                         ],
                       ),

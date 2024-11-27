@@ -46,7 +46,10 @@ class ApiService extends GetxService {
     // 添加拦截器
     _dio.interceptors.add(d_dio.InterceptorsWrapper(
       onRequest: (options, handler) {
-        if (!CommonConstants.enableR18) {
+        if (CommonConstants.enableR18) {
+          // 移除rating参数
+          options.queryParameters.remove('rating');
+        } else {
           options.queryParameters = {
             ...options.queryParameters,
             'rating': MediaRating.GENERAL.value

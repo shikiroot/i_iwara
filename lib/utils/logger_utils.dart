@@ -23,21 +23,26 @@ class LogUtils {
     Logger.level = Level.debug;
   }
 
+  static String _getTimeString() {
+    return DateTime.now().toString().substring(0, 19);
+  }
+
   static void d(String message, [String tag = _TAG]) {
-    _logger.d("[$tag] $message");
+    _logger.d("[${_getTimeString()}][$tag] $message");
   }
 
   static void i(String message, [String tag = _TAG]) {
-    _logger.i("[$tag] $message");
+    _logger.i("[${_getTimeString()}][$tag] $message");
   }
 
   static void w(String message, [String tag = _TAG]) {
-    _logger.w("[$tag] $message");
+    _logger.w("[${_getTimeString()}][$tag] $message");
   }
 
   static void e(String message,
       {String tag = _TAG, Object? error, StackTrace? stackTrace}) {
-    _logger.e("[$tag] $message", stackTrace: stackTrace, error: error);
+    _logger.e("[${_getTimeString()}][$tag] $message",
+        stackTrace: stackTrace, error: error);
   }
 
 }

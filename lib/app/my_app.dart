@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:i_iwara/app/routes/app_routes.dart';
 import 'package:i_iwara/app/services/app_service.dart';
+import 'package:i_iwara/app/services/config_service.dart';
 import 'package:i_iwara/app/ui/pages/home/home_navigation_layout.dart';
 import 'package:i_iwara/app/ui/pages/login/login_page.dart';
 import 'package:i_iwara/app/ui/pages/settings/player_settings_page.dart';
@@ -120,10 +121,12 @@ class MyAppLayout extends StatefulWidget {
 
 class _MyAppLayoutState extends State<MyAppLayout> with WidgetsBindingObserver {
   bool _showPrivacyOverlay = false;
+  late ConfigService _configService;
 
   @override
   void initState() {
     super.initState();
+    _configService = Get.find<ConfigService>();
     WidgetsBinding.instance.addObserver(this);
   }
 
@@ -135,33 +138,34 @@ class _MyAppLayoutState extends State<MyAppLayout> with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
+    bool activeBackgroundPrivacyMode = _configService[ConfigService.ACTIVE_BACKGROUND_PRIVACY_MODE];
     switch (state) {
       case AppLifecycleState.resumed:
-        LogUtils.d('应用resumed', 'AppLifecycleState');
-        setState(() {
-          _showPrivacyOverlay = false;
-        });
+        if (_showPrivacyOverlay) {
+          setState(() {
+            _showPrivacyOverlay = false;
+          });
+        }
         break;
       case AppLifecycleState.inactive:
-        LogUtils.d('应用inactive', 'AppLifecycleState');
-        setState(() {
-          _showPrivacyOverlay = true;
-        });
+        if (activeBackgroundPrivacyMode && !_showPrivacyOverlay) {
+          setState(() {
+            _showPrivacyOverlay = true;
+          });
+        }
         break;
       case AppLifecycleState.paused:
-        LogUtils.d('应用paused', 'AppLifecycleState');
         break;
       case AppLifecycleState.hidden:
-        LogUtils.d('应用hidden', 'AppLifecycleState');
-        setState(() {
-          _showPrivacyOverlay = true;
-        });
+        if (activeBackgroundPrivacyMode && !_showPrivacyOverlay) {
+          setState(() {
+            _showPrivacyOverlay = true;
+          });
+        }
         break;
       case AppLifecycleState.detached:
-        LogUtils.d('应用detached', 'AppLifecycleState');
         break;
       default:
-        LogUtils.d('应用default', 'AppLifecycleState');
         break;
     }
   }

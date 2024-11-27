@@ -25,6 +25,8 @@ class ConfigService extends GetxService {
   static const String PROXY_URL = 'proxy_url'; // 代理地址
   static const String RENDER_VERTICAL_VIDEO_IN_VERTICAL_SCREEN =
       'render_vertical_video_in_vertical_screen'; // 在竖屏中渲染竖向视频
+  static const String ACTIVE_BACKGROUND_PRIVACY_MODE =
+      'active_background_privacy_mode'; // 激活后台隐私模式
 
   // 所有配置项的 Map
   final settings = <String, dynamic>{
@@ -43,6 +45,7 @@ class ConfigService extends GetxService {
     USE_PROXY: false.obs,
     PROXY_URL: ''.obs,
     RENDER_VERTICAL_VIDEO_IN_VERTICAL_SCREEN: true.obs,
+    ACTIVE_BACKGROUND_PRIVACY_MODE: false.obs,
   }.obs;
 
   // 初始化配置

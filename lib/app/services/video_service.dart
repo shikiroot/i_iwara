@@ -22,6 +22,7 @@ class VideoService extends GetxService {
   /// - `rating` 内容评级。 general, ecchi
   /// - `user` 用户ID。
   /// - `exclude` 排除的视频ID。
+  /// - `subscribed` 是否订阅。
   /// [page] 当前页码。
   /// [limit] 每页数据量。
   ///

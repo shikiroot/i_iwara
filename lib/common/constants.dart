@@ -32,7 +32,7 @@ class CommonConstants {
   static String defaultThumbnailUrl =
       '$iwaraBaseUrl/images/default-thumbnail.jpg';
 
-  static var enableR18 = false;
+  static bool enableR18 = true;
 
   static String? applicationName = 'i_iwara';
 

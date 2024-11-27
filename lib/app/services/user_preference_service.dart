@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:get/get.dart';
+import 'package:i_iwara/app/models/dto/user_dto.dart';
 import 'package:i_iwara/app/models/tag.model.dart';
 import 'package:i_iwara/app/repositories/commons_repository.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
@@ -14,14 +15,14 @@ class UserPreferenceService extends GetxService {
   // 视频搜索标签
   final RxList<Tag> videoSearchTagHistory = <Tag>[].obs;
 
-  // 用户喜欢的作者
-  final RxSet<String> userLikeUsernames = <String>{}.obs;
+  // 喜欢的作者
+  final RxSet<UserDTO> likedUsers = <UserDTO>{}.obs;
 
   final int maxSearchRecordCount = 20;
 
   final String _videoSearchHistoryKey = 'videoSearchHistory';
   final String _videoSearchTagHistoryKey = 'videoSearchTagHistory';
-  final String _userLikeUsernamesKey = 'userLikeUsernames';
+  final String _likedUsers = 'likedUsers';
 
   Future<UserPreferenceService> init() async {
     await _loadUserPreferences();
@@ -50,24 +51,27 @@ class UserPreferenceService extends GetxService {
     await _loadVideoSearchTagHistory();
   }
 
-  // 加载用户喜欢的作者
+  // 加载喜欢的用户
   Future<void> _loadUserLikeUsernames() async {
     try {
-      final String? data = await CommonsRepository.instance.getData(_userLikeUsernamesKey);
+      final String? data =
+          await CommonsRepository.instance.getData(_likedUsers);
       if (data != null && data.isNotEmpty) {
         List<dynamic> list = jsonDecode(data);
-        userLikeUsernames.addAll(list.cast<String>());
+        likedUsers.addAll(
+            list.map((e) => UserDTO.fromJson(e as Map<String, dynamic>)));
       }
     } catch (e) {
-      LogUtils.e('加载用户喜欢的作者失败', tag: _TAG, error: e);
-      await CommonsRepository.instance.deleteData(_userLikeUsernamesKey);
+      LogUtils.e('加载喜欢的用户失败', tag: _TAG, error: e);
+      await CommonsRepository.instance.deleteData(_likedUsers);
     }
   }
 
   // 加载视频搜索历史
   Future<void> _loadVideoSearchHistory() async {
     try {
-      final String? data = await CommonsRepository.instance.getData(_videoSearchHistoryKey);
+      final String? data =
+          await CommonsRepository.instance.getData(_videoSearchHistoryKey);
       if (data != null && data.isNotEmpty) {
         List<dynamic> list = jsonDecode(data);
         videoSearchHistory.addAll(list.cast<String>());
@@ -81,10 +85,12 @@ class UserPreferenceService extends GetxService {
   // 加载视频搜索标签
   Future<void> _loadVideoSearchTagHistory() async {
     try {
-      final String? data = await CommonsRepository.instance.getData(_videoSearchTagHistoryKey);
+      final String? data =
+          await CommonsRepository.instance.getData(_videoSearchTagHistoryKey);
       if (data != null && data.isNotEmpty) {
         List<dynamic> list = jsonDecode(data);
-        List<Tag> tags = list.map((e) => Tag.fromJson(e as Map<String, dynamic>)).toList();
+        List<Tag> tags =
+            list.map((e) => Tag.fromJson(e as Map<String, dynamic>)).toList();
         videoSearchTagHistory.addAll(tags);
       }
     } catch (e) {
@@ -143,7 +149,8 @@ class UserPreferenceService extends GetxService {
     }
     videoSearchTagHistory.insert(0, tag);
     try {
-      List<Map<String, dynamic>> tagList = videoSearchTagHistory.map((e) => e.toJson()).toList();
+      List<Map<String, dynamic>> tagList =
+          videoSearchTagHistory.map((e) => e.toJson()).toList();
       await CommonsRepository.instance.setData(
         _videoSearchTagHistoryKey,
         jsonEncode(tagList),
@@ -169,7 +176,8 @@ class UserPreferenceService extends GetxService {
   // 保存视频搜索标签到数据库
   Future<void> _saveVideoSearchTagHistory() async {
     try {
-      List<Map<String, dynamic>> tagList = videoSearchTagHistory.map((e) => e.toJson()).toList();
+      List<Map<String, dynamic>> tagList =
+          videoSearchTagHistory.map((e) => e.toJson()).toList();
       await CommonsRepository.instance.setData(
         _videoSearchTagHistoryKey,
         jsonEncode(tagList),
@@ -189,43 +197,70 @@ class UserPreferenceService extends GetxService {
     }
   }
 
-  // 添加用户喜欢的作者
-  Future<void> addUserLikeUsername(String username) async {
-    if (!userLikeUsernames.contains(username)) {
-      userLikeUsernames.add(username);
+  // 添加喜欢的用户
+  Future<void> addLikedUser(UserDTO user) async {
+    // 通过id搜索
+    if (!likedUsers.any((element) => element.id == user.id)) {
+      likedUsers.add(user);
       try {
         await CommonsRepository.instance.setData(
-          _userLikeUsernamesKey,
-          jsonEncode(userLikeUsernames.toList()),
+          _likedUsers,
+          jsonEncode(likedUsers.toList()),
         );
       } catch (e) {
-        LogUtils.e('保存用户喜欢的作者失败', tag: _TAG, error: e);
+        LogUtils.e('保存喜欢的用户失败', tag: _TAG, error: e);
       }
     }
   }
 
-  // 删除用户喜欢的作者
-  Future<void> removeUserLikeUsername(String username) async {
-    if (userLikeUsernames.contains(username)) {
-      userLikeUsernames.remove(username);
+  // 更新喜欢的用户
+  Future<void> updateLikedUser(UserDTO user) async {
+    if (likedUsers.any((element) => element.id == user.id)) {
+      likedUsers.removeWhere((element) => element.id == user.id);
+      likedUsers.add(user);
       try {
         await CommonsRepository.instance.setData(
-          _userLikeUsernamesKey,
-          jsonEncode(userLikeUsernames.toList()),
+          _likedUsers,
+          jsonEncode(likedUsers.toList()),
         );
       } catch (e) {
-        LogUtils.e('删除用户喜欢的作者失败', tag: _TAG, error: e);
+        LogUtils.e('更新喜欢的用户失败', tag: _TAG, error: e);
       }
     }
   }
 
-  // 清空用户喜欢的作者
-  Future<void> clearUserLikeUsernames() async {
-    userLikeUsernames.clear();
+  // 移除喜欢的用户
+  Future<void> removeLikedUser(UserDTO user) async {
+    if (likedUsers.any((element) => element.id == user.id)) {
+      likedUsers.removeWhere((element) => element.id == user.id);
+      try {
+        await CommonsRepository.instance.setData(
+          _likedUsers,
+          jsonEncode(likedUsers.toList()),
+        );
+      } catch (e) {
+        LogUtils.e('删除喜欢的用户失败', tag: _TAG, error: e);
+      }
+    }
+  }
+
+  // 清空所有喜欢的用户
+  Future<void> clearLikedUser() async {
+    likedUsers.clear();
     try {
-      await CommonsRepository.instance.deleteData(_userLikeUsernamesKey);
+      await CommonsRepository.instance.deleteData(_likedUsers);
     } catch (e) {
-      LogUtils.e('清空用户喜欢的作者失败', tag: _TAG, error: e);
+      LogUtils.e('清空喜欢的用户失败', tag: _TAG, error: e);
     }
   }
+
+  // 获取喜欢的用户
+  UserDTO? getLikedUser(String id) {
+    try {
+      return likedUsers.firstWhere((element) => element.id == id);
+    } catch (e) {
+      return null;
+    }
+  }
+
 }
