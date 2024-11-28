@@ -21,6 +21,8 @@ abstract class Routes {
   static const SIGN_IN = _Paths.SIGN_IN;
 
   static const ROOT = _Paths.ROOT;
+
+  static const SEARCH_RESULT = _Paths.SEARCH_RESULT;
 }
 
 abstract class _Paths {
@@ -35,6 +37,7 @@ abstract class _Paths {
   static const THEME_SETTINGS_PAGE = '/theme_settings_page';
   static const AUTHOR_PROFILE = '/author_profile/:userName';
   static const NOT_FOUND = '/not_found';
+  static const SEARCH_RESULT = '/search_result';
 
   static const GALLERY = '/gallery';
   static const GALLERY_DETAIL = '/gallery_detail/:galleryId';

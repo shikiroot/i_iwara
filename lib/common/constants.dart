@@ -118,6 +118,8 @@ class ApiConstants {
   static String lightProfile(String userId) => '/light/profile/$userId';
 
   static String lightPlaylist(String playlistId) => '/light/playlist/$playlistId';
+
+  static String search() => '/search';
 }
 
 // 视频接口的排序方式

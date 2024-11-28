@@ -1,15 +1,20 @@
 import 'package:get/get.dart';
 import 'package:i_iwara/app/models/api_result.model.dart';
+import 'package:i_iwara/app/models/dto/user_dto.dart';
 import 'package:i_iwara/app/models/image.model.dart';
 import 'package:i_iwara/app/services/gallery_service.dart';
+import 'package:i_iwara/app/services/user_preference_service.dart';
+import 'package:i_iwara/common/constants.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
 
 import '../../../../../common/enums/media_enums.dart';
+import '../../../../models/user.model.dart';
 import '../../video_detail/controllers/related_media_controller.dart';
 
 class GalleryDetailController extends GetxController {
   final String imageModelId;
   final GalleryService _galleryService = Get.find();
+  final UserPreferenceService _userPreferenceService = Get.find();
 
   GalleryDetailController(this.imageModelId);
 
@@ -42,6 +47,21 @@ class GalleryDetailController extends GetxController {
         Get.snackbar('错误', res.message);
         return;
       }
+
+      // 尝试更新作者信息
+      try {
+        User author = res.data!.user!;
+        UserDTO userDTO = UserDTO(
+          id: author.id,
+          username: author.username,
+          name: author.name,
+          avatarUrl: author.avatar?.avatarUrl ?? CommonConstants.defaultAvatarUrl
+        );
+        _userPreferenceService.updateLikedUser(userDTO);
+      } catch (e) {
+        LogUtils.e('加载作者信息失败', tag: 'GalleryDetailController');
+      }
+
       otherAuthorzImageModelsController ??= OtherAuthorzMediasController(
         mediaId: imageModelId,
         userId: res.data!.user!.id,

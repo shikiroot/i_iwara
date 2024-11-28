@@ -6,6 +6,7 @@ import 'package:i_iwara/utils/logger_utils.dart';
 import '../routes/app_routes.dart';
 import '../ui/pages/author_profile/author_profile_page.dart';
 import '../ui/pages/gallery_detail/gallery_detail_page.dart';
+import '../ui/pages/search/search_result.dart';
 
 class AppService extends GetxService {
   // 默认标题栏高度
@@ -70,32 +71,32 @@ class AppService extends GetxService {
       AppService.globalDrawerKey.currentState!.openEndDrawer();
       LogUtils.d('关闭Drawer', 'AppService');
     } else {
-      GetDelegate? homeDele = Get.nestedKey(Routes.HOME);
-      GetDelegate? rootDele = Get.nestedKey(null);
-
-      if (homeDele?.canBack ?? false) {
-        homeDele?.back();
-        LogUtils.d('关闭homeDele?.canBack', 'AppService');
-      } else if (homeDele?.navigatorKey.currentState?.canPop() ?? false) {
-        homeDele?.navigatorKey.currentState?.pop();
-        LogUtils.d(
-            '关闭homeDele?.navigatorKey.currentState?.canPop()', 'AppService');
-      } else if (rootDele?.canBack ?? false) {
-        rootDele?.back();
-        LogUtils.d('关闭rootDele?.canBack', 'AppService');
-      } else if (Get.isDialogOpen ?? false) {
+      // 先判断是否有打开的对话框或底部表单
+      if (Get.isDialogOpen ?? false) {
         Get.closeAllDialogs();
         LogUtils.d('关闭Get.isDialogOpen', 'AppService');
       } else if (Get.isBottomSheetOpen ?? false) {
         Get.closeAllBottomSheets();
         LogUtils.d('关闭Get.isBottomSheetOpen', 'AppService');
-      } else if (Get.nestedKey(null)?.canBack ?? false) {
-        Get.nestedKey(null)?.back();
-        LogUtils.d('关闭Get.nestedKey(null)?.canBack', 'AppService');
       } else {
-        // 退出应用
-        SystemNavigator.pop();
-        LogUtils.d('关闭Get.back()', 'AppService');
+        GetDelegate? homeDele = Get.nestedKey(Routes.HOME);
+        GetDelegate? rootDele = Get.nestedKey(null);
+
+        if (homeDele?.canBack ?? false) {
+          homeDele?.back();
+          LogUtils.d('关闭homeDele?.canBack', 'AppService');
+        } else if (homeDele?.navigatorKey.currentState?.canPop() ?? false) {
+          homeDele?.navigatorKey.currentState?.pop();
+          LogUtils.d(
+              '关闭homeDele?.navigatorKey.currentState?.canPop()', 'AppService');
+        } else if (rootDele?.canBack ?? false) {
+          rootDele?.back();
+          LogUtils.d('关闭rootDele?.canBack', 'AppService');
+        } else {
+          // 退出应用
+          SystemNavigator.pop();
+          LogUtils.d('关闭Get.back()', 'AppService');
+        }
       }
     }
   }
@@ -163,5 +164,27 @@ class NaviService {
   // SignInPage()
   static void navigateToSignInPage() {
     Get.toNamed(Routes.SIGN_IN);
+  }
+
+  static void toSearchPage({required String searchInfo, required String segment}) {
+    AppService.homeNavigatorKey.currentState?.push(
+      PageRouteBuilder(
+        settings: const RouteSettings(name: Routes.SEARCH_RESULT),
+        pageBuilder: (context, animation, secondaryAnimation) {
+          return SearchResult();
+        },
+        transitionDuration: const Duration(milliseconds: 200),
+        // 从右到左的原生动画
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return SlideTransition(
+            position: Tween<Offset>(
+              begin: const Offset(1, 0),
+              end: Offset.zero,
+            ).animate(animation),
+            child: child,
+          );
+        },
+      )
+    );
   }
 }

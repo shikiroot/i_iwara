@@ -182,9 +182,13 @@ class _PopularVideoListPageState extends State<PopularVideoListPage>
                     prefixIcon: Icon(Icons.search),
                   ),
                   onTap: () {
-                    Get.dialog(const SearchDialog(
+                    Get.dialog(SearchDialog(
                       initialSearch: '',
                       initialSegment: SearchSegment.video,
+                      onSearch: (searchInfo, segment) {
+                        NaviService.toSearchPage(
+                            searchInfo: searchInfo, segment: segment);
+                      },
                     ));
                   },
                 ),

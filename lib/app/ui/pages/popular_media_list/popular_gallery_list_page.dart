@@ -40,7 +40,8 @@ class _PopularGalleryListPageState extends State<PopularGalleryListPage>
 
     for (var sort in widget.sorts) {
       _tabKeys.add(GlobalKey());
-      Get.put(PopularGalleryController(sortId: sort.id.name), tag: sort.id.name);
+      Get.put(PopularGalleryController(sortId: sort.id.name),
+          tag: sort.id.name);
     }
 
     // 取出初始标签页的controller
@@ -180,7 +181,14 @@ class _PopularGalleryListPageState extends State<PopularGalleryListPage>
                     prefixIcon: Icon(Icons.search),
                   ),
                   onTap: () {
-                    Get.dialog(const SearchDialog(initialSearch: '', initialSegment: SearchSegment.image,));
+                    Get.dialog(SearchDialog(
+                      initialSearch: '',
+                      initialSegment: SearchSegment.image,
+                      onSearch: (searchInfo, segment) {
+                        NaviService.toSearchPage(
+                            searchInfo: searchInfo, segment: segment);
+                      },
+                    ));
                   },
                 ),
               ),

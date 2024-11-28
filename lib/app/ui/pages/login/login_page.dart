@@ -22,32 +22,35 @@ class _LoginPageState extends State<LoginPage>
   final AuthService _authService = Get.find<AuthService>();
   final UserService _userService = Get.find<UserService>();
 
-  // Controllers for Login
+  // 登录表单控制器
   final TextEditingController _loginEmailController = TextEditingController();
   final TextEditingController _loginPasswordController =
       TextEditingController();
 
-  // Controllers for Register
+  // 注册表单控制器
   final TextEditingController _registerEmailController =
       TextEditingController();
   final TextEditingController _captchaController = TextEditingController();
 
-  // Form Keys
+  // 表单键
   final GlobalKey<FormState> _loginFormKey = GlobalKey<FormState>();
   final GlobalKey<FormState> _registerFormKey = GlobalKey<FormState>();
 
-  // Loading States
-  final RxBool _isLoading = false.obs;
-  final RxBool _isRegistering = false.obs;
-  final RxBool _isCaptchaLoading = false.obs;
+  // 加载状态
+  bool _isLoading = false;
+  bool _isRegistering = false;
+  bool _isCaptchaLoading = false;
 
   late TabController _tabController;
 
   final Rxn<Captcha?> _captcha = Rxn<Captcha>();
 
-  // Focus Nodes
+  // 焦点节点
   final FocusNode _loginPasswordFocus = FocusNode();
   final FocusNode _registerCaptchaFocus = FocusNode();
+
+  // 密码可见性切换
+  bool _isPasswordVisible = false;
 
   @override
   void initState() {
@@ -59,14 +62,16 @@ class _LoginPageState extends State<LoginPage>
       }
     });
 
-    // Optionally fetch captcha if initial tab is registration
+    // 如果初始标签是注册，则可选地获取验证码
     if (_tabController.index == 1) {
       _fetchCaptcha();
     }
   }
 
   void _fetchCaptcha() async {
-    _isCaptchaLoading.value = true;
+    setState(() {
+      _isCaptchaLoading = true;
+    });
     try {
       ApiResult<Captcha> res = await _authService.fetchCaptcha();
       if (res.isSuccess) {
@@ -75,7 +80,9 @@ class _LoginPageState extends State<LoginPage>
         Get.snackbar('错误', res.message);
       }
     } finally {
-      _isCaptchaLoading.value = false;
+      setState(() {
+        _isCaptchaLoading = false;
+      });
     }
   }
 
@@ -166,11 +173,21 @@ class _LoginPageState extends State<LoginPage>
                         decoration: InputDecoration(
                           labelText: '密码',
                           prefixIcon: const Icon(Icons.lock),
+                          suffixIcon: IconButton(
+                            icon: Icon(_isPasswordVisible
+                                ? Icons.visibility
+                                : Icons.visibility_off),
+                            onPressed: () {
+                              setState(() {
+                                _isPasswordVisible = !_isPasswordVisible;
+                              });
+                            },
+                          ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
-                        obscureText: true,
+                        obscureText: !_isPasswordVisible,
                         textInputAction: TextInputAction.done,
                         focusNode: _loginPasswordFocus,
                         validator: (value) {
@@ -185,33 +202,31 @@ class _LoginPageState extends State<LoginPage>
                         onFieldSubmitted: (_) => _login(),
                       ),
                       const SizedBox(height: 24),
-                      Obx(() => ElevatedButton(
-                            onPressed: _isLoading.value
-                                ? null
-                                : () {
-                                    if (_loginFormKey.currentState!
-                                        .validate()) {
-                                      _login();
-                                    }
-                                  },
-                            style: ElevatedButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(vertical: 16),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                            ),
-                            child: _isLoading.value
-                                ? const SizedBox(
-                                    width: 24,
-                                    height: 24,
-                                    child: CircularProgressIndicator(
-                                      color: Colors.white,
-                                      strokeWidth: 2,
-                                    ),
-                                  )
-                                : Text('登录',
-                                    style: const TextStyle(fontSize: 16)),
-                          )),
+                      ElevatedButton(
+                        onPressed: _isLoading
+                            ? null
+                            : () {
+                                if (_loginFormKey.currentState!.validate()) {
+                                  _login();
+                                }
+                              },
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        child: _isLoading
+                            ? const SizedBox(
+                                width: 24,
+                                height: 24,
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : Text('登录', style: const TextStyle(fontSize: 16)),
+                      ),
                     ],
                   ),
                 ),
@@ -272,87 +287,76 @@ class _LoginPageState extends State<LoginPage>
                         },
                       ),
                       const SizedBox(height: 16),
-                      Obx(
-                        () {
-                          if (_isCaptchaLoading.value) {
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          } else if (_captcha.value != null) {
-                            return Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Image.memory(
-                                  base64Decode(
-                                      _captcha.value!.data.split(',')[1]),
-                                  height: 80,
-                                ),
-                                const SizedBox(height: 16),
-                                TextFormField(
-                                  controller: _captchaController,
-                                  decoration: InputDecoration(
-                                    labelText: '验证码',
-                                    prefixIcon: const Icon(Icons.security),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                  ),
-                                  textInputAction: TextInputAction.done,
-                                  focusNode: _registerCaptchaFocus,
-                                  validator: (value) {
-                                    if (value == null || value.trim().isEmpty) {
-                                      return '请输入验证码';
-                                    }
-                                    return null;
-                                  },
-                                  onFieldSubmitted: (_) {
-                                    if (_registerFormKey.currentState!
-                                        .validate()) {
-                                      _register();
-                                    }
-                                  },
-                                ),
-                                TextButton(
-                                  onPressed: _isCaptchaLoading.value
-                                      ? null
-                                      : _fetchCaptcha,
-                                  child: Text('刷新验证码'),
-                                ),
-                              ],
-                            );
-                          } else {
-                            return const Text('无法加载验证码');
-                          }
-                        },
-                      ),
-                      const SizedBox(height: 24),
-                      Obx(() => ElevatedButton(
-                            onPressed: _isRegistering.value
-                                ? null
-                                : () {
-                                    if (_registerFormKey.currentState!
-                                        .validate()) {
-                                      _register();
-                                    }
-                                  },
-                            style: ElevatedButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(vertical: 16),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
+                      if (_isCaptchaLoading)
+                        const Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      else if (_captcha.value != null)
+                        Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Image.memory(
+                              base64Decode(_captcha.value!.data.split(',')[1]),
+                              height: 80,
                             ),
-                            child: _isRegistering.value
-                                ? const SizedBox(
-                                    width: 24,
-                                    height: 24,
-                                    child: CircularProgressIndicator(
-                                      color: Colors.white,
-                                      strokeWidth: 2,
-                                    ),
-                                  )
-                                : Text('注册',
-                                    style: const TextStyle(fontSize: 16)),
-                          )),
+                            const SizedBox(height: 16),
+                            TextFormField(
+                              controller: _captchaController,
+                              decoration: InputDecoration(
+                                labelText: '验证码',
+                                prefixIcon: const Icon(Icons.security),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                              ),
+                              textInputAction: TextInputAction.done,
+                              focusNode: _registerCaptchaFocus,
+                              validator: (value) {
+                                if (value == null || value.trim().isEmpty) {
+                                  return '请输入验证码';
+                                }
+                                return null;
+                              },
+                              onFieldSubmitted: (_) {
+                                if (_registerFormKey.currentState!.validate()) {
+                                  _register();
+                                }
+                              },
+                            ),
+                            TextButton(
+                              onPressed: _isCaptchaLoading ? null : _fetchCaptcha,
+                              child: Text('刷新验证码'),
+                            ),
+                          ],
+                        )
+                      else
+                        const Text('无法加载验证码'),
+                      const SizedBox(height: 24),
+                      ElevatedButton(
+                        onPressed: _isRegistering
+                            ? null
+                            : () {
+                                if (_registerFormKey.currentState!.validate()) {
+                                  _register();
+                                }
+                              },
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        child: _isRegistering
+                            ? const SizedBox(
+                                width: 24,
+                                height: 24,
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : Text('注册', style: const TextStyle(fontSize: 16)),
+                      ),
                     ],
                   ),
                 ),
@@ -368,8 +372,11 @@ class _LoginPageState extends State<LoginPage>
     final email = _loginEmailController.text.trim();
     final password = _loginPasswordController.text;
 
+    setState(() {
+      _isLoading = true;
+    });
+
     try {
-      _isLoading.value = true;
       ApiResult result = await _authService.login(email, password);
 
       if (result.isSuccess) {
@@ -384,7 +391,9 @@ class _LoginPageState extends State<LoginPage>
         Get.snackbar('错误', result.message);
       }
     } finally {
-      _isLoading.value = false;
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -401,7 +410,9 @@ class _LoginPageState extends State<LoginPage>
       return;
     }
 
-    _isRegistering.value = true;
+    setState(() {
+      _isRegistering = true;
+    });
 
     try {
       ApiResult result =
@@ -420,7 +431,9 @@ class _LoginPageState extends State<LoginPage>
         _fetchCaptcha();
       }
     } finally {
-      _isRegistering.value = false;
+      setState(() {
+        _isRegistering = false;
+      });
     }
   }
 }
