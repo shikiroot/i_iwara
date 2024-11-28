@@ -5,12 +5,13 @@ import 'package:i_iwara/app/models/dto/user_dto.dart';
 import 'package:i_iwara/app/models/tag.model.dart';
 import 'package:i_iwara/app/repositories/commons_repository.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
+import 'package:i_iwara/app/models/search_record.model.dart';
 
 class UserPreferenceService extends GetxService {
   final String _TAG = 'UserPreferenceService';
 
   // 视频搜索历史
-  final RxList<String> videoSearchHistory = <String>[].obs;
+  final RxList<SearchRecord> videoSearchHistory = <SearchRecord>[].obs;
 
   // 视频搜索标签
   final RxList<Tag> videoSearchTagHistory = <Tag>[].obs;
@@ -18,11 +19,14 @@ class UserPreferenceService extends GetxService {
   // 喜欢的作者
   final RxSet<UserDTO> likedUsers = <UserDTO>{}.obs;
 
-  final int maxSearchRecordCount = 20;
+  final int maxSearchRecordCount = 50;
 
   final String _videoSearchHistoryKey = 'videoSearchHistory';
   final String _videoSearchTagHistoryKey = 'videoSearchTagHistory';
   final String _likedUsers = 'likedUsers';
+
+  final RxBool searchRecordEnabled = true.obs;
+  final String _searchRecordEnabledKey = 'searchRecordEnabled';
 
   Future<UserPreferenceService> init() async {
     await _loadUserPreferences();
@@ -46,9 +50,36 @@ class UserPreferenceService extends GetxService {
   }
 
   Future<void> _loadUserPreferences() async {
+    await _loadSearchRecordEnabled();
     await _loadUserLikeUsernames();
     await _loadVideoSearchHistory();
     await _loadVideoSearchTagHistory();
+  }
+
+  // 加载搜索记录开关状态
+  Future<void> _loadSearchRecordEnabled() async {
+    try {
+      final String? data = 
+          await CommonsRepository.instance.getData(_searchRecordEnabledKey);
+      if (data != null) {
+        searchRecordEnabled.value = data == 'true';
+      }
+    } catch (e) {
+      LogUtils.e('加载搜索记录开关状态失败', tag: _TAG, error: e);
+    }
+  }
+
+  // 设置搜索记录开关
+  Future<void> setSearchRecordEnabled(bool enabled) async {
+    searchRecordEnabled.value = enabled;
+    try {
+      await CommonsRepository.instance.setData(
+        _searchRecordEnabledKey,
+        enabled.toString(),
+      );
+    } catch (e) {
+      LogUtils.e('保存搜索记录开关状态失败', tag: _TAG, error: e);
+    }
   }
 
   // 加载喜欢的用户
@@ -74,7 +105,8 @@ class UserPreferenceService extends GetxService {
           await CommonsRepository.instance.getData(_videoSearchHistoryKey);
       if (data != null && data.isNotEmpty) {
         List<dynamic> list = jsonDecode(data);
-        videoSearchHistory.addAll(list.cast<String>());
+        videoSearchHistory.addAll(
+            list.map((e) => SearchRecord.fromJson(e as Map<String, dynamic>)));
       }
     } catch (e) {
       LogUtils.e('加载视频搜索历史失败', tag: _TAG, error: e);
@@ -101,17 +133,31 @@ class UserPreferenceService extends GetxService {
 
   // 添加视频搜索历史
   Future<void> addVideoSearchHistory(String keyword) async {
-    if (videoSearchHistory.contains(keyword)) {
-      videoSearchHistory.remove(keyword);
+    var existingRecord = videoSearchHistory
+        .firstWhereOrNull((element) => element.keyword == keyword);
+    
+    if (existingRecord != null) {
+      existingRecord.usedTimes++;
+      videoSearchHistory.remove(existingRecord);
+      videoSearchHistory.insert(0, existingRecord);
+    } else {
+      videoSearchHistory.insert(
+        0,
+        SearchRecord(
+          keyword: keyword,
+          lastUsedAt: DateTime.now(),
+        ),
+      );
     }
-    videoSearchHistory.insert(0, keyword);
+
     if (videoSearchHistory.length > maxSearchRecordCount) {
       videoSearchHistory.removeLast();
     }
+
     try {
       await CommonsRepository.instance.setData(
         _videoSearchHistoryKey,
-        jsonEncode(videoSearchHistory.toList()),
+        jsonEncode(videoSearchHistory.map((e) => e.toJson()).toList()),
       );
     } catch (e) {
       LogUtils.e('保存视频搜索历史失败', tag: _TAG, error: e);
@@ -120,11 +166,11 @@ class UserPreferenceService extends GetxService {
 
   // 删除视频搜索历史
   Future<void> removeVideoSearchHistory(String keyword) async {
-    videoSearchHistory.remove(keyword);
+    videoSearchHistory.removeWhere((element) => element.keyword == keyword);
     try {
       await CommonsRepository.instance.setData(
         _videoSearchHistoryKey,
-        jsonEncode(videoSearchHistory.toList()),
+        jsonEncode(videoSearchHistory.map((e) => e.toJson()).toList()),
       );
     } catch (e) {
       LogUtils.e('删除视频搜索历史失败', tag: _TAG, error: e);

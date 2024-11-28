@@ -7,7 +7,8 @@ import 'package:i_iwara/common/constants.dart';
 
 import '../../../models/sort.model.dart';
 import '../../../models/tag.model.dart';
-import '../../widgets/title_bar_height_widget.dart';
+import '../../widgets/top_padding_height_widget.dart';
+import '../search/search_dialog.dart';
 import 'controllers/popular_gallery_controller.dart';
 import 'widgets/popular_media_search_config_widget.dart';
 
@@ -134,7 +135,6 @@ class _PopularGalleryListPageState extends State<PopularGalleryListPage>
   @override
   void dispose() {
     super.dispose();
-    print('[热门图片列表] dispose');
     _tabController.removeListener(_onTabChange);
     _tabController.dispose();
     _tabBarScrollController.dispose();
@@ -179,6 +179,9 @@ class _PopularGalleryListPageState extends State<PopularGalleryListPage>
                     hintText: '搜索',
                     prefixIcon: Icon(Icons.search),
                   ),
+                  onTap: () {
+                    Get.dialog(const SearchDialog(initialSearch: '', initialSegment: SearchSegment.image,));
+                  },
                 ),
               ),
             ],

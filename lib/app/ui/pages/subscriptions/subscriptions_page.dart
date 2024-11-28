@@ -11,7 +11,7 @@ import 'package:i_iwara/app/ui/pages/subscriptions/widgets/subscription_video_li
 
 import '../../../models/dto/user_dto.dart';
 import '../../../services/app_service.dart';
-import '../../widgets/title_bar_height_widget.dart';
+import '../../widgets/top_padding_height_widget.dart';
 
 class SubscriptionsPage extends StatefulWidget {
   const SubscriptionsPage({super.key});

@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:i_iwara/app/ui/pages/popular_media_list/widgets/image_model_card_list_item_widget.dart';
 import 'package:i_iwara/app/ui/pages/subscriptions/controllers/subscription_image_controller.dart';
 
+import '../../../widgets/empty_widget.dart';
+
 class SubscriptionImageList extends StatelessWidget {
   final SubscriptionImageController controller;
 
@@ -27,6 +29,16 @@ class SubscriptionImageList extends StatelessWidget {
           final columns = _calculateColumns(constraints.maxWidth);
           
           return Obx(() {
+            if (controller.errorWidget.value != null) {
+              return controller.errorWidget.value!;
+            }
+            if (controller.images.isEmpty && !controller.isLoading.value) {
+              return EmptyWidget(
+                message: '暂无订阅图片',
+                onRefresh: () => controller.loadImages(),
+              );
+            }
+
             final itemCount = (controller.images.length / columns).ceil() + 1;
             
             return ListView.builder(

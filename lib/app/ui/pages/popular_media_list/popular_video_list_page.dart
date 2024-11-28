@@ -1,14 +1,14 @@
-import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:i_iwara/app/services/app_service.dart';
 import 'package:i_iwara/app/ui/pages/popular_media_list/widgets/popular_media_search_config_widget.dart';
+import 'package:i_iwara/app/ui/pages/search/search_dialog.dart';
 import 'package:i_iwara/common/constants.dart';
 
 import '../../../models/sort.model.dart';
 import '../../../models/tag.model.dart';
-import '../../widgets/title_bar_height_widget.dart';
+import '../../widgets/top_padding_height_widget.dart';
 import 'controllers/popular_video_controller.dart';
 import 'widgets/video_card_list_item_widget.dart';
 
@@ -54,7 +54,8 @@ class _PopularVideoListPageState extends State<PopularVideoListPage>
   }
 
   // 设置查询参数
-  void setParams({List<Tag> tags = const [], String year = '', String rating = ''}) {
+  void setParams(
+      {List<Tag> tags = const [], String year = '', String rating = ''}) {
     this.tags = tags;
     this.year = year;
     this.rating = rating;
@@ -175,10 +176,17 @@ class _PopularVideoListPageState extends State<PopularVideoListPage>
               // 搜索框
               Expanded(
                 child: TextField(
+                  readOnly: true,
                   decoration: const InputDecoration(
                     hintText: '搜索',
                     prefixIcon: Icon(Icons.search),
                   ),
+                  onTap: () {
+                    Get.dialog(const SearchDialog(
+                      initialSearch: '',
+                      initialSegment: SearchSegment.video,
+                    ));
+                  },
                 ),
               ),
             ],
@@ -234,7 +242,8 @@ class _PopularVideoListPageState extends State<PopularVideoListPage>
                 icon: const Icon(Icons.refresh),
                 onPressed: () {
                   var sortId = widget.sorts[_tabController.index].id;
-                  var controller = Get.find<PopularVideoController>(tag: sortId.name);
+                  var controller =
+                      Get.find<PopularVideoController>(tag: sortId.name);
                   controller.fetchVideos(refresh: true);
                 },
               ),
@@ -288,7 +297,8 @@ class _KeepAliveTabViewState extends State<KeepAliveTabView>
         return NotificationListener<ScrollNotification>(
           onNotification: (scrollInfo) {
             if (!widget.controller.isLoading.value &&
-                scrollInfo.metrics.pixels >= scrollInfo.metrics.maxScrollExtent - 100 &&
+                scrollInfo.metrics.pixels >=
+                    scrollInfo.metrics.maxScrollExtent - 100 &&
                 !widget.controller.isInit.value) {
               widget.controller.fetchVideos();
             }
@@ -305,15 +315,17 @@ class _KeepAliveTabViewState extends State<KeepAliveTabView>
                   widget.controller.videos.isEmpty) {
                 return _buildEmptyView();
               } else {
-                final itemCount = (widget.controller.videos.length / columns).ceil() + 1;
-                
+                final itemCount =
+                    (widget.controller.videos.length / columns).ceil() + 1;
+
                 return ListView.builder(
                   padding: EdgeInsets.zero,
                   physics: const AlwaysScrollableScrollPhysics(),
                   itemCount: itemCount,
                   itemBuilder: (context, index) {
                     if (index < itemCount - 1) {
-                      return _buildRow(index, columns, constraints.maxWidth, widget.controller);
+                      return _buildRow(index, columns, constraints.maxWidth,
+                          widget.controller);
                     } else {
                       return _buildLoadMoreIndicator();
                     }

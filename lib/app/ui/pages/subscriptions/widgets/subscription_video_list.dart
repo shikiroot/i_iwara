@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:i_iwara/app/ui/pages/popular_media_list/widgets/video_card_list_item_widget.dart';
 import 'package:i_iwara/app/ui/pages/subscriptions/controllers/subscription_video_controller.dart';
+import 'package:i_iwara/app/ui/widgets/empty_widget.dart';
 
 class SubscriptionVideoList extends StatelessWidget {
   final SubscriptionVideoController controller;
@@ -27,6 +28,16 @@ class SubscriptionVideoList extends StatelessWidget {
           final columns = _calculateColumns(constraints.maxWidth);
           
           return Obx(() {
+            if (controller.errorWidget.value != null) {
+              return controller.errorWidget.value!;
+            }
+            if (controller.videos.isEmpty && !controller.isLoading.value) {
+              return EmptyWidget(
+                message: '暂无订阅视频',
+                onRefresh: () => controller.loadVideos(),
+              );
+            }
+
             final itemCount = (controller.videos.length / columns).ceil() + 1;
             
             return ListView.builder(
