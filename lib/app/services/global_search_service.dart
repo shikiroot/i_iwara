@@ -30,13 +30,104 @@ class GlobalSearchService extends GetxService {
 
   final RxBool isLoading = false.obs;
 
+  bool get isCurrentResultEmpty {
+    String segment = selectedSegment.value;
+    if (segment == 'video') {
+      return searchVideoResult.isEmpty;
+    } else if (segment == 'image') {
+      return searchImageResult.isEmpty;
+    } else if (segment == 'user') {
+      return searchUserResult.isEmpty;
+    }
+    return true;
+  }
+
+  bool get isCurrentResultInitialized {
+    String segment = selectedSegment.value;
+    if (segment == 'video') {
+      return videoPageInitialized;
+    } else if (segment == 'image') {
+      return imagePageInitialized;
+    } else if (segment == 'user') {
+      return userPageInitialized;
+    }
+    return false;
+  }
+
   bool inSearchResultPage = false;
-  int page = 0;
   int limit = 32;
-  RxBool hasMore = true.obs;
+
+  // Separate pagination states for each segment
+  final _videoPage = 0.obs;
+  bool videoPageInitialized = false;
+  final _imagePage = 0.obs;
+  bool imagePageInitialized = false;
+  final _userPage = 0.obs;
+  bool userPageInitialized = false;
+
+  final _videoHasMore = true.obs;
+  final _imageHasMore = true.obs;
+  final _userHasMore = true.obs;
+
+  // Helper getters for current segment's state
+  int get currentPage {
+    switch (selectedSegment.value) {
+      case 'video':
+        return _videoPage.value;
+      case 'image':
+        return _imagePage.value;
+      case 'user':
+        return _userPage.value;
+      default:
+        return 0;
+    }
+  }
+
+  bool get hasMore {
+    switch (selectedSegment.value) {
+      case 'video':
+        return _videoHasMore.value;
+      case 'image':
+        return _imageHasMore.value;
+      case 'user':
+        return _userHasMore.value;
+      default:
+        return false;
+    }
+  }
+
+  void _updatePage(int newPage) {
+    switch (selectedSegment.value) {
+      case 'video':
+        _videoPage.value = newPage;
+        break;
+      case 'image':
+        _imagePage.value = newPage;
+        break;
+      case 'user':
+        _userPage.value = newPage;
+        break;
+    }
+  }
+
+  void _updateHasMore(bool value) {
+    switch (selectedSegment.value) {
+      case 'video':
+        _videoHasMore.value = value;
+        break;
+      case 'image':
+        _imageHasMore.value = value;
+        break;
+      case 'user':
+        _userHasMore.value = value;
+        break;
+    }
+  }
 
   bool get isResultEmpty =>
-      searchVideoResult.isEmpty && searchImageResult.isEmpty;
+      searchVideoResult.isEmpty && 
+      searchImageResult.isEmpty && 
+      searchUserResult.isEmpty;
 
   void clearOtherSearchResult() {
     String segment = selectedSegment.value;
@@ -58,8 +149,8 @@ class GlobalSearchService extends GetxService {
     String segment = selectedSegment.value;
     LogUtils.d(
         '搜索关键词: $keyword, 片段: $segment, 刷新: $refresh', 'GlobalSearchService');
-    final tmpPage = refresh ? 0 : page;
-    if (!hasMore.value && !refresh) return;
+    final tmpPage = refresh ? 0 : currentPage;
+    if (!hasMore && !refresh) return;
     if (errorWidget.value != null) errorWidget.value = null;
     isLoading.value = true;
 
@@ -112,10 +203,17 @@ class GlobalSearchService extends GetxService {
         searchUserResult.addAll(results as List<User>);
       }
 
-      page = tmpPage + 1;
-      hasMore.value = results.isNotEmpty;
+      _updatePage(tmpPage + 1);
+      _updateHasMore(results.isNotEmpty);
     } finally {
       isLoading.value = false;
+      if (segment == 'video') {
+        videoPageInitialized = true;
+      } else if (segment == 'image') {
+        imagePageInitialized = true;
+      } else if (segment == 'user') {
+        userPageInitialized = true;
+      }
     }
   }
 
@@ -160,5 +258,26 @@ class GlobalSearchService extends GetxService {
     final selectedIndex = Random().nextInt(topCount);
 
     searchPlaceholder.value = weightedRecords[selectedIndex].$1.keyword;
+  }
+
+  void resetAll() {
+    searchVideoResult.clear();
+    searchImageResult.clear();
+    searchUserResult.clear();
+    searchErrorText.value = '';
+    searchPlaceholder.value = '';
+    currentSearch.value = '';
+    selectedSegment.value = 'video';
+    _videoPage.value = 0;
+    videoPageInitialized = false;
+    _imagePage.value = 0;
+    imagePageInitialized = false;
+    _userPage.value = 0;
+    userPageInitialized = false;
+    _videoHasMore.value = true;
+    _imageHasMore.value = true;
+    _userHasMore.value = true;
+    isLoading.value = false;
+    errorWidget.value = null;
   }
 }
