@@ -86,10 +86,13 @@ class GlobalSearchService extends GetxService {
   bool get hasMore {
     switch (selectedSegment.value) {
       case 'video':
+        print('video has more: ${_videoHasMore.value}');
         return _videoHasMore.value;
       case 'image':
+        print('image has more: ${_imageHasMore.value}');
         return _imageHasMore.value;
       case 'user':
+        print('user has more: ${_userHasMore.value}');
         return _userHasMore.value;
       default:
         return false;
@@ -197,14 +200,16 @@ class GlobalSearchService extends GetxService {
 
       if (segment == 'video') {
         searchVideoResult.addAll(results as List<Video>);
+        _videoHasMore.value = response.data!.count > searchVideoResult.length;
       } else if (segment == 'image') {
         searchImageResult.addAll(results as List<ImageModel>);
+        _imageHasMore.value = response.data!.count > searchImageResult.length;
       } else if (segment == 'user') {
         searchUserResult.addAll(results as List<User>);
+        _userHasMore.value = response.data!.count > searchUserResult.length;
       }
 
       _updatePage(tmpPage + 1);
-      _updateHasMore(results.isNotEmpty);
     } finally {
       isLoading.value = false;
       if (segment == 'video') {

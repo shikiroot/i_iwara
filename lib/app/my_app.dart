@@ -6,6 +6,7 @@ import 'package:i_iwara/app/services/app_service.dart';
 import 'package:i_iwara/app/services/config_service.dart';
 import 'package:i_iwara/app/ui/pages/home/home_navigation_layout.dart';
 import 'package:i_iwara/app/ui/pages/login/login_page.dart';
+import 'package:i_iwara/app/ui/pages/play_list/play_list.dart';
 import 'package:i_iwara/app/ui/pages/settings/player_settings_page.dart';
 import 'package:i_iwara/app/ui/pages/settings/proxy_settings_page.dart';
 import 'package:i_iwara/app/ui/pages/settings/settings_page.dart';
@@ -13,7 +14,6 @@ import 'package:i_iwara/app/ui/pages/settings/theme_settings_page.dart';
 import 'package:i_iwara/app/ui/pages/sign_in/sing_in_page.dart';
 import 'package:i_iwara/app/ui/widgets/global_drawer_content_widget.dart';
 import 'package:i_iwara/app/ui/widgets/window_layout_widget.dart';
-import 'package:i_iwara/utils/logger_utils.dart';
 
 import '../utils/proxy/proxy_util.dart';
 
@@ -74,6 +74,11 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: Routes.SIGN_IN,
           page: () => const SignInPage(),
+          transition: Transition.cupertino,
+        ),
+        GetPage(
+          name: Routes.PLAY_LIST,
+          page: () => const PlayListPage(),
           transition: Transition.cupertino,
         ),
       ],

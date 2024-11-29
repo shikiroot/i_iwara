@@ -42,6 +42,11 @@ class GlobalDrawerColumns extends StatelessWidget {
                 NaviService.navigateToSignInPage();
                 AppService.switchGlobalDrawer();
               }),
+              // 播放列表
+              _buildMenuItem(Icons.playlist_play, '播放列表', () {
+                NaviService.navigateToPlayListPage();
+                AppService.switchGlobalDrawer();
+              }),
               Obx(() => userService.isLogin
                   ? Column(
                       children: [

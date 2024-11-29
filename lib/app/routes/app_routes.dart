@@ -23,6 +23,10 @@ abstract class Routes {
   static const ROOT = _Paths.ROOT;
 
   static const SEARCH_RESULT = _Paths.SEARCH_RESULT;
+
+  static const PLAY_LIST = _Paths.PLAY_LIST;
+
+  static String PLAYLIST_DETAIL(String id) => _Paths.PLAYLIST_DETAIL.replaceAll(':id', id);
 }
 
 abstract class _Paths {
@@ -38,6 +42,8 @@ abstract class _Paths {
   static const AUTHOR_PROFILE = '/author_profile/:userName';
   static const NOT_FOUND = '/not_found';
   static const SEARCH_RESULT = '/search_result';
+  static const PLAYLIST_DETAIL = '/playlist_detail/:id';
+  static const PLAY_LIST = '/play_list';
 
   static const GALLERY = '/gallery';
   static const GALLERY_DETAIL = '/gallery_detail/:galleryId';

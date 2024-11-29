@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:i_iwara/app/ui/pages/play_list/play_list_detail.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
 
 import '../routes/app_routes.dart';
@@ -186,5 +187,13 @@ class NaviService {
         },
       )
     );
+  }
+
+  static navigateToPlayListDetail(String id) {
+    Get.to(() => PlayListDetailPage(playlistId: id));
+  }
+
+  static void navigateToPlayListPage() {
+    Get.toNamed(Routes.PLAY_LIST);
   }
 }

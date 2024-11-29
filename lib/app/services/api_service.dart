@@ -140,8 +140,20 @@ class ApiService extends GetxService {
     }
   }
 
+  Future<d_dio.Response<T>> put<T>(String path,
+      {dynamic data, Map<String, dynamic>? queryParameters}) async {
+    try {
+      return await _dio.put<T>(path,
+          data: data, queryParameters: queryParameters);
+    } on d_dio.DioException catch (e) {
+      LogUtils.e('PUT请求失败: ${e.message}', tag: _tag, error: e);
+      rethrow;
+    }
+  }
+
   // resetProxy
   void resetPrroxy() {
     _dio.httpClientAdapter = IOHttpClientAdapter();
   }
+
 }

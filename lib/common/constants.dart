@@ -36,6 +36,9 @@ class CommonConstants {
 
   static String? applicationName = 'i_iwara';
 
+  static String defaultPlaylistThumbnailUrl =
+      '$iwaraBaseUrl/images/default-thumbnail.jpg';
+
   // 获取用户背景URL
   static userProfileHeaderUrl(String? headerId) {
     if (headerId == null) {
