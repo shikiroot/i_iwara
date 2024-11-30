@@ -1,12 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:easy_refresh/easy_refresh.dart';
 import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:i_iwara/app/models/play_list.model.dart';
 import 'package:i_iwara/app/services/app_service.dart';
 import 'package:i_iwara/app/ui/pages/play_list/controllers/play_list_controller.dart';
+import 'package:i_iwara/app/ui/widgets/custom_paged_grid_view.dart';
 import 'package:i_iwara/app/ui/widgets/empty_widget.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class PlayListPage extends StatefulWidget {
   const PlayListPage({super.key});
@@ -17,21 +18,18 @@ class PlayListPage extends StatefulWidget {
 
 class _PlayListPageState extends State<PlayListPage> {
   late PlayListsController controller;
-  late EasyRefreshController _refreshController;
+  late PagingController<int, PlaylistModel> _pagingController;
 
   @override
   void initState() {
     super.initState();
     controller = Get.put(PlayListsController());
-    _refreshController = EasyRefreshController(
-      controlFinishRefresh: true,
-      controlFinishLoad: true,
-    );
+    _pagingController = PagingController(firstPageKey: 0);
   }
 
   @override
   void dispose() {
-    _refreshController.dispose();
+    _pagingController.dispose();
     Get.delete<PlayListsController>();
     super.dispose();
   }
@@ -42,68 +40,38 @@ class _PlayListPageState extends State<PlayListPage> {
       appBar: AppBar(
         title: const Text('我的播放列表'),
         actions: [
-          // 提示
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: () => _pagingController.refresh(),
+          ),
           IconButton(
             icon: const Icon(Icons.help_outline),
             onPressed: () => _showHelpDialog(),
           ),
-          // 创建
           IconButton(
             icon: const Icon(Icons.add),
             onPressed: () => _showCreateDialog(context),
           ),
         ],
       ),
-      body: Obx(() {
-        // 如果是第0页且loading，则显示loading
-        if (controller.isLoading.value && controller.currentPage == 0) {
-          return const Center(child: CircularProgressIndicator());
-        }
-
-        return EasyRefresh(
-          controller: _refreshController,
-          onRefresh: () async {
-            await controller.refreshData();
-            _refreshController.finishRefresh();
-            _refreshController.resetFooter();
-          },
-          onLoad: () async {
-            await controller.loadData();
-            if (controller.hasMore.value) {
-              _refreshController.finishLoad();
-            } else {
-              _refreshController.finishLoad(IndicatorResult.noMore);
-            }
-          },
-          child: controller.playlists.isEmpty && !controller.isLoading.value
-              ? Center(child: EmptyWidget(
-                  message: "暂无播放列表",
-                  onRefresh: () async {
-                    await controller.refreshData();
-                    _refreshController.finishRefresh();
-                    _refreshController.resetFooter();
-                  },
-                ))
-              : Stack(
-                  children: [
-                    GridView.builder(
-                      padding: const EdgeInsets.all(8),
-                      gridDelegate:
-                          const SliverGridDelegateWithMaxCrossAxisExtent(
-                        maxCrossAxisExtent: 200,
-                        childAspectRatio: 0.75,
-                        crossAxisSpacing: 8,
-                        mainAxisSpacing: 8,
-                      ),
-                      itemCount: controller.playlists.length,
-                      itemBuilder: (context, index) {
-                        return _buildPlayListCard(controller.playlists[index]);
-                      },
-                    ),
-                  ],
-                ),
-        );
-      }),
+      body: CustomPagedGridView<PlaylistModel>(
+        controller: _pagingController,
+        maxCrossAxisExtent: 200,
+        mainAxisExtent: 266.67,
+        crossAxisSpacing: 8,
+        mainAxisSpacing: 8,
+        pageSize: 10,
+        padding: const EdgeInsets.all(8),
+        onFetch: (pageKey, pageSize) async {
+          final result = await controller.loadPageData(pageKey, pageSize);
+          return result;
+        },
+        itemBuilder: (context, item, index) => _buildPlayListCard(item),
+        emptyIndicatorBuilder: (context) => EmptyWidget(
+          message: "暂无播放列表",
+          onRefresh: () => _pagingController.refresh(),
+        ),
+      ),
     );
   }
 
@@ -187,6 +155,7 @@ class _PlayListPageState extends State<PlayListPage> {
               if (textController.text.trim().isNotEmpty) {
                 AppService.tryPop();
                 await controller.createPlaylist(textController.text.trim());
+                _pagingController.refresh();
               }
             },
             child: const Text('创建'),

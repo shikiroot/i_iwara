@@ -34,13 +34,15 @@ class PlayListService extends GetxService {
   // 获取播放列表
   Future<ApiResult<PageData<PlaylistModel>>> getPlaylists({
     required String userId,
-    required int pageNum,
+    required int page,
+    int limit = 20,
   }) async {
     try {
       final response = await apiService.get('/playlists', 
         queryParameters: {
           'user': userId,
-          'page': pageNum,
+          'page': page,
+          'limit': limit,
         }
       );
       
@@ -98,11 +100,15 @@ class PlayListService extends GetxService {
   Future<ApiResult<PageData<Video>>> getPlaylistVideos({
     required String playlistId,
     int page = 0,
+    int limit = 32,
   }) async {
     try {
       final response = await apiService.get(
         '/playlist/$playlistId', 
-        queryParameters: {'page': page}
+        queryParameters: {
+          'page': page,
+          'limit': limit,
+        }
       );
       
       final PageData<Video> pageData = PageData(
