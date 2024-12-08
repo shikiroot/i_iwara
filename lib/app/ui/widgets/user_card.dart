@@ -6,11 +6,13 @@ import 'package:i_iwara/common/constants.dart';
 class UserCard extends StatelessWidget {
   final User user;
   final VoidCallback? onTap;
+  final bool showFriendOptions;
 
   const UserCard({
     super.key,
     required this.user,
     this.onTap,
+    this.showFriendOptions = false,
   });
 
   @override

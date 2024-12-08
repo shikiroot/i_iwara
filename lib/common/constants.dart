@@ -147,6 +147,12 @@ class ApiConstants {
 
   // 设为最爱视频
   static String likeVideo(String mediaId) => '/video/$mediaId/like';
+
+  // 用户朋友
+  static String userFriends(String userId) => '/user/$userId/friends';
+
+  // 用户请求
+  static String userFriendsRequests(String userId) => '/user/$userId/friends/requests';
 }
 
 // 视频接口的排序方式

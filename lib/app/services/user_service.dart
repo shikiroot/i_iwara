@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart' as dio;
 import 'package:get/get.dart';
+import 'package:i_iwara/app/models/dto/user_request_dto.dart';
+import 'package:i_iwara/app/models/page_data.model.dart';
 import '../../common/constants.dart';
 import '../../utils/logger_utils.dart';
 import '../models/api_result.model.dart';
@@ -159,6 +161,58 @@ class UserService extends GetxService {
     } catch (e) {
       LogUtils.e('发送朋友申请失败', error: e);
       return ApiResult.fail("发送朋友申请失败");
+    }
+  }
+
+  /// 朋友列表
+  Future<ApiResult<PageData<User>>> fetchFriends(
+      {int page = 0, int limit = 20, required String userId}) async {
+    try {
+      final response = await _apiService
+          .get(ApiConstants.userFriends(userId), queryParameters: {
+        'page': page,
+        'limit': limit,
+      });
+
+      final List<User> results = (response.data['results'] as List)
+          .map((userJson) => User.fromJson(userJson))
+          .toList();
+
+      final PageData<User> pageData = PageData(
+        page: response.data['page'],
+        limit: response.data['limit'],
+        count: response.data['count'],
+        results: results,
+      );
+      return ApiResult.success(data: pageData);
+    } catch (e) {
+      LogUtils.e('获取朋友列表失败', error: e);
+      return ApiResult.fail('获取朋友列表失败');
+    }
+  }
+
+  /// 代办请求列表
+  Future<ApiResult<PageData<UserRequestDTO>>> fetchUserFriendsRequests({int page = 0, int limit = 20, required String userId}) async {
+    try {
+      final response = await _apiService.get(ApiConstants.userFriendsRequests(userId), queryParameters: {
+        'page': page,
+        'limit': limit,
+      });
+
+      final List<UserRequestDTO> results = (response.data['results'] as List)
+          .map((userJson) => UserRequestDTO.fromJson(userJson))
+          .toList();
+
+      final PageData<UserRequestDTO> pageData = PageData(
+        page: response.data['page'],
+        limit: response.data['limit'],
+        count: response.data['count'],
+        results: results,
+      );
+      return ApiResult.success(data: pageData);
+    } catch (e) {
+      LogUtils.e('获取朋友请求列表失败', error: e);
+      return ApiResult.fail('获取朋友请求列表失败');
     }
   }
 }
