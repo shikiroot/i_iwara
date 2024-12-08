@@ -50,6 +50,25 @@ class MediaFile {
     );
   }
 
+  // toJson
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'type': type,
+      'path': path,
+      'name': name,
+      'mime': mime,
+      'size': size,
+      'width': width,
+      'height': height,
+      'duration': duration,
+      'numThumbnails': numThumbnails,
+      'animatedPreview': animatedPreview,
+      'createdAt': createdAt.toIso8601String(),
+      'updatedAt': updatedAt.toIso8601String(),
+    };
+  }
+
   String getLargeImageUrl() => '${CommonConstants.iwaraImageBaseUrl}/image/large/$id/$name';
   String getOriginalImageUrl() => '${CommonConstants.iwaraImageBaseUrl}/image/original/$id/$name';
 }

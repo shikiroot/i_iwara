@@ -78,6 +78,29 @@ class ImageModel {
     );
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'status': status,
+      'body': body,
+      'slug': slug,
+      'title': title,
+      'thumbnail': thumbnail?.toJson(),
+      'rating': rating,
+      'liked': liked,
+      'numImages': numImages,
+      'numLikes': numLikes,
+      'numViews': numViews,
+      'numComments': numComments,
+      'user': user?.toJson(),
+      'createdAt': createdAt?.toIso8601String(),
+      'updatedAt': updatedAt?.toIso8601String(),
+      'files': files.map((file) => file.toJson()).toList(),
+      'tags': tags.map((tag) => tag.toJson()).toList(),
+    };
+  }
+
+
   ImageModel copyWith({
     String? id,
     String? status,

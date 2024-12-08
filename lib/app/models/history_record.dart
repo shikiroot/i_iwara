@@ -1,0 +1,103 @@
+import 'dart:convert';
+
+import 'package:i_iwara/app/models/image.model.dart';
+import 'package:i_iwara/app/models/video.model.dart';
+
+class HistoryRecord {
+  final String itemId; // 记录ID (视频ID或图库ID)
+  final String itemType; // 记录类型 (video/image)
+  final String title; // 标题
+  final String? thumbnailUrl; // 缩略图URL
+  final String? author; // 作者名
+  final String? authorId; // 作者ID
+  final String data; // 完整数据JSON
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
+
+  HistoryRecord({
+    required this.itemId,
+    required this.itemType,
+    required this.title,
+    this.thumbnailUrl,
+    this.author,
+    this.authorId,
+    required this.data,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  // 从Video创建历史记录
+  factory HistoryRecord.fromVideo(Video video) {
+    return HistoryRecord(
+      itemId: video.id,
+      itemType: 'video',
+      title: video.title ?? '无标题',
+      thumbnailUrl: video.thumbnailUrl,
+      author: video.user?.name,
+      authorId: video.user?.id,
+      data: jsonEncode(video.toJson()),
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
+    );
+  }
+
+  // 从ImageModel创建历史记录
+  factory HistoryRecord.fromImageModel(ImageModel image) {
+    return HistoryRecord(
+      itemId: image.id,
+      itemType: 'image',
+      title: image.title,
+      thumbnailUrl: image.thumbnailUrl,
+      author: image.user?.name,
+      authorId: image.user?.id,
+      data: jsonEncode(image.toJson()),
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
+    );
+  }
+
+  // 获取原始数据对象
+  dynamic getOriginalData() {
+    final Map<String, dynamic> jsonData = jsonDecode(data);
+    switch (itemType) {
+      case 'video':
+        return Video.fromJson(jsonData);
+      case 'image':
+        return ImageModel.fromJson(jsonData);
+      default:
+        throw Exception('未知的记录类型: $itemType');
+    }
+  }
+
+  factory HistoryRecord.fromJson(Map<String, dynamic> json) {
+    return HistoryRecord(
+      itemId: json['item_id'],
+      itemType: json['item_type'],
+      title: json['title'],
+      thumbnailUrl: json['thumbnail_url'],
+      author: json['author'],
+      authorId: json['author_id'],
+      data: json['data'],
+      createdAt: json['created_at'] != null
+          ? DateTime.parse(json['created_at'])
+          : null,
+      updatedAt: json['updated_at'] != null
+          ? DateTime.parse(json['updated_at'])
+          : null,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'item_id': itemId,
+      'item_type': itemType,
+      'title': title,
+      'thumbnail_url': thumbnailUrl,
+      'author': author,
+      'author_id': authorId,
+      'data': data,
+      'created_at': createdAt?.toIso8601String(),
+      'updated_at': updatedAt?.toIso8601String(),
+    };
+  }
+}

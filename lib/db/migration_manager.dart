@@ -6,12 +6,14 @@ import 'package:sqlite3/common.dart';
 import 'database_service.dart';
 import 'migrations/migration.dart';
 import 'migrations/migration_v1.dart';
+import 'migrations/migration_v2.dart';
 
 /// 迁移管理器
 class MigrationManager {
   /// 所有迁移列表，按版本排序
   final List<Migration> migrations = [
     MigrationV1Initial(),
+    MigrationV2History(),
     // [TODO_PLACEHOLDER] 将来新增的迁移在这里添加
   ];
 

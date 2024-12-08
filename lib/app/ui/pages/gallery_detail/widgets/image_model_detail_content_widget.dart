@@ -127,7 +127,7 @@ class ImageModelDetailContent extends StatelessWidget {
           child: const Text('回到上一页'),
         ),
         ElevatedButton(
-          onPressed: () => controller.fetchVideoDetail(),
+          onPressed: () => controller.fetchGalleryDetail(),
           child: const Text('重试'),
         ),
       ],

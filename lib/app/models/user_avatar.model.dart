@@ -34,8 +34,8 @@ class UserAvatar {
       size: json['size'],
       width: json['width'],
       height: json['height'],
-      createdAt: DateTime.parse(json['createdAt']),
-      updatedAt: DateTime.parse(json['updatedAt']),
+      createdAt: json['createdAt'] == null ? DateTime.now() : DateTime.parse(json['createdAt']),
+      updatedAt: json['updatedAt'] == null ? DateTime.now() : DateTime.parse(json['updatedAt']),
     );
   }
 
@@ -50,7 +50,7 @@ class UserAvatar {
     data['width'] = width;
     data['height'] = height;
     data['createdAt'] = createdAt.toIso8601String();
-    data['updatedAt'] = updatedAt.toIso8601String;
+    data['updatedAt'] = updatedAt.toIso8601String();
     return data;
   }
 

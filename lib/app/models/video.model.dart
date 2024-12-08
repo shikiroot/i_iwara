@@ -89,6 +89,34 @@ class Video {
     );
   }
 
+  // toJson
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'slug': slug,
+      'title': title,
+      'body': body,
+      'status': status,
+      'rating': rating,
+      'private': private,
+      'unlisted': unlisted,
+      'thumbnail': thumbnail,
+      'embedUrl': embedUrl,
+      'liked': liked,
+      'numLikes': numLikes,
+      'numViews': numViews,
+      'numComments': numComments,
+      'file': file?.toJson(),
+      'customThumbnail': customThumbnail?.toJson(),
+      'user': user?.toJson(),
+      'tags': tags?.map((tag) => tag.toJson()).toList(),
+      'createdAt': createdAt?.toIso8601String(),
+      'updatedAt': updatedAt?.toIso8601String(),
+      'fileUrl': fileUrl,
+      'videoSources': videoSources?.map((source) => source.toJson()).toList(),
+    };
+  }
+
   // 头图
   String get thumbnailUrl {
     if (customThumbnail != null) {

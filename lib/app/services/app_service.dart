@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:i_iwara/app/ui/pages/favorites/my_favorites.dart';
 import 'package:i_iwara/app/ui/pages/friends/friends_page.dart';
+import 'package:i_iwara/app/ui/pages/history/history_list_page.dart';
 import 'package:i_iwara/app/ui/pages/play_list/play_list.dart';
 import 'package:i_iwara/app/ui/pages/play_list/play_list_detail.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
@@ -254,6 +255,25 @@ class NaviService {
       settings: const RouteSettings(name: Routes.FRIENDS),
       pageBuilder: (context, animation, secondaryAnimation) {
         return const FriendsPage();
+      },
+      transitionDuration: const Duration(milliseconds: 200),
+      // 从右到左的原生动画
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        return SlideTransition(
+          position: Tween<Offset>(begin: const Offset(1, 0), end: Offset.zero)
+              .animate(animation),
+          child: child,
+        );
+      },
+    ));
+  }
+
+  /// 跳转到历史记录列表页
+  static void navigateToHistoryListPage() {
+    AppService.homeNavigatorKey.currentState?.push(PageRouteBuilder(
+      settings: const RouteSettings(name: Routes.HISTORY_LIST),
+      pageBuilder: (context, animation, secondaryAnimation) {
+        return const HistoryListPage();
       },
       transitionDuration: const Duration(milliseconds: 200),
       // 从右到左的原生动画

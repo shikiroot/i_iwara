@@ -1,4 +1,3 @@
-
 class CustomThumbnail {
   final String id;
   final String type;
@@ -8,8 +7,8 @@ class CustomThumbnail {
   final int? size;
   final int? width;
   final int? height;
-  final DateTime createdAt;
-  final DateTime updatedAt;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
 
   CustomThumbnail({
     required this.id,
@@ -20,8 +19,8 @@ class CustomThumbnail {
     this.size,
     this.width,
     this.height,
-    required this.createdAt,
-    required this.updatedAt,
+    this.createdAt,
+    this.updatedAt,
   });
 
   factory CustomThumbnail.fromJson(Map<String, dynamic> json) {
@@ -34,9 +33,23 @@ class CustomThumbnail {
       size: json['size'] ?? 0,
       width: json['width'] ?? 0,
       height: json['height'] ?? 0,
-      createdAt: DateTime.parse(json['createdAt']),
-      updatedAt: DateTime.parse(json['updatedAt']),
+      createdAt: json['createdAt'] == null ? null : DateTime.parse(json['createdAt']),
+      updatedAt: json['updatedAt'] == null ? null : DateTime.parse(json['updatedAt']),
     );
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'type': type,
+      'path': path,
+      'name': name,
+      'mime': mime,
+      'size': size,
+      'width': width,
+      'height': height,
+      'createdAt': createdAt?.toIso8601String(),
+      'updatedAt': updatedAt?.toIso8601String(),
+    };
+  }
 }

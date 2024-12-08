@@ -1,7 +1,9 @@
 import 'package:get/get.dart';
 import 'package:i_iwara/app/models/api_result.model.dart';
 import 'package:i_iwara/app/models/dto/user_dto.dart';
+import 'package:i_iwara/app/models/history_record.dart';
 import 'package:i_iwara/app/models/image.model.dart';
+import 'package:i_iwara/app/repositories/history_repository.dart';
 import 'package:i_iwara/app/services/gallery_service.dart';
 import 'package:i_iwara/app/services/user_preference_service.dart';
 import 'package:i_iwara/common/constants.dart';
@@ -15,6 +17,8 @@ class GalleryDetailController extends GetxController {
   final String imageModelId;
   final GalleryService _galleryService = Get.find();
   final UserPreferenceService _userPreferenceService = Get.find();
+  final HistoryRepository _historyRepository = HistoryRepository();
+  bool isInfoInitialized = false;
 
   GalleryDetailController(this.imageModelId);
 
@@ -30,11 +34,26 @@ class GalleryDetailController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    fetchVideoDetail();
+    _initializeData();
   }
 
-  /// 获取视频详情信息
-  void fetchVideoDetail() async {
+  Future<void> _initializeData() async {
+    await fetchGalleryDetail();
+    print('isInfoInitialized: $isInfoInitialized');
+    // 添加历史记录
+    try {
+      if (imageModelInfo.value != null) {
+        final historyRecord = HistoryRecord.fromImageModel(imageModelInfo.value!);
+        LogUtils.d('添加历史记录: ${historyRecord.toJson()}', 'GalleryDetailController');
+        await _historyRepository.addRecord(historyRecord);
+      }
+    } catch (e) {
+      LogUtils.e('添加历史记录失败: $e', tag: 'GalleryDetailController');
+    }
+  }
+
+  /// 获取图片详情
+  Future<void> fetchGalleryDetail() async {
     try {
       isImageModelInfoLoading.value = true;
       errorMessage.value = null;
@@ -73,6 +92,13 @@ class GalleryDetailController extends GetxController {
     } finally {
       LogUtils.d('图片详情信息加载完成', 'GalleryDetailController');
       isImageModelInfoLoading.value = false;
+      isInfoInitialized = true;
     }
+  }
+
+  @override
+  void onClose() {
+    otherAuthorzImageModelsController?.dispose();
+    super.onClose();
   }
 }

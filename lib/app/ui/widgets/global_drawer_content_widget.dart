@@ -24,6 +24,11 @@ class GlobalDrawerColumns extends StatelessWidget {
           child: ListView(
             padding: EdgeInsets.zero,
             children: [
+              // 历史记录
+              _buildMenuItem(Icons.history, '历史记录', () {
+                NaviService.navigateToHistoryListPage();
+                AppService.switchGlobalDrawer();
+              }),
               // 最爱
               _buildMenuItem(Icons.favorite, '最爱', () {
                 if (userService.isLogin) {
