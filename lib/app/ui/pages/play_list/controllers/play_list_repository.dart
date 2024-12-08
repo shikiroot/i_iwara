@@ -50,7 +50,7 @@ class PlayListRepository extends LoadingMoreBase<PlaylistModel> {
   }
 
   @override
-  Future<bool> loadData([bool isloadMoreAction = false]) async {
+  Future<bool> loadData([bool isLoadMoreAction = false]) async {
     bool isSuccess = false;
     try {
       //to show loading more clearly, in your app,remove this

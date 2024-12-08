@@ -1,29 +1,27 @@
 import 'package:get/get.dart';
-import 'package:i_iwara/app/models/video.model.dart';
 import 'package:i_iwara/app/services/play_list_service.dart';
+import 'package:i_iwara/app/ui/pages/play_list/controllers/play_list_detail_repository.dart';
 
 class PlayListDetailController extends GetxController {
   final PlayListService _playListService = Get.find<PlayListService>();
+  late PlayListDetailRepository repository;
   
-  final RxList<Video> videos = <Video>[].obs;
-  final RxBool isLoading = false.obs;
-  final RxBool hasMore = true.obs;
   final RxBool isMultiSelect = false.obs;
   final RxSet<String> selectedVideos = <String>{}.obs;
   final RxString playlistTitle = ''.obs;
   
   final String playlistId;
-  int currentPage = 0;
 
-  PlayListDetailController({required this.playlistId});
+  PlayListDetailController({required this.playlistId}) {
+    repository = PlayListDetailRepository(playlistId: playlistId);
+  }
 
-  get isAllSelected => selectedVideos.length == videos.length;
+  get isAllSelected => selectedVideos.length == repository.length;
   
   @override
   void onInit() {
     super.onInit();
     loadPlaylistName();
-    refreshData();
   }
   
   Future<void> loadPlaylistName() async {
@@ -61,10 +59,10 @@ class PlayListDetailController extends GetxController {
   }
   
   void selectAll() {
-    if (selectedVideos.length == videos.length) {
+    if (selectedVideos.length == repository.length) {
       selectedVideos.clear();
     } else {
-      selectedVideos.addAll(videos.map((v) => v.id));
+      selectedVideos.addAll(repository.map((v) => v.id));
     }
   }
   
@@ -76,43 +74,8 @@ class PlayListDetailController extends GetxController {
       );
     }
     selectedVideos.clear();
-    refreshData();
   }
   
-  // 刷新和加载数据的方法与播放列表页面类似
-  Future<void> refreshData() async {
-    currentPage = 0;
-    hasMore.value = true;
-    await loadData(refresh: true);
-  }
-  
-  Future<void> loadData({bool refresh = false}) async {
-    if (isLoading.value || (!hasMore.value && !refresh)) return;
-    
-    isLoading.value = true;
-    try {
-      final result = await _playListService.getPlaylistVideos(
-        playlistId: playlistId,
-        page: currentPage,
-      );
-      
-      if (result.isSuccess && result.data != null) {
-        if (refresh) {
-          videos.clear();
-        }
-        
-        if (result.data!.results.isEmpty) {
-          hasMore.value = false;
-        } else {
-          videos.addAll(result.data!.results);
-          currentPage++;
-        }
-      }
-    } finally {
-      isLoading.value = false;
-    }
-  }
-
   void deleteCurPlaylist() {
     _playListService.deletePlaylist(playlistId: playlistId).then((result) {
       if (result.isSuccess) {
