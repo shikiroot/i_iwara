@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:i_iwara/app/models/video.model.dart';
 import 'package:i_iwara/app/services/app_service.dart';
+import 'package:i_iwara/app/services/share_service.dart';
 import 'package:i_iwara/app/ui/pages/play_list/controllers/play_list_detail_controller.dart';
 import 'package:i_iwara/app/ui/pages/popular_media_list/widgets/video_card_list_item_widget.dart';
 import 'package:i_iwara/app/ui/widgets/my_loading_more_indicator_widget.dart';
@@ -9,8 +10,10 @@ import 'package:loading_more_list/loading_more_list.dart';
 
 class PlayListDetailPage extends StatefulWidget {
   final String playlistId;
+  final bool isMine;
 
-  const PlayListDetailPage({super.key, required this.playlistId});
+  const PlayListDetailPage(
+      {super.key, required this.playlistId, required this.isMine});
 
   @override
   State<PlayListDetailPage> createState() => _PlayListDetailPageState();
@@ -18,16 +21,28 @@ class PlayListDetailPage extends StatefulWidget {
 
 class _PlayListDetailPageState extends State<PlayListDetailPage> {
   late PlayListDetailController controller;
+  final ScrollController _scrollController = ScrollController();
+  final RxBool _showBackToTop = false.obs;
 
   @override
   void initState() {
     super.initState();
     controller =
         Get.put(PlayListDetailController(playlistId: widget.playlistId));
+
+    // 添加滚动监听
+    _scrollController.addListener(() {
+      if (_scrollController.offset >= 1000) {
+        _showBackToTop.value = true;
+      } else {
+        _showBackToTop.value = false;
+      }
+    });
   }
 
   @override
   void dispose() {
+    _scrollController.dispose();
     controller.repository.dispose();
     Get.delete<PlayListDetailController>();
     super.dispose();
@@ -38,6 +53,7 @@ class _PlayListDetailPageState extends State<PlayListDetailPage> {
     return Scaffold(
       appBar: _buildAppBar(),
       body: LoadingMoreCustomScrollView(
+        controller: _scrollController,
         slivers: <Widget>[
           LoadingMoreSliverList<Video>(
             SliverListConfig<Video>(
@@ -58,6 +74,18 @@ class _PlayListDetailPageState extends State<PlayListDetailPage> {
           )
         ],
       ),
+      floatingActionButton: Obx(() => _showBackToTop.value
+          ? FloatingActionButton(
+              onPressed: () {
+                _scrollController.animateTo(
+                  0,
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.easeInOut,
+                );
+              },
+              child: const Icon(Icons.arrow_upward),
+            )
+          : const SizedBox()),
       bottomNavigationBar: Obx(() => controller.isMultiSelect.value
           ? _buildMultiSelectBottomBar()
           : const SizedBox()),
@@ -99,6 +127,29 @@ class _PlayListDetailPageState extends State<PlayListDetailPage> {
     });
   }
 
+  void _showShareDialog() {
+    Get.dialog(
+      AlertDialog(
+        title: const Text('分享播放列表'),
+        content: const Text('要分享这个播放列表吗?'),
+        actions: [
+          TextButton(
+            onPressed: () => AppService.tryPop(),
+            child: const Text('取消'),
+          ),
+          TextButton(
+            onPressed: () {
+              AppService.tryPop();  
+              ShareService.sharePlayListDetail(
+                  widget.playlistId, controller.playlistTitle.value);
+            },
+            child: const Text('分享'),
+          ),
+        ],
+      ),
+    );
+  }
+
   PreferredSizeWidget _buildAppBar() {
     return AppBar(
       title: Obx(() => Text(controller.playlistTitle.value)),
@@ -115,19 +166,26 @@ class _PlayListDetailPageState extends State<PlayListDetailPage> {
               case 'deleteCurPlaylist':
                 _showDeleteCurPlaylistConfirmDialog();
                 break;
+              case 'share':
+                _showShareDialog();
+                break;
             }
           },
           itemBuilder: (context) => [
-            const PopupMenuItem(
-              value: 'edit',
-              child: Text('编辑标题'),
-            ),
-            const PopupMenuItem(value: 'multiSelect', child: Text('编辑模式')),
+            if (widget.isMine)
+              const PopupMenuItem(
+                value: 'edit',
+                child: Text('编辑标题'),
+              ),
+            if (widget.isMine)
+              const PopupMenuItem(value: 'multiSelect', child: Text('编辑模式')),
             // 删除
             // const PopupMenuItem(
             //   value: 'deleteCurPlaylist',
             //   child: Text('删除此播放列表'),
             // ),
+            // 分享
+            const PopupMenuItem(value: 'share', child: Text('分享')),
           ],
         ),
       ],

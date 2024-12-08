@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:i_iwara/app/ui/pages/play_list/play_list.dart';
 import 'package:i_iwara/app/ui/pages/play_list/play_list_detail.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
 
@@ -48,7 +49,6 @@ class AppService extends GetxService {
   set currentIndex(int value) => _currentIndex.value = value;
 
   static void switchGlobalDrawer() {
-
     if (globalDrawerKey.currentState!.isDrawerOpen) {
       globalDrawerKey.currentState!.openEndDrawer();
       LogUtils.d('关闭Drawer', 'AppService');
@@ -162,38 +162,43 @@ class NaviService {
     ));
   }
 
-  // SignInPage()
+  /// 跳转到登录页
   static void navigateToSignInPage() {
     Get.toNamed(Routes.SIGN_IN);
   }
 
-  static void toSearchPage({required String searchInfo, required String segment}) {
-    AppService.homeNavigatorKey.currentState?.push(
-      PageRouteBuilder(
-        settings: const RouteSettings(name: Routes.SEARCH_RESULT),
-        pageBuilder: (context, animation, secondaryAnimation) {
-          return SearchResult();
-        },
-        transitionDuration: const Duration(milliseconds: 200),
-        // 从右到左的原生动画
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          return SlideTransition(
-            position: Tween<Offset>(
-              begin: const Offset(1, 0),
-              end: Offset.zero,
-            ).animate(animation),
-            child: child,
-          );
-        },
-      )
-    );
+  /// 跳转到搜索结果页
+  static void toSearchPage(
+      {required String searchInfo, required String segment}) {
+    AppService.homeNavigatorKey.currentState?.push(PageRouteBuilder(
+      settings: const RouteSettings(name: Routes.SEARCH_RESULT),
+      pageBuilder: (context, animation, secondaryAnimation) {
+        return SearchResult();
+      },
+      transitionDuration: const Duration(milliseconds: 200),
+      // 从右到左的原生动画
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        return SlideTransition(
+          position: Tween<Offset>(
+            begin: const Offset(1, 0),
+            end: Offset.zero,
+          ).animate(animation),
+          child: child,
+        );
+      },
+    ));
   }
 
-  static navigateToPlayListDetail(String id) {
-    Get.to(() => PlayListDetailPage(playlistId: id));
+  /// 跳转到播放列表详情页
+  static navigateToPlayListDetail(String id, {bool isMine = false}) {
+    Get.to(() => PlayListDetailPage(playlistId: id, isMine: isMine));
   }
 
-  static void navigateToPlayListPage() {
-    Get.toNamed(Routes.PLAY_LIST);
+  /// 跳转到播放列表页
+  static void navigateToPlayListPage(String userId, {bool isMine = false}) {
+    Get.to(() => PlayListPage(userId: userId, isMine: isMine),
+        transition: Transition.cupertino,
+        routeName: Routes.PLAY_LIST,
+        fullscreenDialog: true);
   }
 }

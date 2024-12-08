@@ -7,6 +7,7 @@ import 'package:i_iwara/app/services/user_preference_service.dart';
 import 'package:i_iwara/app/ui/pages/author_profile/widgets/author_profile_skeleton_widget.dart';
 import 'package:i_iwara/app/ui/pages/author_profile/widgets/profile_image_model_tab_list_widget.dart';
 import 'package:i_iwara/app/ui/pages/author_profile/widgets/profile_video_tab_list_widget.dart';
+import 'package:i_iwara/app/ui/pages/author_profile/widgets/profile_playlist_tab_list_widget.dart';
 import 'package:i_iwara/utils/date_time_extension.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -37,6 +38,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
   late TabController primaryTC;
   late TabController videoSecondaryTC;
   late TabController imageSecondaryTC;
+  late TabController playlistSecondaryTC;
   late String username;
 
   final GlobalKey<ExtendedNestedScrollViewState> _key =
@@ -50,9 +52,10 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
     username = widget.username;
     profileController =
         Get.put(AuthorProfileController(username: username), tag: uniqueTag);
-    primaryTC = TabController(length: 2, vsync: this);
+    primaryTC = TabController(length: 3, vsync: this);
     videoSecondaryTC = TabController(length: 5, vsync: this);
     imageSecondaryTC = TabController(length: 5, vsync: this);
+    playlistSecondaryTC = TabController(length: 5, vsync: this);
   }
 
   @override
@@ -61,6 +64,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
     primaryTC.dispose();
     videoSecondaryTC.dispose();
     imageSecondaryTC.dispose();
+    playlistSecondaryTC.dispose();
     super.dispose();
   }
 
@@ -575,6 +579,15 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                             ],
                           ),
                         ),
+                        Tab(
+                          child: Row(
+                            children: [
+                              Icon(Icons.playlist_play),
+                              SizedBox(width: 8), 
+                              Text("播放列表"),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                     Expanded(
@@ -597,6 +610,14 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                                   userId: profileController.author.value!.id,
                                   tabKey: '图库',
                                   tc: imageSecondaryTC,
+                                  onFetchFinished: ({int? count}) {})
+                              : const SizedBox.shrink()),
+                          Obx(() => profileController.author.value?.id != null
+                              ? ProfilePlaylistTabListWidget(
+                                  key: const Key('playlist'),
+                                  userId: profileController.author.value!.id,
+                                  tabKey: '播放列表',
+                                  tc: playlistSecondaryTC,
                                   onFetchFinished: ({int? count}) {})
                               : const SizedBox.shrink()),
                         ],

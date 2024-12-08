@@ -44,8 +44,13 @@ class GlobalDrawerColumns extends StatelessWidget {
               }),
               // 播放列表
               _buildMenuItem(Icons.playlist_play, '播放列表', () {
-                NaviService.navigateToPlayListPage();
-                AppService.switchGlobalDrawer();
+                if (userService.isLogin) {
+                  NaviService.navigateToPlayListPage(
+                      userService.currentUser.value!.id, isMine: true);
+                  AppService.switchGlobalDrawer();
+                } else {
+                  Get.snackbar('错误', '请先登录');
+                }
               }),
               Obx(() => userService.isLogin
                   ? Column(
@@ -73,7 +78,8 @@ class GlobalDrawerColumns extends StatelessWidget {
           );
         } else {
           AppService.switchGlobalDrawer();
-          NaviService.navigateToAuthorProfilePage(userService.currentUser.value!.username);
+          NaviService.navigateToAuthorProfilePage(
+              userService.currentUser.value!.username);
         }
       },
       child: Container(

@@ -10,7 +10,10 @@ import 'package:i_iwara/app/ui/widgets/my_loading_more_indicator_widget.dart';
 import 'package:loading_more_list/loading_more_list.dart';
 
 class PlayListPage extends StatefulWidget {
-  const PlayListPage({super.key});
+  final String userId;
+  final bool isMine;
+
+  const PlayListPage({super.key, required this.userId, required this.isMine});
 
   @override
   State<PlayListPage> createState() => _PlayListPageState();
@@ -19,19 +22,31 @@ class PlayListPage extends StatefulWidget {
 class _PlayListPageState extends State<PlayListPage> {
   late PlayListsController controller;
   late PlayListRepository listSourceRepository;
+  final ScrollController _scrollController = ScrollController();
+  final RxBool _showBackToTop = false.obs;
 
   @override
   void initState() {
     super.initState();
     controller = Get.put(PlayListsController());
-    listSourceRepository = PlayListRepository();
+    listSourceRepository = PlayListRepository(userId: widget.userId);
+
+    // 添加滚动监听
+    _scrollController.addListener(() {
+      if (_scrollController.offset >= 300) {
+        _showBackToTop.value = true;
+      } else {
+        _showBackToTop.value = false;
+      }
+    });
   }
 
   @override
   void dispose() {
-    super.dispose();
+    _scrollController.dispose();
     Get.delete<PlayListsController>();
     listSourceRepository.dispose();
+    super.dispose();
   }
 
   @override
@@ -48,13 +63,20 @@ class _PlayListPageState extends State<PlayListPage> {
             icon: const Icon(Icons.help_outline),
             onPressed: () => _showHelpDialog(),
           ),
-          IconButton(
-            icon: const Icon(Icons.add),
-            onPressed: () => _showCreateDialog(context),
-          ),
+          if (widget.isMine)
+            IconButton(
+              icon: const Icon(Icons.add),
+              onPressed: () => _showCreateDialog(context),
+            ),
+          // 分享
+          // IconButton(
+          //   icon: const Icon(Icons.share),
+          //   onPressed: () => ShareService.sharePlayList(widget.userId),
+          // ),
         ],
       ),
       body: LoadingMoreCustomScrollView(
+        controller: _scrollController,
         slivers: <Widget>[
           LoadingMoreSliverList<PlaylistModel>(
             SliverListConfig<PlaylistModel>(
@@ -75,6 +97,18 @@ class _PlayListPageState extends State<PlayListPage> {
           )
         ],
       ),
+      floatingActionButton: Obx(() => _showBackToTop.value
+          ? FloatingActionButton(
+              onPressed: () {
+                _scrollController.animateTo(
+                  0,
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.easeInOut,
+                );
+              },
+              child: const Icon(Icons.arrow_upward),
+            )
+          : const SizedBox()),
     );
   }
 
@@ -82,7 +116,8 @@ class _PlayListPageState extends State<PlayListPage> {
     return Card(
       clipBehavior: Clip.antiAlias,
       child: InkWell(
-        onTap: () => NaviService.navigateToPlayListDetail(playlist.id),
+        onTap: () => NaviService.navigateToPlayListDetail(playlist.id,
+            isMine: widget.isMine),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min, // 添加这行

@@ -1,15 +1,13 @@
 import 'package:get/get.dart';
 import 'package:i_iwara/app/models/play_list.model.dart';
-import 'package:i_iwara/app/routes/app_routes.dart';
 import 'package:i_iwara/app/services/play_list_service.dart';
-import 'package:i_iwara/app/services/user_service.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
 import 'package:loading_more_list/loading_more_list.dart';
 
 class PlayListRepository extends LoadingMoreBase<PlaylistModel> {
-  final UserService _userService = Get.find<UserService>();
   final PlayListService _playListService = Get.find<PlayListService>();
-  PlayListRepository({this.maxLength = 300});
+  final String userId;
+  PlayListRepository({required this.userId, this.maxLength = 300});
   int _pageIndex = 0;
   bool _hasMore = true;
   bool forceRefresh = false;
@@ -30,14 +28,8 @@ class PlayListRepository extends LoadingMoreBase<PlaylistModel> {
   }
 
   Future<List<PlaylistModel>> loadPageData(int pageKey, int pageSize) async {
-    if (_userService.currentUser.value == null) {
-      Get.snackbar('错误', '请先登录');
-      Get.toNamed(Routes.LOGIN);
-      return [];
-    }
-
     final result = await _playListService.getPlaylists(
-      userId: _userService.currentUser.value!.id,
+      userId: userId,
       page: pageKey,
       limit: pageSize,
     );
