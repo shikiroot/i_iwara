@@ -21,6 +21,8 @@ class _MyFavoritesState extends State<MyFavorites>
   // 记录上一次点击的tab索引
   int _lastTappedIndex = 0;
 
+  final RxBool isLoading = false.obs;
+
   @override
   void initState() {
     super.initState();
@@ -58,28 +60,39 @@ class _MyFavoritesState extends State<MyFavorites>
     }
   }
 
-  void _scrollToTopAndRefresh(LoadingMoreBase repository) {
+  Future<void> _scrollToTopAndRefresh(LoadingMoreBase repository) async {
     // 获取当前活动的ScrollController
-    final ScrollController activeController = 
-        _tabController.index == 0 ? _videoScrollController : _imageScrollController;
+    final ScrollController activeController = _tabController.index == 0
+        ? _videoScrollController
+        : _imageScrollController;
 
     // 检查ScrollController是否已附加并且有滚动位置
     if (!activeController.hasClients) {
       // 如果还没有附加，直接刷新数据
-      repository.refresh();
+      isLoading.value = true;
+      await repository.refresh();
+      isLoading.value = false;
       return;
     }
 
     // 如果已经在顶部，直接刷新
     if (activeController.position.pixels == 0.0) {
-      repository.refresh();
+      isLoading.value = true;
+      await repository.refresh();
+      isLoading.value = false;
     } else {
       // 否则先滚动到顶部，然后刷新
-      activeController.animateTo(
+      activeController
+          .animateTo(
         0,
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeOut,
-      ).then((_) => repository.refresh());
+      )
+          .then((_) async {
+        isLoading.value = true;
+        await repository.refresh();
+        isLoading.value = false;
+      });
     }
   }
 
@@ -88,6 +101,33 @@ class _MyFavoritesState extends State<MyFavorites>
     return Scaffold(
       appBar: AppBar(
         title: const Text('我的最爱'),
+        actions: [
+          // 使用 GetBuilder 替代 Obx
+          Obx(() => AnimatedSwitcher(
+                duration: const Duration(milliseconds: 200),
+                child: isLoading.value
+                    ? Container(
+                        margin: const EdgeInsets.only(right: 16),
+                        width: 20,
+                        height: 20,
+                        child: const CircularProgressIndicator(
+                          strokeWidth: 2,
+                        ),
+                      )
+                    : const SizedBox.shrink(),
+              )),
+          IconButton(
+            onPressed: () {
+              if (_tabController.index == 0) {
+                _scrollToTopAndRefresh(controller.videoRepository);
+              } else {
+                _scrollToTopAndRefresh(controller.imageRepository);
+              }
+            },
+            icon: const Icon(Icons.refresh),
+            tooltip: '刷新',
+          ),
+        ],
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(kToolbarHeight),
           child: _buildTabBar(),
@@ -116,7 +156,10 @@ class _MyFavoritesState extends State<MyFavorites>
         vertical: 8,
       ),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceContainerHighest.withOpacity(0.3),
+        color: Theme.of(context)
+            .colorScheme
+            .surfaceContainerHighest
+            .withOpacity(0.3),
         borderRadius: BorderRadius.circular(isMobile ? 0 : 25),
       ),
       child: TabBar(

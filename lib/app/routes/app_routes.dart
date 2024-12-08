@@ -28,6 +28,8 @@ abstract class Routes {
 
   static const FAVORITE = _Paths.FAVORITE;
 
+  static const FRIENDS = _Paths.FRIENDS;
+
   static String PLAYLIST_DETAIL(String id) => _Paths.PLAYLIST_DETAIL.replaceAll(':id', id);
 }
 
@@ -52,5 +54,6 @@ abstract class _Paths {
   static const SUBSCRIPTIONS = '/subscriptions';
   static const SIGN_IN = '/sign_in';
   static const FAVORITE = '/favorite';
-  static const  ROOT = '/';
+  static const FRIENDS = '/friends';
+  static const ROOT = '/';
 }

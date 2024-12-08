@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:i_iwara/app/ui/pages/favorites/my_favorites.dart';
+import 'package:i_iwara/app/ui/pages/friends/friends_page.dart';
 import 'package:i_iwara/app/ui/pages/play_list/play_list.dart';
 import 'package:i_iwara/app/ui/pages/play_list/play_list_detail.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
@@ -193,6 +194,7 @@ class NaviService {
   /// 跳转到播放列表详情页
   static navigateToPlayListDetail(String id, {bool isMine = false}) {
     AppService.homeNavigatorKey.currentState?.push(PageRouteBuilder(
+      settings: RouteSettings(name: Routes.PLAYLIST_DETAIL(id)),
       pageBuilder: (context, animation, secondaryAnimation) {
         return PlayListDetailPage(playlistId: id, isMine: isMine);
       },
@@ -211,6 +213,7 @@ class NaviService {
   /// 跳转到播放列表页
   static void navigateToPlayListPage(String userId, {bool isMine = false}) {
     AppService.homeNavigatorKey.currentState?.push(PageRouteBuilder(
+      settings: const RouteSettings(name: Routes.PLAY_LIST),
       pageBuilder: (context, animation, secondaryAnimation) {
         return PlayListPage(userId: userId, isMine: isMine);
       },
@@ -232,6 +235,25 @@ class NaviService {
       settings: const RouteSettings(name: Routes.FAVORITE),
       pageBuilder: (context, animation, secondaryAnimation) {
         return const MyFavorites();
+      },
+      transitionDuration: const Duration(milliseconds: 200),
+      // 从右到左的原生动画
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        return SlideTransition(
+          position: Tween<Offset>(begin: const Offset(1, 0), end: Offset.zero)
+              .animate(animation),
+          child: child,
+        );
+      },
+    ));
+  }
+
+  /// 跳转到好友列表页
+  static void navigateToFriendsPage() {
+    AppService.homeNavigatorKey.currentState?.push(PageRouteBuilder(
+      settings: const RouteSettings(name: Routes.FRIENDS),
+      pageBuilder: (context, animation, secondaryAnimation) {
+        return const FriendsPage();
       },
       transitionDuration: const Duration(milliseconds: 200),
       // 从右到左的原生动画

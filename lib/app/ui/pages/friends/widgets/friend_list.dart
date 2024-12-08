@@ -1,0 +1,87 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:i_iwara/app/models/user.model.dart';
+import 'package:i_iwara/app/ui/pages/friends/controllers/friends_controller.dart';
+import 'package:i_iwara/app/ui/widgets/my_loading_more_indicator_widget.dart';
+import 'package:i_iwara/app/ui/widgets/user_card.dart';
+import 'package:loading_more_list/loading_more_list.dart';
+
+class FriendList extends StatelessWidget {
+  final ScrollController scrollController;
+
+  const FriendList({
+    super.key,
+    required this.scrollController,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final FriendsController controller = Get.find();
+
+    return LoadingMoreCustomScrollView(
+      controller: scrollController,
+      slivers: [
+        LoadingMoreSliverList<User>(
+          SliverListConfig<User>(
+            itemBuilder: (context, user, index) {
+              return Obx(() {
+                final bool isRemoved =
+                    controller.removedFriendIds.contains(user.id);
+                return Stack(
+                  children: [
+                    UserCard(
+                      user: user,
+                      showFriendOptions: true,
+                      onRemoveFriend: controller.removeFriend,
+                      isRemovingFriend: controller.removingFriendIds[user.id] ?? false,
+                      isRestoringFriend: controller.restoringFriendIds[user.id] ?? false,
+                    ),
+                    if (isRemoved)
+                      Positioned.fill(
+                        child: Material(
+                          color: Colors.black54,
+                          child: InkWell(
+                            onTap: () => controller.restoreFriend(user.id),
+                            child: Center(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const Icon(
+                                    Icons.person_add,
+                                    color: Colors.white,
+                                    size: 32,
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    '点击恢复好友',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.copyWith(
+                                          color: Colors.white,
+                                        ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                  ],
+                );
+              });
+            },
+            sourceList: controller.friendRepository,
+            padding: const EdgeInsets.all(8.0),
+            indicatorBuilder: (context, status) => myLoadingMoreIndicator(
+              context,
+              status,
+              isSliver: true,
+              loadingMoreBase: controller.friendRepository,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}

@@ -1,4 +1,3 @@
-
 import 'package:i_iwara/app/models/user_avatar.model.dart';
 
 class User {
@@ -52,9 +51,12 @@ class User {
       creatorProgram: json['creatorProgram'] ?? false,
       locale: json['locale'],
       seenAt: json['seenAt'] != null ? DateTime.parse(json['seenAt']) : null,
-      avatar: json['avatar'] != null ? UserAvatar.fromJson(json['avatar']) : null,
-      createdAt: json['createdAt'] != null ? DateTime.parse(json['createdAt']) : null,
-      updatedAt: json['updatedAt'] != null ? DateTime.parse(json['updatedAt']) : null,
+      avatar:
+          json['avatar'] != null ? UserAvatar.fromJson(json['avatar']) : null,
+      createdAt:
+          json['createdAt'] != null ? DateTime.parse(json['createdAt']) : null,
+      updatedAt:
+          json['updatedAt'] != null ? DateTime.parse(json['updatedAt']) : null,
     );
   }
 
@@ -76,5 +78,41 @@ class User {
       'createdAt': createdAt.toIso8601String(),
       'updatedAt': updatedAt.toIso8601String(),
     };
+  }
+
+  User copyWith({
+    String? id,
+    String? name,
+    String? username,
+    String? status,
+    String? role,
+    bool? followedBy,
+    bool? following,
+    bool? friend,
+    bool? premium,
+    bool? creatorProgram,
+    String? locale,
+    DateTime? seenAt,
+    UserAvatar? avatar,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+  }) {
+    return User(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      username: username ?? this.username,
+      status: status ?? this.status,
+      role: role ?? this.role,
+      followedBy: followedBy ?? this.followedBy,
+      following: following ?? this.following,
+      friend: friend ?? this.friend,
+      premium: premium ?? this.premium,
+      creatorProgram: creatorProgram ?? this.creatorProgram,
+      locale: locale ?? this.locale,
+      seenAt: seenAt ?? this.seenAt,
+      avatar: avatar ?? this.avatar,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
   }
 }

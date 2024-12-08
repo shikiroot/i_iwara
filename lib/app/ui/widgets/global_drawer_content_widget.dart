@@ -24,14 +24,28 @@ class GlobalDrawerColumns extends StatelessWidget {
           child: ListView(
             padding: EdgeInsets.zero,
             children: [
+              // 最爱
+              _buildMenuItem(Icons.favorite, '最爱', () {
+                if (userService.isLogin) {
+                  NaviService.navigateToFavoritePage();
+                  AppService.switchGlobalDrawer();
+                } else {
+                  Get.snackbar('错误', '请先登录');
+                }
+              }),
+              // 好友
+              _buildMenuItem(Icons.people, '好友', () {
+                if (userService.isLogin) {
+                  NaviService.navigateToFriendsPage();
+                  AppService.switchGlobalDrawer();
+                } else {
+                  Get.snackbar('错误', '请先登录');
+                }
+              }),
+              // 设置
               _buildMenuItem(Icons.settings, '设置', () {
                 AppService.switchGlobalDrawer();
                 Get.toNamed(Routes.SETTINGS_PAGE);
-              }),
-              // 日历
-              _buildMenuItem(Icons.calendar_today, '戒律签到', () {
-                NaviService.navigateToSignInPage();
-                AppService.switchGlobalDrawer();
               }),
               // 播放列表
               _buildMenuItem(Icons.playlist_play, '播放列表', () {
@@ -44,14 +58,10 @@ class GlobalDrawerColumns extends StatelessWidget {
                   Get.snackbar('错误', '请先登录');
                 }
               }),
-              // 最爱
-              _buildMenuItem(Icons.favorite, '最爱', () {
-                if (userService.isLogin) {
-                  NaviService.navigateToFavoritePage();
-                  AppService.switchGlobalDrawer();
-                } else {
-                  Get.snackbar('错误', '请先登录');
-                }
+              // 戒律签到
+              _buildMenuItem(Icons.calendar_today, '戒律签到', () {
+                NaviService.navigateToSignInPage();
+                AppService.switchGlobalDrawer();
               }),
               // 关于
               _buildMenuItem(Icons.info, '关于', () {

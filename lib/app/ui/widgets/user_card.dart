@@ -7,12 +7,34 @@ class UserCard extends StatelessWidget {
   final User user;
   final VoidCallback? onTap;
   final bool showFriendOptions;
+  final bool showFriendAcceptAndRejectOptions;
+  final bool showCancelFriendRequestOption;
+  final Function(String)? onRemoveFriend;
+  final Function(String)? onAcceptFriendRequest;
+  final Function(String)? onRejectFriendRequest;
+  final Function(String)? onCancelFriendRequest;
+  final bool isRemovingFriend;
+  final bool isAcceptingRequest;
+  final bool isRejectingRequest;
+  final bool isCancelingRequest;
+  final bool isRestoringFriend;
 
   const UserCard({
     super.key,
     required this.user,
     this.onTap,
     this.showFriendOptions = false,
+    this.showFriendAcceptAndRejectOptions = false,
+    this.showCancelFriendRequestOption = false,
+    this.onRemoveFriend,
+    this.onAcceptFriendRequest,
+    this.onRejectFriendRequest,
+    this.onCancelFriendRequest,
+    this.isRemovingFriend = false,
+    this.isAcceptingRequest = false,
+    this.isRejectingRequest = false,
+    this.isCancelingRequest = false,
+    this.isRestoringFriend = false,
   });
 
   @override
@@ -25,10 +47,8 @@ class UserCard extends StatelessWidget {
           padding: const EdgeInsets.all(12.0),
           child: Row(
             children: [
-              // Avatar with premium effect
               _buildAvatar(),
               const SizedBox(width: 12),
-              // User info
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -43,6 +63,18 @@ class UserCard extends StatelessWidget {
                   ],
                 ),
               ),
+              if (showFriendOptions && user.friend) ...[
+                const SizedBox(width: 8),
+                _buildRemoveFriendButton(context),
+              ],
+              if (showFriendAcceptAndRejectOptions) ...[
+                const SizedBox(width: 8),
+                _buildFriendRequestButtons(context),
+              ],
+              if (showCancelFriendRequestOption) ...[
+                const SizedBox(width: 8),
+                _buildCancelRequestButton(context),
+              ],
             ],
           ),
         ),
@@ -54,7 +86,7 @@ class UserCard extends StatelessWidget {
     Widget avatar = CircleAvatar(
       radius: 30,
       backgroundImage: CachedNetworkImageProvider(
-          user.avatar?.avatarUrl ?? CommonConstants.defaultAvatarUrl,
+        user.avatar?.avatarUrl ?? CommonConstants.defaultAvatarUrl,
         headers: const {'referer': CommonConstants.iwaraBaseUrl},
       ),
     );
@@ -202,8 +234,7 @@ class UserCard extends StatelessWidget {
             Icon(Icons.check_circle, size: 14, color: textColor)
           else if (label == '关注你')
             Icon(Icons.person_add, size: 14, color: textColor),
-          if (label != '')
-            const SizedBox(width: 4),
+          if (label != '') const SizedBox(width: 4),
           Text(
             label,
             style: TextStyle(
@@ -214,6 +245,77 @@ class UserCard extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildRemoveFriendButton(BuildContext context) {
+    return IconButton(
+      icon: isRemovingFriend
+          ? const SizedBox(
+              width: 24,
+              height: 24,
+              child: CircularProgressIndicator(strokeWidth: 2),
+            )
+          : const Icon(Icons.person_remove),
+      color: Colors.red,
+      onPressed: isRemovingFriend ? null : () => onRemoveFriend?.call(user.id),
+      tooltip: '删除好友',
+    );
+  }
+
+  Widget _buildFriendRequestButtons(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        IconButton(
+          icon: isAcceptingRequest
+              ? const SizedBox(
+                  width: 24,
+                  height: 24,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    color: Colors.green,
+                  ),
+                )
+              : const Icon(Icons.check_circle),
+          color: Colors.green,
+          onPressed: isAcceptingRequest ? null : () => onAcceptFriendRequest?.call(user.id),
+          tooltip: '接受',
+        ),
+        IconButton(
+          icon: isRejectingRequest
+              ? const SizedBox(
+                  width: 24,
+                  height: 24,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    color: Colors.red,
+                  ),
+                )
+              : const Icon(Icons.cancel),
+          color: Colors.red,
+          onPressed: isRejectingRequest ? null : () => onRejectFriendRequest?.call(user.id),
+          tooltip: '拒绝',
+        ),
+      ],
+    );
+  }
+
+  Widget _buildCancelRequestButton(BuildContext context) {
+    return IconButton(
+      icon: isCancelingRequest
+          ? const SizedBox(
+              width: 24,
+              height: 24,
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+                color: Colors.orange,
+              ),
+            )
+          : const Icon(Icons.person_remove),
+      color: Colors.orange,
+      onPressed: isCancelingRequest ? null : () => onCancelFriendRequest?.call(user.id),
+      tooltip: '取消申请',
     );
   }
 }

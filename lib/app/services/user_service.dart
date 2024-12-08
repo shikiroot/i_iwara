@@ -2,13 +2,14 @@ import 'package:dio/dio.dart' as dio;
 import 'package:get/get.dart';
 import 'package:i_iwara/app/models/dto/user_request_dto.dart';
 import 'package:i_iwara/app/models/page_data.model.dart';
+
 import '../../common/constants.dart';
 import '../../utils/logger_utils.dart';
 import '../models/api_result.model.dart';
-import '../routes/app_routes.dart';
-import 'auth_service.dart';
 import '../models/user.model.dart';
+import '../routes/app_routes.dart';
 import 'api_service.dart';
+import 'auth_service.dart';
 
 class UserService extends GetxService {
   final AuthService _authService = Get.find<AuthService>();
@@ -164,6 +165,21 @@ class UserService extends GetxService {
     }
   }
 
+  /// 接受朋友请求
+  Future<ApiResult> acceptFriendRequest(String requestId) async {
+    return addFriend(requestId);
+  }
+
+  /// 拒绝朋友请求
+  Future<ApiResult> rejectFriendRequest(String requestId) async {
+    return removeFriend(requestId);
+  }
+
+  /// 取消朋友请求
+  Future<ApiResult> cancelFriendRequest(String requestId) async {
+    return removeFriend(requestId);
+  }
+
   /// 朋友列表
   Future<ApiResult<PageData<User>>> fetchFriends(
       {int page = 0, int limit = 20, required String userId}) async {
@@ -176,6 +192,7 @@ class UserService extends GetxService {
 
       final List<User> results = (response.data['results'] as List)
           .map((userJson) => User.fromJson(userJson))
+          .map((user) => user.copyWith(friend: true))
           .toList();
 
       final PageData<User> pageData = PageData(
@@ -192,9 +209,11 @@ class UserService extends GetxService {
   }
 
   /// 代办请求列表
-  Future<ApiResult<PageData<UserRequestDTO>>> fetchUserFriendsRequests({int page = 0, int limit = 20, required String userId}) async {
+  Future<ApiResult<PageData<UserRequestDTO>>> fetchUserFriendsRequests(
+      {int page = 0, int limit = 20, required String userId}) async {
     try {
-      final response = await _apiService.get(ApiConstants.userFriendsRequests(userId), queryParameters: {
+      final response = await _apiService
+          .get(ApiConstants.userFriendsRequests(userId), queryParameters: {
         'page': page,
         'limit': limit,
       });
