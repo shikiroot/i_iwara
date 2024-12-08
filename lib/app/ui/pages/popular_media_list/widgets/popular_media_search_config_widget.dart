@@ -291,7 +291,7 @@ class _PopularMediaSearchConfigState extends State<PopularMediaSearchConfig> {
               _userPreferenceService.videoSearchTagHistory.value;
 
           if (remappedTags.isEmpty) {
-            return const EmptyWidget();
+            return const MyEmptyWidget();
           }
 
           return Wrap(

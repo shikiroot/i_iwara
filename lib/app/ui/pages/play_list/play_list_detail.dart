@@ -72,7 +72,7 @@ class _PlayListDetailPageState extends State<PlayListDetailPage> {
             }
           },
           child: controller.videos.isEmpty && !controller.isLoading.value
-              ? EmptyWidget(
+              ? MyEmptyWidget(
                   message: '暂无视频',
                   onRefresh: () async {
                     await controller.refreshData();

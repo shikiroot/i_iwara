@@ -40,9 +40,9 @@ class LogUtils {
   }
 
   static void e(String message,
-      {String tag = _TAG, Object? error, StackTrace? stackTrace}) {
+      {String tag = _TAG, Object? error, StackTrace? stackTrace, StackTrace? stack}) {
     _logger.e("[${_getTimeString()}][$tag] $message",
-        stackTrace: stackTrace, error: error);
+        stackTrace: stackTrace ?? stack, error: error);
   }
 
 }

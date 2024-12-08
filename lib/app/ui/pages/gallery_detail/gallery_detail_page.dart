@@ -189,7 +189,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
             }
 
             if (detailController.imageModelInfo.value == null) {
-              return const EmptyWidget();
+              return const MyEmptyWidget();
             }
 
             return PopScope(
@@ -262,7 +262,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                                   .otherAuthorzImageModelsController!
                                   .imageModels
                                   .isEmpty)
-                                const EmptyWidget()
+                                const MyEmptyWidget()
                               else ...[
                                 // 构建作者的其他图库列表
                                 for (var imageModel in detailController
@@ -282,7 +282,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                                 const MediaTileListSkeletonWidget()
                               else if (relatedMediasController
                                   .imageModels.isEmpty)
-                                const EmptyWidget()
+                                const MyEmptyWidget()
                               else
                                 // 构建相关图库列表
                                 for (var imageModel
@@ -336,7 +336,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
             }
 
             if (detailController.imageModelInfo.value == null) {
-              return const EmptyWidget();
+              return const MyEmptyWidget();
             }
 
             return PopScope(
@@ -385,7 +385,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                             .otherAuthorzImageModelsController!
                             .imageModels
                             .isEmpty)
-                          const EmptyWidget()
+                          const MyEmptyWidget()
                         else ...[
                           // 构建作者的其他图库列表
                           for (var imageModel in detailController
@@ -402,7 +402,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                         if (relatedMediasController.isLoading.value)
                           const MediaTileListSkeletonWidget()
                         else if (relatedMediasController.imageModels.isEmpty)
-                          const EmptyWidget()
+                          const MyEmptyWidget()
                         else ...[
                           // 构建相关图库列表
                           for (var imageModel

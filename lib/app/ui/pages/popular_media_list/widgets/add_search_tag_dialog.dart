@@ -98,7 +98,7 @@ class _AddSearchTagDialogState extends State<AddSearchTagDialog> {
               }
 
               if (tagController.tags.isEmpty) {
-                return const EmptyWidget();
+                return const MyEmptyWidget();
               }
 
               return Expanded(

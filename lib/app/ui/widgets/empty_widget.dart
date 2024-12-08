@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class EmptyWidget extends StatelessWidget {
+class MyEmptyWidget extends StatelessWidget {
   final String? message;
   final IconData? icon;
   final double? iconSize;
@@ -8,7 +8,7 @@ class EmptyWidget extends StatelessWidget {
   final VoidCallback? onRefresh;
   final double? spacing;
 
-  const EmptyWidget({
+  const MyEmptyWidget({
     super.key,
     this.message = '暂无数据',
     this.icon = Icons.inbox_outlined, // 默认使用inbox图标

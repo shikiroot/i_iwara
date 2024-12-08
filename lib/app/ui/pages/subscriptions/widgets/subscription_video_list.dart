@@ -32,7 +32,7 @@ class SubscriptionVideoList extends StatelessWidget {
               return controller.errorWidget.value!;
             }
             if (controller.videos.isEmpty && !controller.isLoading.value) {
-              return EmptyWidget(
+              return MyEmptyWidget(
                 message: '暂无订阅视频',
                 onRefresh: () => controller.loadVideos(),
               );

@@ -33,7 +33,7 @@ class SubscriptionImageList extends StatelessWidget {
               return controller.errorWidget.value!;
             }
             if (controller.images.isEmpty && !controller.isLoading.value) {
-              return EmptyWidget(
+              return MyEmptyWidget(
                 message: '暂无订阅图片',
                 onRefresh: () => controller.loadImages(),
               );

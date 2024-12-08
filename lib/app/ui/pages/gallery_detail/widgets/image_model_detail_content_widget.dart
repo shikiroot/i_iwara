@@ -139,7 +139,7 @@ class ImageModelDetailContent extends StatelessWidget {
     ImageModel? im = controller.imageModelInfo.value;
     if (im == null) {
       return _contentLayout(
-          context, const EmptyWidget(message: "啊？怎么会没有数据呢？出错了吧 :<"));
+          context, const MyEmptyWidget(message: "啊？怎么会没有数据呢？出错了吧 :<"));
     }
 
     List<ImageItem> imageItems = im.files

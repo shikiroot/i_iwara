@@ -5,9 +5,9 @@ import 'package:get/get.dart';
 import 'package:i_iwara/app/models/play_list.model.dart';
 import 'package:i_iwara/app/services/app_service.dart';
 import 'package:i_iwara/app/ui/pages/play_list/controllers/play_list_controller.dart';
-import 'package:i_iwara/app/ui/widgets/custom_paged_grid_view.dart';
+import 'package:i_iwara/app/ui/pages/play_list/controllers/play_list_repository.dart';
 import 'package:i_iwara/app/ui/widgets/empty_widget.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:loading_more_list/loading_more_list.dart';
 
 class PlayListPage extends StatefulWidget {
   const PlayListPage({super.key});
@@ -18,20 +18,20 @@ class PlayListPage extends StatefulWidget {
 
 class _PlayListPageState extends State<PlayListPage> {
   late PlayListsController controller;
-  late PagingController<int, PlaylistModel> _pagingController;
+  late PlayListRepository listSourceRepository;
 
   @override
   void initState() {
     super.initState();
     controller = Get.put(PlayListsController());
-    _pagingController = PagingController(firstPageKey: 0);
+    listSourceRepository = PlayListRepository();
   }
 
   @override
   void dispose() {
-    _pagingController.dispose();
-    Get.delete<PlayListsController>();
     super.dispose();
+    Get.delete<PlayListsController>();
+    listSourceRepository.dispose();
   }
 
   @override
@@ -42,7 +42,7 @@ class _PlayListPageState extends State<PlayListPage> {
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
-            onPressed: () => _pagingController.refresh(),
+            onPressed: () => listSourceRepository.refresh(),
           ),
           IconButton(
             icon: const Icon(Icons.help_outline),
@@ -54,76 +54,181 @@ class _PlayListPageState extends State<PlayListPage> {
           ),
         ],
       ),
-      body: CustomPagedGridView<PlaylistModel>(
-        controller: _pagingController,
-        maxCrossAxisExtent: 200,
-        mainAxisExtent: 266.67,
-        crossAxisSpacing: 8,
-        mainAxisSpacing: 8,
-        pageSize: 10,
-        padding: const EdgeInsets.all(8),
-        onFetch: (pageKey, pageSize) async {
-          final result = await controller.loadPageData(pageKey, pageSize);
-          return result;
-        },
-        itemBuilder: (context, item, index) => _buildPlayListCard(item),
-        emptyIndicatorBuilder: (context) => EmptyWidget(
-          message: "暂无播放列表",
-          onRefresh: () => _pagingController.refresh(),
-        ),
+      body: LoadingMoreCustomScrollView(
+        slivers: <Widget>[
+          LoadingMoreSliverList<PlaylistModel>(
+            SliverListConfig<PlaylistModel>(
+              extendedListDelegate:
+                  const SliverWaterfallFlowDelegateWithMaxCrossAxisExtent(
+                maxCrossAxisExtent: 300,
+                crossAxisSpacing: 5,
+                mainAxisSpacing: 5,
+              ),
+              itemBuilder: buildItem,
+              sourceList: listSourceRepository,
+              padding: const EdgeInsets.all(5.0),
+              lastChildLayoutType: LastChildLayoutType.foot,
+              indicatorBuilder: _buildIndicator,
+            ),
+          )
+        ],
       ),
     );
   }
 
-  Widget _buildPlayListCard(PlaylistModel playlist) {
+  Widget getIndicator(BuildContext context) {
+    return CircularProgressIndicator(
+      strokeWidth: 2.0,
+      valueColor: AlwaysStoppedAnimation<Color>(
+        Theme.of(context).colorScheme.primary,
+      ),
+    );
+  }
+
+  Widget _buildIndicator(BuildContext context, IndicatorStatus status) {
+    const bool isSliver = true;
+    Widget? widget;
+
+    switch (status) {
+      case IndicatorStatus.none:
+        widget = Container(height: 0.0);
+        break;
+      case IndicatorStatus.loadingMoreBusying:
+        widget = Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              margin: const EdgeInsets.only(right: 5.0),
+              height: 15.0,
+              width: 15.0,
+              child: getIndicator(context),
+            ),
+            const Text('正在加载...')
+          ],
+        );
+        break;
+      case IndicatorStatus.fullScreenBusying:
+        widget = Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              margin: const EdgeInsets.only(right: 0.0),
+              height: 30.0,
+              width: 30.0,
+              child: getIndicator(context),
+            ),
+            const Text('正在加载...')
+          ],
+        );
+        widget = isSliver
+            ? SliverFillRemaining(child: widget)
+            : CustomScrollView(
+                slivers: <Widget>[SliverFillRemaining(child: widget)],
+              );
+        break;
+      case IndicatorStatus.error:
+        widget = GestureDetector(
+          onTap: () => listSourceRepository.errorRefresh(),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const <Widget>[
+                Icon(Icons.error, color: Colors.red),
+                Text('啊哦，好像出现了问题呢？'),
+              ],
+            ),
+          ),
+        );
+        break;
+      case IndicatorStatus.fullScreenError:
+        widget = GestureDetector(
+          onTap: () => listSourceRepository.errorRefresh(),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const <Widget>[
+              Icon(Icons.error, color: Colors.red),
+              Text('啊哦，好像出现了问题呢？'),
+            ],
+          ),
+        );
+        widget = isSliver
+            ? SliverFillRemaining(child: widget)
+            : CustomScrollView(
+                slivers: <Widget>[SliverFillRemaining(child: widget)],
+              );
+        break;
+      case IndicatorStatus.noMoreLoad:
+        widget = Center(
+          child: Text(
+            '没有更多了',
+            style: TextStyle(
+              color: Theme.of(context).textTheme.bodySmall?.color,
+            ),
+          ),
+        );
+        break;
+      case IndicatorStatus.empty:
+        widget = const MyEmptyWidget(message: '没有数据');
+        widget = isSliver
+            ? SliverToBoxAdapter(child: widget)
+            : CustomScrollView(
+                slivers: <Widget>[SliverFillRemaining(child: widget)],
+              );
+        break;
+    }
+    return widget;
+  }
+
+  Widget buildItem(BuildContext c, PlaylistModel playlist, int index) {
     return Card(
       clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: () => NaviService.navigateToPlayListDetail(playlist.id),
-        child: Stack(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min, // 添加这行
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: CachedNetworkImage(
-                    imageUrl: playlist.thumbnailUrl,
-                    fit: BoxFit.cover,
-                    width: double.infinity,
-                    placeholder: (context, url) => Container(
-                      color: Colors.grey[300],
-                      child: const Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                    ),
-                    errorWidget: (context, url, error) => const Center(
-                      child: Icon(Icons.error),
-                    ),
+            // 使用 AspectRatio 来固定图片区域的宽高比
+            AspectRatio(
+              aspectRatio: 16 / 9, // 可以根据需要调整宽高比
+              child: CachedNetworkImage(
+                imageUrl: playlist.thumbnailUrl,
+                fit: BoxFit.cover,
+                width: double.infinity,
+                placeholder: (context, url) => Container(
+                  color: Colors.grey[300],
+                  child: const Center(
+                    child: CircularProgressIndicator(),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        playlist.title,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        '${playlist.numVideos} 个视频',
-                        style: TextStyle(
-                          color: Theme.of(context).textTheme.bodySmall?.color,
-                          fontSize: 12,
-                        ),
-                      ),
-                    ],
-                  ),
+                errorWidget: (context, url, error) => const Center(
+                  child: Icon(Icons.error),
                 ),
-              ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    playlist.title,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    '${playlist.numVideos} 个视频',
+                    style: TextStyle(
+                      color: Theme.of(c).textTheme.bodySmall?.color,
+                      fontSize: 12,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
@@ -155,7 +260,7 @@ class _PlayListPageState extends State<PlayListPage> {
               if (textController.text.trim().isNotEmpty) {
                 AppService.tryPop();
                 await controller.createPlaylist(textController.text.trim());
-                _pagingController.refresh();
+                listSourceRepository.refresh();
               }
             },
             child: const Text('创建'),

@@ -62,7 +62,7 @@ class _SearchResultState extends State<SearchResult> {
       }
 
       if (globalSearchService.isResultEmpty) {
-        return const Center(child: EmptyWidget());
+        return const Center(child: MyEmptyWidget());
       }
 
       Widget child;
