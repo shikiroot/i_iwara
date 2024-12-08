@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
@@ -30,6 +31,7 @@ class _ProfileVideoTabListWidgetState extends State<ProfileVideoTabListWidget>
     with AutomaticKeepAliveClientMixin {
   final String uniqueKey = UniqueKey().toString();
   late UserzVideoListController videoListController;
+  late ScrollController _tabBarScrollController;
 
   String getSort() {
     switch (widget.tc.index) {
@@ -56,6 +58,7 @@ class _ProfileVideoTabListWidgetState extends State<ProfileVideoTabListWidget>
       UserzVideoListController(onFetchFinished: widget.onFetchFinished),
       tag: uniqueKey,
     );
+    _tabBarScrollController = ScrollController();
     LogUtils.d('[详情视频列表] 初始化，当前的用户ID是：${widget.userId}, 排序是：${getSort()}');
     videoListController.userId.value = widget.userId;
     videoListController.sort.value = getSort();
@@ -65,6 +68,7 @@ class _ProfileVideoTabListWidgetState extends State<ProfileVideoTabListWidget>
   void dispose() {
     widget.tc.removeListener(_handleTabSelection);
     Get.delete<UserzVideoListController>(tag: uniqueKey);
+    _tabBarScrollController.dispose();
     super.dispose();
   }
 
@@ -74,6 +78,19 @@ class _ProfileVideoTabListWidgetState extends State<ProfileVideoTabListWidget>
       videoListController.sort.value = getSort();
 
       LogUtils.d('[详情视频列表] 切换排序，当前选择的是：${widget.tc.index}, 排序是：${getSort()}');
+    }
+  }
+
+  void _handleScroll(double delta) {
+    if (_tabBarScrollController.hasClients) {
+      final double newOffset = _tabBarScrollController.offset + delta;
+      if (newOffset < 0) {
+        _tabBarScrollController.jumpTo(0);
+      } else if (newOffset > _tabBarScrollController.position.maxScrollExtent) {
+        _tabBarScrollController.jumpTo(_tabBarScrollController.position.maxScrollExtent);
+      } else {
+        _tabBarScrollController.jumpTo(newOffset);
+      }
     }
   }
 
@@ -102,11 +119,26 @@ class _ProfileVideoTabListWidgetState extends State<ProfileVideoTabListWidget>
       ],
     );
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Row(
           children: <Widget>[
             Expanded(
-              child: secondaryTabBar,
+              child: MouseRegion(
+                child: Listener(
+                  onPointerSignal: (pointerSignal) {
+                    if (pointerSignal is PointerScrollEvent) {
+                      _handleScroll(pointerSignal.scrollDelta.dy);
+                    }
+                  },
+                  child: SingleChildScrollView(
+                    controller: _tabBarScrollController,
+                    scrollDirection: Axis.horizontal,
+                    physics: const ClampingScrollPhysics(),
+                    child: secondaryTabBar,
+                  ),
+                ),
+              ),
             ),
             // 一个刷新按钮
             Obx(() => videoListController.isLoading.value

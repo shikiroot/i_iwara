@@ -42,11 +42,6 @@ class GlobalDrawerColumns extends StatelessWidget {
                   Get.snackbar('错误', '请先登录');
                 }
               }),
-              // 设置
-              _buildMenuItem(Icons.settings, '设置', () {
-                AppService.switchGlobalDrawer();
-                Get.toNamed(Routes.SETTINGS_PAGE);
-              }),
               // 播放列表
               _buildMenuItem(Icons.playlist_play, '播放列表', () {
                 if (userService.isLogin) {
@@ -62,6 +57,11 @@ class GlobalDrawerColumns extends StatelessWidget {
               _buildMenuItem(Icons.calendar_today, '戒律签到', () {
                 NaviService.navigateToSignInPage();
                 AppService.switchGlobalDrawer();
+              }),
+              // 设置
+              _buildMenuItem(Icons.settings, '设置', () {
+                AppService.switchGlobalDrawer();
+                Get.toNamed(Routes.SETTINGS_PAGE);
               }),
               // 关于
               _buildMenuItem(Icons.info, '关于', () {

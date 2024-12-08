@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:i_iwara/app/models/dto/user_dto.dart';
@@ -45,6 +46,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
   final GlobalKey<ExtendedNestedScrollViewState> _key =
       GlobalKey<ExtendedNestedScrollViewState>();
   late String uniqueTag;
+  late ScrollController _tabBarScrollController;
 
   @override
   void initState() {
@@ -57,6 +59,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
     videoSecondaryTC = TabController(length: 5, vsync: this);
     imageSecondaryTC = TabController(length: 5, vsync: this);
     playlistSecondaryTC = TabController(length: 5, vsync: this);
+    _tabBarScrollController = ScrollController();
   }
 
   @override
@@ -66,7 +69,21 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
     videoSecondaryTC.dispose();
     imageSecondaryTC.dispose();
     playlistSecondaryTC.dispose();
+    _tabBarScrollController.dispose();
     super.dispose();
+  }
+
+  void _handleScroll(double delta) {
+    if (_tabBarScrollController.hasClients) {
+      final double newOffset = _tabBarScrollController.offset + delta;
+      if (newOffset < 0) {
+        _tabBarScrollController.jumpTo(0);
+      } else if (newOffset > _tabBarScrollController.position.maxScrollExtent) {
+        _tabBarScrollController.jumpTo(_tabBarScrollController.position.maxScrollExtent);
+      } else {
+        _tabBarScrollController.jumpTo(newOffset);
+      }
+    }
   }
 
   @override
@@ -574,44 +591,59 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
 
   Widget _buildTabBarView() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         TopPaddingHeightWidget(),
-        TabBar(
-          isScrollable: true,
-          physics: const NeverScrollableScrollPhysics(),
-          overlayColor: WidgetStateProperty.all(Colors.transparent),
-          tabAlignment: TabAlignment.start,
-          dividerColor: Colors.transparent,
-          controller: primaryTC,
-          tabs: const [
-            Tab(
-              child: Row(
-                children: [
-                  Icon(Icons.video_collection),
-                  SizedBox(width: 8),
-                  Text("视频"),
+        MouseRegion(
+          child: Listener(
+            onPointerSignal: (pointerSignal) {
+              if (pointerSignal is PointerScrollEvent) {
+                _handleScroll(pointerSignal.scrollDelta.dy);
+              }
+            },
+            child: SingleChildScrollView(
+              controller: _tabBarScrollController,
+              scrollDirection: Axis.horizontal,
+              physics: const ClampingScrollPhysics(),
+              child: TabBar(
+                isScrollable: true,
+                physics: const NeverScrollableScrollPhysics(),
+                overlayColor: WidgetStateProperty.all(Colors.transparent),
+                tabAlignment: TabAlignment.start,
+                dividerColor: Colors.transparent,
+                controller: primaryTC,
+                tabs: const [
+                  Tab(
+                    child: Row(
+                      children: [
+                        Icon(Icons.video_collection),
+                        SizedBox(width: 8),
+                        Text("视频"),
+                      ],
+                    ),
+                  ),
+                  Tab(
+                    child: Row(
+                      children: [
+                        Icon(Icons.image),
+                        SizedBox(width: 8),
+                        Text("图库"),
+                      ],
+                    ),
+                  ),
+                  Tab(
+                    child: Row(
+                      children: [
+                        Icon(Icons.playlist_play),
+                        SizedBox(width: 8), 
+                        Text("播放列表"),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
-            Tab(
-              child: Row(
-                children: [
-                  Icon(Icons.image),
-                  SizedBox(width: 8),
-                  Text("图库"),
-                ],
-              ),
-            ),
-            Tab(
-              child: Row(
-                children: [
-                  Icon(Icons.playlist_play),
-                  SizedBox(width: 8), 
-                  Text("播放列表"),
-                ],
-              ),
-            ),
-          ],
+          ),
         ),
         Expanded(
           child: TabBarView(
