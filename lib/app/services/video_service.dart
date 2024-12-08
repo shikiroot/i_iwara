@@ -36,7 +36,8 @@ class VideoService extends GetxService {
     try {
       // [HACK_IMPLEMENT] 如果params里有的值为空字符串，则去掉key
       // 我靠，iwara站的搜索居然连空字符串都用于搜索了，哎
-      params = Map<String, dynamic>.from(params)..removeWhere((key, value) => value == '');
+      params = Map<String, dynamic>.from(params)
+        ..removeWhere((key, value) => value == '');
       url ??= ApiConstants.videos();
       final response = await _apiService.get(url, queryParameters: {
         ...params,
@@ -115,6 +116,56 @@ class VideoService extends GetxService {
     } catch (e) {
       LogUtils.e('获取视频点赞用户列表失败', tag: 'VideoService', error: e);
       return ApiResult.fail('噫嘘唏, 获取视频点赞用户列表失败');
+    }
+  }
+
+  /// 获取最爱
+  Future<ApiResult<PageData<Video>>> fetchFavoriteVideos(
+      {int page = 0, int limit = 20}) async {
+    try {
+      final response = await _apiService
+          .get(ApiConstants.favoriteVideos(), queryParameters: {
+        'page': page,
+        'limit': limit,
+      });
+
+      final List<Video> results = (response.data['results'] as List)
+          .map((item) => Video.fromJson(item['video']))
+          .toList();
+
+      final PageData<Video> pageData = PageData(
+        page: response.data['page'],
+        limit: response.data['limit'],
+        count: response.data['count'],
+        results: results,
+      );
+
+      return ApiResult.success(data: pageData);
+    } catch (e) {
+      LogUtils.e('获取最爱视频列表失败', tag: 'VideoService', error: e);
+      return ApiResult.fail('噫嘘唏, 获取最爱视频列表失败');
+    }
+  }
+
+  /// 取消最爱
+  Future<ApiResult<void>> cancelFavoriteVideo(String mediaId) async {
+    try {
+      await _apiService.delete(ApiConstants.likeVideo(mediaId));
+      return ApiResult.success();
+    } catch (e) {
+      LogUtils.e('取消最爱视频失败', tag: 'VideoService', error: e);
+      return ApiResult.fail('噫嘘唏, 取消最爱视频失败');
+    }
+  }
+
+  /// 设为最爱
+  Future<ApiResult<void>> setFavoriteVideo(String mediaId) async {
+    try {
+      await _apiService.post(ApiConstants.likeVideo(mediaId));
+      return ApiResult.success();
+    } catch (e) {
+      LogUtils.e('设为最爱视频失败', tag: 'VideoService', error: e);
+      return ApiResult.fail('噫嘘唏, 设为最爱视频失败');
     }
   }
 }

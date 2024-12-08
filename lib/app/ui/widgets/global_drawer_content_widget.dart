@@ -28,15 +28,6 @@ class GlobalDrawerColumns extends StatelessWidget {
                 AppService.switchGlobalDrawer();
                 Get.toNamed(Routes.SETTINGS_PAGE);
               }),
-              _buildMenuItem(Icons.info, '关于', () {
-                userService.fetchUserProfile();
-                Get.snackbar('操作', '你点击了关于');
-              }),
-              if (GetPlatform.isDesktop && !GetPlatform.isWeb)
-                _buildMenuItem(Icons.star, '切换隐藏状态栏', () {
-                  Get.snackbar('操作', '你点击了切换隐藏状态栏');
-                  appService.toggleTitleBar();
-                }),
               // 日历
               _buildMenuItem(Icons.calendar_today, '戒律签到', () {
                 NaviService.navigateToSignInPage();
@@ -46,11 +37,26 @@ class GlobalDrawerColumns extends StatelessWidget {
               _buildMenuItem(Icons.playlist_play, '播放列表', () {
                 if (userService.isLogin) {
                   NaviService.navigateToPlayListPage(
-                      userService.currentUser.value!.id, isMine: true);
+                      userService.currentUser.value!.id,
+                      isMine: true);
                   AppService.switchGlobalDrawer();
                 } else {
                   Get.snackbar('错误', '请先登录');
                 }
+              }),
+              // 最爱
+              _buildMenuItem(Icons.favorite, '最爱', () {
+                if (userService.isLogin) {
+                  NaviService.navigateToFavoritePage();
+                  AppService.switchGlobalDrawer();
+                } else {
+                  Get.snackbar('错误', '请先登录');
+                }
+              }),
+              // 关于
+              _buildMenuItem(Icons.info, '关于', () {
+                userService.fetchUserProfile();
+                Get.snackbar('操作', '你点击了关于');
               }),
               Obx(() => userService.isLogin
                   ? Column(

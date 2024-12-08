@@ -49,7 +49,8 @@ class GalleryService extends GetxService {
     try {
       // [HACK_IMPLEMENT] 如果params里有的值为空字符串，则去掉key
       // 我靠，iwara站的搜索居然连空字符串都用于搜索了，哎
-      params = Map<String, dynamic>.from(params)..removeWhere((key, value) => value == '');
+      params = Map<String, dynamic>.from(params)
+        ..removeWhere((key, value) => value == '');
 
       url ??= ApiConstants.images();
       final response = await _apiService.get(url, queryParameters: {
@@ -129,6 +130,55 @@ class GalleryService extends GetxService {
       LogUtils.e('获取点赞用户列表失败', tag: 'ImageModelService', error: e);
       return ApiResult.fail('噫嘘唏, 获取点赞用户列表失败');
     }
+  }
 
+  /// 获取最爱
+  Future<ApiResult<PageData<ImageModel>>> fetchFavoriteImages(
+      {int page = 0, int limit = 20}) async {
+    try {
+      final response = await _apiService
+          .get(ApiConstants.favoriteImages(), queryParameters: {
+        'page': page,
+        'limit': limit,
+      });
+
+      final List<ImageModel> results = (response.data['results'] as List)
+          .map((item) => ImageModel.fromJson(item['image']))
+          .toList();
+
+      final PageData<ImageModel> pageData = PageData(
+        page: response.data['page'],
+        limit: response.data['limit'],
+        count: response.data['count'],
+        results: results,
+      );
+
+      return ApiResult.success(data: pageData);
+    } catch (e) {
+      LogUtils.e('获取最爱图库列表失败', tag: 'ImageModelService', error: e);
+      return ApiResult.fail('噫嘘唏, 获取最爱图库列表失败');
+    }
+  }
+
+  /// 取消最爱
+  Future<ApiResult<void>> cancelFavoriteImage(String mediaId) async {
+    try {
+      await _apiService.delete(ApiConstants.likeImage(mediaId));
+      return ApiResult.success();
+    } catch (e) {
+      LogUtils.e('取消最爱图库失败', tag: 'ImageModelService', error: e);
+      return ApiResult.fail('噫嘘唏, 取消最爱图库失败');
+    }
+  }
+
+  /// 设为最爱
+  Future<ApiResult<void>> setFavoriteImage(String mediaId) async {
+    try {
+      await _apiService.post(ApiConstants.likeImage(mediaId));
+      return ApiResult.success();
+    } catch (e) {
+      LogUtils.e('设为最爱图库失败', tag: 'ImageModelService', error: e);
+      return ApiResult.fail('噫嘘唏, 设为最爱图库失败');
+    }
   }
 }

@@ -100,29 +100,53 @@ class ApiConstants {
   // 图片评论
   static const String rawImageComments = '/image/{id}/comments';
 
+  // 标签
   static String tags() => '/tags';
 
+  // 图片详情
   static String imageDetail(String imageModelId) => '/image/$imageModelId';
 
+  // 相关视频
   static String relatedVideos(String id) => '/video/$id/related';
 
-  static relatedImages(String mediaId) => '/image/$mediaId/related';
+  // 相关图片
+  static String relatedImages(String mediaId) => '/image/$mediaId/related';
 
+  // 视频点赞
   static String videoLikes(String videoId) => '/video/$videoId/likes';
 
+  // 图片点赞
   static String imageLikes(String imageId) => '/image/$imageId/likes';
 
+  // 轻量视频
   static String lightVideo(String videoId) => '/light/video/$videoId';
 
+  // 轻量图库
   static String lightForum(String forumId) => '/light/forum/$forumId';
 
+  // 轻量图片
   static String lightImage(String imageId) => '/light/image/$imageId';
 
+  // 轻量用户
   static String lightProfile(String userId) => '/light/profile/$userId';
 
+  // 轻量播放列表
   static String lightPlaylist(String playlistId) => '/light/playlist/$playlistId';
 
+  // 搜索
   static String search() => '/search';
+
+  // 最爱视频
+  static String favoriteVideos() => '/favorites/videos';
+
+  // 最爱图库
+  static String favoriteImages() => '/favorites/images';
+
+  // 设为最爱图片
+  static String likeImage(String mediaId) => '/image/$mediaId/like';
+
+  // 设为最爱视频
+  static String likeVideo(String mediaId) => '/video/$mediaId/like';
 }
 
 // 视频接口的排序方式
