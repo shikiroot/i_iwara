@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:i_iwara/app/services/app_service.dart';
+import 'package:i_iwara/app/ui/pages/comment/controllers/comment_reply_controller.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
 
 import '../../../../../common/constants.dart';
@@ -74,7 +76,7 @@ class CommentController<T extends CommentType> extends GetxController {
         totalComments.value = pageData.count;
 
         final fetchedComments = pageData.results;
-        
+
         if (fetchedComments.isEmpty) {
           hasMore.value = false;
         } else {
@@ -106,6 +108,91 @@ class CommentController<T extends CommentType> extends GetxController {
   Future<void> loadMoreComments() async {
     if (!isLoading.value && hasMore.value) {
       await fetchComments();
+    }
+  }
+
+  // 发表评论
+  Future<void> postComment(String body, {String? parentId}) async {
+    final result = await _commentService.postComment(
+      type: type.name,
+      id: id,
+      body: body,
+      parentId: parentId,
+    );
+
+    if (result.isSuccess && result.data != null) {
+      if (parentId != null) {
+        // 尝试获取replycontroller，如果获取不到，则创建一个
+        try {
+          final replyController = Get.find<ReplyController>(
+            tag: parentId,
+          );
+          replyController.fetchReplies(refresh: true);
+        } catch (e) {
+          String? videoId;
+          String? profileId;
+          String? imageId;
+          switch (type) {
+            case CommentType.video:
+              videoId = id;
+              break;
+            case CommentType.profile:
+              profileId = id;
+              break;
+            case CommentType.image:
+              imageId = id;
+              break;
+          }
+          final replyController = Get.put(
+            ReplyController(
+              videoId: videoId,
+              profileId: profileId,
+              imageId: imageId,
+              parentId: parentId,
+            ),
+            tag: parentId,
+          );
+          replyController.fetchReplies(refresh: true);
+        }
+      } else {
+        // 如果是新评论，添加到列表开头
+        comments.insert(0, result.data!);
+      }
+      totalComments.value++;
+      Get.snackbar('成功', '评论发表成功');
+      AppService.tryPop();
+    } else {
+      Get.snackbar('错误', result.message);
+    }
+  }
+
+  // 删除评论
+  Future<void> deleteComment(String commentId) async {
+    final result = await _commentService.deleteComment(commentId);
+    if (result.isSuccess) {
+      comments.removeWhere((comment) => comment.id == commentId);
+      totalComments.value--;
+      Get.snackbar('成功', '评论已删除');
+    } else {
+      Get.snackbar('错误', result.message);
+    }
+  }
+
+  // 编辑评论
+  Future<void> editComment(String commentId, String newBody) async {
+    final result = await _commentService.editComment(commentId, newBody);
+    if (result.isSuccess) {
+      final index = comments.indexWhere((comment) => comment.id == commentId);
+      if (index != -1) {
+        comments[index] = comments[index].copyWith(
+          body: newBody,
+          updatedAt: DateTime.now(),
+        );
+        Get.snackbar('成功', '评论已更新');
+        AppService.tryPop();
+      }
+    } else {
+      Get.snackbar('错误', result.message);
     }
   }
 }

@@ -46,6 +46,12 @@ class AuthorProfileController extends GetxController {
     });
   }
 
+  @override
+  void onClose() {
+    Get.delete<CommentController>(tag: author.value!.id);
+    super.onClose();
+  }
+
   Future<void> initFetch() async {
     await fetchAuthorDescription();
     fetchFollowingCounts();

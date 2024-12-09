@@ -172,6 +172,9 @@ class ApiConstants {
 
   // 用户请求
   static String userFriendsRequests(String userId) => '/user/$userId/friends/requests';
+
+  // 评论
+  static String comment(String id) => '/comment/$id';
 }
 
 // 视频接口的排序方式

@@ -6,19 +6,20 @@ import 'package:i_iwara/app/services/app_service.dart';
 import 'package:i_iwara/app/services/config_service.dart';
 import 'package:i_iwara/app/services/translation_service.dart';
 import 'package:i_iwara/app/services/user_service.dart';
+import 'package:i_iwara/app/ui/pages/comment/controllers/comment_controller.dart';
+import 'package:i_iwara/app/ui/pages/comment/widgets/comment_remove_dialog.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../../../common/constants.dart';
 import '../../../../models/comment.model.dart';
 import '../../../widgets/custom_markdown_body_widget.dart';
 import '../controllers/comment_reply_controller.dart';
+import '../widgets/comment_input_dialog.dart';
 
 class CommentItem extends StatefulWidget {
   final Comment comment;
   final String? authorUserId;
 
-  static const double _borderRadius = 12.0;
-  static const double _borderWidth = 1.5;
   static const double _tagFontSize = 11.0;
   static const EdgeInsets _tagPadding =
       EdgeInsets.symmetric(horizontal: 6, vertical: 2);
@@ -303,7 +304,7 @@ class _CommentItemState extends State<CommentItem> {
   String _formatTimestamp(DateTime timestamp) {
     final now = DateTime.now();
     final difference = now.difference(timestamp);
-    
+
     if (difference.inMinutes < 1) {
       return '刚刚';
     } else if (difference.inHours < 1) {
@@ -322,7 +323,7 @@ class _CommentItemState extends State<CommentItem> {
   Widget _buildTimeInfo(Comment comment) {
     if (comment.createdAt == null) return const SizedBox.shrink();
 
-    final hasEdit = comment.updatedAt != null && 
+    final hasEdit = comment.updatedAt != null &&
         comment.createdAt != null &&
         comment.updatedAt!.isAfter(comment.createdAt!);
 
@@ -346,6 +347,123 @@ class _CommentItemState extends State<CommentItem> {
           ],
         ],
       ),
+    );
+  }
+
+  void _showDeleteConfirmDialog() {
+    final commentController = Get.find<CommentController>(
+      tag: widget.comment.videoId ??
+          widget.comment.profileId ??
+          widget.comment.imageId,
+    );
+
+    Get.dialog(
+      CommentRemoveDialog(
+        onDelete: () async {
+          await commentController.deleteComment(widget.comment.id);
+          AppService.tryPop();
+        },
+      ),
+    );
+  }
+
+  void _showEditDialog() {
+    final commentController = Get.find<CommentController>(
+      tag: widget.comment.videoId ??
+          widget.comment.profileId ??
+          widget.comment.imageId,
+    );
+
+    Get.dialog(
+      CommentInputDialog(
+        initialText: widget.comment.body,
+        title: '编辑评论',
+        submitText: '保存',
+        onSubmit: (text) async {
+          if (text.trim().isEmpty) {
+            Get.snackbar('错误', '评论内容不能为空');
+            return;
+          }
+          await commentController.editComment(widget.comment.id, text);
+        },
+      ),
+      barrierDismissible: true,
+    );
+  }
+
+  void _showReplyDialog() {
+    final commentController = Get.find<CommentController>(
+      tag: widget.comment.videoId ??
+          widget.comment.profileId ??
+          widget.comment.imageId,
+    );
+
+    Get.dialog(
+      CommentInputDialog(
+        title: '回复评论',
+        submitText: '回复',
+        onSubmit: (text) async {
+          if (text.trim().isEmpty) {
+            Get.snackbar('错误', '评论内容不能为空');
+            return;
+          }
+          await commentController.postComment(
+            text,
+            parentId: widget.comment.id,
+          );
+        },
+      ),
+      barrierDismissible: true,
+    );
+  }
+
+
+  // 在评论内容下方添加回复按钮
+  Widget _buildCommentActions() {
+    return Row(
+      children: [
+        if (widget.comment.parent == null)
+          IconButton(
+            icon: const Icon(Icons.reply, size: 16),
+            onPressed: _showReplyDialog,
+            tooltip: '回复',
+          ),
+        if (_userService.currentUser.value?.id == widget.comment.user?.id) ...[
+          IconButton(
+            icon: const Icon(Icons.edit, size: 16),
+            onPressed: _showEditDialog,
+            tooltip: '编辑',
+          ),
+          IconButton(
+            icon: const Icon(Icons.delete, size: 16),
+            onPressed: _showDeleteConfirmDialog,
+            tooltip: '删除',
+          ),
+        ],
+      ],
+    );
+  }
+
+  // 在 build 方法中的用户信息行添加编辑和删除按钮
+  Widget _buildUserActions() {
+    final currentUserId = _userService.currentUser.value?.id;
+    if (currentUserId != widget.comment.user?.id) {
+      return const SizedBox.shrink();
+    }
+
+    return Row(
+      children: [
+        IconButton(
+          icon: const Icon(Icons.edit, size: 16),
+          onPressed: _showEditDialog,
+          tooltip: '编辑',
+        ),
+        IconButton(
+          icon: const Icon(Icons.delete, size: 16),
+          onPressed: _showDeleteConfirmDialog,
+          tooltip: '删除',
+        ),
+      ],
     );
   }
 
@@ -468,6 +586,7 @@ class _CommentItemState extends State<CommentItem> {
                           ],
                         ),
                       ),
+                      _buildCommentActions(),
                     ],
                   ),
                 ),

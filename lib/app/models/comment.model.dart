@@ -66,4 +66,32 @@ class Comment {
       'approved': approved,
     };
   }
+
+  Comment copyWith({
+    String? id,
+    String? body,
+    int? numReplies,
+    Comment? parent,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    User? user,
+    String? videoId,
+    String? profileId,
+    String? imageId,
+    bool? approved,
+  }) {
+    return Comment(
+      id: id ?? this.id,
+      body: body ?? this.body,
+      numReplies: numReplies ?? this.numReplies,
+      parent: parent ?? this.parent,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      user: user ?? this.user,
+      videoId: videoId ?? this.videoId,
+      profileId: profileId ?? this.profileId,
+      imageId: imageId ?? this.imageId,
+      approved: approved ?? this.approved,
+    );
+  }
 }

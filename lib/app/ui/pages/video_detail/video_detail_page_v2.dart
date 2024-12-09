@@ -69,6 +69,14 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> with RouteAware {
   void dispose() {
     // 取消订阅路由变化
     routeObserver.unsubscribe(this);
+    // 尝试删除controller
+    try {
+      Get.delete<MyVideoStateController>(tag: uniqueTag);
+      Get.delete<CommentController>(tag: uniqueTag);
+      Get.delete<RelatedMediasController>(tag: uniqueTag);
+    } catch (e) {
+      logger.e('删除控制器失败', error: e);
+    }
     super.dispose();
   }
 

@@ -44,4 +44,50 @@ class CommentService extends GetxService {
       return ApiResult.fail('噫嘘唏, 获取评论失败');
     }
   }
+
+  /// 删除评论
+  Future<ApiResult<void>> deleteComment(String id) async {
+    try {
+      await _apiService.delete(ApiConstants.comment(id));
+      return ApiResult.success();
+    } catch (e) {
+      LogUtils.e('删除评论失败', tag: 'CommentService', error: e);
+      return ApiResult.fail('噫嘘唏, 删除评论失败');
+    }
+  }
+
+  /// 编辑评论
+  Future<ApiResult<void>> editComment(String id, String body) async {
+    try {
+      await _apiService.put(ApiConstants.comment(id), data: {'body': body});
+      return ApiResult.success();
+    } catch (e) {
+      LogUtils.e('编辑评论失败', tag: 'CommentService', error: e);
+      return ApiResult.fail('噫嘘唏, 编辑评论失败');
+    }
+  }
+
+  /// 发表评论
+  Future<ApiResult<Comment>> postComment({
+    required String type,
+    required String id,
+    required String body,
+    String? parentId,
+  }) async {
+    try {
+      final response = await _apiService.post(
+        ApiConstants.comments(type, id),
+        data: {
+          'body': body,
+          'rulesAgreement': true,
+          if (parentId != null) 'parentId': parentId,
+        },
+      );
+
+      return ApiResult.success(data: Comment.fromJson(response.data));
+    } catch (e) {
+      LogUtils.e('发表评论失败', tag: 'CommentService', error: e);
+      return ApiResult.fail('噫嘘唏, 发表评论失败');
+    }
+  }
 }

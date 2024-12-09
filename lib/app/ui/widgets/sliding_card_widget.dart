@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 /// TODO: SlidingCard 需要重构?
 /// Effect similar to a sheet.
@@ -50,14 +51,16 @@ class SlidingCard extends StatefulWidget {
   final bool isVisible;
   final VoidCallback onDismiss;
   final Widget child;
-  final Widget? title; // New optional AppBar parameter
+  final Widget? title;
+  final List<Widget>? actions;
 
   const SlidingCard({
     super.key,
     required this.isVisible,
     required this.onDismiss,
     required this.child,
-    this.title, // Added appBar parameter
+    this.title,
+    this.actions,
   });
 
   @override
