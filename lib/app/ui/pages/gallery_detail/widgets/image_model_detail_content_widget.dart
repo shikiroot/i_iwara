@@ -418,7 +418,7 @@ class ImageModelDetailContent extends StatelessWidget {
 
     return TextButton(
       child: Text(
-        user?.username ?? '',
+        user?.name ?? '',
         style: const TextStyle(fontSize: 16),
       ),
       onPressed: () {

@@ -29,6 +29,33 @@ class CommonConstants {
     Sort(id: SortId.views, label: '观看次数', icon: Icon(Icons.remove_red_eye)),
   ];
 
+  static const List<Sort> translationSorts = [
+    // 中文
+    Sort(id: SortId.zhCN, label: '简体中文', extData: 'zh-CN'),
+    Sort(id: SortId.zhTW, label: '繁體中文', extData: 'zh-TW'),
+    
+    // 英语
+    Sort(id: SortId.enUS, label: 'English', extData: 'en-US'),
+    
+    // 东亚语言
+    Sort(id: SortId.ja, label: '日本語', extData: 'ja'),
+    Sort(id: SortId.ko, label: '한국어', extData: 'ko'),
+    Sort(id: SortId.vi, label: 'Tiếng Việt', extData: 'vi'),
+    
+    // 东南亚语言
+    Sort(id: SortId.th, label: 'ภาษาไทย', extData: 'th'),
+    Sort(id: SortId.id, label: 'Bahasa Indonesia', extData: 'id'),
+    Sort(id: SortId.ms, label: 'Bahasa Melayu', extData: 'ms'),
+    
+    // 欧洲语言
+    Sort(id: SortId.fr, label: 'Français', extData: 'fr'),
+    Sort(id: SortId.de, label: 'Deutsch', extData: 'de'),
+    Sort(id: SortId.es, label: 'Español', extData: 'es'),
+    Sort(id: SortId.it, label: 'Italiano', extData: 'it'),
+    Sort(id: SortId.pt, label: 'Português', extData: 'pt'),
+    Sort(id: SortId.ru, label: 'Русский', extData: 'ru'),
+  ];
+
   static String defaultThumbnailUrl =
       '$iwaraBaseUrl/images/default-thumbnail.jpg';
 
@@ -89,16 +116,8 @@ class ApiConstants {
   static String userFollowOrUnfollow(String userId) =>
       '/user/$userId/followers';
 
-  // 视频评论
-  static String videoComments(String videoId) => '/video/$videoId/comments';
-  static const String rawVideoComments = '/video/{id}/comments';
-
-  // 用户评论
-  static String userComments(String userId) => '/profile/$userId/comments';
-  static const String rawProfileComments = '/profile/{id}/comments';
-
-  // 图片评论
-  static const String rawImageComments = '/image/{id}/comments';
+  // 评论 [params]: [type, id]
+  static String comments(String type, String id) => '/$type/$id/comments';
 
   // 标签
   static String tags() => '/tags';
@@ -161,5 +180,27 @@ enum SortId {
   date,
   popularity,
   likes,
-  views;
+  views,
+  // 中文
+  zhCN,
+  zhTW,
+  zhHK,
+  // 英语变体
+  enUS,
+  enGB,
+  // 东亚语言
+  ja,
+  ko,
+  vi,
+  // 东南亚语言
+  th,
+  id,
+  ms,
+  // 欧洲语言
+  fr,
+  de,
+  es,
+  it,
+  pt,
+  ru;
 }

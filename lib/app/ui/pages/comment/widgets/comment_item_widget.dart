@@ -1,15 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:i_iwara/app/models/api_result.model.dart';
 import 'package:i_iwara/app/services/app_service.dart';
+import 'package:i_iwara/app/services/config_service.dart';
+import 'package:i_iwara/app/services/translation_service.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../../../common/constants.dart';
 import '../../../../models/comment.model.dart';
-import '../../../../routes/app_routes.dart';
 import '../../../widgets/custom_markdown_body_widget.dart';
 import '../controllers/comment_reply_controller.dart';
-
 
 class CommentItem extends StatefulWidget {
   final Comment comment;
@@ -23,6 +24,12 @@ class CommentItem extends StatefulWidget {
 
 class _CommentItemState extends State<CommentItem> {
   bool _isRepliesExpanded = false;
+  bool _showTranslationMenu = false;
+  bool _isTranslating = false;
+  String? _translatedText;
+
+  final TranslationService _translationService = Get.find();
+  final ConfigService _configService = Get.find();
 
   ReplyController? _replyController;
 
@@ -30,9 +37,10 @@ class _CommentItemState extends State<CommentItem> {
   void initState() {
     super.initState();
     // 如果没有回复则不初始化控制器
-    if (widget.comment.numReplies == null || widget.comment.numReplies == 0) {
+    if (widget.comment.numReplies == 0) {
       return;
     }
+
     _replyController = Get.put(
       ReplyController(
           videoId: widget.comment.videoId ?? '',
@@ -87,6 +95,173 @@ class _CommentItemState extends State<CommentItem> {
     );
   }
 
+  Widget _buildTranslationButton() {
+    return Card(
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // 左侧翻译按钮
+          Flexible(
+            child: InkWell(
+              borderRadius: BorderRadius.horizontal(left: Radius.circular(20)),
+              onTap: _isTranslating ? null : () => _handleTranslation(),
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (_isTranslating)
+                      const SizedBox(
+                        width: 14,
+                        height: 14,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    else
+                      const Icon(Icons.translate, size: 16),
+                    const SizedBox(width: 4),
+                    Text(
+                      '翻译',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          // 分割线
+          Container(
+            height: 24,
+            width: 1,
+            color: Colors.grey.withOpacity(0.2),
+          ),
+          // 右侧下拉按钮
+          InkWell(
+            borderRadius: BorderRadius.horizontal(right: Radius.circular(20)),
+            onTap: () =>
+                setState(() => _showTranslationMenu = !_showTranslationMenu),
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8),
+              child: Icon(
+                _showTranslationMenu
+                    ? Icons.arrow_drop_up
+                    : Icons.arrow_drop_down,
+                size: 26,
+                color: Theme.of(context).primaryColor,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTranslationMenu() {
+    return Card(
+      elevation: 4,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: CommonConstants.translationSorts.map((sort) {
+          final isSelected =
+              sort.id == _configService.currentTranslationSort.id;
+          return ListTile(
+            dense: true,
+            selected: isSelected,
+            title: Text(sort.label),
+            onTap: () {
+              _configService.updateTranslationLanguage(sort);
+              setState(() {
+                _showTranslationMenu = false;
+                _translatedText = null;
+              });
+              _handleTranslation();
+            },
+          );
+        }).toList(),
+      ),
+    );
+  }
+
+  Future<void> _handleTranslation() async {
+    if (_isTranslating) return;
+
+    setState(() => _isTranslating = true);
+
+    ApiResult<String> result =
+        await _translationService.translate(widget.comment.body);
+    if (result.isSuccess) {
+      setState(() {
+        _translatedText = result.data;
+        _isTranslating = false;
+      });
+    } else {
+      setState(() {
+        _translatedText = '翻译失败，请稍后重试';
+        _isTranslating = false;
+      });
+    }
+  }
+
+  // 构建翻译后的内容区域
+  Widget _buildTranslatedContent() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.3),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      padding: const EdgeInsets.all(12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Icon(Icons.translate, size: 14),
+              const SizedBox(width: 4),
+              Text(
+                '翻译结果',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
+              ),
+              const Spacer(),
+              Text(
+                'Powered by Google',
+                style: TextStyle(
+                  fontSize: 10,
+                  color: Theme.of(context)
+                      .colorScheme
+                      .onSurfaceVariant
+                      .withOpacity(0.7),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          if (_translatedText == '翻译失败，请稍后重试')
+            Text(
+              _translatedText!,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.error,
+                fontSize: 14,
+              ),
+            )
+          else
+            CustomMarkdownBody(
+              data: _translatedText!,
+            ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final comment = widget.comment;
@@ -131,69 +306,95 @@ class _CommentItemState extends State<CommentItem> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // 评论头部
-          InkWell(
-            onTap: () {
-              NaviService.navigateToAuthorProfilePage(
-                  comment.user?.username ?? ''
-              );
-            },
-            splashColor: Colors.transparent,
-            highlightColor: Colors.transparent,
-            hoverColor: Colors.transparent,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                avatar,
-                const SizedBox(width: 8),
-                // 用户名和时间戳
-                Expanded(
-                  child: Column(
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              // 原有的用户信息部分
+              Expanded(
+                child: InkWell(
+                  onTap: () {
+                    NaviService.navigateToAuthorProfilePage(
+                        comment.user?.username ?? '');
+                  },
+                  splashColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                  hoverColor: Colors.transparent,
+                  child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      comment.user?.premium == true
-                        ? ShaderMask(
-                            shaderCallback: (bounds) => LinearGradient(
-                              colors: [
-                                Colors.purple.shade300,
-                                Colors.blue.shade300,
-                                Colors.pink.shade300,
-                              ],
-                            ).createShader(bounds),
-                            child: Text(
-                              comment.user?.name ?? '未知用户',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 14,
-                                color: Colors.white,
+                      avatar,
+                      const SizedBox(width: 8),
+                      // 用户名和时间戳
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            comment.user?.premium == true
+                                ? ShaderMask(
+                                    shaderCallback: (bounds) => LinearGradient(
+                                      colors: [
+                                        Colors.purple.shade300,
+                                        Colors.blue.shade300,
+                                        Colors.pink.shade300,
+                                      ],
+                                    ).createShader(bounds),
+                                    child: Text(
+                                      comment.user?.name ?? '未知用户',
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  )
+                                : Text(
+                                    comment.user?.name ?? '未知用户',
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                            const SizedBox(height: 2),
+                            if (comment.createdAt != null)
+                              Text(
+                                _formatTimestamp(comment.createdAt!),
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.grey,
+                                ),
                               ),
-                            ),
-                          )
-                        : Text(
-                            comment.user?.name ?? '未知用户',
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14,
-                            ),
-                          ),
-                      const SizedBox(height: 2),
-                      if (comment.createdAt != null)
-                        Text(
-                          _formatTimestamp(comment.createdAt!),
-                          style: const TextStyle(
-                            fontSize: 12,
-                            color: Colors.grey,
-                          ),
+                          ],
                         ),
+                      ),
                     ],
                   ),
                 ),
-              ],
-            ),
+              ),
+              _buildTranslationButton(),
+            ],
           ),
+          if (_showTranslationMenu)
+            Align(
+              alignment: Alignment.centerRight,
+              child: _buildTranslationMenu(),
+            ),
           const SizedBox(height: 8),
-          // 评论内容（Markdown格式）
-          CustomMarkdownBody(data: comment.body ?? ''),
+          // 评论内容
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // 原始评论内容
+              CustomMarkdownBody(
+                data: comment.body ?? '',
+              ),
+
+              // 如果有翻译内容，显示分割线和翻译
+              if (_translatedText != null) ...[
+                const SizedBox(height: 12),
+                _buildTranslatedContent(),
+              ],
+            ],
+          ),
           // 查看回复按钮
           if (comment.numReplies != null && comment.numReplies! > 0)
             Padding(

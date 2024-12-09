@@ -152,7 +152,7 @@ class ApiService extends GetxService {
   }
 
   // resetProxy
-  void resetPrroxy() {
+  void resetProxy() {
     _dio.httpClientAdapter = IOHttpClientAdapter();
   }
 

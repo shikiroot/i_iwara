@@ -1,6 +1,9 @@
 import 'package:get/get.dart';
 import 'package:i_iwara/app/services/storage_service.dart';
+import 'package:i_iwara/common/constants.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
+import 'package:i_iwara/app/models/sort.model.dart';
+import 'package:get_storage/get_storage.dart';
 
 class ConfigService extends GetxService {
   late final StorageService storage;
@@ -27,6 +30,8 @@ class ConfigService extends GetxService {
       'render_vertical_video_in_vertical_screen'; // 在竖屏中渲染竖向视频
   static const String ACTIVE_BACKGROUND_PRIVACY_MODE =
       'active_background_privacy_mode'; // 激活后台隐私模式
+  static const String DEFAULT_LANGUAGE_KEY = 'default_language'; // 默认语言
+  static const String _TRANSLATION_LANGUAGE = 'translation_language';
 
   // 所有配置项的 Map
   final settings = <String, dynamic>{
@@ -46,12 +51,25 @@ class ConfigService extends GetxService {
     PROXY_URL: ''.obs,
     RENDER_VERTICAL_VIDEO_IN_VERTICAL_SCREEN: true.obs,
     ACTIVE_BACKGROUND_PRIVACY_MODE: false.obs,
+    DEFAULT_LANGUAGE_KEY: 'zh-CN'.obs,
   }.obs;
+
+  late final Rx<Sort> _currentTranslationSort;
+
+  Sort get currentTranslationSort => _currentTranslationSort.value;
+  String get currentTranslationLanguage => currentTranslationSort.extData;
 
   // 初始化配置
   Future<ConfigService> init() async {
     storage = StorageService();
     await _loadSettings();
+
+    // 单独初始化翻译语言
+    final savedLanguage = storage.readData(_TRANSLATION_LANGUAGE) ?? settings[DEFAULT_LANGUAGE_KEY]!.value;
+    _currentTranslationSort = (CommonConstants.translationSorts.firstWhere(
+      (sort) => sort.extData == savedLanguage,
+      orElse: () => CommonConstants.translationSorts.first,
+    )).obs;
     return this;
   }
 
@@ -108,5 +126,10 @@ class ConfigService extends GetxService {
   /// ```
   void operator []=(String key, dynamic value) {
     setSetting(key, value);
+  }
+
+  void updateTranslationLanguage(Sort sort) {
+    _currentTranslationSort.value = sort;
+    storage.writeData(_TRANSLATION_LANGUAGE, sort.extData);
   }
 }

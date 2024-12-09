@@ -73,6 +73,12 @@ class GlobalDrawerColumns extends StatelessWidget {
                 userService.fetchUserProfile();
                 Get.snackbar('操作', '你点击了关于');
               }),
+              // 查看许可
+              _buildMenuItem(Icons.code, '查看许可', () {
+                showLicensePage(
+                  context: Get.context!,
+                );
+              }),
               Obx(() => userService.isLogin
                   ? Column(
                       children: [
