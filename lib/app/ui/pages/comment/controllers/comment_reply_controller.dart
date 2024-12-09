@@ -8,6 +8,7 @@ import '../../../../services/comment_service.dart';
 class ReplyController extends GetxController {
   final String? videoId;
   final String? profileId;
+  final String? imageId;
   final String parentId;
 
   var replies = <Comment>[].obs;
@@ -20,7 +21,7 @@ class ReplyController extends GetxController {
 
   final CommentService _commentService = Get.find<CommentService>();
 
-  ReplyController({this.videoId, this.profileId, required this.parentId});
+  ReplyController({this.videoId, this.profileId, this.imageId, required this.parentId});
 
   Future<void> fetchReplies({bool refresh = false}) async {
     if (refresh) {
@@ -35,10 +36,21 @@ class ReplyController extends GetxController {
     isLoading.value = true;
 
     try {
-      final type = (videoId != null && videoId!.isNotEmpty) 
-          ? CommentType.video.name 
-          : CommentType.profile.name;
-      final id = (videoId != null && videoId!.isNotEmpty) ? videoId! : profileId!;
+      String type;
+      String id;
+      if (videoId != null && videoId!.isNotEmpty) {
+        type = CommentType.video.name;
+        id = videoId!;
+      } else if (profileId != null && profileId!.isNotEmpty) {
+        type = CommentType.profile.name;
+        id = profileId!;
+      } else if (imageId != null && imageId!.isNotEmpty) {
+        type = CommentType.image.name;
+        id = imageId!;
+      } else {
+        throw Exception('未知的评论类型');
+      }
+
 
       final result = await _commentService.getComments(
         type: type,

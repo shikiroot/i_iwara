@@ -10,6 +10,7 @@ class Comment {
   final User? user;
   final String? videoId;
   final String? profileId;
+  final String? imageId;
   final bool approved;
 
   Comment({
@@ -22,6 +23,7 @@ class Comment {
     this.user,
     this.videoId,
     this.profileId,
+    this.imageId,
     this.approved = false,
   });
 
@@ -44,6 +46,7 @@ class Comment {
           : null,
       videoId: json['videoId'] as String?,
       profileId: json['profileId'] as String?,
+      imageId: json['imageId'] as String?,
       approved: json['approved'] as bool? ?? false,
     );
   }
@@ -59,6 +62,7 @@ class Comment {
       'user': user?.toJson(),
       'videoId': videoId,
       'profileId': profileId,
+      'imageId': imageId,
       'approved': approved,
     };
   }

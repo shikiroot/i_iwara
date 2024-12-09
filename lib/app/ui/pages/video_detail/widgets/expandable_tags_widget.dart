@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:super_clipboard/super_clipboard.dart';
 
 import '../../../../models/tag.model.dart';
 
@@ -28,10 +30,38 @@ class _ExpandableTagsWidgetState extends State<ExpandableTagsWidget>
   late AnimationController _animationController;
   late Animation<double> _animation;
 
+  // 添加预定义的现代化颜色列表
+  static const List<Color> _tagColors = [
+    Color(0xFF5D4037), // 深棕色
+    Color(0xFF455A64), // 蓝灰色
+    Color(0xFF2E7D32), // 深绿色
+    Color(0xFF1565C0), // 深蓝色
+    Color(0xFF6A1B9A), // 深紫色
+    Color(0xFFC62828), // 深红色
+    Color(0xFF4527A0), // 靛蓝色
+    Color(0xFF00695C), // 深青色
+    Color(0xFF558B2F), // 橄榄绿
+    Color(0xFFEF6C00), // 深橙色
+  ];
+
+  // 根据标签ID获取颜色
+  Color _getTagColor(String tagId) {
+    if (tagId.isEmpty) return _tagColors[0];
+    
+    // 计算字符串的简单哈希值
+    int hash = 0;
+    for (var i = 0; i < tagId.length; i++) {
+      hash = tagId.codeUnitAt(i) + ((hash << 5) - hash);
+    }
+    
+    // 确保hash为正数并获取颜色索引
+    hash = hash.abs();
+    return _tagColors[hash % _tagColors.length];
+  }
+
   @override
   void initState() {
     super.initState();
-    // 如果标签数量不超过初始可见数量，则不需要展开
     _expanded = widget.tags.length <= widget.initialVisibleCount;
     _animationController = AnimationController(
       vsync: this,
@@ -42,7 +72,7 @@ class _ExpandableTagsWidgetState extends State<ExpandableTagsWidget>
       curve: Curves.easeInOut,
     );
     if (_expanded) {
-      _animationController.value = 1.0; // 初始化为展开状态
+      _animationController.value = 1.0;
     }
   }
 
@@ -56,36 +86,78 @@ class _ExpandableTagsWidgetState extends State<ExpandableTagsWidget>
     setState(() {
       _expanded = !_expanded;
       if (_expanded) {
-        _animationController.forward(); // 展开动画
+        _animationController.forward();
       } else {
-        _animationController.reverse(); // 收起动画
+        _animationController.reverse();
       }
     });
+  }
+
+  void _handleTagTap(Tag tag) {
+    final data = DataWriterItem();
+    data.add(Formats.plainText(tag.id));
+    SystemClipboard.instance?.write([data]);
+    Get.snackbar(
+      '提示',
+      '标签 "${tag.id}" 已复制到剪贴板',
+      snackPosition: SnackPosition.bottom,
+      duration: const Duration(seconds: 1),
+    );
+  }
+
+  Widget _buildTagChip(Tag tag) {
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: InkWell(
+        onTap: () => _handleTagTap(tag),
+        borderRadius: BorderRadius.circular(16),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          decoration: BoxDecoration(
+            color: tag.sensitive
+                ? Colors.red.withOpacity(0.08)
+                : Colors.grey.withOpacity(0.08),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: tag.sensitive
+                  ? Colors.red.withOpacity(0.2)
+                  : Colors.grey.withOpacity(0.2),
+              width: 1,
+            ),
+          ),
+          child: Text(
+            tag.id,
+            style: TextStyle(
+              color: tag.sensitive
+                  ? Colors.red.withOpacity(0.8)
+                  : Colors.black87.withOpacity(0.8),
+              fontSize: 13,
+              height: 1.2,
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     if (widget.tags.isEmpty) {
-      return const SizedBox.shrink(); // 如果没有标签，返回空视图
+      return const SizedBox.shrink();
     }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding:
-          EdgeInsets.symmetric(horizontal: widget.horizontalPadding),
+          padding: EdgeInsets.symmetric(horizontal: widget.horizontalPadding),
           child: Wrap(
             spacing: widget.spacing,
             runSpacing: widget.runSpacing,
             children: [
-              // 显示初始可见数量的标签
               ...widget.tags
                   .take(widget.initialVisibleCount)
-                  .map((tag) => Chip(
-                label: Text(tag.id ?? ''),
-              )),
-              // 如果标签数量超过初始可见数量，显示隐藏的标签
+                  .map(_buildTagChip),
               if (widget.tags.length > widget.initialVisibleCount)
                 SizeTransition(
                   sizeFactor: _animation,
@@ -95,20 +167,16 @@ class _ExpandableTagsWidgetState extends State<ExpandableTagsWidget>
                     runSpacing: widget.runSpacing,
                     children: widget.tags
                         .skip(widget.initialVisibleCount)
-                        .map((tag) => Chip(
-                      label: Text(tag.id ?? ''),
-                    ))
+                        .map(_buildTagChip)
                         .toList(),
                   ),
                 ),
             ],
           ),
         ),
-        // 只有在标签数量超过初始可见数量时才显示切换按钮
         if (widget.tags.length > widget.initialVisibleCount)
           Padding(
-            padding:
-            EdgeInsets.symmetric(horizontal: widget.horizontalPadding),
+            padding: EdgeInsets.symmetric(horizontal: widget.horizontalPadding),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -127,3 +195,4 @@ class _ExpandableTagsWidgetState extends State<ExpandableTagsWidget>
     );
   }
 }
+

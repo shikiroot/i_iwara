@@ -393,37 +393,68 @@ class ImageModelDetailContent extends StatelessWidget {
   Widget _buildAuthorNameButton() {
     final user = controller.imageModelInfo.value?.user;
     if (user?.premium == true) {
-      return TextButton(
-        child: ShaderMask(
-          shaderCallback: (bounds) => LinearGradient(
-            colors: [
-              Colors.purple.shade300,
-              Colors.blue.shade300,
-              Colors.pink.shade300,
+      return MouseRegion(
+        cursor: SystemMouseCursors.click,
+        child: GestureDetector(
+          onTap: () {
+            NaviService.navigateToAuthorProfilePage(user?.username ?? '');
+          },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ShaderMask(
+                shaderCallback: (bounds) => LinearGradient(
+                  colors: [
+                    Colors.purple.shade300,
+                    Colors.blue.shade300,
+                    Colors.pink.shade300,
+                  ],
+                ).createShader(bounds),
+                child: Text(
+                  user?.name ?? '',
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              Text(
+                '@${user?.username ?? ''}',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey[600],
+                ),
+              ),
             ],
-          ).createShader(bounds),
-          child: Text(
-            user?.name ?? '',
-            style: const TextStyle(
-              fontSize: 16,
-              color: Colors.white,
-            ),
           ),
         ),
-        onPressed: () {
-          NaviService.navigateToAuthorProfilePage(user?.username ?? '');
-        },
       );
     }
 
-    return TextButton(
-      child: Text(
-        user?.name ?? '',
-        style: const TextStyle(fontSize: 16),
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: () {
+          NaviService.navigateToAuthorProfilePage(user?.username ?? '');
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              user?.name ?? '',
+              style: const TextStyle(fontSize: 16),
+            ),
+            Text(
+              '@${user?.username ?? ''}',
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.grey[600],
+              ),
+            ),
+          ],
+        ),
       ),
-      onPressed: () {
-        NaviService.navigateToAuthorProfilePage(user?.username ?? '');
-      },
     );
   }
 

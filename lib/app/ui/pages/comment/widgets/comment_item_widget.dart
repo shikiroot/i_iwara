@@ -5,6 +5,7 @@ import 'package:i_iwara/app/models/api_result.model.dart';
 import 'package:i_iwara/app/services/app_service.dart';
 import 'package:i_iwara/app/services/config_service.dart';
 import 'package:i_iwara/app/services/translation_service.dart';
+import 'package:i_iwara/app/services/user_service.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../../../common/constants.dart';
@@ -15,6 +16,12 @@ import '../controllers/comment_reply_controller.dart';
 class CommentItem extends StatefulWidget {
   final Comment comment;
   final String? authorUserId;
+
+  static const double _borderRadius = 12.0;
+  static const double _borderWidth = 1.5;
+  static const double _tagFontSize = 11.0;
+  static const EdgeInsets _tagPadding =
+      EdgeInsets.symmetric(horizontal: 6, vertical: 2);
 
   const CommentItem({super.key, required this.comment, this.authorUserId});
 
@@ -27,6 +34,7 @@ class _CommentItemState extends State<CommentItem> {
   bool _showTranslationMenu = false;
   bool _isTranslating = false;
   String? _translatedText;
+  final UserService _userService = Get.find();
 
   final TranslationService _translationService = Get.find();
   final ConfigService _configService = Get.find();
@@ -45,6 +53,7 @@ class _CommentItemState extends State<CommentItem> {
       ReplyController(
           videoId: widget.comment.videoId ?? '',
           profileId: widget.comment.profileId ?? '',
+          imageId: widget.comment.imageId ?? '',
           parentId: widget.comment.id),
       tag: widget.comment.id,
     );
@@ -107,11 +116,11 @@ class _CommentItemState extends State<CommentItem> {
           // 左侧翻译按钮
           Flexible(
             child: InkWell(
-              borderRadius: BorderRadius.horizontal(left: Radius.circular(20)),
+              borderRadius:
+                  const BorderRadius.horizontal(left: Radius.circular(20)),
               onTap: _isTranslating ? null : () => _handleTranslation(),
               child: Padding(
-                padding:
-                    const EdgeInsets.only(left: 12, top: 6, bottom: 6),
+                padding: const EdgeInsets.only(left: 12, top: 6, bottom: 6),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -144,11 +153,12 @@ class _CommentItemState extends State<CommentItem> {
           ),
           // 右侧下拉按钮
           InkWell(
-            borderRadius: BorderRadius.horizontal(right: Radius.circular(20)),
+            borderRadius:
+                const BorderRadius.horizontal(right: Radius.circular(20)),
             onTap: () =>
                 setState(() => _showTranslationMenu = !_showTranslationMenu),
             child: Padding(
-              padding: EdgeInsets.only(left: 8),
+              padding: const EdgeInsets.only(left: 8),
               child: Icon(
                 _showTranslationMenu
                     ? Icons.arrow_drop_up
@@ -213,7 +223,10 @@ class _CommentItemState extends State<CommentItem> {
   Widget _buildTranslatedContent() {
     return Container(
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.3),
+        color: Theme.of(context)
+            .colorScheme
+            .surfaceContainerHighest
+            .withOpacity(0.3),
         borderRadius: BorderRadius.circular(8),
       ),
       padding: const EdgeInsets.all(12),
@@ -262,9 +275,34 @@ class _CommentItemState extends State<CommentItem> {
     );
   }
 
+  // 添加这个方法来构建标签
+  Widget _buildCommentTag(String text, Color color) {
+    return Container(
+      margin: const EdgeInsets.only(right: 4),
+      padding: CommentItem._tagPadding,
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: color.withOpacity(0.5),
+          width: 1,
+        ),
+      ),
+      child: Text(
+        text,
+        style: TextStyle(
+          color: color,
+          fontSize: CommentItem._tagFontSize,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final comment = widget.comment;
+    final currentUserId = _userService.currentUser.value?.id;
 
     // 构建头像
     Widget avatar = CircleAvatar(
@@ -309,7 +347,6 @@ class _CommentItemState extends State<CommentItem> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              // 原有的用户信息部分
               Expanded(
                 child: InkWell(
                   onTap: () {
@@ -324,36 +361,58 @@ class _CommentItemState extends State<CommentItem> {
                     children: [
                       avatar,
                       const SizedBox(width: 8),
-                      // 用户名和时间戳
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            comment.user?.premium == true
-                                ? ShaderMask(
-                                    shaderCallback: (bounds) => LinearGradient(
-                                      colors: [
-                                        Colors.purple.shade300,
-                                        Colors.blue.shade300,
-                                        Colors.pink.shade300,
-                                      ],
-                                    ).createShader(bounds),
-                                    child: Text(
-                                      comment.user?.name ?? '未知用户',
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 14,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  )
-                                : Text(
-                                    comment.user?.name ?? '未知用户',
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 14,
-                                    ),
+                            // 用户名行
+                            Row(
+                              children: [
+                                // 用户名
+                                Flexible(
+                                  child: comment.user?.premium == true
+                                      ? ShaderMask(
+                                          shaderCallback: (bounds) =>
+                                              LinearGradient(
+                                            colors: [
+                                              Colors.purple.shade300,
+                                              Colors.blue.shade300,
+                                              Colors.pink.shade300,
+                                            ],
+                                          ).createShader(bounds),
+                                          child: Text(
+                                            comment.user?.name ?? '未知用户',
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 14,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        )
+                                      : Text(
+                                          comment.user?.name ?? '未知用户',
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                ),
+                                const SizedBox(width: 4),
+                                // 标签
+                                if (widget.authorUserId != null &&
+                                    comment.user?.id == widget.authorUserId)
+                                  _buildCommentTag(
+                                    '作者',
+                                    Theme.of(context).colorScheme.primary,
                                   ),
+                                if (currentUserId != null &&
+                                    comment.user?.id == currentUserId)
+                                  _buildCommentTag(
+                                    '我',
+                                    Theme.of(context).colorScheme.secondary,
+                                  ),
+                              ],
+                            ),
                             const SizedBox(height: 2),
                             if (comment.createdAt != null)
                               Text(
@@ -385,7 +444,7 @@ class _CommentItemState extends State<CommentItem> {
             children: [
               // 原始评论内容
               CustomMarkdownBody(
-                data: comment.body ?? '',
+                data: comment.body,
               ),
 
               // 如果有翻译内容，显示分割线和翻译
@@ -399,29 +458,41 @@ class _CommentItemState extends State<CommentItem> {
           if (comment.numReplies > 0)
             Padding(
               padding: const EdgeInsets.only(left: 8.0),
-              child: TextButton(
-                onPressed: () {
-                  setState(() {
-                    _isRepliesExpanded = !_isRepliesExpanded;
-                  });
+              child: MouseRegion(
+                cursor: SystemMouseCursors.click,
+                child: GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _isRepliesExpanded = !_isRepliesExpanded;
+                    });
 
-                  // 展开回复时，如果还未加载，则进行加载
-                  if (_isRepliesExpanded &&
-                      _replyController?.replies.isEmpty == true &&
-                      _replyController?.isLoading.value == false) {
-                    _replyController?.fetchReplies(refresh: true);
-                  }
-                },
-                style: TextButton.styleFrom(
-                  padding: EdgeInsets.zero,
-                  minimumSize: const Size(50, 30),
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                ),
-                child: Text(
-                  _isRepliesExpanded ? '隐藏回复' : '查看回复 (${comment.numReplies})',
-                  style: TextStyle(
-                    color: Theme.of(context).primaryColor,
-                    fontSize: 13,
+                    // 展开回复时，如果还未加载，则进行加载
+                    if (_isRepliesExpanded &&
+                        _replyController?.replies.isEmpty == true &&
+                        _replyController?.isLoading.value == false) {
+                      _replyController?.fetchReplies(refresh: true);
+                    }
+                  },
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        _isRepliesExpanded
+                            ? '隐藏回复'
+                            : '查看回复 (${comment.numReplies})',
+                        style: TextStyle(
+                          color: Theme.of(context).primaryColor,
+                          fontSize: 13,
+                        ),
+                      ),
+                      Icon(
+                        _isRepliesExpanded
+                            ? Icons.keyboard_arrow_up
+                            : Icons.keyboard_arrow_down,
+                        size: 16,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -450,7 +521,7 @@ class _CommentItemState extends State<CommentItem> {
               } else {
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
+                  mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     ListView.builder(
@@ -461,7 +532,10 @@ class _CommentItemState extends State<CommentItem> {
                       itemBuilder: (context, index) {
                         if (index < _replyController!.replies.length) {
                           Comment reply = _replyController!.replies[index];
-                          return CommentItem(comment: reply);
+                          return CommentItem(
+                            comment: reply,
+                            authorUserId: widget.authorUserId,
+                          );
                         } else {
                           // 加载更多提示
                           if (_replyController!.isLoading.value) {
