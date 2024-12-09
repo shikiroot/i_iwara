@@ -52,17 +52,44 @@ class CommentEntryAreaButtonWidget extends StatelessWidget {
                   // 第二行：根据是否有评论显示不同内容
                   Row(
                     children: [
-                      CircleAvatar(
-                        backgroundImage: commentController.comments.isNotEmpty
-                            ? CachedNetworkImageProvider(
-                          commentController.comments.first.user?.avatar?.avatarUrl ?? userService.userAvatar,
-                          headers: const {'referer': CommonConstants.iwaraBaseUrl},
-                        )
-                            : CachedNetworkImageProvider(
-                          userService.userAvatar,
-                          headers: const {'referer': CommonConstants.iwaraBaseUrl},
-                        ),
-                      ),
+                      Builder(builder: (context) {
+                        Widget avatar = CircleAvatar(
+                          backgroundImage: commentController.comments.isNotEmpty
+                              ? CachedNetworkImageProvider(
+                                  commentController.comments.first.user?.avatar?.avatarUrl ?? 
+                                      userService.userAvatar,
+                                  headers: const {'referer': CommonConstants.iwaraBaseUrl},
+                                )
+                              : CachedNetworkImageProvider(
+                                  userService.userAvatar,
+                                  headers: const {'referer': CommonConstants.iwaraBaseUrl},
+                                ),
+                        );
+
+                        if (commentController.comments.isNotEmpty && 
+                            commentController.comments.first.user?.premium == true) {
+                          avatar = Container(
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              gradient: LinearGradient(
+                                colors: [
+                                  Colors.purple.shade200,
+                                  Colors.blue.shade200,
+                                  Colors.pink.shade200,
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: avatar,
+                            ),
+                          );
+                        }
+
+                        return avatar;
+                      }),
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(

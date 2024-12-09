@@ -90,92 +90,147 @@ class GlobalDrawerColumns extends StatelessWidget {
   }
 
   Widget _buildHeader(BuildContext context, AppService globalDrawerService) {
-    return GestureDetector(
-      onTap: () {
-        if (!userService.isLogin) {
-          AppService.switchGlobalDrawer();
-          Get.toNamed(
-            Routes.LOGIN,
-          );
-        } else {
-          AppService.switchGlobalDrawer();
-          NaviService.navigateToAuthorProfilePage(
-              userService.currentUser.value!.username);
-        }
-      },
-      child: Container(
-        width: double.infinity,
-        padding: EdgeInsets.fromLTRB(
-            16, MediaQuery.paddingOf(context).top + 16, 16, 16),
-        decoration: BoxDecoration(
-          color: Get.theme.primaryColor,
-          image: DecorationImage(
-            image: const CachedNetworkImageProvider(
-              CommonConstants.defaultAvatarUrl,
-              headers: {'referer': CommonConstants.iwaraBaseUrl},
-            ),
-            fit: BoxFit.cover,
-            colorFilter: ColorFilter.mode(
-              Colors.black.withOpacity(0.5),
-              BlendMode.darken,
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: () {
+          if (!userService.isLogin) {
+            AppService.switchGlobalDrawer();
+            Get.toNamed(
+              Routes.LOGIN,
+            );
+          } else {
+            AppService.switchGlobalDrawer();
+            NaviService.navigateToAuthorProfilePage(
+                userService.currentUser.value!.username);
+          }
+        },
+        child: Container(
+          width: double.infinity,
+          padding: EdgeInsets.fromLTRB(
+              16, MediaQuery.paddingOf(context).top + 16, 16, 16),
+          decoration: BoxDecoration(
+            color: Get.theme.primaryColor,
+            image: DecorationImage(
+              image: const CachedNetworkImageProvider(
+                CommonConstants.defaultAvatarUrl,
+                headers: {'referer': CommonConstants.iwaraBaseUrl},
+              ),
+              fit: BoxFit.cover,
+              colorFilter: ColorFilter.mode(
+                Colors.black.withOpacity(0.5),
+                BlendMode.darken,
+              ),
             ),
           ),
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            _buildAvatar(),
-            const SizedBox(width: 16),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  userService.isLogin
-                      ? userService.currentUser.value!.name
-                      : '未登录',
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              _buildAvatar(),
+              const SizedBox(width: 16),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (userService.isLogin &&
+                      userService.currentUser.value?.premium == true)
+                    ShaderMask(
+                      shaderCallback: (bounds) => LinearGradient(
+                        colors: [
+                          Colors.purple.shade300,
+                          Colors.blue.shade300,
+                          Colors.pink.shade300,
+                        ],
+                      ).createShader(bounds),
+                      child: Text(
+                        userService.currentUser.value!.name,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    )
+                  else
+                    Text(
+                      userService.isLogin
+                          ? userService.currentUser.value!.name
+                          : '未登录',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  const SizedBox(height: 4),
+                  Text(
+                    userService.isLogin
+                        ? '@${userService.currentUser.value!.username}'
+                        : '点击此处登录',
+                    style: const TextStyle(
+                      color: Colors.white70,
+                      fontSize: 14,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  userService.isLogin
-                      ? '@${userService.currentUser.value!.username}'
-                      : '点击此处登录',
-                  style: const TextStyle(
-                    color: Colors.white70,
-                    fontSize: 14,
-                  ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
   Widget _buildAvatar() {
-    return ClipOval(
-      child: CachedNetworkImage(
-        imageUrl: userService.userAvatar,
-        httpHeaders: const {'referer': CommonConstants.iwaraBaseUrl},
-        width: 80,
-        height: 80,
-        fit: BoxFit.cover,
-        placeholder: (context, url) => const CircularProgressIndicator(),
-        errorWidget: (context, url, error) => const Icon(Icons.error),
+    Widget avatar = MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: ClipOval(
+        child: CachedNetworkImage(
+          imageUrl: userService.userAvatar,
+          httpHeaders: const {'referer': CommonConstants.iwaraBaseUrl},
+          width: 80,
+          height: 80,
+          fit: BoxFit.cover,
+          placeholder: (context, url) => const CircularProgressIndicator(),
+          errorWidget: (context, url, error) => const Icon(Icons.error),
+        ),
       ),
     );
+
+    if (userService.isLogin && userService.currentUser.value?.premium == true) {
+      return MouseRegion(
+        cursor: SystemMouseCursors.click,
+        child: Container(
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: LinearGradient(
+              colors: [
+                Colors.purple.shade200,
+                Colors.blue.shade200,
+                Colors.pink.shade200,
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: avatar,
+          ),
+        ),
+      );
+    }
+
+    return avatar;
   }
 
   Widget _buildMenuItem(IconData icon, String title, VoidCallback onTap) {
-    return ListTile(
-      leading: Icon(icon, color: Get.theme.primaryColor),
-      title: Text(title, style: const TextStyle(fontSize: 16)),
-      onTap: onTap,
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: ListTile(
+        leading: Icon(icon, color: Get.theme.primaryColor),
+        title: Text(title, style: const TextStyle(fontSize: 16)),
+        onTap: onTap,
+      ),
     );
   }
 

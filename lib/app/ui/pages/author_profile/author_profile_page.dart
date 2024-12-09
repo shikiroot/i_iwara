@@ -217,29 +217,41 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                   bool isPremium =
                       profileController.author.value?.premium ?? false;
                   // 头像
-                  return Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: isPremium
-                            ? Theme.of(context).colorScheme.primary
-                            : Colors.transparent,
-                        width: 3.0,
-                      ),
-                    ),
-                    child: CircleAvatar(
-                      radius: 40,
-                      backgroundImage: CachedNetworkImageProvider(
-                        profileController.author.value?.avatar?.avatarUrl ??
-                            CommonConstants.defaultAvatarUrl,
-                        headers: {
-                          'referer': CommonConstants.iwaraBaseUrl,
-                        },
-                      ),
+                  Widget avatar = CircleAvatar(
+                    radius: 40,
+                    backgroundImage: CachedNetworkImageProvider(
+                      profileController.author.value?.avatar?.avatarUrl ??
+                          CommonConstants.defaultAvatarUrl,
+                      headers: const {
+                        'referer': CommonConstants.iwaraBaseUrl,
+                      },
                     ),
                   );
+
+                  if (isPremium) {
+                    return Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.purple.shade200,
+                            Colors.blue.shade200,
+                            Colors.pink.shade200,
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: avatar,
+                      ),
+                    );
+                  }
+
+                  return avatar;
                 }),
-                SizedBox(width: 16),
+                const SizedBox(width: 16),
                 // 用户名、粉丝数、关注数
                 Expanded(
                   child: Column(
@@ -249,14 +261,37 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                         crossAxisAlignment: WrapCrossAlignment.center,
                         children: [
                           // 修改名称样式，使用主题色并加粗
-                          SelectableText(
-                            profileController.author.value?.name ?? '',
-                            style: TextStyle(
-                              fontSize: 32,
-                              fontWeight: FontWeight.bold,
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                          ),
+                          Obx(() {
+                            bool isPremium = profileController.author.value?.premium == true;
+                            if (!isPremium) {
+                              return SelectableText(
+                                profileController.author.value?.name ?? '',
+                                style: TextStyle(
+                                  fontSize: 32,
+                                  fontWeight: FontWeight.bold,
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
+                              );
+                            }
+
+                            return ShaderMask(
+                              shaderCallback: (bounds) => LinearGradient(
+                                colors: [
+                                  Colors.purple.shade300,
+                                  Colors.blue.shade300,
+                                  Colors.pink.shade300,
+                                ],
+                              ).createShader(bounds),
+                              child: SelectableText(
+                                profileController.author.value?.name ?? '',
+                                style: const TextStyle(
+                                  fontSize: 32,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            );
+                          }),
                           SizedBox(width: 8),
                           Obx(() {
                             bool isPremium = profileController

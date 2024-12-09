@@ -253,6 +253,7 @@ class ImageModelDetailContent extends StatelessWidget {
       Get.snackbar('提示', '复制图片失败');
     }
   }
+
   // 下载图片: 移动端
   void _downloadImageForMobile(ImageItem item) async {
     // TODO: 移动端的保存图片功能还在开发中
@@ -267,7 +268,8 @@ class ImageModelDetailContent extends StatelessWidget {
       LogUtils.d('用户取消了选择目录', 'ImageModelDetailContent');
       return;
     } else {
-      String url = item.data.originalUrl.isEmpty ? item.data.url : item.data.originalUrl;
+      String url =
+          item.data.originalUrl.isEmpty ? item.data.url : item.data.originalUrl;
       if (url.isEmpty) {
         Get.snackbar('提示', '链接地址为空');
         return;
@@ -339,34 +341,88 @@ class ImageModelDetailContent extends StatelessWidget {
     );
   }
 
-  // 构建作者头像
   Widget _buildAuthorAvatar() {
-    return InkWell(
-      onTap: () {
-        NaviService.navigateToAuthorProfilePage(
-            controller.imageModelInfo.value?.user?.username ?? '');
-      },
-      borderRadius: BorderRadius.circular(20),
-      child: CircleAvatar(
-        backgroundImage: CachedNetworkImageProvider(
-          controller.imageModelInfo.value?.user?.avatar?.avatarUrl ??
-              CommonConstants.defaultAvatarUrl,
-          headers: const {'referer': CommonConstants.iwaraBaseUrl},
+    Widget avatar = MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: () {
+          final user = controller.imageModelInfo.value?.user;
+          if (user != null) {
+            NaviService.navigateToAuthorProfilePage(user.username ?? '');
+          }
+        },
+        behavior: HitTestBehavior.opaque,
+        child: CircleAvatar(
+          backgroundImage: CachedNetworkImageProvider(
+            controller.imageModelInfo.value?.user?.avatar?.avatarUrl ??
+                CommonConstants.defaultAvatarUrl,
+            headers: const {'referer': CommonConstants.iwaraBaseUrl},
+          ),
         ),
       ),
     );
+
+    if (controller.imageModelInfo.value?.user?.premium == true) {
+      return MouseRegion(
+        cursor: SystemMouseCursors.click,
+        child: Container(
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: LinearGradient(
+              colors: [
+                Colors.purple.shade200,
+                Colors.blue.shade200,
+                Colors.pink.shade200,
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: avatar,
+          ),
+        ),
+      );
+    }
+
+    return avatar;
   }
 
   // 构建作者名字按钮
   Widget _buildAuthorNameButton() {
+    final user = controller.imageModelInfo.value?.user;
+    if (user?.premium == true) {
+      return TextButton(
+        child: ShaderMask(
+          shaderCallback: (bounds) => LinearGradient(
+            colors: [
+              Colors.purple.shade300,
+              Colors.blue.shade300,
+              Colors.pink.shade300,
+            ],
+          ).createShader(bounds),
+          child: Text(
+            user?.name ?? '',
+            style: const TextStyle(
+              fontSize: 16,
+              color: Colors.white,
+            ),
+          ),
+        ),
+        onPressed: () {
+          NaviService.navigateToAuthorProfilePage(user?.username ?? '');
+        },
+      );
+    }
+
     return TextButton(
       child: Text(
-        controller.imageModelInfo.value?.user?.username ?? '',
+        user?.username ?? '',
         style: const TextStyle(fontSize: 16),
       ),
       onPressed: () {
-        NaviService.navigateToAuthorProfilePage(
-            controller.imageModelInfo.value?.user?.username ?? '');
+        NaviService.navigateToAuthorProfilePage(user?.username ?? '');
       },
     );
   }

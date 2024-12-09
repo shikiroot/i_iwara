@@ -108,15 +108,55 @@ class _ProfileImageModelTabListWidgetState extends State<ProfileImageModelTabLis
       controller: widget.tc,
       tabs: const <Tab>[
         // date
-        Tab(icon: Icon(Icons.calendar_today)),
+        Tab(
+          child: Row(
+            children: [
+              Icon(Icons.calendar_today),
+              SizedBox(width: 8),
+              Text("最新"),
+            ],
+          ),
+        ),
         // likes
-        Tab(icon: Icon(Icons.favorite)),
+        Tab(
+          child: Row(
+            children: [
+              Icon(Icons.favorite),
+              SizedBox(width: 8),
+              Text("点赞数"),
+            ],
+          ),
+        ),
         // views
-        Tab(icon: Icon(Icons.remove_red_eye)),
+        Tab(
+          child: Row(
+            children: [
+              Icon(Icons.remove_red_eye),
+              SizedBox(width: 8),
+              Text("观看次数"),
+            ],
+          ),
+        ),
         // popularity
-        Tab(icon: Icon(Icons.star)),
+        Tab(
+          child: Row(
+            children: [
+              Icon(Icons.star),
+              SizedBox(width: 8),
+              Text("受欢迎的"),
+            ],
+          ),
+        ),
         // trending
-        Tab(icon: Icon(Icons.trending_up)),
+        Tab(
+          child: Row(
+            children: [
+              Icon(Icons.trending_up),
+              SizedBox(width: 8),
+              Text("趋势"),
+            ],
+          ),
+        ),
       ],
     );
     return Column(

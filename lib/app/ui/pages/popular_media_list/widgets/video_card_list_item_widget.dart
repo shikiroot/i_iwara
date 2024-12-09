@@ -222,12 +222,32 @@ class VideoCardListItemWidget extends StatelessWidget {
           _buildAvatar(),
           const SizedBox(width: 8),
           Expanded(
-            child: Text(
-              video.user?.name ?? 'Unknown User',
-              style: textTheme.bodySmall,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
+            child: video.user?.premium == true
+              ? ShaderMask(
+                  shaderCallback: (bounds) => LinearGradient(
+                    colors: [
+                      Colors.purple.shade300,
+                      Colors.blue.shade300,
+                      Colors.pink.shade300,
+                    ],
+                  ).createShader(bounds),
+                  child: Text(
+                    video.user?.name ?? 'Unknown User',
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                )
+              : Text(
+                  video.user?.name ?? 'Unknown User',
+                  style: textTheme.bodySmall,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
           ),
         ],
       ),
@@ -235,7 +255,7 @@ class VideoCardListItemWidget extends StatelessWidget {
   }
 
   Widget _buildAvatar() {
-    return SizedBox(
+    Widget avatar = SizedBox(
       width: 24,
       height: 24,
       child: ClipOval(
@@ -249,6 +269,31 @@ class VideoCardListItemWidget extends StatelessWidget {
         ),
       ),
     );
+
+    if (video.user?.premium == true) {
+      return Container(
+        width: 32,
+        height: 32,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          gradient: LinearGradient(
+            colors: [
+              Colors.purple.shade200,
+              Colors.blue.shade200,
+              Colors.pink.shade200,
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: avatar,
+        ),
+      );
+    }
+
+    return avatar;
   }
 
   void _navigateToDetailPage(BuildContext context) {

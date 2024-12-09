@@ -91,6 +91,36 @@ class _CommentItemState extends State<CommentItem> {
   Widget build(BuildContext context) {
     final comment = widget.comment;
 
+    // 构建头像
+    Widget avatar = CircleAvatar(
+      radius: 20,
+      backgroundImage: CachedNetworkImageProvider(
+        comment.user?.avatar?.avatarUrl ?? CommonConstants.defaultAvatarUrl,
+        headers: const {'referer': CommonConstants.iwaraBaseUrl},
+      ),
+    );
+
+    if (comment.user?.premium == true) {
+      avatar = Container(
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          gradient: LinearGradient(
+            colors: [
+              Colors.purple.shade200,
+              Colors.blue.shade200,
+              Colors.pink.shade200,
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: avatar,
+        ),
+      );
+    }
+
     return Padding(
       padding: EdgeInsets.only(
         left: comment.parent != null ? 32.0 : 16.0,
@@ -114,28 +144,38 @@ class _CommentItemState extends State<CommentItem> {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // 用户头像
-                CircleAvatar(
-                  radius: 20,
-                  backgroundImage: CachedNetworkImageProvider(
-                    comment.user?.avatar?.avatarUrl ??
-                        CommonConstants.defaultAvatarUrl,
-                    headers: const {'referer': CommonConstants.iwaraBaseUrl},
-                  ),
-                ),
+                avatar,
                 const SizedBox(width: 8),
                 // 用户名和时间戳
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        comment.user?.name ?? '未知用户',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14,
-                        ),
-                      ),
+                      comment.user?.premium == true
+                        ? ShaderMask(
+                            shaderCallback: (bounds) => LinearGradient(
+                              colors: [
+                                Colors.purple.shade300,
+                                Colors.blue.shade300,
+                                Colors.pink.shade300,
+                              ],
+                            ).createShader(bounds),
+                            child: Text(
+                              comment.user?.name ?? '未知用户',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                                color: Colors.white,
+                              ),
+                            ),
+                          )
+                        : Text(
+                            comment.user?.name ?? '未知用户',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                            ),
+                          ),
                       const SizedBox(height: 2),
                       if (comment.createdAt != null)
                         Text(
