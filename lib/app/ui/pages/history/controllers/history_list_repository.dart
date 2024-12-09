@@ -5,6 +5,7 @@ import 'package:loading_more_list/loading_more_list.dart';
 class HistoryListRepository extends LoadingMoreBase<HistoryRecord> {
   final HistoryRepository _historyRepository;
   final String? itemType;
+  String keyword = '';
   
   int _pageIndex = 0;
   static const int _pageSize = 20;
@@ -33,11 +34,22 @@ class HistoryListRepository extends LoadingMoreBase<HistoryRecord> {
   Future<bool> loadData([bool isLoadMoreAction = false]) async {
     bool isSuccess = false;
     try {
-      final records = await _historyRepository.getRecordsByType(
-        itemType ?? 'all',
-        limit: _pageSize,
-        offset: _pageIndex * _pageSize,
-      );
+      final List<HistoryRecord> records;
+      
+      if (keyword.isEmpty) {
+        records = await _historyRepository.getRecordsByType(
+          itemType ?? 'all',
+          limit: _pageSize,
+          offset: _pageIndex * _pageSize,
+        );
+      } else {
+        records = await _historyRepository.searchByTitlePaged(
+          keyword,
+          itemType: itemType == 'all' ? null : itemType,
+          limit: _pageSize,
+          offset: _pageIndex * _pageSize,
+        );
+      }
 
       if (_pageIndex == 0) {
         clear();

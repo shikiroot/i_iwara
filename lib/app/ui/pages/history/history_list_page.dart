@@ -105,6 +105,7 @@ class _HistoryListPageState extends State<HistoryListPage>
         previousController.toggleMultiSelect();
       }
       _lastTappedIndex = _tabController.index;
+      setState(() {});
     }
   }
 
@@ -173,7 +174,7 @@ class _HistoryListPageState extends State<HistoryListPage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('历史记录'),
+        title: _buildSearchField(),
         actions: [
           Obx(() => AnimatedSwitcher(
                 duration: const Duration(milliseconds: 200),
@@ -432,6 +433,25 @@ class _HistoryListPageState extends State<HistoryListPage>
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildSearchField() {
+    final controller = _getControllerForIndex(_tabController.index);
+    
+    return TextField(
+      decoration: InputDecoration(
+        hintText: '搜索历史记录...',
+        border: InputBorder.none,
+        hintStyle: TextStyle(
+          color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+        ),
+      ),
+      style: TextStyle(
+        color: Theme.of(context).colorScheme.onSurface,
+      ),
+      onChanged: (value) => controller.search(value),
+      controller: TextEditingController(text: controller.searchKeyword.value),
     );
   }
 } 

@@ -31,6 +31,7 @@ class HistoryRecord {
   // 从Video创建历史记录
   factory HistoryRecord.fromVideo(Video video) {
     return HistoryRecord(
+      id: 0,
       itemId: video.id,
       itemType: 'video',
       title: video.title ?? '无标题',
@@ -46,6 +47,7 @@ class HistoryRecord {
   // 从ImageModel创建历史记录
   factory HistoryRecord.fromImageModel(ImageModel image) {
     return HistoryRecord(
+      id: 0,
       itemId: image.id,
       itemType: 'image',
       title: image.title,

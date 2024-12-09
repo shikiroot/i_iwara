@@ -9,6 +9,7 @@ class HistoryListController extends GetxController {
   final RxBool isMultiSelect = false.obs;
   final RxSet<int> selectedRecords = <int>{}.obs;
   final RxBool showBackToTop = false.obs;
+  final RxString searchKeyword = ''.obs;
   final String itemType;
 
   HistoryListController({
@@ -51,6 +52,12 @@ class HistoryListController extends GetxController {
     selectedRecords.clear();
     repository.refresh();
     Get.snackbar('已删除选中的记录', '');
+  }
+
+  void search(String keyword) {
+    searchKeyword.value = keyword;
+    repository.keyword = keyword;
+    repository.refresh();
   }
 
   @override
