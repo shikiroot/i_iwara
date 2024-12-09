@@ -57,18 +57,19 @@ class HistoryRepository {
   }
 
   // 删除单条记录
-  Future<void> deleteRecord(String itemId, String itemType) async {
+  Future<void> deleteRecord(int id) async {
     _db.prepare(
-      'DELETE FROM history_records WHERE item_id = ? AND item_type = ?'
-    ).execute([itemId, itemType]);
+      'DELETE FROM history_records WHERE id = ?'
+    ).execute([id]);
   }
 
   // 批量删除记录
-  Future<void> deleteRecords(List<String> itemIds, String itemType) async {
-    final placeholders = List.filled(itemIds.length, '?').join(',');
+  Future<void> deleteRecords(List<int> ids) async {
+    final placeholders = List.filled(ids.length, '?').join(',');
     _db.prepare(
-      'DELETE FROM history_records WHERE item_id IN ($placeholders) AND item_type = ?'
-    ).execute([...itemIds, itemType]);
+      'DELETE FROM history_records WHERE id IN ($placeholders)'
+    ).execute(ids);
+    print('成功批量删除: $ids');
   }
 
   // 清空历史记录

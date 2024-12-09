@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:i_iwara/app/models/history_record.dart';
 import 'package:i_iwara/app/repositories/history_repository.dart';
+import 'package:i_iwara/app/services/app_service.dart';
+import 'package:i_iwara/app/ui/pages/popular_media_list/widgets/image_model_card_list_item_widget.dart';
+import 'package:i_iwara/app/ui/pages/popular_media_list/widgets/video_card_list_item_widget.dart';
 import 'package:i_iwara/app/ui/widgets/my_loading_more_indicator_widget.dart';
 import 'package:loading_more_list/loading_more_list.dart';
 import 'controllers/history_list_controller.dart';
@@ -97,6 +100,10 @@ class _HistoryListPageState extends State<HistoryListPage>
 
   void _handleTabChange() {
     if (!_tabController.indexIsChanging) {
+      final previousController = _getControllerForIndex(_lastTappedIndex);
+      if (previousController.isMultiSelect.value) {
+        previousController.toggleMultiSelect();
+      }
       _lastTappedIndex = _tabController.index;
     }
   }
@@ -204,23 +211,26 @@ class _HistoryListPageState extends State<HistoryListPage>
               _buildHistoryList(imageController, _imageScrollController),
             ],
           ),
+          // 第一个tab的底部多选栏
           Positioned(
             left: 0,
             right: 0,
             bottom: 0,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                _buildMultiSelectBar(allController),
-                _buildMultiSelectBar(videoController),
-                _buildMultiSelectBar(imageController),
-              ].asMap().entries.map((entry) {
-                return Offstage(
-                  offstage: _tabController.index != entry.key,
-                  child: entry.value,
-                );
-              }).toList(),
-            ),
+            child: _buildMultiSelectBar(allController),
+          ),
+          // 第二个tab的底部多选栏
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: _buildMultiSelectBar(videoController),
+          ),
+          // 第三个tab的底部多选栏
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: _buildMultiSelectBar(imageController),
           ),
         ],
       ),
@@ -265,7 +275,7 @@ class _HistoryListPageState extends State<HistoryListPage>
           borderRadius: BorderRadius.circular(isMobile ? 0 : 25),
           color: Theme.of(context).colorScheme.primary,
         ),
-        overlayColor: MaterialStateProperty.all(Colors.transparent),
+        overlayColor: WidgetStateProperty.all(Colors.transparent),
         indicatorSize: TabBarIndicatorSize.tab,
         dividerColor: Colors.transparent,
         labelColor: Theme.of(context).colorScheme.onPrimary,
@@ -322,50 +332,39 @@ class _HistoryListPageState extends State<HistoryListPage>
     HistoryListController controller,
   ) {
     return Obx(() {
-      final bool isSelected = controller.selectedRecords.contains(record.itemId);
+      final bool isSelected = controller.selectedRecords.contains(record.id);
       final bool isMultiSelect = controller.isMultiSelect.value;
+      final dynamic originalData = record.getOriginalData();
 
-      return Card(
-        clipBehavior: Clip.antiAlias,
-        child: Stack(
-          children: [
-            ListTile(
-              leading: record.thumbnailUrl != null
-                  ? Image.network(
-                      record.thumbnailUrl!,
-                      width: 50,
-                      height: 50,
-                      fit: BoxFit.cover,
-                    )
-                  : const Icon(Icons.history),
-              title: Text(record.title),
-              subtitle: Text(record.author ?? '未知作者'),
-              onTap: () {
-                if (isMultiSelect) {
-                  controller.toggleSelection(record.itemId);
-                } else {
-                  // TODO: 跳转到详情页
-                }
-              },
+      return Stack(
+        children: [
+          if (record.itemType == 'video')
+            VideoCardListItemWidget(
+              video: originalData,
+              width: 300,
+            )
+          else
+            ImageModelCardListItemWidget(
+              imageModel: originalData,
+              width: 300,
             ),
-            if (isMultiSelect)
-              Positioned.fill(
-                child: Material(
-                  color: Colors.black26,
-                  child: InkWell(
-                    onTap: () => controller.toggleSelection(record.itemId),
-                    child: Center(
-                      child: Icon(
-                        isSelected ? Icons.check_circle : Icons.circle_outlined,
-                        color: Colors.white,
-                        size: 40,
-                      ),
+          if (isMultiSelect)
+            Positioned.fill(
+              child: Material(
+                color: Colors.black26,
+                child: InkWell(
+                  onTap: () => controller.toggleSelection(record.id),
+                  child: Center(
+                    child: Icon(
+                      isSelected ? Icons.check_circle : Icons.circle_outlined,
+                      color: Colors.white,
+                      size: 40,
                     ),
                   ),
                 ),
               ),
-          ],
-        ),
+            ),
+        ],
       );
     });
   }
@@ -418,12 +417,12 @@ class _HistoryListPageState extends State<HistoryListPage>
         content: Text('确定要删除选中的 ${controller.selectedRecords.length} 条记录吗？'),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => AppService.tryPop(),
             child: const Text('取消'),
           ),
           TextButton(
             onPressed: () {
-              Navigator.pop(context);
+              AppService.tryPop();
               controller.deleteSelected();
             },
             style: TextButton.styleFrom(

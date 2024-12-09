@@ -4,6 +4,7 @@ import 'package:i_iwara/app/models/image.model.dart';
 import 'package:i_iwara/app/models/video.model.dart';
 
 class HistoryRecord {
+  final int id;
   final String itemId; // 记录ID (视频ID或图库ID)
   final String itemType; // 记录类型 (video/image)
   final String title; // 标题
@@ -15,6 +16,7 @@ class HistoryRecord {
   final DateTime? updatedAt;
 
   HistoryRecord({
+    required this.id,
     required this.itemId,
     required this.itemType,
     required this.title,
@@ -71,6 +73,7 @@ class HistoryRecord {
 
   factory HistoryRecord.fromJson(Map<String, dynamic> json) {
     return HistoryRecord(
+      id: json['id'],
       itemId: json['item_id'],
       itemType: json['item_type'],
       title: json['title'],
@@ -89,6 +92,7 @@ class HistoryRecord {
 
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'item_id': itemId,
       'item_type': itemType,
       'title': title,

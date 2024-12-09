@@ -7,9 +7,8 @@ class HistoryListController extends GetxController {
   late HistoryListRepository repository;
   
   final RxBool isMultiSelect = false.obs;
-  final RxSet<String> selectedRecords = <String>{}.obs;
+  final RxSet<int> selectedRecords = <int>{}.obs;
   final RxBool showBackToTop = false.obs;
-  
   final String itemType;
 
   HistoryListController({
@@ -31,7 +30,7 @@ class HistoryListController extends GetxController {
     }
   }
 
-  void toggleSelection(String recordId) {
+  void toggleSelection(int recordId) {
     if (selectedRecords.contains(recordId)) {
       selectedRecords.remove(recordId);
     } else {
@@ -43,12 +42,12 @@ class HistoryListController extends GetxController {
     if (selectedRecords.length == repository.length) {
       selectedRecords.clear();
     } else {
-      selectedRecords.addAll(repository.map((record) => record.itemId));
+      selectedRecords.addAll(repository.map((record) => record.id));
     }
   }
 
   Future<void> deleteSelected() async {
-    await _historyRepository.deleteRecords(selectedRecords.toList(), itemType);
+    await _historyRepository.deleteRecords(selectedRecords.toList());
     selectedRecords.clear();
     repository.refresh();
     Get.snackbar('已删除选中的记录', '');
