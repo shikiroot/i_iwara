@@ -299,6 +299,56 @@ class _CommentItemState extends State<CommentItem> {
     );
   }
 
+  /// 格式化时间为人性化显示
+  String _formatTimestamp(DateTime timestamp) {
+    final now = DateTime.now();
+    final difference = now.difference(timestamp);
+    
+    if (difference.inMinutes < 1) {
+      return '刚刚';
+    } else if (difference.inHours < 1) {
+      return '${difference.inMinutes}分钟前';
+    } else if (difference.inDays < 1) {
+      return '${difference.inHours}小时前';
+    } else if (difference.inDays < 7) {
+      return '${difference.inDays}天前';
+    } else {
+      return "${timestamp.year}-${_twoDigits(timestamp.month)}-${_twoDigits(timestamp.day)} "
+          "${_twoDigits(timestamp.hour)}:${_twoDigits(timestamp.minute)}";
+    }
+  }
+
+  /// 构建时间显示区域
+  Widget _buildTimeInfo(Comment comment) {
+    if (comment.createdAt == null) return const SizedBox.shrink();
+
+    final hasEdit = comment.updatedAt != null && 
+        comment.createdAt != null &&
+        comment.updatedAt!.isAfter(comment.createdAt!);
+
+    final timeTextStyle = TextStyle(
+      fontSize: 12,
+      color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.75),
+    );
+
+    return DefaultTextStyle(
+      style: timeTextStyle,
+      child: Wrap(
+        crossAxisAlignment: WrapCrossAlignment.center,
+        children: [
+          Text(_formatTimestamp(comment.createdAt!)),
+          if (hasEdit) ...[
+            const Text(' · '),
+            Text(
+              '编辑于${_formatTimestamp(comment.updatedAt!)}',
+              style: timeTextStyle.copyWith(),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final comment = widget.comment;
@@ -414,14 +464,7 @@ class _CommentItemState extends State<CommentItem> {
                               ],
                             ),
                             const SizedBox(height: 2),
-                            if (comment.createdAt != null)
-                              Text(
-                                _formatTimestamp(comment.createdAt!),
-                                style: const TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.grey,
-                                ),
-                              ),
+                            _buildTimeInfo(comment),
                           ],
                         ),
                       ),
@@ -562,13 +605,6 @@ class _CommentItemState extends State<CommentItem> {
         ],
       ),
     );
-  }
-
-  /// 辅助方法，用于格式化时间戳
-  String _formatTimestamp(DateTime timestamp) {
-    // 根据需要自定义时间格式
-    return "${timestamp.year}-${_twoDigits(timestamp.month)}-${_twoDigits(timestamp.day)} "
-        "${_twoDigits(timestamp.hour)}:${_twoDigits(timestamp.minute)}:${_twoDigits(timestamp.second)}";
   }
 
   /// 辅助方法，将数字补齐为两位
