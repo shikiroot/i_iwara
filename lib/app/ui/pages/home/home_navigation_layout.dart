@@ -219,35 +219,28 @@ class HomeNavigatorObserver extends NavigatorObserver {
   var routes = Queue<Route>();
 
   HomeNavigatorObserver() {
-    print('[导航栏] 初始化');
   }
 
   @override
   void didPop(Route route, Route? previousRoute) {
-    print('[导航栏] didPop ${route.settings.name}');
     routes.removeLast();
     _tryHideBottomNavi();
   }
 
   @override
   void didPush(Route route, Route? previousRoute) {
-    print(
-        '[导航栏] didPush ${route.settings.name}， 当前的路由数量: ${routes.length}, 当前的routes: $routes');
     routes.addLast(route);
     _tryHideBottomNavi();
   }
 
   @override
   void didRemove(Route route, Route? previousRoute) {
-    print('[导航栏] didRemove ${route.settings.name}');
     routes.remove(route);
     _tryHideBottomNavi();
   }
 
   @override
   void didReplace({Route? newRoute, Route? oldRoute}) {
-    print(
-        '[导航栏] didReplace ${oldRoute?.settings.name} -> ${newRoute?.settings.name}');
     routes.remove(oldRoute);
     if (newRoute != null) {
       routes.add(newRoute);
@@ -256,7 +249,6 @@ class HomeNavigatorObserver extends NavigatorObserver {
   }
 
   void _tryHideBottomNavi() {
-    print('[导航栏] 当前的routes.length: ${routes.length}');
     if (routes.length > 1 && appService.showBottomNavi) {
       appService.showBottomNavi = false;
     } else if (routes.length <= 1 && !appService.showBottomNavi) {

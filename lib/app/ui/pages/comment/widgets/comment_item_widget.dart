@@ -65,7 +65,7 @@ class _CommentItemState extends State<CommentItem> {
       child: Padding(
         padding: EdgeInsets.only(
           left: widget.comment.parent != null ? 32.0 : 16.0,
-          right: 16.0,
+          right: 0.0,
           top: 8.0,
           bottom: 8.0,
         ),
@@ -111,7 +111,7 @@ class _CommentItemState extends State<CommentItem> {
               onTap: _isTranslating ? null : () => _handleTranslation(),
               child: Padding(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    const EdgeInsets.only(left: 12, top: 6, bottom: 6),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -148,7 +148,7 @@ class _CommentItemState extends State<CommentItem> {
             onTap: () =>
                 setState(() => _showTranslationMenu = !_showTranslationMenu),
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8),
+              padding: EdgeInsets.only(left: 8),
               child: Icon(
                 _showTranslationMenu
                     ? Icons.arrow_drop_up
@@ -299,7 +299,7 @@ class _CommentItemState extends State<CommentItem> {
     return Padding(
       padding: EdgeInsets.only(
         left: comment.parent != null ? 32.0 : 16.0,
-        right: 16.0,
+        right: 2,
         top: 8.0,
         bottom: 8.0,
       ),
@@ -396,7 +396,7 @@ class _CommentItemState extends State<CommentItem> {
             ],
           ),
           // 查看回复按钮
-          if (comment.numReplies != null && comment.numReplies! > 0)
+          if (comment.numReplies > 0)
             Padding(
               padding: const EdgeInsets.only(left: 8.0),
               child: TextButton(
@@ -434,7 +434,7 @@ class _CommentItemState extends State<CommentItem> {
                 // 显示 Shimmer 占位符
                 return Column(
                   children: List.generate(
-                      comment.numReplies ?? 3, (index) => _buildShimmerItem()),
+                      comment.numReplies, (index) => _buildShimmerItem()),
                 );
               } else if (_replyController!.errorMessage.value.isNotEmpty &&
                   _replyController!.replies.isEmpty) {
@@ -449,6 +449,9 @@ class _CommentItemState extends State<CommentItem> {
                 return const Center(child: Text('暂无回复'));
               } else {
                 return Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
@@ -481,7 +484,7 @@ class _CommentItemState extends State<CommentItem> {
                   ],
                 );
               }
-            }),
+            })
         ],
       ),
     );

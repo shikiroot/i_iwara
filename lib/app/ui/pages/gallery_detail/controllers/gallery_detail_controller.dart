@@ -39,7 +39,6 @@ class GalleryDetailController extends GetxController {
 
   Future<void> _initializeData() async {
     await fetchGalleryDetail();
-    print('isInfoInitialized: $isInfoInitialized');
     // 添加历史记录
     try {
       if (imageModelInfo.value != null) {

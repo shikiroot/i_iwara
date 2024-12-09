@@ -75,6 +75,7 @@ class GlobalDrawerColumns extends StatelessWidget {
               }),
               // 查看许可
               _buildMenuItem(Icons.code, '查看许可', () {
+                AppService.switchGlobalDrawer();
                 showLicensePage(
                   context: Get.context!,
                 );

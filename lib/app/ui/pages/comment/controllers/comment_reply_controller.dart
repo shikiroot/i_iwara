@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:i_iwara/app/ui/pages/comment/controllers/comment_controller.dart';
+import 'package:i_iwara/utils/logger_utils.dart';
 
 import '../../../../models/comment.model.dart';
 import '../../../../services/comment_service.dart';
@@ -64,7 +65,7 @@ class ReplyController extends GetxController {
         errorMessage.value = result.message;
       }
     } catch (e) {
-      print('获取回复时出错：$e');
+      LogUtils.e('获取回复时出错', error: e, tag: 'ReplyController');
       errorMessage.value = '获取回复时出错，请检查网络连接。';
       hasMore.value = false;
     } finally {

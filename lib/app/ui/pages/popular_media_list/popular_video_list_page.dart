@@ -135,7 +135,6 @@ class _PopularVideoListPageState extends State<PopularVideoListPage>
   @override
   void dispose() {
     super.dispose();
-    print('[热门视频列表] dispose');
     _tabController.removeListener(_onTabChange);
     _tabController.dispose();
     _tabBarScrollController.dispose();
