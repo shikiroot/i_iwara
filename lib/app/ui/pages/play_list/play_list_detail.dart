@@ -139,7 +139,7 @@ class _PlayListDetailPageState extends State<PlayListDetailPage> {
           ),
           TextButton(
             onPressed: () {
-              AppService.tryPop();  
+              AppService.tryPop();
               ShareService.sharePlayListDetail(
                   widget.playlistId, controller.playlistTitle.value);
             },
@@ -175,17 +175,47 @@ class _PlayListDetailPageState extends State<PlayListDetailPage> {
             if (widget.isMine)
               const PopupMenuItem(
                 value: 'edit',
-                child: Text('编辑标题'),
+                child: Row(
+                  children: [
+                    Icon(Icons.edit),
+                    SizedBox(width: 8),
+                    Text('编辑标题'),
+                  ],
+                ),
               ),
             if (widget.isMine)
-              const PopupMenuItem(value: 'multiSelect', child: Text('编辑模式')),
+              const PopupMenuItem(
+                value: 'multiSelect',
+                child: Row(
+                  children: [
+                    Icon(Icons.checklist),
+                    SizedBox(width: 8),
+                    Text('编辑模式'),
+                  ],
+                ),
+              ),
             // 删除
             // const PopupMenuItem(
             //   value: 'deleteCurPlaylist',
-            //   child: Text('删除此播放列表'),
+            //   child: Row(
+            //     children: [
+            //       Icon(Icons.delete),
+            //       SizedBox(width: 8),
+            //       Text('删除此播放列表'),
+            //     ],
+            //   ),
             // ),
             // 分享
-            const PopupMenuItem(value: 'share', child: Text('分享')),
+            const PopupMenuItem(
+              value: 'share',
+              child: Row(
+                children: [
+                  Icon(Icons.share),
+                  SizedBox(width: 8),
+                  Text('分享'),
+                ],
+              ),
+            ),
           ],
         ),
       ],

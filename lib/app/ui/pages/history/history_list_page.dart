@@ -194,8 +194,9 @@ class _HistoryListPageState extends State<HistoryListPage>
               final controller = _getControllerForIndex(_tabController.index);
               controller.toggleMultiSelect();
             },
-            icon: const Icon(Icons.edit),
+            icon: const Icon(Icons.checklist),
           ),
+          const SizedBox(width: 8),
         ],
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(kToolbarHeight),
@@ -253,13 +254,11 @@ class _HistoryListPageState extends State<HistoryListPage>
   }
 
   Widget _buildTabBar() {
-    final double screenWidth = MediaQuery.of(context).size.width;
-    final bool isMobile = screenWidth < 600;
 
     return Container(
-      width: isMobile ? screenWidth : 400,
-      margin: EdgeInsets.symmetric(
-        horizontal: isMobile ? 0 : (screenWidth - 400) / 2,
+      width: 400,
+      margin: const EdgeInsets.symmetric(
+        horizontal: 0,
         vertical: 8,
       ),
       decoration: BoxDecoration(
@@ -267,13 +266,13 @@ class _HistoryListPageState extends State<HistoryListPage>
             .colorScheme
             .surfaceContainerHighest
             .withOpacity(0.3),
-        borderRadius: BorderRadius.circular(isMobile ? 0 : 25),
+        borderRadius: BorderRadius.circular(25),
       ),
       child: TabBar(
         controller: _tabController,
         onTap: _handleTabTap,
         indicator: BoxDecoration(
-          borderRadius: BorderRadius.circular(isMobile ? 0 : 25),
+          borderRadius: BorderRadius.circular(25),
           color: Theme.of(context).colorScheme.primary,
         ),
         overlayColor: WidgetStateProperty.all(Colors.transparent),
@@ -442,10 +441,10 @@ class _HistoryListPageState extends State<HistoryListPage>
     return TextField(
       decoration: InputDecoration(
         hintText: '搜索历史记录...',
-        border: InputBorder.none,
         hintStyle: TextStyle(
           color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
         ),
+        prefixIcon: const Icon(Icons.search),
       ),
       style: TextStyle(
         color: Theme.of(context).colorScheme.onSurface,

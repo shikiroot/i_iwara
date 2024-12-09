@@ -103,12 +103,42 @@ class _LoginPageState extends State<LoginPage>
     return Scaffold(
       appBar: AppBar(
         title: Text('登录 / 注册'),
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: [
-            Tab(text: '登录'),
-            Tab(text: '注册'),
-          ],
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(kToolbarHeight),
+          child: Container(
+            width: 400,
+            margin: const EdgeInsets.symmetric(
+              horizontal: 0,
+              vertical: 8,
+            ),
+            child: Stack(
+              alignment: Alignment.centerRight,
+              children: [
+                TabBar(
+                  controller: _tabController,
+                  indicator: BoxDecoration(
+                    borderRadius: BorderRadius.circular(25),
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  overlayColor: WidgetStateProperty.all(Colors.transparent),
+                  indicatorSize: TabBarIndicatorSize.tab,
+                  dividerColor: Colors.transparent,
+                  labelColor: Theme.of(context).colorScheme.onPrimary,
+                  unselectedLabelColor:
+                      Theme.of(context).colorScheme.onSurfaceVariant,
+                  labelStyle: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                  padding: EdgeInsets.zero,
+                  tabs: [
+                    Tab(text: '登录'),
+                    Tab(text: '注册'),
+                  ],
+                ),
+              ],
+            ),
+          ),
         ),
       ),
       body: TabBarView(

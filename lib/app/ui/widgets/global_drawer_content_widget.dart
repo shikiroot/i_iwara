@@ -196,8 +196,8 @@ class LogoutDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('退出'),
-      content: const Text('你确定要退出吗？'),
+      title: const Text('退出登录'),
+      content: const Text('你确定要退出登录吗？'),
       actions: [
         TextButton(
           child: const Text('取消'),
@@ -209,9 +209,9 @@ class LogoutDialog extends StatelessWidget {
             Navigator.pop(context);
             try {
               await userService.logout();
-              Get.snackbar('操作', '你已退出');
+              Get.snackbar('操作', '你已退出登录');
             } catch (e) {
-              Get.snackbar('错误', '退出失败: $e');
+              Get.snackbar('错误', '退出登录失败: $e');
             }
           },
         ),

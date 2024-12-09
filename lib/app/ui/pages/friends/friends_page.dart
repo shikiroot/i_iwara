@@ -80,17 +80,10 @@ class _FriendsPageState extends State<FriendsPage>
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(kToolbarHeight),
           child: Container(
-            width: isMobile ? screenWidth : 400,
-            margin: EdgeInsets.symmetric(
-              horizontal: isMobile ? 0 : (screenWidth - 400) / 2,
+            width: 400,
+            margin: const EdgeInsets.symmetric(
+              horizontal: 0,
               vertical: 8,
-            ),
-            decoration: BoxDecoration(
-              color: Theme.of(context)
-                  .colorScheme
-                  .surfaceContainerHighest
-                  .withOpacity(0.3),
-              borderRadius: BorderRadius.circular(isMobile ? 0 : 25),
             ),
             child: Stack(
               alignment: Alignment.centerRight,
@@ -99,7 +92,7 @@ class _FriendsPageState extends State<FriendsPage>
                   controller: _tabController,
                   // 使用Material 3风格的指示器
                   indicator: BoxDecoration(
-                    borderRadius: BorderRadius.circular(isMobile ? 0 : 25),
+                    borderRadius: BorderRadius.circular(25),
                     color: Theme.of(context).colorScheme.primary,
                   ),
                   overlayColor: WidgetStateProperty.all(Colors.transparent),

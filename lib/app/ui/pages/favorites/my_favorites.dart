@@ -144,15 +144,10 @@ class _MyFavoritesState extends State<MyFavorites>
   }
 
   Widget _buildTabBar() {
-    // 获取屏幕宽度
-    final double screenWidth = MediaQuery.of(context).size.width;
-    // 判断是否是移动设备
-    final bool isMobile = screenWidth < 600;
-
     return Container(
-      width: isMobile ? screenWidth : 400,
-      margin: EdgeInsets.symmetric(
-        horizontal: isMobile ? 0 : (screenWidth - 400) / 2,
+      width: 400,
+      margin: const EdgeInsets.symmetric(
+        horizontal: 0,
         vertical: 8,
       ),
       decoration: BoxDecoration(
@@ -160,14 +155,14 @@ class _MyFavoritesState extends State<MyFavorites>
             .colorScheme
             .surfaceContainerHighest
             .withOpacity(0.3),
-        borderRadius: BorderRadius.circular(isMobile ? 0 : 25),
+        borderRadius: BorderRadius.circular(25),
       ),
       child: TabBar(
         controller: _tabController,
         onTap: _handleTabTap,
         // 使用Material 3风格的指示器
         indicator: BoxDecoration(
-          borderRadius: BorderRadius.circular(isMobile ? 0 : 25),
+          borderRadius: BorderRadius.circular(25),
           color: Theme.of(context).colorScheme.primary,
         ),
         overlayColor: WidgetStateProperty.all(Colors.transparent),
