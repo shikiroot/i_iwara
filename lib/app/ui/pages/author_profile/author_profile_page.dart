@@ -107,8 +107,8 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
   }
 
   Widget _buildMainContent() {
-    // 判断是否为宽屏 (>= 1200px)
-    bool isWideScreen = MediaQuery.of(context).size.width >= 600;
+    // 判断是否为宽屏 (>= 800px)
+    bool isWideScreen = MediaQuery.of(context).size.width >= 800;
 
     if (!isWideScreen) {
       return Stack(
