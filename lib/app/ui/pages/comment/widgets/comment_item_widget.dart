@@ -6,6 +6,7 @@ import 'package:i_iwara/app/services/app_service.dart';
 import 'package:i_iwara/app/services/config_service.dart';
 import 'package:i_iwara/app/services/translation_service.dart';
 import 'package:i_iwara/app/services/user_service.dart';
+import 'package:i_iwara/app/services/comment_service.dart';
 import 'package:i_iwara/app/ui/pages/comment/controllers/comment_controller.dart';
 import 'package:i_iwara/app/ui/pages/comment/widgets/comment_remove_dialog.dart';
 import 'package:shimmer/shimmer.dart';
@@ -13,7 +14,6 @@ import 'package:shimmer/shimmer.dart';
 import '../../../../../common/constants.dart';
 import '../../../../models/comment.model.dart';
 import '../../../widgets/custom_markdown_body_widget.dart';
-import '../controllers/comment_reply_controller.dart';
 import '../widgets/comment_input_dialog.dart';
 
 class CommentItem extends StatefulWidget {
@@ -32,39 +32,161 @@ class CommentItem extends StatefulWidget {
 
 class _CommentItemState extends State<CommentItem> {
   bool _isRepliesExpanded = false;
-  bool _showTranslationMenu = false;
+  bool _isTranslationMenuVisible = false;
   bool _isTranslating = false;
   String? _translatedText;
   final UserService _userService = Get.find();
+  final List<Comment> _replies = [];
+  bool _isLoadingReplies = false;
+  bool _hasMoreReplies = true;
+  int _currentPage = 0;
+  final int _pageSize = 20;
+  String? _errorMessage;
 
   final TranslationService _translationService = Get.find();
   final ConfigService _configService = Get.find();
+  final CommentService _commentService = Get.find();
 
-  ReplyController? _replyController;
+  OverlayEntry? _overlayEntry;
+  final LayerLink _layerLink = LayerLink();
 
   @override
   void initState() {
     super.initState();
-    // 如果没有回复则不初始化控制器
-    if (widget.comment.numReplies == 0) {
-      return;
-    }
-
-    _replyController = Get.put(
-      ReplyController(
-          videoId: widget.comment.videoId ?? '',
-          profileId: widget.comment.profileId ?? '',
-          imageId: widget.comment.imageId ?? '',
-          parentId: widget.comment.id),
-      tag: widget.comment.id,
-    );
   }
 
-  @override
-  void dispose() {
-    // 释放控制器
-    Get.delete<ReplyController>(tag: widget.comment.id);
-    super.dispose();
+  Future<void> _fetchReplies({bool refresh = false}) async {
+    if (refresh) {
+      setState(() {
+        _currentPage = 0;
+        _replies.clear();
+        _hasMoreReplies = true;
+        _errorMessage = null;
+      });
+    }
+
+    if (!_hasMoreReplies || _isLoadingReplies) return;
+
+    setState(() {
+      _isLoadingReplies = true;
+    });
+
+    try {
+      String type;
+      String id;
+      if (widget.comment.videoId != null) {
+        type = CommentType.video.name;
+        id = widget.comment.videoId!;
+      } else if (widget.comment.profileId != null) {
+        type = CommentType.profile.name;
+        id = widget.comment.profileId!;
+      } else if (widget.comment.imageId != null) {
+        type = CommentType.image.name;
+        id = widget.comment.imageId!;
+      } else {
+        throw Exception('未知的评论类型');
+      }
+
+      final result = await _commentService.getComments(
+        type: type,
+        id: id,
+        parentId: widget.comment.id,
+        page: _currentPage,
+        limit: _pageSize,
+      );
+
+      if (result.isSuccess) {
+        final pageData = result.data!;
+        final fetchedReplies = pageData.results;
+
+        setState(() {
+          _replies.addAll(fetchedReplies);
+          _currentPage++;
+          _hasMoreReplies = fetchedReplies.length >= _pageSize;
+          _errorMessage = null;
+        });
+      } else {
+        setState(() {
+          _errorMessage = result.message;
+          _hasMoreReplies = false;
+        });
+      }
+    } catch (e) {
+      setState(() {
+        _errorMessage = '获取回复时出错，请检查网络连接。';
+        _hasMoreReplies = false;
+      });
+    } finally {
+      setState(() {
+        _isLoadingReplies = false;
+      });
+    }
+  }
+
+  void _handleViewReplies() {
+    setState(() {
+      _isRepliesExpanded = !_isRepliesExpanded;
+    });
+
+    if (_isRepliesExpanded && _replies.isEmpty && !_isLoadingReplies) {
+      _fetchReplies(refresh: true);
+    }
+  }
+
+  Widget _buildRepliesList() {
+    if (_isLoadingReplies && _replies.isEmpty) {
+      return Column(
+        children: List.generate(
+          widget.comment.numReplies, 
+          (index) => _buildShimmerItem()
+        ),
+      );
+    } else if (_errorMessage != null && _replies.isEmpty) {
+      return Center(
+        child: Text(
+          _errorMessage!,
+          style: const TextStyle(color: Colors.red),
+        ),
+      );
+    } else if (!_isLoadingReplies && _replies.isEmpty) {
+      return const Center(child: Text('暂无回复'));
+    }
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ListView.builder(
+          physics: const NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: _replies.length + (_hasMoreReplies ? 1 : 0),
+          itemBuilder: (context, index) {
+            if (index < _replies.length) {
+              return CommentItem(
+                comment: _replies[index],
+                authorUserId: widget.authorUserId,
+              );
+            } else {
+              if (_isLoadingReplies) {
+                return _buildShimmerItem();
+              } else if (_hasMoreReplies) {
+                return TextButton(
+                  onPressed: () {
+                    if (!_isLoadingReplies) {
+                      _fetchReplies();
+                    }
+                  },
+                  child: const Text('加载更多回复'),
+                );
+              } else {
+                return const Center(child: Text('没有更多回复了'));
+              }
+            }
+          },
+        ),
+      ],
+    );
   }
 
   /// 构建 Shimmer 占位符
@@ -105,44 +227,153 @@ class _CommentItemState extends State<CommentItem> {
     );
   }
 
-  Widget _buildTranslationButton() {
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
+  void _toggleTranslationMenu() {
+    if (_isTranslationMenuVisible) {
+      _overlayEntry?.remove();
+      _overlayEntry = null;
+    } else {
+      _showTranslationMenuOverlay();
+    }
+    setState(() {
+      _isTranslationMenuVisible = !_isTranslationMenuVisible;
+    });
+  }
+
+  void _showTranslationMenuOverlay() {
+    _overlayEntry?.remove();
+    
+    final overlay = Overlay.of(context);
+    _overlayEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        width: 200,
+        child: CompositedTransformFollower(
+          link: _layerLink,
+          offset: const Offset(0, 40),
+          child: Material(
+            elevation: 4,
+            borderRadius: BorderRadius.circular(8),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: CommonConstants.translationSorts.map((sort) {
+                final isSelected = sort.id == _configService.currentTranslationSort.id;
+                return ListTile(
+                  dense: true,
+                  selected: isSelected,
+                  title: Text(sort.label),
+                  onTap: () {
+                    _configService.updateTranslationLanguage(sort);
+                    _toggleTranslationMenu();
+                    if (_translatedText != null) {
+                      _handleTranslation();
+                    }
+                  },
+                );
+              }).toList(),
+            ),
+          ),
+        ),
       ),
+    );
+    
+    overlay.insert(_overlayEntry!);
+  }
+
+  @override
+  void dispose() {
+    _overlayEntry?.remove();
+    super.dispose();
+  }
+
+  void _showTranslationMenuDialog() {
+    Get.dialog(
+      Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                child: Text(
+                  '选择翻译语言',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              const Divider(height: 1),
+              ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(Get.context!).size.height * 0.6,
+                ),
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: CommonConstants.translationSorts.map((sort) {
+                      final isSelected = sort.id == _configService.currentTranslationSort.id;
+                      return ListTile(
+                        dense: true,
+                        selected: isSelected,
+                        title: Text(sort.label),
+                        trailing: isSelected ? const Icon(Icons.check, size: 18) : null,
+                        onTap: () {
+                          _configService.updateTranslationLanguage(sort);
+                          AppService.tryPop();
+                          if (_translatedText != null) {
+                            _handleTranslation();
+                          }
+                        },
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      barrierDismissible: true,
+    );
+  }
+
+  Widget _buildTranslationButton() {
+    return Material(
+      borderRadius: BorderRadius.circular(20),
+      elevation: 2,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           // 左侧翻译按钮
-          Flexible(
-            child: InkWell(
-              borderRadius:
-                  const BorderRadius.horizontal(left: Radius.circular(20)),
-              onTap: _isTranslating ? null : () => _handleTranslation(),
-              child: Padding(
-                padding: const EdgeInsets.only(left: 12, top: 6, bottom: 6),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    if (_isTranslating)
-                      const SizedBox(
-                        width: 14,
-                        height: 14,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      )
-                    else
-                      const Icon(Icons.translate, size: 16),
-                    const SizedBox(width: 4),
-                    Text(
-                      '翻译',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Theme.of(context).primaryColor,
-                      ),
+          InkWell(
+            borderRadius: const BorderRadius.horizontal(left: Radius.circular(20)),
+            onTap: _isTranslating ? null : () => _handleTranslation(),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (_isTranslating)
+                    const SizedBox(
+                      width: 14,
+                      height: 14,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    )
+                  else
+                    const Icon(Icons.translate, size: 16),
+                  const SizedBox(width: 4),
+                  Text(
+                    '翻译',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Theme.of(context).primaryColor,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -154,48 +385,18 @@ class _CommentItemState extends State<CommentItem> {
           ),
           // 右侧下拉按钮
           InkWell(
-            borderRadius:
-                const BorderRadius.horizontal(right: Radius.circular(20)),
-            onTap: () =>
-                setState(() => _showTranslationMenu = !_showTranslationMenu),
+            borderRadius: const BorderRadius.horizontal(right: Radius.circular(20)),
+            onTap: _showTranslationMenuDialog,
             child: Padding(
-              padding: const EdgeInsets.only(left: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Icon(
-                _showTranslationMenu
-                    ? Icons.arrow_drop_up
-                    : Icons.arrow_drop_down,
+                Icons.arrow_drop_down,
                 size: 26,
                 color: Theme.of(context).primaryColor,
               ),
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildTranslationMenu() {
-    return Card(
-      elevation: 4,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: CommonConstants.translationSorts.map((sort) {
-          final isSelected =
-              sort.id == _configService.currentTranslationSort.id;
-          return ListTile(
-            dense: true,
-            selected: isSelected,
-            title: Text(sort.label),
-            onTap: () {
-              _configService.updateTranslationLanguage(sort);
-              setState(() {
-                _showTranslationMenu = false;
-                _translatedText = null;
-              });
-              _handleTranslation();
-            },
-          );
-        }).toList(),
       ),
     );
   }
@@ -368,12 +569,6 @@ class _CommentItemState extends State<CommentItem> {
   }
 
   void _showEditDialog() {
-    final commentController = Get.find<CommentController>(
-      tag: widget.comment.videoId ??
-          widget.comment.profileId ??
-          widget.comment.imageId,
-    );
-
     Get.dialog(
       CommentInputDialog(
         initialText: widget.comment.body,
@@ -384,7 +579,37 @@ class _CommentItemState extends State<CommentItem> {
             Get.snackbar('错误', '评论内容不能为空');
             return;
           }
-          await commentController.editComment(widget.comment.id, text);
+          
+          // 获取父级评论控制器
+          final commentController = Get.find<CommentController>(
+            tag: widget.comment.videoId ??
+                widget.comment.profileId ??
+                widget.comment.imageId,
+          );
+
+          // 如果是主评论
+          if (widget.comment.parent == null) {
+            await commentController.editComment(widget.comment.id, text);
+          } else {
+            // 如果是回复评论
+            final result = await _commentService.editComment(widget.comment.id, text);
+            if (result.isSuccess) {
+              setState(() {
+                // 更新本地评论内容
+                final index = _replies.indexWhere((c) => c.id == widget.comment.id);
+                if (index != -1) {
+                  _replies[index] = widget.comment.copyWith(
+                    body: text,
+                    updatedAt: DateTime.now(),
+                  );
+                }
+              });
+              Get.snackbar('成功', '评论已更新');
+              AppService.tryPop();
+            } else {
+              Get.snackbar('错误', result.message);
+            }
+          }
         },
       ),
       barrierDismissible: true,
@@ -407,72 +632,240 @@ class _CommentItemState extends State<CommentItem> {
             Get.snackbar('错误', '评论内容不能为空');
             return;
           }
-          await commentController.postComment(
+          final result = await commentController.postComment(
             text,
             parentId: widget.comment.id,
           );
+          
+          // 如果发布成功且回复列表已展开，将新回复添加到列表开头
+          if (result.isSuccess && result.data != null && _isRepliesExpanded) {
+            setState(() {
+              _replies.insert(0, result.data!);
+            });
+          }
         },
       ),
       barrierDismissible: true,
     );
   }
 
-
-  // 在评论内容下方添加回复按钮
-  Widget _buildCommentActions() {
-    return Row(
-      children: [
+  // 新增操作菜单构建方法
+  Widget _buildActionMenu() {
+    return PopupMenuButton<String>(
+      icon: const Icon(Icons.more_vert, size: 16),
+      padding: EdgeInsets.zero,
+      itemBuilder: (context) => [
         if (widget.comment.parent == null)
-          IconButton(
-            icon: const Icon(Icons.reply, size: 16),
-            onPressed: _showReplyDialog,
-            tooltip: '回复',
+          const PopupMenuItem(
+            value: 'reply',
+            child: Row(
+              children: [
+                Icon(Icons.reply, size: 16),
+                SizedBox(width: 8),
+                Text('回复', style: TextStyle(fontSize: 14)),
+              ],
+            ),
           ),
         if (_userService.currentUser.value?.id == widget.comment.user?.id) ...[
-          IconButton(
-            icon: const Icon(Icons.edit, size: 16),
-            onPressed: _showEditDialog,
-            tooltip: '编辑',
+          const PopupMenuItem(
+            value: 'edit',
+            child: Row(
+              children: [
+                Icon(Icons.edit, size: 16),
+                SizedBox(width: 8),
+                Text('编辑', style: TextStyle(fontSize: 14)),
+              ],
+            ),
           ),
-          IconButton(
-            icon: const Icon(Icons.delete, size: 16),
-            onPressed: _showDeleteConfirmDialog,
-            tooltip: '删除',
+          const PopupMenuItem(
+            value: 'delete',
+            child: Row(
+              children: [
+                Icon(Icons.delete, size: 16),
+                SizedBox(width: 8),
+                Text('删除', style: TextStyle(fontSize: 14)),
+              ],
+            ),
           ),
         ],
       ],
-    );
-  }
-
-  // 在 build 方法中的用户信息行添加编辑和删除按钮
-  Widget _buildUserActions() {
-    final currentUserId = _userService.currentUser.value?.id;
-    if (currentUserId != widget.comment.user?.id) {
-      return const SizedBox.shrink();
-    }
-
-    return Row(
-      children: [
-        IconButton(
-          icon: const Icon(Icons.edit, size: 16),
-          onPressed: _showEditDialog,
-          tooltip: '编辑',
-        ),
-        IconButton(
-          icon: const Icon(Icons.delete, size: 16),
-          onPressed: _showDeleteConfirmDialog,
-          tooltip: '删除',
-        ),
-      ],
+      onSelected: (value) {
+        switch (value) {
+          case 'reply':
+            _showReplyDialog();
+            break;
+          case 'edit':
+            _showEditDialog();
+            break;
+          case 'delete':
+            _showDeleteConfirmDialog();
+            break;
+        }
+      },
     );
   }
 
   @override
   Widget build(BuildContext context) {
     final comment = widget.comment;
-    final currentUserId = _userService.currentUser.value?.id;
 
-    // 构建头像
+    return Padding(
+      padding: EdgeInsets.only(
+        left: comment.parent != null ? 32.0 : 16.0,
+        right: 0.0,
+        top: 8.0,
+        bottom: 8.0,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // 用户信息行
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // 头像
+              _buildUserAvatar(comment),
+              const SizedBox(width: 8),
+              // 用户名、标签等信息
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // 用户名行
+                    Row(
+                      children: [
+                        // 会员用户名
+                        if (comment.user?.premium == true)
+                          ShaderMask(
+                            shaderCallback: (bounds) => LinearGradient(
+                              colors: [
+                                Colors.purple.shade300,
+                                Colors.blue.shade300,
+                                Colors.pink.shade300,
+                              ],
+                            ).createShader(bounds),
+                            child: Text(
+                              comment.user?.name ?? '未知用户',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                                color: Colors.white,
+                              ),
+                            ),
+                          )
+                        else
+                          Text(
+                            comment.user?.name ?? '未知用户',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                            ),
+                          ),
+                        const SizedBox(width: 4),
+                        // 各种标签
+                        if (comment.user?.id == _userService.currentUser.value?.id)
+                          _buildCommentTag('我', Colors.blue),
+                        if (comment.user?.premium == true)
+                          _buildCommentTag('会员', Colors.purple),
+                        if (comment.user?.id == widget.authorUserId)
+                          _buildCommentTag('作者', Colors.green),
+                        if (comment.user?.role.contains('admin') == true)
+                          _buildCommentTag('Admin', Colors.red),
+                      ],
+                    ),
+                    // @用户名
+                    Text(
+                      '@${comment.user?.username ?? ''}',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          // 评论内容
+          Padding(
+            padding: const EdgeInsets.only(left: 48.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // 评论内容 - 添加点击回复功能
+                InkWell(
+                  onTap: widget.comment.parent == null ? _showReplyDialog : null,
+                  child: CustomMarkdownBody(data: comment.body),
+                ),
+                if (_translatedText != null) ...[
+                  const SizedBox(height: 8),
+                  _buildTranslatedContent(),
+                ],
+                const SizedBox(height: 8),
+                // 时间和操作按钮行
+                _buildTimeInfo(comment),
+                Row(
+                  children: [
+                    // 回复 文本按钮
+                    if (comment.parent == null) ...[
+                      TextButton(
+                        onPressed: () => _showReplyDialog(),
+                        child: Text(
+                            '回复',
+                          style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ],
+                    // 添加查看回复按钮行
+                    if (widget.comment.numReplies > 0) ...[
+                      const SizedBox(height: 8),
+                      TextButton(
+                        onPressed: _handleViewReplies,
+                        child: Row(
+                          children: [
+                            Text(
+                              _isRepliesExpanded ? '隐藏回复' : '查看回复 (${widget.comment.numReplies})',
+                              style: TextStyle(
+                                color: Theme.of(context).primaryColor,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            Icon(
+                              _isRepliesExpanded
+                                  ? Icons.keyboard_arrow_up
+                                  : Icons.keyboard_arrow_down,
+                              size: 16,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                    const Spacer(),
+                    // 翻译按钮
+                    _buildTranslationButton(),
+                    // 操作菜单
+                    _buildActionMenu(),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          // 回复列表
+          if (_isRepliesExpanded) _buildRepliesList(),
+        ],
+      ),
+    );
+  }
+
+  // 构建用户头像
+  Widget _buildUserAvatar(Comment comment) {
     Widget avatar = CircleAvatar(
       radius: 20,
       backgroundImage: CachedNetworkImageProvider(
@@ -482,7 +875,7 @@ class _CommentItemState extends State<CommentItem> {
     );
 
     if (comment.user?.premium == true) {
-      avatar = Container(
+      return Container(
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           gradient: LinearGradient(
@@ -496,234 +889,13 @@ class _CommentItemState extends State<CommentItem> {
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(4.0),
+          padding: const EdgeInsets.all(2.0),
           child: avatar,
         ),
       );
     }
 
-    return Padding(
-      padding: EdgeInsets.only(
-        left: comment.parent != null ? 32.0 : 16.0,
-        right: 2,
-        top: 8.0,
-        bottom: 8.0,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: InkWell(
-                  onTap: () {
-                    NaviService.navigateToAuthorProfilePage(
-                        comment.user?.username ?? '');
-                  },
-                  splashColor: Colors.transparent,
-                  highlightColor: Colors.transparent,
-                  hoverColor: Colors.transparent,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      avatar,
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // 用户名行
-                            Row(
-                              children: [
-                                // 用户名
-                                Flexible(
-                                  child: comment.user?.premium == true
-                                      ? ShaderMask(
-                                          shaderCallback: (bounds) =>
-                                              LinearGradient(
-                                            colors: [
-                                              Colors.purple.shade300,
-                                              Colors.blue.shade300,
-                                              Colors.pink.shade300,
-                                            ],
-                                          ).createShader(bounds),
-                                          child: Text(
-                                            comment.user?.name ?? '未知用户',
-                                            style: const TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 14,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        )
-                                      : Text(
-                                          comment.user?.name ?? '未知用户',
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 14,
-                                          ),
-                                        ),
-                                ),
-                                const SizedBox(width: 4),
-                                // 标签
-                                if (widget.authorUserId != null &&
-                                    comment.user?.id == widget.authorUserId)
-                                  _buildCommentTag(
-                                    '作者',
-                                    Theme.of(context).colorScheme.primary,
-                                  ),
-                                if (currentUserId != null &&
-                                    comment.user?.id == currentUserId)
-                                  _buildCommentTag(
-                                    '我',
-                                    Theme.of(context).colorScheme.secondary,
-                                  ),
-                              ],
-                            ),
-                            const SizedBox(height: 2),
-                            _buildTimeInfo(comment),
-                          ],
-                        ),
-                      ),
-                      _buildCommentActions(),
-                    ],
-                  ),
-                ),
-              ),
-              _buildTranslationButton(),
-            ],
-          ),
-          if (_showTranslationMenu)
-            Align(
-              alignment: Alignment.centerRight,
-              child: _buildTranslationMenu(),
-            ),
-          const SizedBox(height: 8),
-          // 评论内容
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // 原始评论内容
-              CustomMarkdownBody(
-                data: comment.body,
-              ),
-
-              // 如果有翻译内容，显示分割线和翻译
-              if (_translatedText != null) ...[
-                const SizedBox(height: 12),
-                _buildTranslatedContent(),
-              ],
-            ],
-          ),
-          // 查看回复按钮
-          if (comment.numReplies > 0)
-            Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: MouseRegion(
-                cursor: SystemMouseCursors.click,
-                child: GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      _isRepliesExpanded = !_isRepliesExpanded;
-                    });
-
-                    // 展开回复时，如果还未加载，则进行加载
-                    if (_isRepliesExpanded &&
-                        _replyController?.replies.isEmpty == true &&
-                        _replyController?.isLoading.value == false) {
-                      _replyController?.fetchReplies(refresh: true);
-                    }
-                  },
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        _isRepliesExpanded
-                            ? '隐藏回复'
-                            : '查看回复 (${comment.numReplies})',
-                        style: TextStyle(
-                          color: Theme.of(context).primaryColor,
-                          fontSize: 13,
-                        ),
-                      ),
-                      Icon(
-                        _isRepliesExpanded
-                            ? Icons.keyboard_arrow_up
-                            : Icons.keyboard_arrow_down,
-                        size: 16,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          // 回复列表
-          if (_isRepliesExpanded && _replyController != null)
-            Obx(() {
-              if (_replyController!.isLoading.value &&
-                  _replyController!.replies.isEmpty) {
-                // 显示 Shimmer 占位符
-                return Column(
-                  children: List.generate(
-                      comment.numReplies, (index) => _buildShimmerItem()),
-                );
-              } else if (_replyController!.errorMessage.value.isNotEmpty &&
-                  _replyController!.replies.isEmpty) {
-                return Center(
-                  child: Text(
-                    _replyController!.errorMessage.value,
-                    style: const TextStyle(color: Colors.red),
-                  ),
-                );
-              } else if (!_replyController!.isLoading.value &&
-                  _replyController!.replies.isEmpty) {
-                return const Center(child: Text('暂无回复'));
-              } else {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ListView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: _replyController!.replies.length +
-                          (_replyController!.hasMore.value ? 1 : 0),
-                      itemBuilder: (context, index) {
-                        if (index < _replyController!.replies.length) {
-                          Comment reply = _replyController!.replies[index];
-                          return CommentItem(
-                            comment: reply,
-                            authorUserId: widget.authorUserId,
-                          );
-                        } else {
-                          // 加载更多提示
-                          if (_replyController!.isLoading.value) {
-                            return _buildShimmerItem();
-                          } else if (_replyController!.hasMore.value) {
-                            return TextButton(
-                              onPressed: () {
-                                if (!_replyController!.isLoading.value) {
-                                  _replyController!.fetchReplies();
-                                }
-                              },
-                              child: const Text('加载更多回复'),
-                            );
-                          } else {
-                            return const Center(child: Text('没有更多回复了'));
-                          }
-                        }
-                      },
-                    ),
-                  ],
-                );
-              }
-            })
-        ],
-      ),
-    );
+    return avatar;
   }
 
   /// 辅助方法，将数字补齐为两位

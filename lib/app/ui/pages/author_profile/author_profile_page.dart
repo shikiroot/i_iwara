@@ -9,6 +9,7 @@ import 'package:i_iwara/app/ui/pages/author_profile/widgets/author_profile_skele
 import 'package:i_iwara/app/ui/pages/author_profile/widgets/profile_image_model_tab_list_widget.dart';
 import 'package:i_iwara/app/ui/pages/author_profile/widgets/profile_video_tab_list_widget.dart';
 import 'package:i_iwara/app/ui/pages/author_profile/widgets/profile_playlist_tab_list_widget.dart';
+import 'package:i_iwara/app/ui/pages/comment/widgets/comment_input_dialog.dart';
 import 'package:i_iwara/app/ui/widgets/top_padding_height_widget.dart';
 import 'package:i_iwara/utils/date_time_extension.dart';
 import 'package:shimmer/shimmer.dart';
@@ -727,22 +728,42 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
           children: [
             const Text(
               '评论列表',
-              style: TextStyle(
-                  fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const Spacer(),
+            // 添加发表评论按钮
+            TextButton.icon(
+              onPressed: () {
+                Get.dialog(
+                  CommentInputDialog(
+                    title: '发表评论',
+                    submitText: '发表',
+                    onSubmit: (text) async {
+                      if (text.trim().isEmpty) {
+                        Get.snackbar('错误', '评论内容不能为空');
+                        return;
+                      }
+                      await profileController.commentController.postComment(text);
+                    },
+                  ),
+                  barrierDismissible: true,
+                );
+              },
+              icon: const Icon(Icons.add_comment),
+              label: const Text('发表评论'),
+            ),
             // 关闭按钮
             IconButton(
               icon: const Icon(Icons.close),
-              onPressed: () =>
-                  profileController.isCommentSheetVisible.toggle(),
+              onPressed: () => profileController.isCommentSheetVisible.toggle(),
             ),
           ],
         ),
       ),
       child: Obx(() => CommentSection(
-          controller: profileController.commentController,
-          authorUserId: profileController.author.value?.id)),
+        controller: profileController.commentController,
+        authorUserId: profileController.author.value?.id,
+      )),
     ));
   }
 
