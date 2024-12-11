@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:i_iwara/app/services/app_service.dart';
 import 'package:i_iwara/app/ui/pages/video_detail/controllers/related_media_controller.dart';
 import 'package:i_iwara/common/enums/media_enums.dart';
 import 'package:logger/logger.dart';
@@ -18,12 +19,12 @@ import '../../../../models/video_source.model.dart';
 import '../../../../models/video.model.dart' as video_model;
 import '../../../../services/api_service.dart';
 import '../../../../services/config_service.dart';
-import '../widgets/custom_slider_bar_shape_widget.dart';
-import '../widgets/my_video_screen.dart';
+import '../widgets/player/custom_slider_bar_shape_widget.dart';
 
 class MyVideoStateController extends GetxController
     with GetSingleTickerProviderStateMixin {
   final String? videoId;
+  final AppService appS = Get.find();
   late Player player;
   late VideoController videoController;
   final Logger logger = Logger();
@@ -411,12 +412,10 @@ class MyVideoStateController extends GetxController
   /// 进入全屏模式
   Future<void> enterFullscreen() async {
     isFullscreen.value = true;
+    appS.hideSystemUI();
     bool renderVerticalVideoInVerticalScreen =
         _configService[ConfigService.RENDER_VERTICAL_VIDEO_IN_VERTICAL_SCREEN];
-    Get.to(() => MyVideoScreen(
-          isFullScreen: true,
-          myVideoStateController: this,
-        ));
+    NaviService.navigateToFullScreenVideoPlayerScreenPage(this);
     if (renderVerticalVideoInVerticalScreen && aspectRatio.value < 1) {
       await CommonUtils.defaultEnterNativeFullscreen(toVerticalScreen: true);
     } else {
@@ -426,7 +425,8 @@ class MyVideoStateController extends GetxController
 
   /// 退出全屏模式
   void exitFullscreen() async {
-    Get.back();
+    AppService.tryPop();
+    appS.showSystemUI();
     await defaultExitNativeFullscreen();
     isFullscreen.value = false;
   }

@@ -6,6 +6,9 @@ import 'package:i_iwara/app/ui/pages/friends/friends_page.dart';
 import 'package:i_iwara/app/ui/pages/history/history_list_page.dart';
 import 'package:i_iwara/app/ui/pages/play_list/play_list.dart';
 import 'package:i_iwara/app/ui/pages/play_list/play_list_detail.dart';
+import 'package:i_iwara/app/ui/pages/video_detail/controllers/my_video_state_controller.dart';
+import 'package:i_iwara/app/ui/pages/video_detail/video_detail_page_v2.dart';
+import 'package:i_iwara/app/ui/pages/video_detail/widgets/player/my_video_screen.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
 
 import '../routes/app_routes.dart';
@@ -37,7 +40,10 @@ class AppService extends GetxService {
 
   bool get showTitleBar => _showTitleBar.value;
 
-  set showTitleBar(bool value) => _showTitleBar.value = value;
+  set showTitleBar(bool value) => {
+        if (GetPlatform.isDesktop && !GetPlatform.isWeb)
+          _showTitleBar.value = value
+      };
 
   bool get showRailNavi => _showRailNavi.value;
 
@@ -165,6 +171,25 @@ class NaviService {
     ));
   }
 
+  /// 跳转到视频详情页
+  static void navigateToVideoDetailPage(String id) {
+    AppService.homeNavigatorKey.currentState?.push(PageRouteBuilder(
+      settings: RouteSettings(name: Routes.VIDEO_DETAIL(id)),
+      pageBuilder: (context, animation, secondaryAnimation) {
+        return MyVideoDetailPage(videoId: id);
+      },
+      transitionDuration: const Duration(milliseconds: 200),
+      // 从右到左的原生动画
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        return SlideTransition(
+          position: Tween<Offset>(begin: const Offset(1, 0), end: Offset.zero)
+              .animate(animation),
+          child: child,
+        );
+      },
+    ));
+  }
+
   /// 跳转到登录页
   static void navigateToSignInPage() {
     Get.toNamed(Routes.SIGN_IN);
@@ -286,4 +311,19 @@ class NaviService {
       },
     ));
   }
+
+  /// 跳转到全屏视频播放页
+  static void navigateToFullScreenVideoPlayerScreenPage(
+      MyVideoStateController myVideoStateController) {
+    AppService.homeNavigatorKey.currentState?.push(PageRouteBuilder(
+      settings: const RouteSettings(name: Routes.FULL_SCREEN_VIDEO_PLAYER_SCREEN),
+      pageBuilder: (context, animation, secondaryAnimation) {
+        return MyVideoScreen(
+          isFullScreen: true,
+          myVideoStateController: myVideoStateController,
+        );
+      },
+    ));
+  }
 }
+

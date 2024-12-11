@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:i_iwara/app/routes/app_routes.dart';
+import 'package:i_iwara/app/services/app_service.dart';
 import 'package:i_iwara/app/ui/pages/comment/widgets/comment_input_dialog.dart';
+import 'package:i_iwara/app/ui/pages/home/home_navigation_layout.dart';
 import 'package:i_iwara/app/ui/pages/video_detail/widgets/media_tile_list_loading_widget.dart';
-import 'package:i_iwara/app/ui/pages/video_detail/widgets/video_detail_content_widget.dart';
+import 'package:i_iwara/app/ui/pages/video_detail/widgets/detail/video_detail_content_widget.dart';
 import 'package:i_iwara/app/ui/pages/video_detail/widgets/video_detail_info_skeleton_widget.dart';
 import 'package:logger/logger.dart';
 import '../../../../common/enums/media_enums.dart';
-import '../../../my_app.dart';
 import '../../widgets/error_widget.dart';
 import '../../widgets/sliding_card_widget.dart';
 import '../comment/controllers/comment_controller.dart';
@@ -17,28 +19,39 @@ import 'controllers/my_video_state_controller.dart';
 import 'controllers/related_media_controller.dart';
 
 class MyVideoDetailPage extends StatefulWidget {
-  const MyVideoDetailPage({super.key});
+  final String videoId;
+
+  const MyVideoDetailPage({super.key, required this.videoId});
 
   @override
   _MyVideoDetailPageState createState() => _MyVideoDetailPageState();
 }
 
-class _MyVideoDetailPageState extends State<MyVideoDetailPage> with RouteAware {
+class _MyVideoDetailPageState extends State<MyVideoDetailPage> {
   final Logger logger = Logger();
   final String uniqueTag = UniqueKey().toString();
   late String videoId;
+  final AppService appService = Get.find();
 
   late MyVideoStateController controller;
   late CommentController commentController;
   late RelatedMediasController relatedVideoController;
 
+  // 添加路由变化回调
+  void _onRouteChange(Route? route, Route? previousRoute) {
+    // 当前页面被覆盖时暂停视频
+    if (route != null && route.settings.name != Routes.VIDEO_DETAIL(videoId)) {
+      logger.d("[详情页路由监听]跳转到其他页面: ${route.settings.name}");
+      controller.player.pause();
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-    videoId = Get.parameters['videoId'] ?? '';
+    videoId = widget.videoId;
 
     if (videoId.isEmpty) {
-      // 如果视频ID为空，不需要初始化控制器
       return;
     }
 
@@ -57,19 +70,16 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> with RouteAware {
       RelatedMediasController(mediaId: videoId, mediaType: MediaType.VIDEO),
       tag: uniqueTag,
     );
-  }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    // 订阅路由变化
-    routeObserver.subscribe(this, ModalRoute.of(context)! as PageRoute);
+    // 注册路由变化回调
+    HomeNavigationLayout.homeNavigatorObserver.addRouteChangeCallback(_onRouteChange);
   }
 
   @override
   void dispose() {
-    // 取消订阅路由变化
-    routeObserver.unsubscribe(this);
+    // 移除路由变化回调
+    HomeNavigationLayout.homeNavigatorObserver.removeRouteChangeCallback(_onRouteChange);
+    
     // 尝试删除controller
     try {
       Get.delete<MyVideoStateController>(tag: uniqueTag);
@@ -79,23 +89,6 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> with RouteAware {
       logger.e('删除控制器失败', error: e);
     }
     super.dispose();
-  }
-
-  // 当当前路由被其他路由覆盖时调用
-  @override
-  void didPushNext() {
-    super.didPushNext();
-    logger.d("[详情页路由监听]跳转到其他页面");
-    controller.player.pause(); // 暂停视频
-  }
-
-  // 当返回到当前路由时调用
-  @override
-  void didPopNext() {
-    super.didPopNext();
-    logger.d("[详情页路由监听]返回到当前页面");
-    // 可以在这里恢复播放视频，如果需要
-    // controller.player.play();
   }
 
   // 计算是否需要分两列
@@ -138,7 +131,7 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> with RouteAware {
         text: '视频ID为空',
         children: [
           ElevatedButton(
-            onPressed: () => Get.back(),
+            onPressed: () => AppService.tryPop,
             child: const Text('返回'),
           ),
         ],
@@ -158,7 +151,7 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> with RouteAware {
             text: controller.errorMessage.value ?? '在加载视频详情时出现了错误',
             children: [
               ElevatedButton(
-                onPressed: () => Get.back(),
+                onPressed: () => AppService.tryPop,
                 child: const Text('返回'),
               ),
             ],
@@ -244,7 +237,7 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> with RouteAware {
                             children: [
                               // 相关视频
                               Container(
-                                  height: paddingTop, color: Colors.black),
+                                  height: paddingTop, color: Colors.transparent),
                               // 作者的其他视频
                               if (controller.otherAuthorzVideosController !=
                                       null &&

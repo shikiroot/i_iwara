@@ -16,7 +16,7 @@ class HomeNavigationLayout extends StatelessWidget {
   HomeNavigationLayout({super.key});
 
   final AppService appService = Get.find<AppService>();
-  final HomeNavigatorObserver homeNavigatorObserver = HomeNavigatorObserver();
+  static final HomeNavigatorObserver homeNavigatorObserver = HomeNavigatorObserver();
 
   @override
   Widget build(BuildContext context) {
@@ -215,28 +215,45 @@ class HomeNavigationLayout extends StatelessWidget {
 }
 
 class HomeNavigatorObserver extends NavigatorObserver {
-  final AppService appService = Get.find<AppService>();
+  final AppService appService = Get.find();
   var routes = Queue<Route>();
+  final List<Function(Route?, Route?)> _routeChangeCallbacks = [];
 
-  HomeNavigatorObserver() {
+  HomeNavigatorObserver();
+
+  void addRouteChangeCallback(Function(Route?, Route?) callback) {
+    _routeChangeCallbacks.add(callback);
+  }
+
+  void removeRouteChangeCallback(Function(Route?, Route?) callback) {
+    _routeChangeCallbacks.remove(callback);
   }
 
   @override
   void didPop(Route route, Route? previousRoute) {
     routes.removeLast();
     _tryHideBottomNavi();
+    for (var callback in _routeChangeCallbacks) {
+      callback(route, previousRoute);
+    }
   }
 
   @override
   void didPush(Route route, Route? previousRoute) {
     routes.addLast(route);
     _tryHideBottomNavi();
+    for (var callback in _routeChangeCallbacks) {
+      callback(route, previousRoute);
+    }
   }
 
   @override
   void didRemove(Route route, Route? previousRoute) {
     routes.remove(route);
     _tryHideBottomNavi();
+    for (var callback in _routeChangeCallbacks) {
+      callback(route, previousRoute);
+    }
   }
 
   @override
@@ -246,6 +263,9 @@ class HomeNavigatorObserver extends NavigatorObserver {
       routes.add(newRoute);
     }
     _tryHideBottomNavi();
+    for (var callback in _routeChangeCallbacks) {
+      callback(newRoute, oldRoute);
+    }
   }
 
   void _tryHideBottomNavi() {

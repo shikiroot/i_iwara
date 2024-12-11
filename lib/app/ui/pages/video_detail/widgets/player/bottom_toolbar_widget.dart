@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:i_iwara/app/services/app_service.dart';
 import 'package:i_iwara/app/ui/pages/video_detail/widgets/volume_control_widget.dart';
 import 'package:logger/logger.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
-import '../../../../../utils/common_utils.dart';
-import '../../../../services/config_service.dart';
-import '../controllers/my_video_state_controller.dart';
+import '../../../../../../utils/common_utils.dart';
+import '../../../../../services/config_service.dart';
+import '../../controllers/my_video_state_controller.dart';
 import 'custom_slider_bar_shape_widget.dart';
 
 class BottomToolbar extends StatelessWidget {
@@ -15,6 +16,7 @@ class BottomToolbar extends StatelessWidget {
   final Logger logger = Logger();
   final bool currentScreenIsFullScreen;
   final ConfigService _configService = Get.find();
+  final AppService appService = Get.find();
 
   BottomToolbar({
     super.key,
@@ -154,8 +156,16 @@ class BottomToolbar extends StatelessWidget {
                           );
                         }),
                         onPressed: () {
-                          myVideoStateController.isDesktopAppFullScreen
-                              .toggle();
+                          if (myVideoStateController
+                              .isDesktopAppFullScreen.value) {
+                            myVideoStateController
+                                .isDesktopAppFullScreen.value = false;
+                            appService.showSystemUI();
+                          } else {
+                            appService.hideSystemUI();
+                            myVideoStateController.isDesktopAppFullScreen.value =
+                                true;
+                          }
                         },
                       ),
                     // 全屏按钮
@@ -170,7 +180,7 @@ class BottomToolbar extends StatelessWidget {
                       onPressed: () {
                         if (currentScreenIsFullScreen) {
                           // 退出系统全屏
-                          Get.back();
+                          myVideoStateController.exitFullscreen();
                         } else {
                           // 进入系统全屏
                           myVideoStateController.enterFullscreen();

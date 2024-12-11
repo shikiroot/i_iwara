@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart'; // 确保已导入 GetX 包
 import 'package:i_iwara/app/services/app_service.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -7,7 +6,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import '../../../../../common/constants.dart';
 import '../../../../models/video.model.dart';
 import 'package:i_iwara/utils/date_time_extension.dart';
-import '../../../../routes/app_routes.dart';
 import 'animated_preview_widget.dart';
 
 class VideoPreviewDetailModal extends StatelessWidget {
@@ -48,9 +46,7 @@ class VideoPreviewDetailModal extends StatelessWidget {
                           children: [
                             GestureDetector(
                               onTap: () {
-                                Get.toNamed(Routes.VIDEO_DETAIL, parameters: {
-                                  'videoId': video.id,
-                                });
+                                NaviService.navigateToVideoDetailPage(video.id);
                               },
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,

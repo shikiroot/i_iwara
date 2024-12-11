@@ -11,7 +11,6 @@ import 'package:photo_view/photo_view_gallery.dart';
 import '../../../widgets/loading_button_widget.dart';
 import 'menu_item_widget.dart';
 
-// TODO 继续施工 详情图页
 class MyGalleryPhotoViewWrapper extends StatefulWidget {
   const MyGalleryPhotoViewWrapper({
     super.key,
@@ -140,89 +139,86 @@ class _MyGalleryPhotoViewWrapperState extends State<MyGalleryPhotoViewWrapper> {
   }
 
   void _showInfoModal(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('图库功能介绍'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: [
-                // 右键保存单张图片
-                Row(
-                  children: const [
-                    Icon(Icons.save),
-                    SizedBox(width: 8),
-                    Expanded(child: Text('右键保存单张图片')),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                // 批量保存
-                Row(
-                  children: const [
-                    Icon(Icons.save_alt),
-                    SizedBox(width: 8),
-                    Expanded(child: Text('批量保存')),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                // 键盘的左右控制切换
-                Row(
-                  children: const [
-                    Icon(Icons.keyboard_arrow_left),
-                    SizedBox(width: 8),
-                    Expanded(child: Text('键盘的左右控制切换')),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                // 键盘的上下控制缩放
-                Row(
-                  children: const [
-                    Icon(Icons.keyboard_arrow_up),
-                    SizedBox(width: 8),
-                    Expanded(child: Text('键盘的上下控制缩放')),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                // 鼠标的滚轮滑动控制切换
-                Row(
-                  children: const [
-                    Icon(Icons.swap_vert),
-                    SizedBox(width: 8),
-                    Expanded(child: Text('鼠标的滚轮滑动控制切换')),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                // CTRL + 鼠标滚轮控制缩放
-                Row(
-                  children: const [
-                    Icon(Icons.zoom_in),
-                    SizedBox(width: 8),
-                    Expanded(child: Text('CTRL + 鼠标滚轮控制缩放')),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                // 更多功能待发现
-                Row(
-                  children: const [
-                    Icon(Icons.thumb_up),
-                    SizedBox(width: 8),
-                    Expanded(child: Text('更多功能待发现...')),
-                  ],
-                ),
-              ],
-            ),
+    Get.dialog(
+      AlertDialog(
+        title: const Text('图库功能介绍'),
+        content: const SingleChildScrollView(
+          child: ListBody(
+            children: [
+              // 右键保存单张图片
+              Row(
+                children: [
+                  Icon(Icons.save),
+                  SizedBox(width: 8),
+                  Expanded(child: Text('右键保存单张图片')),
+                ],
+              ),
+              SizedBox(height: 8),
+              // 批量保存
+              Row(
+                children: [
+                  Icon(Icons.save_alt),
+                  SizedBox(width: 8),
+                  Expanded(child: Text('批量保存')),
+                ],
+              ),
+              SizedBox(height: 8),
+              // 键盘的左右控制切换
+              Row(
+                children: [
+                  Icon(Icons.keyboard_arrow_left),
+                  SizedBox(width: 8),
+                  Expanded(child: Text('键盘的左右控制切换')),
+                ],
+              ),
+              SizedBox(height: 8),
+              // 键盘的上下控制缩放
+              Row(
+                children: [
+                  Icon(Icons.keyboard_arrow_up),
+                  SizedBox(width: 8),
+                  Expanded(child: Text('键盘的上下控制缩放')),
+                ],
+              ),
+              SizedBox(height: 8),
+              // 鼠标的滚轮滑动控制切换
+              Row(
+                children: [
+                  Icon(Icons.swap_vert),
+                  SizedBox(width: 8),
+                  Expanded(child: Text('鼠标的滚轮滑动控制切换')),
+                ],
+              ),
+              SizedBox(height: 8),
+              // CTRL + 鼠标滚轮控制缩放
+              Row(
+                children: [
+                  Icon(Icons.zoom_in),
+                  SizedBox(width: 8),
+                  Expanded(child: Text('CTRL + 鼠标滚轮控制缩放')),
+                ],
+              ),
+              SizedBox(height: 8),
+              // 更多功能待发现
+              Row(
+                children: [
+                  Icon(Icons.thumb_up),
+                  SizedBox(width: 8),
+                  Expanded(child: Text('更多功能待发现...')),
+                ],
+              ),
+            ],
           ),
-          actions: [
-            TextButton(
-              child: const Text('关闭'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
+        ),
+        actions: [
+          TextButton(
+            child: const Text('关闭'),
+            onPressed: () {
+              AppService.tryPop();
+            },
+          ),
+        ],
+      ),
     );
   }
 
@@ -386,9 +382,12 @@ class _MyGalleryPhotoViewWrapperState extends State<MyGalleryPhotoViewWrapper> {
                           errorBuilder: (context, error, stackTrace) {
                             // 如果是Invalid image data错误，说明图片格式不支持
                             if (error is Exception &&
-                                error.toString().contains('Invalid image data')) {
-
-                              LogUtils.e('图片格式不支持, 当前的图片地址是: $imageUrl', tag: 'MyGalleryPhotoViewWrapper', error: error);
+                                error
+                                    .toString()
+                                    .contains('Invalid image data')) {
+                              LogUtils.e('图片格式不支持, 当前的图片地址是: $imageUrl',
+                                  tag: 'MyGalleryPhotoViewWrapper',
+                                  error: error);
 
                               return Center(
                                 child: Column(

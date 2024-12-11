@@ -3,13 +3,12 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:i_iwara/app/services/app_service.dart';
 import 'package:i_iwara/app/ui/pages/popular_media_list/widgets/video_preview_modal.dart';
 import 'package:i_iwara/utils/date_time_extension.dart';
 import 'package:vibration/vibration.dart';
 
 import '../../../../models/video.model.dart';
-import '../../../../routes/app_routes.dart';
 
 class VideoTileListItem extends StatelessWidget {
   final Video video;
@@ -183,8 +182,7 @@ class VideoTileListItem extends StatelessWidget {
 
   /// 导航到详情页
   void _navigateToDetailPage(BuildContext context) {
-    Get.toNamed(Routes.VIDEO_DETAIL,
-        parameters: {'videoId': video.id}, preventDuplicates: false);
+    NaviService.navigateToVideoDetailPage(video.id);
   }
 
   /// 处理长按和右键事件

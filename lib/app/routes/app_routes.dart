@@ -8,7 +8,7 @@ abstract class Routes {
       ROOT; // /home/popular_videos
   static const GALLERY = _Paths.HOME + _Paths.GALLERY;
   static const SUBSCRIPTIONS = _Paths.HOME + _Paths.SUBSCRIPTIONS;
-  static const VIDEO_DETAIL = _Paths.HOME + _Paths.VIDEO_DETAIL;
+  static String VIDEO_DETAIL(String videoId) => _Paths.HOME + _Paths.VIDEO_DETAIL.replaceAll(':videoId', videoId);
   static String AUTHOR_PROFILE(String userName) => _Paths.HOME + _Paths.AUTHOR_PROFILE.replaceAll(':userName', userName);
   static String GALLERY_DETAIL(String galleryId) => _Paths.HOME + _Paths.GALLERY_DETAIL.replaceAll(':galleryId', galleryId);
 
@@ -32,6 +32,8 @@ abstract class Routes {
 
   static const HISTORY_LIST = _Paths.HISTORY_LIST;
 
+  static const FULL_SCREEN_VIDEO_PLAYER_SCREEN = '/full_screen_video_player_screen';
+
   static String PLAYLIST_DETAIL(String id) => _Paths.PLAYLIST_DETAIL.replaceAll(':id', id);
 }
 
@@ -40,7 +42,7 @@ abstract class _Paths {
 
   static const HOME = '/home';
   static const LOGIN = '/login';
-  static const VIDEO_DETAIL = '/video_detail';
+  static const VIDEO_DETAIL = '/video_detail/:videoId';
   static const SETTINGS_PAGE = '/settings_page';
   static const PLAYER_SETTINGS_PAGE = '/player_settings_page';
   static const PROXY_SETTINGS_PAGE = '/proxy_settings_page';

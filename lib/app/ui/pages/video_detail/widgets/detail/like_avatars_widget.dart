@@ -6,8 +6,8 @@ import 'package:i_iwara/app/services/video_service.dart';
 import 'package:i_iwara/common/enums/media_enums.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../../../../../common/constants.dart';
-import '../../../../models/user.model.dart';
+import '../../../../../../common/constants.dart';
+import '../../../../../models/user.model.dart';
 
 class LikeAvatarsWidget extends StatefulWidget {
   final String mediaId;

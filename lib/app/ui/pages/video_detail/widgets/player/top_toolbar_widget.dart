@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../../../utils/proxy/proxy_util.dart';
-import '../../../../routes/app_routes.dart';
-import '../../../../services/config_service.dart';
-import '../../settings/widgets/player_settings_widget.dart';
-import '../../settings/widgets/proxy_setting_widget.dart';
-import '../controllers/my_video_state_controller.dart';
+import 'package:i_iwara/app/services/app_service.dart';
+import '../../../../../../utils/proxy/proxy_util.dart';
+import '../../../../../routes/app_routes.dart';
+import '../../../../../services/config_service.dart';
+import '../../../settings/widgets/player_settings_widget.dart';
+import '../../../settings/widgets/proxy_setting_widget.dart';
+import '../../controllers/my_video_state_controller.dart';
 
 class TopToolbar extends StatelessWidget {
   final MyVideoStateController myVideoStateController;
@@ -63,7 +64,7 @@ class TopToolbar extends StatelessWidget {
                         if (currentScreenIsFullScreen) {
                           myVideoStateController.exitFullscreen();
                         } else {
-                          Get.back();
+                          AppService.tryPop();
                         }
                       },
                     ),
@@ -72,7 +73,18 @@ class TopToolbar extends StatelessWidget {
                       tooltip: '主页',
                       icon: const Icon(Icons.home, color: Colors.white),
                       onPressed: () {
-                        Get.offAllNamed(Routes.HOME);
+                        AppService appService = Get.find();
+                        int currentIndex = appService.currentIndex;
+                        final routes = [
+                          Routes.POPULAR_VIDEOS,
+                          Routes.GALLERY,
+                          Routes.SUBSCRIPTIONS,
+                        ];
+                        AppService.homeNavigatorKey.currentState!
+                            .pushNamedAndRemoveUntil(
+                          routes[currentIndex],
+                          (route) => false,
+                        );
                       },
                     ),
                     // 使用 Expanded 包裹标题，避免超出
@@ -146,101 +158,98 @@ class TopToolbar extends StatelessWidget {
 
   // 显示信息模态框
   void showInfoModal(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('播放器功能介绍'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: [
-                // 自动重播
-                Row(
-                  children: const [
-                    Icon(Icons.repeat),
-                    SizedBox(width: 8),
-                    Expanded(child: Text('自动重播')),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                // 左右两侧双击快进或后退
-                Row(
-                  children: const [
-                    Icon(Icons.fast_forward),
-                    SizedBox(width: 8),
-                    Expanded(child: Text('左右两侧双击快进或后退')),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                // 左右两侧垂直滑动调整音量、亮度
-                Row(
-                  children: const [
-                    Icon(Icons.volume_up),
-                    SizedBox(width: 8),
-                    Expanded(child: Text('左右两侧垂直滑动调整音量、亮度')),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                // 中心区域双击暂停或播放
-                Row(
-                  children: const [
-                    Icon(Icons.pause_circle_filled),
-                    SizedBox(width: 8),
-                    Expanded(child: Text('中心区域双击暂停或播放')),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                // 在全屏时可以以竖屏方式显示竖屏视频（仅限Android和iOS）
-                if (GetPlatform.isAndroid || GetPlatform.isIOS)
-                  Row(
-                    children: const [
-                      Icon(Icons.screen_rotation),
-                      SizedBox(width: 8),
-                      Expanded(child: Text('在全屏时可以以竖屏方式显示竖屏视频')),
-                    ],
-                  ),
-                if (GetPlatform.isAndroid || GetPlatform.isIOS)
-                  const SizedBox(height: 8),
-                // 保持上次调整的音量、亮度
-                Row(
-                  children: const [
-                    Icon(Icons.settings_backup_restore),
-                    SizedBox(width: 8),
-                    Expanded(child: Text('保持上次调整的音量、亮度')),
-                  ],
-                ),
-                // 设置代理（如果支持平台）
-                if (ProxyUtil.isSupportedPlatform())... [
-                  const SizedBox(height: 8),
-                  Row(
-                    children: const [
-                      Icon(Icons.laptop),
-                      SizedBox(width: 8),
-                      Expanded(child: Text('设置代理')),
-                    ],
-                  ),
+    Get.dialog(
+      AlertDialog(
+        title: const Text('播放器功能介绍'),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: [
+              // 自动重播
+              const Row(
+                children: [
+                  Icon(Icons.repeat),
+                  SizedBox(width: 8),
+                  Expanded(child: Text('自动重播')),
                 ],
-                const SizedBox(height: 8),
-                Row(
-                  children: const [
-                    Icon(Icons.thumb_up),
+              ),
+              const SizedBox(height: 8),
+              // 左右两侧双击快进或后退
+              const Row(
+                children: [
+                  Icon(Icons.fast_forward),
+                  SizedBox(width: 8),
+                  Expanded(child: Text('左右两侧双击快进或后退')),
+                ],
+              ),
+              const SizedBox(height: 8),
+              // 左右两侧垂直滑动调整音量、亮度
+              const Row(
+                children: [
+                  Icon(Icons.volume_up),
+                  SizedBox(width: 8),
+                  Expanded(child: Text('左右两侧垂直滑动调整音量、亮度')),
+                ],
+              ),
+              const SizedBox(height: 8),
+              // 中心区域双击暂停或播放
+              const Row(
+                children: [
+                  Icon(Icons.pause_circle_filled),
+                  SizedBox(width: 8),
+                  Expanded(child: Text('中心区域双击暂停或播放')),
+                ],
+              ),
+              const SizedBox(height: 8),
+              // 在全屏时可以以竖屏方式显示竖屏视频（仅限Android和iOS）
+              if (GetPlatform.isAndroid || GetPlatform.isIOS)
+                const Row(
+                  children: [
+                    Icon(Icons.screen_rotation),
                     SizedBox(width: 8),
-                    Expanded(child: Text('更多功能待发现...')),
+                    Expanded(child: Text('在全屏时可以以竖屏方式显示竖屏视频')),
+                  ],
+                ),
+              if (GetPlatform.isAndroid || GetPlatform.isIOS)
+                const SizedBox(height: 8),
+              // 保持上次调整的音量、亮度
+              const Row(
+                children: [
+                  Icon(Icons.settings_backup_restore),
+                  SizedBox(width: 8),
+                  Expanded(child: Text('保持上次调整的音量、亮度')),
+                ],
+              ),
+              // 设置代理（如果支持平台）
+              if (ProxyUtil.isSupportedPlatform()) ...[
+                const SizedBox(height: 8),
+                const Row(
+                  children: [
+                    Icon(Icons.laptop),
+                    SizedBox(width: 8),
+                    Expanded(child: Text('设置代理')),
                   ],
                 ),
               ],
-            ),
+              const SizedBox(height: 8),
+              const Row(
+                children: [
+                  Icon(Icons.thumb_up),
+                  SizedBox(width: 8),
+                  Expanded(child: Text('更多功能待发现...')),
+                ],
+              ),
+            ],
           ),
-          actions: [
-            TextButton(
-              child: const Text('关闭'),
-              onPressed: () {
-                Get.back();
-              },
-            ),
-          ],
-        );
-      },
+        ),
+        actions: [
+          TextButton(
+            child: const Text('关闭'),
+            onPressed: () {
+              AppService.tryPop();
+            },
+          ),
+        ],
+      ),
     );
   }
 }
@@ -255,7 +264,8 @@ class SettingsContent extends StatelessWidget {
   /// 三段式滑块的回调方法
   void _onThreeSectionSliderChangeFinished(
       double leftRatio, double middleRatio, double rightRatio) {
-    _configService[ConfigService.VIDEO_LEFT_AND_RIGHT_CONTROL_AREA_RATIO] = leftRatio;
+    _configService[ConfigService.VIDEO_LEFT_AND_RIGHT_CONTROL_AREA_RATIO] =
+        leftRatio;
   }
 
   @override

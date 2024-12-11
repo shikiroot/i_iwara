@@ -2,16 +2,16 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:i_iwara/app/services/app_service.dart';
-import 'package:i_iwara/app/ui/pages/video_detail/widgets/video_description_widget.dart';
+import 'package:i_iwara/app/ui/pages/video_detail/widgets/detail/video_description_widget.dart';
 import 'package:i_iwara/app/ui/pages/video_detail/widgets/video_like_widget.dart';
 import 'package:i_iwara/common/enums/media_enums.dart';
 import 'package:i_iwara/utils/date_time_extension.dart';
-import '../../../../../common/constants.dart';
-import '../../../widgets/error_widget.dart';
-import '../controllers/my_video_state_controller.dart';
+import '../../../../../../common/constants.dart';
+import '../../../../widgets/error_widget.dart';
+import '../../controllers/my_video_state_controller.dart';
 import 'expandable_tags_widget.dart';
 import 'like_avatars_widget.dart';
-import 'my_video_screen.dart';
+import '../player/my_video_screen.dart';
 class VideoDetailContent extends StatelessWidget {
   final MyVideoStateController controller;
   final double paddingTop;
@@ -103,43 +103,7 @@ class VideoDetailContent extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 // 作者信息区域，包括头像和用户名
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Obx(() => Row(
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              NaviService.navigateToAuthorProfilePage(
-                                  controller.videoInfo.value?.user?.username ??
-                                      '');
-                            },
-                            borderRadius: BorderRadius.circular(20),
-                            child: CircleAvatar(
-                              backgroundImage: CachedNetworkImageProvider(
-                                controller.videoInfo.value?.user?.avatar
-                                        ?.avatarUrl ??
-                                    CommonConstants.defaultAvatarUrl,
-                                headers: const {
-                                  'referer': CommonConstants.iwaraBaseUrl
-                                },
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 8),
-                          TextButton(
-                            child: Text(
-                              controller.videoInfo.value?.user?.username ?? '',
-                              style: const TextStyle(fontSize: 16),
-                            ),
-                            onPressed: () {
-                              NaviService.navigateToAuthorProfilePage(
-                                  controller.videoInfo.value?.user?.username ??
-                                      '');
-                            },
-                          ),
-                        ],
-                      )),
-                ),
+                _buildAuthorInfo(),
                 const SizedBox(height: 8),
                 // 视频发布时间和观看次数
                 Padding(
@@ -227,6 +191,135 @@ class VideoDetailContent extends StatelessWidget {
           }
         }),
       ],
+    );
+  }
+
+  Widget _buildAuthorAvatar() {
+    Widget avatar = MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: () {
+          final user = controller.videoInfo.value?.user;
+          if (user != null) {
+            NaviService.navigateToAuthorProfilePage(user.username ?? '');
+          }
+        },
+        behavior: HitTestBehavior.opaque,
+        child: CircleAvatar(
+          backgroundImage: CachedNetworkImageProvider(
+            controller.videoInfo.value?.user?.avatar?.avatarUrl ??
+                CommonConstants.defaultAvatarUrl,
+            headers: const {'referer': CommonConstants.iwaraBaseUrl},
+          ),
+        ),
+      ),
+    );
+
+    if (controller.videoInfo.value?.user?.premium == true) {
+      return MouseRegion(
+        cursor: SystemMouseCursors.click,
+        child: Container(
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: LinearGradient(
+              colors: [
+                Colors.purple.shade200,
+                Colors.blue.shade200,
+                Colors.pink.shade200,
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: avatar,
+          ),
+        ),
+      );
+    }
+
+    return avatar;
+  }
+
+  Widget _buildAuthorNameButton() {
+    final user = controller.videoInfo.value?.user;
+    if (user?.premium == true) {
+      return MouseRegion(
+        cursor: SystemMouseCursors.click,
+        child: GestureDetector(
+          onTap: () {
+            NaviService.navigateToAuthorProfilePage(user?.username ?? '');
+          },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ShaderMask(
+                shaderCallback: (bounds) => LinearGradient(
+                  colors: [
+                    Colors.purple.shade300,
+                    Colors.blue.shade300,
+                    Colors.pink.shade300,
+                  ],
+                ).createShader(bounds),
+                child: Text(
+                  user?.name ?? '',
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              Text(
+                '@${user?.username ?? ''}',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey[600],
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: () {
+          NaviService.navigateToAuthorProfilePage(user?.username ?? '');
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              user?.name ?? '',
+              style: const TextStyle(fontSize: 16),
+            ),
+            Text(
+              '@${user?.username ?? ''}',
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.grey[600],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAuthorInfo() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Row(
+        children: [
+          _buildAuthorAvatar(),
+          const SizedBox(width: 8),
+          _buildAuthorNameButton(),
+        ],
+      ),
     );
   }
 }

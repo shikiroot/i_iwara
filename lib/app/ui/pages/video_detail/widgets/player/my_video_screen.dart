@@ -2,17 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
-import 'package:i_iwara/app/ui/pages/video_detail/widgets/rapple_painter.dart';
+import 'package:i_iwara/app/services/app_service.dart';
+import 'package:i_iwara/app/ui/pages/video_detail/widgets/player/rapple_painter.dart';
 import 'package:logger/logger.dart';
 import 'package:media_kit_video/media_kit_video.dart';
 import 'package:vibration/vibration.dart';
 
-import '../../../../services/config_service.dart';
-import 'video_rating_animation.dart';
+import '../../../../../services/config_service.dart';
+import '../video_rating_animation.dart';
 import 'bottom_toolbar_widget.dart';
 import 'gesture_area_widget.dart';
 import 'top_toolbar_widget.dart';
-import '../controllers/my_video_state_controller.dart';
+import '../../controllers/my_video_state_controller.dart';
 
 class MyVideoScreen extends StatefulWidget {
   final bool isFullScreen;
@@ -33,6 +34,7 @@ class _MyVideoScreenState extends State<MyVideoScreen>
     with TickerProviderStateMixin {
   final FocusNode _focusNode = FocusNode();
   final ConfigService _configService = Get.find();
+  final AppService _appService = Get.find();
 
   late AnimationController _leftRippleController1;
   late AnimationController _leftRippleController2;
@@ -55,6 +57,10 @@ class _MyVideoScreenState extends State<MyVideoScreen>
   void initState() {
     widget.logger.i("[${widget.isFullScreen ? '全屏' : '内嵌'} 初始化]");
     super.initState();
+    // 如果是全屏状态
+    if (widget.isFullScreen) {
+      _appService.hideSystemUI();
+    }
 
     // 请求焦点以监听键盘事件
     _focusNode.requestFocus();
@@ -104,7 +110,7 @@ class _MyVideoScreenState extends State<MyVideoScreen>
   void dispose() {
     if (widget.isFullScreen) {
       // 恢复系统UI和竖屏模式
-      SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+      _appService.showSystemUI();
     }
     _focusNode.dispose();
     _leftRippleController1.dispose();
@@ -135,24 +141,10 @@ class _MyVideoScreenState extends State<MyVideoScreen>
         print('[键盘事件] 右键');
         // 右键
         _triggerRightRipple();
-      } else if (event.logicalKey.keyLabel == LogicalKeyboardKey.escape.keyLabel) {
-        // 返回
-        if (widget.isFullScreen) {
-          Get.back();
-        }
       } else if (event.logicalKey.keyLabel == LogicalKeyboardKey.enter.keyLabel && !widget.isFullScreen) {
         // 应用全屏切换
         widget.myVideoStateController.isDesktopAppFullScreen.toggle();
       }
-      // } else if (event.logicalKey.keyLabel == LogicalKeyboardKey.arrowUp.keyLabel) {
-      //   // 音量
-      //   print('触发了音量增加');
-      //   widget.myVideoStateController.addVolume(0.1);
-      // } else if (event.logicalKey.keyLabel == LogicalKeyboardKey.arrowDown.keyLabel) {
-      //   // 音量
-      //   print('触发了音量减少');
-      //   widget.myVideoStateController.addVolume(-0.1);
-      // }
     }
   }
 

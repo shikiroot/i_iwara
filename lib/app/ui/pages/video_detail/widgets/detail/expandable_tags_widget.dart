@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:super_clipboard/super_clipboard.dart';
 
-import '../../../../models/tag.model.dart';
+import '../../../../../models/tag.model.dart';
 
 class ExpandableTagsWidget extends StatefulWidget {
   final List<Tag> tags;

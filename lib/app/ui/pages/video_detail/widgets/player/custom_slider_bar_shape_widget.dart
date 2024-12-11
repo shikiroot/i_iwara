@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../../../utils/common_utils.dart';
-import '../controllers/my_video_state_controller.dart';
+import '../../../../../../utils/common_utils.dart';
+import '../../controllers/my_video_state_controller.dart';
 
 /// 自定义的视频进度条组件
 class CustomVideoProgressbar extends StatefulWidget {

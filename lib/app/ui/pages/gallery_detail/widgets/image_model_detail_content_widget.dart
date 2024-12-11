@@ -7,6 +7,7 @@ import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:i_iwara/app/routes/app_routes.dart';
 import 'package:i_iwara/app/services/api_service.dart';
 import 'package:i_iwara/app/ui/widgets/empty_widget.dart';
 import 'package:i_iwara/utils/date_time_extension.dart';
@@ -20,8 +21,8 @@ import '../../../../models/image.model.dart';
 import '../../../../services/app_service.dart';
 import '../../../widgets/error_widget.dart';
 import '../../popular_media_list/widgets/media_description_widget.dart';
-import '../../video_detail/widgets/expandable_tags_widget.dart';
-import '../../video_detail/widgets/like_avatars_widget.dart';
+import '../../video_detail/widgets/detail/expandable_tags_widget.dart';
+import '../../video_detail/widgets/detail/like_avatars_widget.dart';
 import '../controllers/gallery_detail_controller.dart';
 import 'horizontial_image_list.dart';
 import 'my_gallery_photo_view_wrapper.dart';
@@ -66,6 +67,21 @@ class ImageModelDetailContent extends StatelessWidget {
         IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.of(context).pop(),
+        ),
+        // 主页
+        IconButton(
+          icon: const Icon(Icons.home),
+          onPressed: () {
+            AppService appService = Get.find();
+            int currentIndex = appService.currentIndex;
+            final routes = [
+              Routes.POPULAR_VIDEOS,
+              Routes.GALLERY,
+              Routes.SUBSCRIPTIONS,
+            ];
+            AppService.homeNavigatorKey.currentState!.pushNamedAndRemoveUntil(
+                routes[currentIndex], (route) => false);
+          },
         ),
         const SizedBox(width: 8),
         Expanded(

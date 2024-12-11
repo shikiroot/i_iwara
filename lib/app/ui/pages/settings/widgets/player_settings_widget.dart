@@ -243,7 +243,7 @@ class PlayerSettingsWidget extends StatelessWidget {
           ),
 
           // 记住亮度（仅限特定平台）
-          if (!GetPlatform.isLinux && !GetPlatform.isWeb)
+          if (!GetPlatform.isDesktop && !GetPlatform.isWeb)
             _buildSwitchSetting(
               iconData: Icons.brightness_medium,
               label: '记住亮度',

@@ -59,3 +59,5 @@ flutter:
   assets:
     # Add assets from the images directory to the application.
     - assets/images/
+    - assets/svg/app_enter_fullscreen.svg
+    - assets/svg/app_exit_fullscreen.svg

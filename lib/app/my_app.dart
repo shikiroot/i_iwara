@@ -15,6 +15,7 @@ import 'package:i_iwara/app/ui/widgets/global_drawer_content_widget.dart';
 import 'package:i_iwara/app/ui/widgets/window_layout_widget.dart';
 
 import '../utils/proxy/proxy_util.dart';
+import 'models/dto/escape_intent.dart';
 
 final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 
@@ -185,13 +186,19 @@ class _MyAppLayoutState extends State<MyAppLayout> with WidgetsBindingObserver {
   Widget _shortCutsWrapper(BuildContext context, Widget child) {
     return Shortcuts(
       shortcuts: {
-        LogicalKeySet(LogicalKeyboardKey.escape): VoidCallbackIntent(
-          () {
-            AppService.tryPop();
-          },
-        ),
+        LogicalKeySet(LogicalKeyboardKey.escape): const EscapeIntent(),
       },
-      child: child,
+      child: Actions(
+        actions: {
+          EscapeIntent: CallbackAction<EscapeIntent>(
+            onInvoke: (intent) {
+              AppService.tryPop();
+              return null;
+            },
+          ),
+        },
+        child: child,
+      ),
     );
   }
 
