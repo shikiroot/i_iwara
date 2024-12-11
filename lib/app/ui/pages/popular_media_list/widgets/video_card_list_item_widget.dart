@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:i_iwara/app/services/app_service.dart';
@@ -7,8 +9,9 @@ import 'package:vibration/vibration.dart';
 
 import '../../../../../common/constants.dart';
 import '../../../../models/video.model.dart';
+import 'animated_preview_widget.dart';
 
-class VideoCardListItemWidget extends StatelessWidget {
+class VideoCardListItemWidget extends StatefulWidget {
   final Video video;
   final double width;
 
@@ -19,12 +22,20 @@ class VideoCardListItemWidget extends StatelessWidget {
   });
 
   @override
+  State<VideoCardListItemWidget> createState() => _VideoCardListItemWidgetState();
+}
+
+class _VideoCardListItemWidgetState extends State<VideoCardListItemWidget> {
+  bool _showAnimatedPreview = false;
+  Timer? _hoverTimer;
+
+  @override
   Widget build(BuildContext context) {
-    final double imageHeight = (width * 160) / 220;
+    final double imageHeight = (widget.width * 160) / 220;
     final TextTheme textTheme = Theme.of(context).textTheme;
 
     return SizedBox(
-      width: width,
+      width: widget.width,
       child: Card(
         clipBehavior: Clip.antiAlias,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
@@ -68,38 +79,78 @@ class VideoCardListItemWidget extends StatelessWidget {
     return SizedBox(
       height: imageHeight,
       width: double.infinity,
-      child: Stack(
-        fit: StackFit.expand,
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(12),
-            child: CachedNetworkImage(
-              imageUrl: video.thumbnailUrl,
-              fit: BoxFit.cover,
-              placeholder: (context, url) => _buildPlaceholder(),
-              errorWidget: (context, url, error) =>
-                  const Center(child: Icon(Icons.error, size: 50)),
+      child: MouseRegion(
+        onEnter: (_) {
+          _hoverTimer?.cancel();
+          _hoverTimer = Timer(const Duration(seconds: 1), () {
+            if (mounted) {
+              setState(() {
+                _showAnimatedPreview = true;
+              });
+            }
+          });
+        },
+        onExit: (_) {
+          _hoverTimer?.cancel();
+          if (mounted) {
+            setState(() {
+              _showAnimatedPreview = false;
+            });
+          }
+        },
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: _showAnimatedPreview
+                ? CachedNetworkImage(
+                    imageUrl: widget.video.previewUrl,
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) => _buildPlaceholder(),
+                    errorWidget: (context, url, error) {
+                      if (widget.video.file?.numThumbnails != null &&
+                          widget.video.file!.numThumbnails! > 0) {
+                        return AnimatedPreview(
+                          videoId: widget.video.file!.id,
+                          numThumbnails: widget.video.file!.numThumbnails!,
+                          width: double.infinity,
+                          height: double.infinity,
+                          fit: BoxFit.cover,
+                        );
+                      } else {
+                        return const Center(child: Icon(Icons.error, size: 50));
+                      }
+                    },
+                  )
+                : CachedNetworkImage(
+                    imageUrl: widget.video.thumbnailUrl,
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) => _buildPlaceholder(),
+                    errorWidget: (context, url, error) =>
+                        const Center(child: Icon(Icons.error, size: 50)),
+                  ),
             ),
-          ),
-          if (video.rating == 'ecchi')
-            Positioned(
-              left: 0,
-              bottom: 0,
-              child: _buildRatingTag(context),
-            ),
-          if (video.private == true)
-            Positioned(
-              left: 0,
-              top: 0,
-              child: _buildPrivateTag(context),
-            ),
-          if (video.minutesDuration != null)
-            Positioned(
-              right: 0,
-              bottom: 0,
-              child: _buildDurationTag(context),
-            ),
-        ],
+            if (widget.video.rating == 'ecchi')
+              Positioned(
+                left: 0,
+                bottom: 0,
+                child: _buildRatingTag(context),
+              ),
+            if (widget.video.private == true)
+              Positioned(
+                left: 0,
+                top: 0,
+                child: _buildPrivateTag(context),
+              ),
+            if (widget.video.minutesDuration != null)
+              Positioned(
+                right: 0,
+                bottom: 0,
+                child: _buildDurationTag(context),
+              ),
+          ],
+        ),
       ),
     );
   }
@@ -176,7 +227,7 @@ class VideoCardListItemWidget extends StatelessWidget {
             ),
             const SizedBox(width: 4),
             Text(
-              video.minutesDuration!,
+              widget.video.minutesDuration!,
               style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
@@ -194,7 +245,7 @@ class VideoCardListItemWidget extends StatelessWidget {
     return SizedBox(
       height: textTheme.bodyLarge!.fontSize! * 3.5,
       child: Text(
-        video.title ?? '',
+        widget.video.title ?? '',
         maxLines: 2,
         overflow: TextOverflow.ellipsis,
         style: TextStyle(
@@ -207,20 +258,20 @@ class VideoCardListItemWidget extends StatelessWidget {
 
   Widget _buildTimeInfo(TextTheme textTheme) {
     return Text(
-      video.createdAt!.customFormat("SHORT_CHINESE"),
+      widget.video.createdAt!.customFormat("SHORT_CHINESE"),
       style: textTheme.bodySmall,
     );
   }
 
   Widget _buildAuthorInfo(TextTheme textTheme, BuildContext context) {
     return GestureDetector(
-      onTap: () => NaviService.navigateToAuthorProfilePage(video.user?.username ?? ''),
+      onTap: () => NaviService.navigateToAuthorProfilePage(widget.video.user?.username ?? ''),
       child: Row(
         children: [
           _buildAvatar(),
           const SizedBox(width: 8),
           Expanded(
-            child: video.user?.premium == true
+            child: widget.video.user?.premium == true
               ? ShaderMask(
                   shaderCallback: (bounds) => LinearGradient(
                     colors: [
@@ -230,7 +281,7 @@ class VideoCardListItemWidget extends StatelessWidget {
                     ],
                   ).createShader(bounds),
                   child: Text(
-                    video.user?.name ?? 'Unknown User',
+                    widget.video.user?.name ?? 'Unknown User',
                     style: const TextStyle(
                       fontSize: 14,
                       color: Colors.white,
@@ -241,7 +292,7 @@ class VideoCardListItemWidget extends StatelessWidget {
                   ),
                 )
               : Text(
-                  video.user?.name ?? 'Unknown User',
+                  widget.video.user?.name ?? 'Unknown User',
                   style: textTheme.bodySmall,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -258,7 +309,7 @@ class VideoCardListItemWidget extends StatelessWidget {
       height: 24,
       child: ClipOval(
         child: CachedNetworkImage(
-          imageUrl: video.user?.avatar?.avatarUrl ?? '',
+          imageUrl: widget.video.user?.avatar?.avatarUrl ?? '',
           httpHeaders: const {'referer': CommonConstants.iwaraBaseUrl},
           fit: BoxFit.cover,
           placeholder: (context, url) => _buildPlaceholder(),
@@ -268,7 +319,7 @@ class VideoCardListItemWidget extends StatelessWidget {
       ),
     );
 
-    if (video.user?.premium == true) {
+    if (widget.video.user?.premium == true) {
       return Container(
         width: 32,
         height: 32,
@@ -295,7 +346,7 @@ class VideoCardListItemWidget extends StatelessWidget {
   }
 
   void _navigateToDetailPage(BuildContext context) {
-    NaviService.navigateToVideoDetailPage(video.id);
+    NaviService.navigateToVideoDetailPage(widget.video.id);
   }
 
   void _showDetailsModalWithVibration(BuildContext context) async {
@@ -308,9 +359,15 @@ class VideoCardListItemWidget extends StatelessWidget {
       showDialog(
         context: context,
         builder: (BuildContext context) {
-          return VideoPreviewDetailModal(video: video);
+          return VideoPreviewDetailModal(video: widget.video);
         },
       );
     }
+  }
+
+  @override
+  void dispose() {
+    _hoverTimer?.cancel();
+    super.dispose();
   }
 }

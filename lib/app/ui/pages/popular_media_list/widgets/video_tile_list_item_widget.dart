@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:async';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
@@ -9,11 +10,26 @@ import 'package:i_iwara/utils/date_time_extension.dart';
 import 'package:vibration/vibration.dart';
 
 import '../../../../models/video.model.dart';
+import 'animated_preview_widget.dart';
 
-class VideoTileListItem extends StatelessWidget {
+class VideoTileListItem extends StatefulWidget {
   final Video video;
 
   const VideoTileListItem({super.key, required this.video});
+
+  @override
+  State<VideoTileListItem> createState() => _VideoTileListItemState();
+}
+
+class _VideoTileListItemState extends State<VideoTileListItem> {
+  bool _showAnimatedPreview = false;
+  Timer? _hoverTimer;
+
+  @override
+  void dispose() {
+    _hoverTimer?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,24 +66,68 @@ class VideoTileListItem extends StatelessWidget {
       children: [
         GestureDetector(
           onTap: () => _navigateToDetailPage(context),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: CachedNetworkImage(
-              imageUrl: video.thumbnailUrl,
-              width: 120,
-              height: 90,
-              fit: BoxFit.cover,
-              placeholder: (context, url) =>
-                  Container(width: 120, height: 90, color: Colors.grey[300]),
-              errorWidget: (context, url, error) => const SizedBox(
-                  width: 120, height: 90, child: Icon(Icons.error)),
+          child: MouseRegion(
+            onEnter: (_) {
+              _hoverTimer?.cancel();
+              _hoverTimer = Timer(const Duration(seconds: 1), () {
+                if (mounted) {
+                  setState(() {
+                    _showAnimatedPreview = true;
+                  });
+                }
+              });
+            },
+            onExit: (_) {
+              _hoverTimer?.cancel();
+              if (mounted) {
+                setState(() {
+                  _showAnimatedPreview = false;
+                });
+              }
+            },
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: _showAnimatedPreview
+                ? CachedNetworkImage(
+                    imageUrl: widget.video.previewUrl,
+                    width: 120,
+                    height: 90,
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) =>
+                        Container(width: 120, height: 90, color: Colors.grey[300]),
+                    errorWidget: (context, url, error) {
+                      if (widget.video.file?.numThumbnails != null &&
+                          widget.video.file!.numThumbnails! > 0) {
+                        return AnimatedPreview(
+                          videoId: widget.video.file!.id,
+                          numThumbnails: widget.video.file!.numThumbnails!,
+                          width: 120,
+                          height: 90,
+                          fit: BoxFit.cover,
+                        );
+                      } else {
+                        return const SizedBox(
+                            width: 120, height: 90, child: Icon(Icons.error));
+                      }
+                    },
+                  )
+                : CachedNetworkImage(
+                    imageUrl: widget.video.thumbnailUrl,
+                    width: 120,
+                    height: 90,
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) =>
+                        Container(width: 120, height: 90, color: Colors.grey[300]),
+                    errorWidget: (context, url, error) => const SizedBox(
+                        width: 120, height: 90, child: Icon(Icons.error)),
+                  ),
             ),
           ),
         ),
         // 添加标签
-        if (video.rating == 'ecchi') _buildRatingTag(context),
-        if (video.private == true) _buildPrivateTag(context),
-        if (video.minutesDuration != null) _buildDurationTag(context),
+        if (widget.video.rating == 'ecchi') _buildRatingTag(context),
+        if (widget.video.private == true) _buildPrivateTag(context),
+        if (widget.video.minutesDuration != null) _buildDurationTag(context),
       ],
     );
   }
@@ -76,8 +136,8 @@ class VideoTileListItem extends StatelessWidget {
   Widget _buildVideoInfo(BuildContext context) {
     // 格式化创建时间
     String formattedDate = '';
-    if (video.createdAt != null) {
-      formattedDate = video.createdAt!.customFormat("SHORT_CHINESE");
+    if (widget.video.createdAt != null) {
+      formattedDate = widget.video.createdAt!.customFormat("SHORT_CHINESE");
     }
 
     return Expanded(
@@ -85,7 +145,7 @@ class VideoTileListItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            video.title ?? '无标题',
+            widget.video.title ?? '无标题',
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(
@@ -95,7 +155,7 @@ class VideoTileListItem extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            video.user?.name ?? '未知用户',
+            widget.video.user?.name ?? '未知用户',
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(
@@ -156,7 +216,7 @@ class VideoTileListItem extends StatelessWidget {
             const Icon(Icons.access_time, size: 12, color: Colors.white),
             const SizedBox(width: 2),
             Text(
-              video.minutesDuration!,
+              widget.video.minutesDuration!,
               style: const TextStyle(color: Colors.white, fontSize: 12),
             ),
           ],
@@ -182,7 +242,7 @@ class VideoTileListItem extends StatelessWidget {
 
   /// 导航到详情页
   void _navigateToDetailPage(BuildContext context) {
-    NaviService.navigateToVideoDetailPage(video.id);
+    NaviService.navigateToVideoDetailPage(widget.video.id);
   }
 
   /// 处理长按和右键事件
@@ -198,7 +258,7 @@ class VideoTileListItem extends StatelessWidget {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return VideoPreviewDetailModal(video: video);
+        return VideoPreviewDetailModal(video: widget.video);
       },
     );
   }
