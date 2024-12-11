@@ -19,12 +19,18 @@ import '../widgets/comment_input_dialog.dart';
 class CommentItem extends StatefulWidget {
   final Comment comment;
   final String? authorUserId;
+  final CommentController? controller;
 
   static const double _tagFontSize = 11.0;
   static const EdgeInsets _tagPadding =
       EdgeInsets.symmetric(horizontal: 6, vertical: 2);
 
-  const CommentItem({super.key, required this.comment, this.authorUserId});
+  const CommentItem({
+    super.key, 
+    required this.comment, 
+    this.authorUserId,
+    this.controller,
+  });
 
   @override
   _CommentItemState createState() => _CommentItemState();
@@ -166,6 +172,7 @@ class _CommentItemState extends State<CommentItem> {
               return CommentItem(
                 comment: _replies[index],
                 authorUserId: widget.authorUserId,
+                controller: widget.controller,
               );
             } else {
               if (_isLoadingReplies) {
@@ -552,16 +559,15 @@ class _CommentItemState extends State<CommentItem> {
   }
 
   void _showDeleteConfirmDialog() {
-    final commentController = Get.find<CommentController>(
-      tag: widget.comment.videoId ??
-          widget.comment.profileId ??
-          widget.comment.imageId,
-    );
+    if (widget.controller == null) {
+      Get.snackbar('错误', '无法找到评论控制器');
+      return;
+    }
 
     Get.dialog(
       CommentRemoveDialog(
         onDelete: () async {
-          await commentController.deleteComment(widget.comment.id);
+          await widget.controller!.deleteComment(widget.comment.id);
           AppService.tryPop();
         },
       ),
@@ -569,6 +575,11 @@ class _CommentItemState extends State<CommentItem> {
   }
 
   void _showEditDialog() {
+    if (widget.controller == null) {
+      Get.snackbar('错误', '无法找到评论控制器');
+      return;
+    }
+
     Get.dialog(
       CommentInputDialog(
         initialText: widget.comment.body,
@@ -579,17 +590,10 @@ class _CommentItemState extends State<CommentItem> {
             Get.snackbar('错误', '评论内容不能为空');
             return;
           }
-          
-          // 获取父级评论控制器
-          final commentController = Get.find<CommentController>(
-            tag: widget.comment.videoId ??
-                widget.comment.profileId ??
-                widget.comment.imageId,
-          );
 
           // 如果是主评论
           if (widget.comment.parent == null) {
-            await commentController.editComment(widget.comment.id, text);
+            await widget.controller!.editComment(widget.comment.id, text);
           } else {
             // 如果是回复评论
             final result = await _commentService.editComment(widget.comment.id, text);
@@ -617,11 +621,10 @@ class _CommentItemState extends State<CommentItem> {
   }
 
   void _showReplyDialog() {
-    final commentController = Get.find<CommentController>(
-      tag: widget.comment.videoId ??
-          widget.comment.profileId ??
-          widget.comment.imageId,
-    );
+    if (widget.controller == null) {
+      Get.snackbar('错误', '无法找到评论控制器');
+      return;
+    }
 
     Get.dialog(
       CommentInputDialog(
@@ -632,7 +635,7 @@ class _CommentItemState extends State<CommentItem> {
             Get.snackbar('错误', '评论内容不能为空');
             return;
           }
-          final result = await commentController.postComment(
+          final result = await widget.controller!.postComment(
             text,
             parentId: widget.comment.id,
           );
@@ -720,71 +723,84 @@ class _CommentItemState extends State<CommentItem> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // 用户信息行
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              // 头像
-              _buildUserAvatar(comment),
-              const SizedBox(width: 8),
-              // 用户名、标签等信息
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // 用户名行
-                    Row(
+          MouseRegion(
+            cursor: SystemMouseCursors.click,
+            child: GestureDetector(
+              onTap: () => NaviService.navigateToAuthorProfilePage(comment.user?.username ?? ''),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // 头像
+                  _buildUserAvatar(comment),
+                  const SizedBox(width: 8),
+                  // 用户名、标签等信息
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // 会员用户名
-                        if (comment.user?.premium == true)
-                          ShaderMask(
-                            shaderCallback: (bounds) => LinearGradient(
-                              colors: [
-                                Colors.purple.shade300,
-                                Colors.blue.shade300,
-                                Colors.pink.shade300,
-                              ],
-                            ).createShader(bounds),
-                            child: Text(
-                              comment.user?.name ?? '未知用户',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 14,
-                                color: Colors.white,
-                              ),
+                        // 用户名行
+                        Row(
+                          children: [
+                            // 会员用户名
+                            Flexible(
+                              child: comment.user?.premium == true
+                                ? ShaderMask(
+                                    shaderCallback: (bounds) => LinearGradient(
+                                      colors: [
+                                        Colors.purple.shade300,
+                                        Colors.blue.shade300,
+                                        Colors.pink.shade300,
+                                      ],
+                                    ).createShader(bounds),
+                                    child: Text(
+                                      comment.user?.name ?? '未知用户',
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14,
+                                        color: Colors.white,
+                                      ),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  )
+                                : Text(
+                                    comment.user?.name ?? '未知用户',
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                    ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                             ),
-                          )
-                        else
-                          Text(
-                            comment.user?.name ?? '未知用户',
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14,
-                            ),
+                            const SizedBox(width: 4),
+                            // 各种标签
+                            if (comment.user?.id == _userService.currentUser.value?.id)
+                              _buildCommentTag('我', Colors.blue),
+                            if (comment.user?.premium == true)
+                              _buildCommentTag('会员', Colors.purple),
+                            if (comment.user?.id == widget.authorUserId)
+                              _buildCommentTag('作者', Colors.green),
+                            if (comment.user?.role.contains('admin') == true)
+                              _buildCommentTag('Admin', Colors.red),
+                          ],
+                        ),
+                        // @用户名
+                        Text(
+                          '@${comment.user?.username ?? ''}',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey[600],
                           ),
-                        const SizedBox(width: 4),
-                        // 各种标签
-                        if (comment.user?.id == _userService.currentUser.value?.id)
-                          _buildCommentTag('我', Colors.blue),
-                        if (comment.user?.premium == true)
-                          _buildCommentTag('会员', Colors.purple),
-                        if (comment.user?.id == widget.authorUserId)
-                          _buildCommentTag('作者', Colors.green),
-                        if (comment.user?.role.contains('admin') == true)
-                          _buildCommentTag('Admin', Colors.red),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ],
                     ),
-                    // @用户名
-                    Text(
-                      '@${comment.user?.username ?? ''}',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey[600],
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
           const SizedBox(height: 8),
           // 评论内容
@@ -803,57 +819,52 @@ class _CommentItemState extends State<CommentItem> {
                   _buildTranslatedContent(),
                 ],
                 const SizedBox(height: 8),
-                // 时间和操作按钮行
-                _buildTimeInfo(comment),
+                // 回复、翻译和操作按钮行
                 Row(
                   children: [
-                    // 回复 文本按钮
-                    if (comment.parent == null) ...[
-                      TextButton(
-                        onPressed: () => _showReplyDialog(),
-                        child: Text(
-                            '回复',
+                    // 回复按钮 - 只在非回复评论中显示
+                    if (comment.parent == null)
+                      IconButton(
+                        onPressed: _showReplyDialog,
+                        icon: const Icon(Icons.reply, size: 20),
+                        visualDensity: VisualDensity.compact,
+                        tooltip: '回复',
+                        style: IconButton.styleFrom(
+                          foregroundColor: Theme.of(context).colorScheme.primary,
+                        ),
+                      ),
+                    const Spacer(),
+                    _buildTranslationButton(),
+                    _buildActionMenu(),
+                  ],
+                ),
+                const SizedBox(height: 4),
+                // 时间和查看回复按钮行
+                _buildTimeInfo(comment),
+                if (widget.comment.numReplies > 0)
+                  TextButton(
+                    onPressed: _handleViewReplies,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          _isRepliesExpanded ? '隐藏回复' : '查看回复 (${widget.comment.numReplies})',
                           style: TextStyle(
                             color: Theme.of(context).primaryColor,
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
-                      ),
-                    ],
-                    // 添加查看回复按钮行
-                    if (widget.comment.numReplies > 0) ...[
-                      const SizedBox(height: 8),
-                      TextButton(
-                        onPressed: _handleViewReplies,
-                        child: Row(
-                          children: [
-                            Text(
-                              _isRepliesExpanded ? '隐藏回复' : '查看回复 (${widget.comment.numReplies})',
-                              style: TextStyle(
-                                color: Theme.of(context).primaryColor,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            Icon(
-                              _isRepliesExpanded
-                                  ? Icons.keyboard_arrow_up
-                                  : Icons.keyboard_arrow_down,
-                              size: 16,
-                              color: Theme.of(context).primaryColor,
-                            ),
-                          ],
+                        Icon(
+                          _isRepliesExpanded
+                              ? Icons.keyboard_arrow_up
+                              : Icons.keyboard_arrow_down,
+                          size: 16,
+                          color: Theme.of(context).primaryColor,
                         ),
-                      ),
-                    ],
-                    const Spacer(),
-                    // 翻译按钮
-                    _buildTranslationButton(),
-                    // 操作菜单
-                    _buildActionMenu(),
-                  ],
-                ),
+                      ],
+                    ),
+                  ),
               ],
             ),
           ),

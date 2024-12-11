@@ -139,7 +139,11 @@ class CommentSection extends StatelessWidget {
         itemBuilder: (context, index) {
           if (index < controller.comments.length) {
             Comment comment = controller.comments[index];
-            return CommentItem(comment: comment, authorUserId: authorUserId);
+            return CommentItem(
+              comment: comment,
+              authorUserId: authorUserId,
+              controller: controller,
+            );
           } else {
             // 最后一项显示加载指示器或结束提示
             return _buildLoadMoreIndicator();

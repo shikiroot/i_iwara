@@ -227,6 +227,16 @@ class _MyGalleryPhotoViewWrapperState extends State<MyGalleryPhotoViewWrapper> {
     _overlayEntry = null;
   }
 
+  String _getFileExtension(String url) {
+    try {
+      final uri = Uri.parse(url);
+      final path = uri.path;
+      return path.substring(path.lastIndexOf('.') + 1).toLowerCase();
+    } catch (e) {
+      return 'unknown';
+    }
+  }
+
   void _showImageMenu(BuildContext context, ImageItem item, Offset position) {
     _hideMenu();
     // 计算菜单显示位置
@@ -381,13 +391,20 @@ class _MyGalleryPhotoViewWrapperState extends State<MyGalleryPhotoViewWrapper> {
                           },
                           errorBuilder: (context, error, stackTrace) {
                             // 如果是Invalid image data错误，说明图片格式不支持
+                            // 获取文件扩展名
+                            final fileExtension = _getFileExtension(imageUrl);
+
                             if (error is Exception &&
                                 error
                                     .toString()
                                     .contains('Invalid image data')) {
-                              LogUtils.e('图片格式不支持, 当前的图片地址是: $imageUrl',
-                                  tag: 'MyGalleryPhotoViewWrapper',
-                                  error: error);
+                              LogUtils.e(
+                                '图片格式不支持, 当前的图片地址是: $imageUrl\n'
+                                '文件扩展名: $fileExtension\n'
+                                '错误详情: ${error.toString()}',
+                                tag: 'MyGalleryPhotoViewWrapper',
+                                error: error,
+                              );
 
                               return Center(
                                 child: Column(
@@ -399,9 +416,9 @@ class _MyGalleryPhotoViewWrapperState extends State<MyGalleryPhotoViewWrapper> {
                                       size: 48,
                                     ),
                                     const SizedBox(height: 16),
-                                    const Text(
-                                      '尚不支持此格式的图片',
-                                      style: TextStyle(
+                                    Text(
+                                      '不支持的图片格式: .$fileExtension',
+                                      style: const TextStyle(
                                         color: Colors.white,
                                         fontSize: 16,
                                       ),

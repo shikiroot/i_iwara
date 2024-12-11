@@ -3,7 +3,6 @@ import 'package:i_iwara/app/services/storage_service.dart';
 import 'package:i_iwara/common/constants.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
 import 'package:i_iwara/app/models/sort.model.dart';
-import 'package:get_storage/get_storage.dart';
 
 class ConfigService extends GetxService {
   late final StorageService storage;
