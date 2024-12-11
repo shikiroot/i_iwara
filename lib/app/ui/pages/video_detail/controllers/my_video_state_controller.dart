@@ -81,6 +81,10 @@ class MyVideoStateController extends GetxController
   StreamSubscription<bool>? playingSubscription;
   StreamSubscription<Duration>? bufferSubscription;
 
+  Timer? _autoHideTimer;
+  final _autoHideDelay = const Duration(seconds: 3); // 3秒后自动隐藏
+  final RxBool _isInteracting = false.obs; // 是否正在交互（如拖动进度条）
+
   MyVideoStateController(this.videoId);
 
   @override
@@ -182,6 +186,7 @@ class MyVideoStateController extends GetxController
 
   @override
   void onClose() {
+    _autoHideTimer?.cancel();
     _cancelSubscriptions();
     player.dispose();
     super.onClose();
@@ -431,13 +436,52 @@ class MyVideoStateController extends GetxController
     isFullscreen.value = false;
   }
 
-  // 切换工具栏的显示
+  // 重置自动隐藏定时器
+  void _resetAutoHideTimer() {
+    _autoHideTimer?.cancel();
+    
+    // 如果正在交互，不启动定时器
+    if (_isInteracting.value) return;
+    
+    _autoHideTimer = Timer(_autoHideDelay, () {
+      // 如果正在交互，不执行隐藏
+      if (!_isInteracting.value && animationController.value == 1.0) {
+        animationController.reverse();
+      }
+    });
+  }
+
+  // 设置交互状态
+  void setInteracting(bool value) {
+    _isInteracting.value = value;
+    if (!value) {
+      // 交互结束时重置定时器
+      _resetAutoHideTimer();
+    } else {
+      // 交互开始时取消定时器
+      _autoHideTimer?.cancel();
+    }
+  }
+
+  // 修改现有的 toggleToolbars 方法
   void toggleToolbars() {
-    logger.d('[切换工具栏]');
     if (animationController.isCompleted) {
       animationController.reverse();
+      _autoHideTimer?.cancel(); // 用户主动隐藏时取消定时器
     } else {
       animationController.forward();
+      _resetAutoHideTimer();
+    }
+  }
+
+  // 显示工具栏（不切换状态）
+  void showToolbars() {
+    if (!animationController.isCompleted) {
+      animationController.forward();
+      _resetAutoHideTimer();
+    } else {
+      // 如果已经显示，仅重置定时器
+      _resetAutoHideTimer();
     }
   }
 

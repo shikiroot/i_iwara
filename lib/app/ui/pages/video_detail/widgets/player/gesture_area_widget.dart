@@ -225,12 +225,21 @@ class _GestureAreaState extends State<GestureArea>
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: _onTap,
+      onTap: () {
+        // 单击时显示/隐藏工具栏
+        widget.myVideoStateController.toggleToolbars();
+      },
       onDoubleTap: _onDoubleTap,
       onLongPressStart: _onLongPressStart,
       onLongPressEnd: _onLongPressEnd,
-      onVerticalDragStart: _onVerticalDragStart,
-      onVerticalDragEnd: _onVerticalDragEnd,
+      onVerticalDragStart: (_) {
+        // 开始垂直滑动时
+        widget.myVideoStateController.setInteracting(true);
+      },
+      onVerticalDragEnd: (_) {
+        // 结束垂直滑动时
+        widget.myVideoStateController.setInteracting(false);
+      },
       onVerticalDragUpdate: widget.region == GestureRegion.left ||
               widget.region == GestureRegion.right
           ? _onVerticalDragUpdate

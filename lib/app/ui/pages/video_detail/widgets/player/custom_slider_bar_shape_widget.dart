@@ -131,6 +131,7 @@ class _CustomVideoProgressbarState extends State<CustomVideoProgressbar> {
                           _draggingValue = value;
                           _dragging = true;
                         });
+                        widget.controller.setInteracting(true);
                       },
                       onChanged: (value) {
                         setState(() {
@@ -145,6 +146,7 @@ class _CustomVideoProgressbarState extends State<CustomVideoProgressbar> {
                         widget.controller.player.play();
                         widget.controller.player
                             .seek(Duration(seconds: value.toInt()));
+                        widget.controller.setInteracting(false);
                       },
                       // 计算总时长和当前播放位置的百分比
                       divisions: max > 0 ? max.toInt() : 1,
