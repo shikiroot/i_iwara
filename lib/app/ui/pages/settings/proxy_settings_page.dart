@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:i_iwara/app/ui/pages/settings/widgets/proxy_setting_widget.dart';
+import 'package:i_iwara/app/ui/pages/settings/widgets/settings_app_bar.dart';
 
 
 class ProxySettingsPage extends StatelessWidget {
-  const ProxySettingsPage({super.key});
+  final bool isWideScreen;
+
+  const ProxySettingsPage({super.key, this.isWideScreen = false});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('网络代理设置'),
-        elevation: 2,
+      appBar: SettingsAppBar(
+        title: '网络代理设置',
+        isWideScreen: isWideScreen,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),

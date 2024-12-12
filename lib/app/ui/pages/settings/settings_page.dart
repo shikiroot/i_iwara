@@ -3,6 +3,9 @@ import 'package:get/get.dart';
 
 import '../../../../utils/proxy/proxy_util.dart';
 import '../../../routes/app_routes.dart';
+import 'player_settings_page.dart';
+import 'proxy_settings_page.dart';
+import 'theme_settings_page.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -11,121 +14,159 @@ class SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     // 获取屏幕宽度
     final double screenWidth = MediaQuery.of(context).size.width;
-    // 定义内容的最大宽度
-    const double maxContentWidth = 1000;
+    // 定义宽屏的阈值
+    const double wideScreenThreshold = 800;
+    // 是否是宽屏
+    final bool isWideScreen = screenWidth >= wideScreenThreshold;
+
+    // 定义设置项列表
+    final List<SettingItem> settingItems = [
+      if (ProxyUtil.isSupportedPlatform())
+        SettingItem(
+          title: '网络代理设置',
+          subtitle: '配置您的代理服务器',
+          icon: Icons.wifi,
+          page: ProxySettingsPage(isWideScreen: isWideScreen),
+          route: Routes.PROXY_SETTINGS_PAGE,
+        ),
+      SettingItem(
+        title: '播放器设置',
+        subtitle: '自定义您的播放体验',
+        icon: Icons.play_circle_outline,
+        page: PlayerSettingsPage(isWideScreen: isWideScreen),
+        route: Routes.PLAYER_SETTINGS_PAGE,
+      ),
+      SettingItem(
+        title: '主题设置',
+        subtitle: '选择您喜欢的应用外观',
+        icon: Icons.color_lens,
+        page: ThemeSettingsPage(isWideScreen: isWideScreen),
+        route: Routes.THEME_SETTINGS_PAGE,
+      ),
+    ];
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          '设置',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
+        title: const Text('设置', style: TextStyle(fontWeight: FontWeight.bold)),
         elevation: 2,
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Center(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-              maxWidth:
-              screenWidth > maxContentWidth ? maxContentWidth : screenWidth,
+      body: isWideScreen
+          ? _buildWideScreenLayout(context, settingItems)
+          : _buildNarrowScreenLayout(context, settingItems),
+    );
+  }
+
+  Widget _buildWideScreenLayout(
+      BuildContext context, List<SettingItem> settingItems) {
+    // 使用 GetX 管理当前选中的设置项
+    final selectedIndex = 0.obs;
+
+    return Row(
+      children: [
+        // 左侧菜单
+        SizedBox(
+          width: 300,
+          child: Card(
+            margin: const EdgeInsets.all(16),
+            elevation: 4,
+            // color: Colors.transparent,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
             ),
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                // 定义在不同屏幕宽度下的列数
-                int columns = 1;
-                if (constraints.maxWidth > 1200) {
-                  columns = 3;
-                } else if (constraints.maxWidth > 800) {
-                  columns = 2;
-                }
-
-                // 生成设置项列表
-                List<Widget> settingsTiles = [
-                  if (ProxyUtil.isSupportedPlatform())
-                    _buildSettingsTile(
+            child: ListView.builder(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              itemCount: settingItems.length,
+              itemBuilder: (context, index) {
+                final item = settingItems[index];
+                return Obx(() => _buildSettingsListTile(
                       context,
-                      '网络代理设置',
-                      '配置您的代理服务器',
-                      Icons.wifi,
-                          () => Get.toNamed(Routes.PROXY_SETTINGS_PAGE),
-                    ),
-                  _buildSettingsTile(
-                    context,
-                    '播放器设置',
-                    '自定义您的播放体验',
-                    Icons.play_circle_outline,
-                        () => Get.toNamed(Routes.PLAYER_SETTINGS_PAGE),
-                  ),
-                  _buildSettingsTile(
-                    context,
-                    '主题设置',
-                    '选择您喜欢的应用外观',
-                    Icons.color_lens,
-                        () => Get.toNamed(Routes.THEME_SETTINGS_PAGE),
-                  ),
-                  // 您可以在这里添加更多设置项
-                ];
-
-                if (columns == 1) {
-                  // 小屏幕：使用垂直列表
-                  return Column(
-                    children: settingsTiles
-                        .map((tile) => Padding(
-                      padding: const EdgeInsets.only(bottom: 16.0),
-                      child: tile,
-                    ))
-                        .toList(),
-                  );
-                } else {
-                  // 大屏幕：使用网格布局
-                  return GridView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: columns,
-                      mainAxisSpacing: 16,
-                      crossAxisSpacing: 16,
-                      childAspectRatio: 4, // 根据需要调整比例
-                    ),
-                    itemCount: settingsTiles.length,
-                    itemBuilder: (context, index) {
-                      return settingsTiles[index];
-                    },
-                  );
-                }
+                      item,
+                      isSelected: selectedIndex.value == index,
+                      onTap: () => selectedIndex.value = index,
+                    ));
               },
             ),
           ),
         ),
+        // 右侧内容区域
+        Expanded(
+          child: Card(
+            margin: const EdgeInsets.fromLTRB(0, 16, 16, 16),
+            elevation: 4,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            clipBehavior: Clip.antiAlias,
+            child: Obx(() => settingItems[selectedIndex.value].page),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildNarrowScreenLayout(
+      BuildContext context, List<SettingItem> settingItems) {
+    return ListView.builder(
+      padding: const EdgeInsets.all(16),
+      itemCount: settingItems.length,
+      itemBuilder: (context, index) {
+        final item = settingItems[index];
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 16),
+          child: _buildSettingsCard(context, item),
+        );
+      },
+    );
+  }
+
+  Widget _buildSettingsListTile(
+    BuildContext context,
+    SettingItem item, {
+    required bool isSelected,
+    required VoidCallback onTap,
+  }) {
+    return ListTile(
+      selected: isSelected,
+      leading: Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: isSelected
+              ? Theme.of(context).primaryColor
+              : Theme.of(context).primaryColor.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Icon(
+          item.icon,
+          color: isSelected ? Colors.white : Theme.of(context).primaryColor,
+        ),
+      ),
+      title: Text(
+        item.title,
+        style: TextStyle(
+          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+        ),
+      ),
+      subtitle: Text(item.subtitle),
+      onTap: onTap,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
       ),
     );
   }
 
-  Widget _buildSettingsTile(BuildContext context, String title, String subtitle,
-      IconData icon, VoidCallback onTap) {
+  Widget _buildSettingsCard(BuildContext context, SettingItem item) {
     return Card(
       elevation: 2,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
       ),
-      clipBehavior: Clip.antiAlias, // 确保圆角效果
+      clipBehavior: Clip.antiAlias,
       child: InkWell(
-        onTap: onTap,
+        onTap: () => Get.toNamed(item.route),
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Theme.of(context).cardColor,
-                Theme.of(context).cardColor.withOpacity(0.95),
-              ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-          ),
+          padding: const EdgeInsets.all(16),
           child: Row(
             children: [
               Container(
@@ -134,27 +175,24 @@ class SettingsPage extends StatelessWidget {
                   color: Theme.of(context).primaryColor.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child:
-                    Icon(icon, color: Theme.of(context).primaryColor, size: 28),
+                child: Icon(item.icon, color: Theme.of(context).primaryColor),
               ),
-              const SizedBox(width: 20),
+              const SizedBox(width: 16),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      title,
+                      item.title,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.bold,
-                            fontSize: 18,
                           ),
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      subtitle,
+                      item.subtitle,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             color: Colors.grey[600],
-                            fontSize: 14,
                           ),
                     ),
                   ],
@@ -167,4 +205,21 @@ class SettingsPage extends StatelessWidget {
       ),
     );
   }
+}
+
+// 设置项数据模型
+class SettingItem {
+  final String title;
+  final String subtitle;
+  final IconData icon;
+  final Widget page;
+  final String route;
+
+  SettingItem({
+    required this.title,
+    required this.subtitle,
+    required this.icon,
+    required this.page,
+    required this.route,
+  });
 }
