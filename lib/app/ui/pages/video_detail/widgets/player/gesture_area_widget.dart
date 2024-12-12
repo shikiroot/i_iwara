@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:screen_brightness/screen_brightness.dart';
 import 'package:volume_controller/volume_controller.dart';
+
 import '../../../../../services/config_service.dart';
 import '../../controllers/my_video_state_controller.dart';
 import 'my_video_screen.dart';
@@ -144,7 +145,7 @@ class _GestureAreaState extends State<GestureArea>
     }
 
     // PC设备和Web不处理亮度调节
-    if (widget.region == GestureRegion.left && 
+    if (widget.region == GestureRegion.left &&
         (GetPlatform.isDesktop || GetPlatform.isWeb)) {
       return false;
     }
@@ -177,7 +178,6 @@ class _GestureAreaState extends State<GestureArea>
     widget.setLongPressing?.call(type, false);
   }
 
-  // 垂直方向拖动调整亮度和音量
   void _onVerticalDragUpdate(DragUpdateDetails details) {
     if (!_checkLeftAndCenterVerticalDragProcessable()) {
       return;
@@ -189,10 +189,10 @@ class _GestureAreaState extends State<GestureArea>
 
     final double max = widget.screenSize.height * scalingFactor;
 
-    if (widget.region == GestureRegion.left && 
-        !GetPlatform.isWeb && 
-        !GetPlatform.isLinux && 
-        !GetPlatform.isWindows && 
+    if (widget.region == GestureRegion.left &&
+        !GetPlatform.isWeb &&
+        !GetPlatform.isLinux &&
+        !GetPlatform.isWindows &&
         !GetPlatform.isMacOS) {
       // 只在移动设备上调整亮度
       double rx =
@@ -200,12 +200,14 @@ class _GestureAreaState extends State<GestureArea>
       rx = rx.clamp(0.0, 1.0);
       _configService[ConfigService.BRIGHTNESS_KEY] = rx;
       _screenBrightness?.setScreenBrightness(rx);
+
+      // 触发亮度信息显示
+      widget.setLongPressing?.call(LongPressType.brightness, true);
     } else if (widget.region == GestureRegion.right) {
       // 调整音量
       double rx =
           _configService[ConfigService.VOLUME_KEY] - details.delta.dy / max;
       rx = rx.clamp(0.0, 1.0);
-      // 如果是 安卓和IOS，则可以交给volume_control来控制音量，通过监听来调整状态
       if (GetPlatform.isAndroid || GetPlatform.isIOS) {
         _volumeController?.setVolume(rx);
         logger.d('系统音量调整：$rx');
@@ -213,8 +215,10 @@ class _GestureAreaState extends State<GestureArea>
         widget.myVideoStateController.player.setVolume(rx * 100);
         logger.d('播放器音量调整: $rx');
       }
-      // 更新状态，并更新播放器的音量
       _configService[ConfigService.VOLUME_KEY] = rx;
+
+      // 触发音量信息显示
+      widget.setLongPressing?.call(LongPressType.volume, true);
     }
   }
 
@@ -249,7 +253,7 @@ class _GestureAreaState extends State<GestureArea>
           : null,
       child: Container(
         /// 如果不用transparent的Container包裹，会导致center区域无法触发手势，GTP给出的解释是
-        /// "当你使用一个没有颜色（即 color: null）的 Container 时，如果它没有子组件绘制任何内容，Flutter 可能不会为这个区域分配绘制层。这意味着这个区域在视觉上是透明的，但在命中测试中也是"不可命中"的，因为没有实际的绘制内容。"
+        /// "当你使用一个没有颜色（即 color: null）的 Container 时，如果它没有子组件绘制任何内容，Flutter 可能不会为这个区域分配绘制层。这���味着这个区域在视觉上是透明的，但在命中测试中也是"不可命中"的，因为没有实际的绘制内容。"
         /// 离谱奥
         color: Colors.transparent,
         child: Stack(

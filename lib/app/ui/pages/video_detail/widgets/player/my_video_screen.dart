@@ -60,6 +60,8 @@ class _MyVideoScreenState extends State<MyVideoScreen>
     // 如果是全屏状态
     if (widget.isFullScreen) {
       _appService.hideSystemUI();
+      // 继续播放
+      widget.myVideoStateController.player.play();
     }
 
     // 请求焦点以监听键盘事件
@@ -111,6 +113,8 @@ class _MyVideoScreenState extends State<MyVideoScreen>
     if (widget.isFullScreen) {
       // 恢复系统UI和竖屏模式
       _appService.showSystemUI();
+      // 恢复播放
+      widget.myVideoStateController.player.play();
     }
     _focusNode.dispose();
     _leftRippleController1.dispose();
