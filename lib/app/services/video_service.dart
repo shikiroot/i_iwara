@@ -168,4 +168,26 @@ class VideoService extends GetxService {
       return ApiResult.fail('噫嘘唏, 设为最爱视频失败');
     }
   }
+
+  /// 点赞视频
+  Future<ApiResult<void>> likeVideo(String mediaId) async {
+    try {
+      await _apiService.post(ApiConstants.likeVideo(mediaId));
+      return ApiResult.success();
+    } catch (e) {
+      LogUtils.e('点赞视频失败', tag: 'VideoService', error: e);
+      return ApiResult.fail('点赞视频失败');
+    }
+  }
+
+  /// 取消点赞视频
+  Future<ApiResult<void>> unlikeVideo(String mediaId) async {
+    try {
+      await _apiService.delete(ApiConstants.likeVideo(mediaId));
+      return ApiResult.success();
+    } catch (e) {
+      LogUtils.e('取消点赞视频失败', tag: 'VideoService', error: e);
+      return ApiResult.fail('取消点赞视频失败');
+    }
+  }
 }

@@ -181,4 +181,26 @@ class GalleryService extends GetxService {
       return ApiResult.fail('噫嘘唏, 设为最爱图库失败');
     }
   }
+
+  /// 点赞图库
+  Future<ApiResult<void>> likeImage(String mediaId) async {
+    try {
+      await _apiService.post(ApiConstants.likeImage(mediaId));
+      return ApiResult.success();
+    } catch (e) {
+      LogUtils.e('点赞图库失败', tag: 'GalleryService', error: e);
+      return ApiResult.fail('点赞图库失败');
+    }
+  }
+
+  /// 取消点赞图库
+  Future<ApiResult<void>> unlikeImage(String mediaId) async {
+    try {
+      await _apiService.delete(ApiConstants.likeImage(mediaId));
+      return ApiResult.success();
+    } catch (e) {
+      LogUtils.e('取消点赞图库失败', tag: 'GalleryService', error: e);
+      return ApiResult.fail('取消点赞图库失败');
+    }
+  }
 }

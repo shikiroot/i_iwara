@@ -15,7 +15,7 @@ class ThemeSettingsPage extends StatelessWidget {
         isWideScreen: isWideScreen,
       ),
       body: Center(
-        child: Text('这里是主题设置页面', style: Theme.of(context).textTheme.headlineSmall),
+        child: Text('未施工，敬请期待', style: Theme.of(context).textTheme.headlineSmall),
       ),
     );
   }

@@ -68,11 +68,11 @@ class GlobalDrawerColumns extends StatelessWidget {
                 AppService.switchGlobalDrawer();
                 Get.toNamed(Routes.SETTINGS_PAGE);
               }),
-              // 关于
-              _buildMenuItem(Icons.info, '关于', () {
-                userService.fetchUserProfile();
-                Get.snackbar('操作', '你点击了关于');
-              }),
+              // // 关于
+              // _buildMenuItem(Icons.info, '关于', () {
+              //   userService.fetchUserProfile();
+              //   Get.snackbar('操作', '你点击了关于');
+              // }),
               // 查看许可
               _buildMenuItem(Icons.code, '查看许可', () {
                 AppService.switchGlobalDrawer();

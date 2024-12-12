@@ -2,8 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:i_iwara/app/services/app_service.dart';
+import 'package:i_iwara/app/services/video_service.dart';
 import 'package:i_iwara/app/ui/pages/video_detail/widgets/detail/video_description_widget.dart';
-import 'package:i_iwara/app/ui/pages/video_detail/widgets/video_like_widget.dart';
 import 'package:i_iwara/common/enums/media_enums.dart';
 import 'package:i_iwara/utils/date_time_extension.dart';
 import '../../../../../../common/constants.dart';
@@ -12,6 +12,9 @@ import '../../controllers/my_video_state_controller.dart';
 import 'expandable_tags_widget.dart';
 import 'like_avatars_widget.dart';
 import '../player/my_video_screen.dart';
+import '../../../../widgets/follow_button_widget.dart';
+import '../../../../widgets/like_button_widget.dart';
+
 class VideoDetailContent extends StatelessWidget {
   final MyVideoStateController controller;
   final double paddingTop;
@@ -162,11 +165,25 @@ class VideoDetailContent extends StatelessWidget {
                         children: [
                           Row(
                             children: [
-                              VideoLikeWidget(
-                                videoId: videoInfo.id,
-                                liked: videoInfo.liked,
+                              LikeButtonWidget(
+                                mediaId: videoInfo.id,
+                                liked: videoInfo.liked ?? false,
                                 likeCount: videoInfo.numLikes ?? 0,
-                              )
+                                onLike: (id) async {
+                                  final result = await Get.find<VideoService>().likeVideo(id);
+                                  return result.isSuccess;
+                                },
+                                onUnlike: (id) async {
+                                  final result = await Get.find<VideoService>().unlikeVideo(id);
+                                  return result.isSuccess;
+                                },
+                                onLikeChanged: (liked) {
+                                  controller.videoInfo.value = controller.videoInfo.value?.copyWith(
+                                    liked: liked,
+                                    numLikes: (controller.videoInfo.value?.numLikes ?? 0) + (liked ? 1 : -1),
+                                  );
+                                },
+                              ),
                             ],
                           ),
                           Row(
@@ -318,6 +335,16 @@ class VideoDetailContent extends StatelessWidget {
           _buildAuthorAvatar(),
           const SizedBox(width: 8),
           _buildAuthorNameButton(),
+          const Spacer(),
+          if (controller.videoInfo.value?.user != null)
+            FollowButtonWidget(
+              user: controller.videoInfo.value!.user!,
+              onUserUpdated: (updatedUser) {
+                controller.videoInfo.value = controller.videoInfo.value?.copyWith(
+                  user: updatedUser,
+                );
+              },
+            ),
         ],
       ),
     );

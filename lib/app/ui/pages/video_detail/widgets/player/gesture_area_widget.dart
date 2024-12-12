@@ -246,7 +246,7 @@ class _GestureAreaState extends State<GestureArea>
           : null,
       child: Container(
         /// 如果不用transparent的Container包裹，会导致center区域无法触发手势，GTP给出的解释是
-        /// "当你使用一个没有颜色（即 color: null）的 Container 时，如果它没有子组件绘制任何内容，Flutter 可能不会为这个区域分配绘制层。这���味着这个区域在视觉上是透明的，但在命中测试中也是"不可命中"的，因为没有实际的绘制内容。"
+        /// "当你使用一个没有颜色（即 color: null）的 Container 时，如果它没有子组件绘制任何内容，Flutter 可能不会为这个区域分配绘制层。这意味这个区域在视觉上是透明的，但在命中测试中也是"不可命中"的，因为没有实际的绘制内容。"
         /// 离谱奥
         color: Colors.transparent,
         child: Stack(

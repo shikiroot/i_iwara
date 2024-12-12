@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:i_iwara/app/routes/app_routes.dart';
 import 'package:i_iwara/app/services/api_service.dart';
+import 'package:i_iwara/app/services/gallery_service.dart';
 import 'package:i_iwara/app/ui/widgets/empty_widget.dart';
 import 'package:i_iwara/utils/date_time_extension.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
@@ -26,6 +27,8 @@ import '../../video_detail/widgets/detail/like_avatars_widget.dart';
 import '../controllers/gallery_detail_controller.dart';
 import 'horizontial_image_list.dart';
 import 'my_gallery_photo_view_wrapper.dart';
+import '../../../widgets/follow_button_widget.dart';
+import '../../../widgets/like_button_widget.dart';
 
 class ImageModelDetailContent extends StatelessWidget {
   final GalleryDetailController controller;
@@ -352,6 +355,16 @@ class ImageModelDetailContent extends StatelessWidget {
           _buildAuthorAvatar(),
           const SizedBox(width: 8),
           _buildAuthorNameButton(),
+          const Spacer(),
+          if (controller.imageModelInfo.value?.user != null)
+            FollowButtonWidget(
+              user: controller.imageModelInfo.value!.user!,
+              onUserUpdated: (updatedUser) {
+                controller.imageModelInfo.value = controller.imageModelInfo.value?.copyWith(
+                  user: updatedUser,
+                );
+              },
+            ),
         ],
       ),
     );
@@ -532,19 +545,32 @@ class ImageModelDetailContent extends StatelessWidget {
           children: [
             Row(
               children: [
-                // TODO 点赞按钮
-                // ImageModelLikeWidget(
-                //   imageModelId: imageModelInfo.id,
-                //   liked: imageModelInfo.liked,
-                //   likeCount: imageModelInfo.numLikes ?? 0,
-                // )
+                LikeButtonWidget(
+                  mediaId: imageModelInfo.id,
+                  liked: imageModelInfo.liked ?? false,
+                  likeCount: imageModelInfo.numLikes ?? 0,
+                  onLike: (id) async {
+                    final result = await Get.find<GalleryService>().likeImage(id);
+                    return result.isSuccess;
+                  },
+                  onUnlike: (id) async {
+                    final result = await Get.find<GalleryService>().unlikeImage(id);
+                    return result.isSuccess;
+                  },
+                  onLikeChanged: (liked) {
+                    controller.imageModelInfo.value = controller.imageModelInfo.value?.copyWith(
+                      liked: liked,
+                      numLikes: (controller.imageModelInfo.value?.numLikes ?? 0) + (liked ? 1 : -1),
+                    );
+                  },
+                ),
               ],
             ),
             Row(
               children: [
                 const Icon(Icons.comment),
                 const SizedBox(width: 4),
-                Text('${imageModelInfo.numComments ?? 0}'),
+                Text('${imageModelInfo.numComments}'),
               ],
             ),
           ],
