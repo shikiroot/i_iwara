@@ -152,30 +152,26 @@ class _GestureAreaState extends State<GestureArea>
     return true;
   }
 
-  void _onVerticalDragStart(DragStartDetails details) {
-    if (!_checkLeftAndCenterVerticalDragProcessable()) {
-      return;
-    }
-    LongPressType? type;
-    if (widget.region == GestureRegion.left) {
-      type = LongPressType.brightness;
-    } else if (widget.region == GestureRegion.right) {
-      type = LongPressType.volume;
-    }
-    widget.setLongPressing?.call(type, true);
-  }
-
   void _onVerticalDragEnd(DragEndDetails details) {
     if (!_checkLeftAndCenterVerticalDragProcessable()) {
       return;
     }
+
     LongPressType? type;
     if (widget.region == GestureRegion.left) {
       type = LongPressType.brightness;
     } else if (widget.region == GestureRegion.right) {
       type = LongPressType.volume;
     }
-    widget.setLongPressing?.call(type, false);
+
+    widget.setLongPressing?.call(type, false); // 确保结束时调用淡出动画
+
+    // 结束时让信息提示淡出
+    _infoMessageFadeController.reverse().whenComplete(() {
+      setState(() {
+        _infoMessage = null; // 清除提示信息
+      });
+    });
   }
 
   void _onVerticalDragUpdate(DragUpdateDetails details) {
@@ -183,10 +179,8 @@ class _GestureAreaState extends State<GestureArea>
       return;
     }
 
-    // 缩放因子，数值越大，达成目标的距离所需的拖动距离越远
-    // 亮度调整区域的缩放因子为2，音量调整区域的缩放因子为1
+    // 缩放因子，亮度区域的缩放因子为2，音量区域的缩放因子为1
     var scalingFactor = widget.region == GestureRegion.left ? 2 : 1;
-
     final double max = widget.screenSize.height * scalingFactor;
 
     if (widget.region == GestureRegion.left &&
@@ -195,30 +189,28 @@ class _GestureAreaState extends State<GestureArea>
         !GetPlatform.isWindows &&
         !GetPlatform.isMacOS) {
       // 只在移动设备上调整亮度
-      double rx =
-          _configService[ConfigService.BRIGHTNESS_KEY] - details.delta.dy / max;
+      double rx = _configService[ConfigService.BRIGHTNESS_KEY] -
+          details.primaryDelta! / max;
       rx = rx.clamp(0.0, 1.0);
       _configService[ConfigService.BRIGHTNESS_KEY] = rx;
-      _screenBrightness?.setScreenBrightness(rx);
+      _screenBrightness?.setScreenBrightness(rx); // 调整系统亮度
 
-      // 触发亮度信息显示
-      widget.setLongPressing?.call(LongPressType.brightness, true);
+      widget.setLongPressing?.call(LongPressType.brightness, true); // 显示亮度提示
     } else if (widget.region == GestureRegion.right) {
       // 调整音量
-      double rx =
-          _configService[ConfigService.VOLUME_KEY] - details.delta.dy / max;
+      double rx = _configService[ConfigService.VOLUME_KEY] -
+          details.primaryDelta! / max;
       rx = rx.clamp(0.0, 1.0);
       if (GetPlatform.isAndroid || GetPlatform.isIOS) {
         _volumeController?.setVolume(rx);
         logger.d('系统音量调整：$rx');
       } else {
-        widget.myVideoStateController.player.setVolume(rx * 100);
-        logger.d('播放器音量调整: $rx');
+        widget.myVideoStateController.player.setVolume(rx * 100); // 调整播放器音量
+        logger.d('播放器音量调整:$rx');
       }
       _configService[ConfigService.VOLUME_KEY] = rx;
 
-      // 触发音量信息显示
-      widget.setLongPressing?.call(LongPressType.volume, true);
+      widget.setLongPressing?.call(LongPressType.volume, true); // 显示音量提示
     }
   }
 
@@ -243,6 +235,7 @@ class _GestureAreaState extends State<GestureArea>
       onVerticalDragEnd: (_) {
         // 结束垂直滑动时
         widget.myVideoStateController.setInteracting(false);
+        _onVerticalDragEnd(_);
       },
       onVerticalDragUpdate: widget.region == GestureRegion.left ||
               widget.region == GestureRegion.right

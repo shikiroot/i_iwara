@@ -478,57 +478,52 @@ class _MyVideoScreenState extends State<MyVideoScreen>
 
   void _setLongPressing(LongPressType? longPressType, bool value) {
     if (value) {
-      // 触发震动
+      // 当开始长按时触发震动等逻辑
       vibrate();
-    }
-    if (value == false || longPressType == null) {
-      // 动画淡出
-      _infoMessageFadeController.reverse();
-      setState(() {
-        isLongPressing = false;
-        isSlidingBrightnessZone = false;
-        isSlidingVolumeZone = false;
-      });
 
-      if (longPressType == LongPressType.normal) {
-        // 恢复正常播放速度
-        widget.myVideoStateController.setPlaybackSpeed(
-            widget.myVideoStateController.playerPlaybackSpeed.value);
+      // 根据长按类型更新UI
+      switch (longPressType) {
+        case LongPressType.brightness:
+          setState(() {
+            isSlidingBrightnessZone = true;
+            isSlidingVolumeZone = false;
+            isLongPressing = false;
+          });
+          _infoMessageFadeController.forward();  // 淡入亮度提示
+          break;
+        case LongPressType.volume:
+          setState(() {
+            isSlidingVolumeZone = true;
+            isSlidingBrightnessZone = false;
+            isLongPressing = false;
+          });
+          _infoMessageFadeController.forward();  // 淡入音量提示
+          break;
+        case LongPressType.normal:
+          setState(() {
+            isLongPressing = true;
+            isSlidingBrightnessZone = false;
+            isSlidingVolumeZone = false;
+          });
+          widget.myVideoStateController.setLongPressPlaybackSpeedByConfiguration();
+          _infoMessageFadeController.forward();  // 显示播放速度提示
+          break;
+        default:
+          _infoMessageFadeController.reverse();  // 其他情况淡出提示
+          break;
       }
-      return;
-    }
-    switch (longPressType) {
-      case LongPressType.brightness:
+    } else {
+      // 当长按结束时，清除提示并反转动画
+      _infoMessageFadeController.reverse().whenComplete(() {
         setState(() {
-          isSlidingBrightnessZone = true;
-          isSlidingVolumeZone = false;
           isLongPressing = false;
-        });
-        _infoMessageFadeController.forward();
-        break;
-      case LongPressType.volume:
-        setState(() {
-          isSlidingVolumeZone = true;
-          isSlidingBrightnessZone = false;
-          isLongPressing = false;
-        });
-        _infoMessageFadeController.forward();
-        break;
-      case LongPressType.normal:
-        setState(() {
-          isLongPressing = true;
           isSlidingBrightnessZone = false;
           isSlidingVolumeZone = false;
         });
-        widget.myVideoStateController
-            .setLongPressPlaybackSpeedByConfiguration();
-        _infoMessageFadeController.forward();
-        break;
-      default:
-        _infoMessageFadeController.reverse();
-        break;
+      });
     }
   }
+
 
   // 快进的消息提示
   Widget _buildInfoMessage() {
