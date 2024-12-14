@@ -46,6 +46,8 @@ class VideoPreviewDetailModal extends StatelessWidget {
                           children: [
                             GestureDetector(
                               onTap: () {
+                                // 关闭弹窗
+                                Navigator.of(context).pop();
                                 NaviService.navigateToVideoDetailPage(video.id);
                               },
                               child: Column(

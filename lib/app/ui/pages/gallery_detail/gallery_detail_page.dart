@@ -118,6 +118,78 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
     return Size(renderImageModelWidth, renderImageModelHeight);
   }
 
+  void showCommentModal(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (BuildContext context) {
+        return DraggableScrollableSheet(
+          initialChildSize: 0.8,
+          minChildSize: 0.2,
+          maxChildSize: 0.8,
+          expand: false,
+          builder: (context, scrollController) {
+            return Column(
+              children: [
+                // 顶部标题栏
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  child: Row(
+                    children: [
+                      const Text(
+                        '评论列表',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const Spacer(),
+                      // 添加评论按钮
+                      TextButton.icon(
+                        onPressed: () {
+                          Get.dialog(
+                            CommentInputDialog(
+                              title: '发表评论',
+                              submitText: '发表',
+                              onSubmit: (text) async {
+                                if (text.trim().isEmpty) {
+                                  Get.snackbar('错误', '评论内容不能为空');
+                                  return;
+                                }
+                                await commentController.postComment(text);
+                              },
+                            ),
+                            barrierDismissible: true,
+                          );
+                        },
+                        icon: const Icon(Icons.add_comment),
+                        label: const Text('发表评论'),
+                      ),
+                      // 关闭按钮
+                      IconButton(
+                        icon: const Icon(Icons.close),
+                        onPressed: () => Navigator.pop(context),
+                      ),
+                    ],
+                  ),
+                ),
+                // 评论列表
+                Expanded(
+                  child: Obx(() => CommentSection(
+                      controller: commentController,
+                      authorUserId: detailController.imageModelInfo.value?.user?.id)),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     if (imageModelId.isEmpty) {
@@ -224,7 +296,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                           CommentEntryAreaButtonWidget(
                               commentController: commentController,
                               onClickButton: () {
-                                detailController.isCommentSheetVisible.toggle();
+                                showCommentModal(context);
                               }).paddingVertical(16),
                         ],
                       ),
@@ -313,20 +385,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                                 // 添加发表评论按钮
                                 TextButton.icon(
                                   onPressed: () {
-                                    Get.dialog(
-                                      CommentInputDialog(
-                                        title: '发表评论',
-                                        submitText: '发表',
-                                        onSubmit: (text) async {
-                                          if (text.trim().isEmpty) {
-                                            Get.snackbar('错误', '评论内容不能为空');
-                                            return;
-                                          }
-                                          await commentController.postComment(text);
-                                        },
-                                      ),
-                                      barrierDismissible: true,
-                                    );
+                                    showCommentModal(context);
                                   },
                                   icon: const Icon(Icons.add_comment),
                                   label: const Text('发表评论'),
@@ -389,7 +448,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                             child: CommentEntryAreaButtonWidget(
                               commentController: commentController,
                               onClickButton: () {
-                                detailController.isCommentSheetVisible.toggle();
+                                showCommentModal(context);
                               },
                             ).paddingVertical(16)),
                         // 作者的其他图库
@@ -453,20 +512,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                           // 添加发表评论按钮
                           TextButton.icon(
                             onPressed: () {
-                              Get.dialog(
-                                CommentInputDialog(
-                                  title: '发表评论',
-                                  submitText: '发表',
-                                  onSubmit: (text) async {
-                                    if (text.trim().isEmpty) {
-                                      Get.snackbar('错误', '评论内容不能为空');
-                                      return;
-                                    }
-                                    await commentController.postComment(text);
-                                  },
-                                ),
-                                barrierDismissible: true,
-                              );
+                              showCommentModal(context);
                             },
                             icon: const Icon(Icons.add_comment),
                             label: const Text('发表评论'),

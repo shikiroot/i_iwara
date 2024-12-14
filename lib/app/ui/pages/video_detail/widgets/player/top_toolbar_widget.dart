@@ -69,24 +69,26 @@ class TopToolbar extends StatelessWidget {
                       },
                     ),
                     // 主页按钮
-                    IconButton(
-                      tooltip: '主页',
-                      icon: const Icon(Icons.home, color: Colors.white),
-                      onPressed: () {
-                        AppService appService = Get.find();
-                        int currentIndex = appService.currentIndex;
-                        final routes = [
-                          Routes.POPULAR_VIDEOS,
-                          Routes.GALLERY,
-                          Routes.SUBSCRIPTIONS,
-                        ];
-                        AppService.homeNavigatorKey.currentState!
-                            .pushNamedAndRemoveUntil(
-                          routes[currentIndex],
-                          (route) => false,
-                        );
-                      },
-                    ),
+                    // 如果当前是fullScreen，则不显示主页按钮
+                    if (!currentScreenIsFullScreen && !myVideoStateController.isDesktopAppFullScreen.value)
+                      IconButton(
+                        tooltip: '主页',
+                        icon: const Icon(Icons.home, color: Colors.white),
+                        onPressed: () {
+                          AppService appService = Get.find();
+                          int currentIndex = appService.currentIndex;
+                          final routes = [
+                            Routes.POPULAR_VIDEOS,
+                            Routes.GALLERY,
+                            Routes.SUBSCRIPTIONS,
+                          ];
+                          AppService.homeNavigatorKey.currentState!
+                              .pushNamedAndRemoveUntil(
+                            routes[currentIndex],
+                            (route) => false,
+                          );
+                        },
+                      ),
                     // 使用 Expanded 包裹标题，避免超出
                     Expanded(
                       child: Obx(() => Text(
