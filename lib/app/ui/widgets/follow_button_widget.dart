@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:i_iwara/app/models/dto/user_dto.dart';
 import 'package:i_iwara/app/models/user.model.dart';
+import 'package:i_iwara/app/services/user_preference_service.dart';
 import 'package:i_iwara/app/services/user_service.dart';
 
 class FollowButtonWidget extends StatefulWidget {
@@ -21,6 +23,7 @@ class _FollowButtonWidgetState extends State<FollowButtonWidget> {
   bool _isLoading = false;
   late User _currentUser;
   final UserService _userService = Get.find();
+  final UserPreferenceService _userPreferenceService = Get.find();
 
   @override
   void initState() {
@@ -31,7 +34,7 @@ class _FollowButtonWidgetState extends State<FollowButtonWidget> {
   // 构建加载中的按钮
   Widget _buildLoadingButton({bool isFollowing = false}) {
     return ElevatedButton(
-      onPressed: null, // 禁用按钮
+      onPressed: null,
       style: ElevatedButton.styleFrom(
         backgroundColor: isFollowing ? Colors.grey[300] : null,
         foregroundColor: isFollowing ? Colors.black87 : null,
@@ -67,6 +70,8 @@ class _FollowButtonWidgetState extends State<FollowButtonWidget> {
   // 显示关注选项底部菜单
   void _showFollowOptionsSheet() {
     final RxBool isProcessing = false.obs;
+    final UserDTO? likedUser =
+        _userPreferenceService.getLikedUser(_currentUser.id);
 
     Get.bottomSheet(
       Obx(
@@ -82,10 +87,10 @@ class _FollowButtonWidgetState extends State<FollowButtonWidget> {
               ListTile(
                 enabled: !isProcessing.value,
                 leading: Icon(
-                  _currentUser.friend ? Icons.star : Icons.star_border,
-                  color: _currentUser.friend ? Colors.amber : null,
+                  likedUser != null ? Icons.star : Icons.star_border,
+                  color: likedUser != null ? Colors.amber : null,
                 ),
-                title: Text(_currentUser.friend ? '取消特别关注' : '加入特别关注'),
+                title: Text(likedUser != null ? '取消特别关注' : '加入特别关注'),
                 trailing: isProcessing.value
                     ? const SizedBox(
                         width: 16,
@@ -93,31 +98,19 @@ class _FollowButtonWidgetState extends State<FollowButtonWidget> {
                         child: CircularProgressIndicator(strokeWidth: 2),
                       )
                     : null,
-                onTap: () async {
-                  isProcessing.value = true;
-
-                  try {
-                    final result = _currentUser.friend
-                        ? await _userService.removeFriend(_currentUser.id)
-                        : await _userService.addFriend(_currentUser.id);
-
-                    if (result.isSuccess) {
-                      final updatedUser =
-                          _currentUser.copyWith(friend: !_currentUser.friend);
-                      setState(() {
-                        _currentUser = updatedUser;
-                      });
-                      widget.onUserUpdated?.call(updatedUser);
-                      if (Get.isBottomSheetOpen ?? false) {
-                        Get.closeAllBottomSheets();
-                      }
-                    } else {
-                      Get.snackbar('错误', result.message);
-                    }
-                  } catch (e) {
-                    Get.snackbar('错误', '操作失败');
-                  } finally {
-                    isProcessing.value = false;
+                onTap: () {
+                  if (likedUser != null) {
+                    _userPreferenceService.removeLikedUser(likedUser);
+                  } else {
+                    _userPreferenceService.addLikedUser(UserDTO(
+                      id: _currentUser.id,
+                      name: _currentUser.name,
+                      username: _currentUser.username ?? '',
+                      avatarUrl: _currentUser.avatar?.avatarUrl ?? '',
+                    ));
+                  }
+                  if (Get.isBottomSheetOpen ?? false) {
+                    Get.closeAllBottomSheets();
                   }
                 },
               ),
@@ -134,11 +127,16 @@ class _FollowButtonWidgetState extends State<FollowButtonWidget> {
                     : null,
                 onTap: () async {
                   isProcessing.value = true;
-
                   try {
                     final result =
                         await _userService.unfollowUser(_currentUser.id);
                     if (result.isSuccess) {
+                      final likedUser =
+                          _userPreferenceService.getLikedUser(_currentUser.id);
+                      if (likedUser != null) {
+                        _userPreferenceService.removeLikedUser(likedUser);
+                      }
+
                       final updatedUser = _currentUser.copyWith(
                         following: false,
                         friend: false,
@@ -147,7 +145,7 @@ class _FollowButtonWidgetState extends State<FollowButtonWidget> {
                         _currentUser = updatedUser;
                       });
                       widget.onUserUpdated?.call(updatedUser);
-                      if(Get.isBottomSheetOpen ?? false) {
+                      if (Get.isBottomSheetOpen ?? false) {
                         Get.closeAllBottomSheets();
                       }
                     } else {
