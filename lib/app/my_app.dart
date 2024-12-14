@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
 
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: "❤ iwara",
+      title: "Love iwara",
       getPages: [
         GetPage(
           name: Routes.HOME,

@@ -51,6 +51,10 @@ class _GestureAreaState extends State<GestureArea>
   late AnimationController _infoMessageFadeController;
   late Animation<double> _infoMessageOpacity;
 
+  double? _horizontalDragStartX;
+  Duration? _horizontalDragStartPosition;
+  static const int MAX_SEEK_SECONDS = 90; // 最大滑动秒数为90秒
+
   @override
   void initState() {
     super.initState();
@@ -241,9 +245,50 @@ class _GestureAreaState extends State<GestureArea>
               widget.region == GestureRegion.right
           ? _onVerticalDragUpdate
           : null,
-      onHorizontalDragUpdate: widget.region == GestureRegion.center
-          ? _onHorizontalDragUpdate
-          : null,
+      // onHorizontalDragUpdate: widget.region == GestureRegion.center
+      //     ? _onHorizontalDragUpdate
+      //     : null,
+      onHorizontalDragStart: widget.region == GestureRegion.center ? (details) {
+        _horizontalDragStartX = details.localPosition.dx;
+        _horizontalDragStartPosition = widget.myVideoStateController.currentPosition.value;
+        widget.myVideoStateController.setInteracting(true);
+        widget.myVideoStateController.showSeekPreview(true);
+      } : null,
+      
+      onHorizontalDragUpdate: widget.region == GestureRegion.center ? (details) {
+        if (_horizontalDragStartX == null || _horizontalDragStartPosition == null) return;
+        
+        // 计算滑动距离与屏幕宽度的比例
+        double dragDistance = details.localPosition.dx - _horizontalDragStartX!;
+        double screenWidth = widget.screenSize.width;
+        double ratio = dragDistance / screenWidth;
+        
+        // 计算时间偏移，最大不超过90秒
+        int offsetSeconds = (ratio * MAX_SEEK_SECONDS).round();
+        
+        // 计算目标时间
+        Duration targetPosition = Duration(
+          seconds: (_horizontalDragStartPosition!.inSeconds + offsetSeconds)
+              .clamp(0, widget.myVideoStateController.totalDuration.value.inSeconds)
+        );
+        
+        // 更新预览位置
+        widget.myVideoStateController.updateSeekPreview(targetPosition);
+      } : null,
+      
+      onHorizontalDragEnd: widget.region == GestureRegion.center ? (details) {
+        if (_horizontalDragStartPosition != null) {
+          // 执行实际的跳转
+          Duration targetPosition = widget.myVideoStateController.previewPosition.value;
+          widget.myVideoStateController.player.seek(targetPosition);
+        }
+        
+        // 重置状态
+        _horizontalDragStartX = null;
+        _horizontalDragStartPosition = null;
+        widget.myVideoStateController.setInteracting(false);
+        widget.myVideoStateController.showSeekPreview(false);
+      } : null,
       child: Container(
         /// 如果不用transparent的Container包裹，会导致center区域无法触发手势，GTP给出的解释是
         /// "当你使用一个没有颜色（即 color: null）的 Container 时，如果它没有子组件绘制任何内容，Flutter 可能不会为这个区域分配绘制层。这意味这个区域在视觉上是透明的，但在命中测试中也是"不可命中"的，因为没有实际的绘制内容。"

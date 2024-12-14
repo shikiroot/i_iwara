@@ -4,6 +4,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:i_iwara/app/services/app_service.dart';
 import 'package:i_iwara/app/ui/pages/video_detail/widgets/player/rapple_painter.dart';
+import 'package:i_iwara/utils/common_utils.dart';
 import 'package:logger/logger.dart';
 import 'package:media_kit_video/media_kit_video.dart';
 import 'package:vibration/vibration.dart';
@@ -234,12 +235,17 @@ class _MyVideoScreenState extends State<MyVideoScreen>
             // 获取视频部分的尺寸
             final screenSize =
                 Size(constraints.maxWidth, constraints.maxHeight);
-            // 定义动画图标的大小为屏幕宽度的20%
-            final playPauseIconSize = (screenSize.height - paddingTop)  * 0.3;
-            // 定义缓冲动画的大小为屏幕宽度的15%
-            final bufferingSize = (screenSize.height - paddingTop) * 0.3;
+            // 根据屏幕宽度计算图标大小
+            // 使用屏幕宽度的15%作为基准，但设置最小和最大值限制
+            final playPauseIconSize = (screenSize.width * 0.15).clamp(
+              40.0,  // 最小尺寸
+              100.0, // 最大尺寸
+            );
+            
+            // 缓冲动画稍微小一点，使用图标尺寸的80%
+            final bufferingSize = playPauseIconSize * 0.8;
+            
             final maxRadius = (screenSize.height - paddingTop) * 2 / 3;
-
 
             return KeyboardListener(
               focusNode: _focusNode,
@@ -260,6 +266,7 @@ class _MyVideoScreenState extends State<MyVideoScreen>
                     _buildVideoControlOverlay(playPauseIconSize, bufferingSize),
                     // InfoMessage
                     _buildInfoMessage(),
+                    _buildSeekPreview(),
                   ],
                 ),
               ),
@@ -415,57 +422,69 @@ class _MyVideoScreenState extends State<MyVideoScreen>
   Widget _buildPlayPauseIcon(
       MyVideoStateController myVideoStateController, double size) {
     return Obx(() => AnimatedOpacity(
-          opacity: myVideoStateController.videoPlaying.value ? 0.0 : 1.0,
-          duration: const Duration(milliseconds: 150),
-          child: Material(
-            color: Colors.transparent,
-            child: InkWell(
-              onTap: () {
+      opacity: myVideoStateController.videoPlaying.value ? 0.0 : 1.0,
+      duration: const Duration(milliseconds: 150),
+      child: Container(
+        width: size,
+        height: size,
+        decoration: BoxDecoration(
+          color: Colors.black.withOpacity(0.5),
+          shape: BoxShape.circle,
+        ),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: () {
+              myVideoStateController.videoPlaying.value
+                  ? myVideoStateController.player.pause()
+                  : myVideoStateController.player.play();
+            },
+            customBorder: const CircleBorder(),
+            child: AnimatedScale(
+              scale: myVideoStateController.videoPlaying.value ? 1.0 : 0.9,
+              duration: const Duration(milliseconds: 150),
+              child: Icon(
                 myVideoStateController.videoPlaying.value
-                    ? myVideoStateController.player.pause()
-                    : myVideoStateController.player.play();
-              },
-              onLongPress: () {
-                // 长按时的逻辑，可以根据需求自定义
-                // 例如显示更多选项或控制
-              },
-              borderRadius: BorderRadius.circular(size / 2), // 圆形按钮
-              child: AnimatedScale(
-                scale: myVideoStateController.videoPlaying.value ? 1.0 : 0.9,
-                duration: const Duration(milliseconds: 150),
-                child: Icon(
-                  myVideoStateController.videoPlaying.value
-                      ? Icons.pause
-                      : Icons.play_arrow,
-                  color: Colors.white,
-                  size: size, // 使用自适应尺寸
-                  shadows: [
-                    Shadow(
-                      blurRadius: 10.0,
-                      color: Colors.white.withOpacity(0.5),
-                      offset: const Offset(0, 0),
-                    ),
-                  ],
-                ),
+                    ? Icons.pause
+                    : Icons.play_arrow,
+                color: Colors.white,
+                size: size * 0.6, // 图标大小为容器的60%
+                shadows: [
+                  Shadow(
+                    blurRadius: 8.0,
+                    color: Colors.black.withOpacity(0.5),
+                    offset: const Offset(0, 2),
+                  ),
+                ],
               ),
             ),
           ),
-        ));
+        ),
+      ),
+    ));
   }
 
   /// 构建缓冲动画，尺寸自适应
   Widget _buildBufferingAnimation(
       MyVideoStateController myVideoStateController, double size) {
     return Obx(() => myVideoStateController.videoBuffering.value
-        ? SizedBox(
+        ? Container(
             width: size,
             height: size,
-            child: const CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-              strokeWidth: 8,
-            ).animate(onPlay: (controller) => controller.repeat()).rotate(
+            decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.5),
+              shape: BoxShape.circle,
+            ),
+            child: Padding(
+              padding: EdgeInsets.all(size * 0.2), // 内边距为尺寸的20%
+              child: CircularProgressIndicator(
+                valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
+                strokeWidth: size * 0.08, // 线条宽度为尺寸的8%
+              ).animate(onPlay: (controller) => controller.repeat()).rotate(
                 duration: const Duration(milliseconds: 1000),
-                curve: Curves.linear),
+                curve: Curves.linear,
+              ),
+            ),
           )
         : const SizedBox.shrink());
   }
@@ -676,6 +695,40 @@ class _MyVideoScreenState extends State<MyVideoScreen>
             style: const TextStyle(color: Colors.white, fontSize: 16),
           ),
         ],
+      );
+    });
+  }
+
+  Widget _buildSeekPreview() {
+    return Obx(() {
+      if (!widget.myVideoStateController.isSeekPreviewVisible.value) {
+        return const SizedBox.shrink();
+      }
+
+      Duration previewPosition = widget.myVideoStateController.previewPosition.value;
+      Duration totalDuration = widget.myVideoStateController.totalDuration.value;
+      
+      return Positioned(
+        top: MediaQuery.of(context).padding.top + 20,
+        left: 0,
+        right: 0,
+        child: Center(
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.8),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Text(
+              '${CommonUtils.formatDuration(previewPosition)} / ${CommonUtils.formatDuration(totalDuration)}',
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
       );
     });
   }

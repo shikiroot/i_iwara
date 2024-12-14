@@ -85,6 +85,11 @@ class MyVideoStateController extends GetxController
   final _autoHideDelay = const Duration(seconds: 3); // 3秒后自动隐藏
   final RxBool _isInteracting = false.obs; // 是否正在交互（如拖动进度条）
 
+  // 是否显示进度预览
+  final RxBool isSeekPreviewVisible = false.obs;
+  // 预览位置
+  final Rx<Duration> previewPosition = Duration.zero.obs;
+
   MyVideoStateController(this.videoId);
 
   @override
@@ -574,7 +579,7 @@ class MyVideoStateController extends GetxController
 //
 //   buffers.value = updatedBuffers;
 // }
-
+//
 // void _updateBufferRanges(Duration position) {
 //   List<BufferRange> updatedBuffers = buffers.where((range) {
 //     // 保留结束位置在当前播放位置之后的缓冲段
@@ -583,6 +588,16 @@ class MyVideoStateController extends GetxController
 //
 //   buffers.value = updatedBuffers;
 // }
+
+  /// 显示/隐藏进度预览
+  void showSeekPreview(bool show) {
+    isSeekPreviewVisible.value = show;
+  }
+  
+  /// 更新预览位置
+  void updateSeekPreview(Duration position) {
+    previewPosition.value = position;
+  }
 }
 
 /// 视频清晰度模型
