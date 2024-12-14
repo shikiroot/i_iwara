@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.i_iwara"
+    namespace = "m.c.g.a.i_iwara"
     compileSdk = flutter.compileSdkVersion
     ndkVersion "25.1.8937393"
 
@@ -19,7 +19,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.i_iwara"
+        applicationId = "m.c.g.a.i_iwara"
         // 将 minSdk 从 23 改为 24
         minSdk = 24
         targetSdk = flutter.targetSdkVersion
