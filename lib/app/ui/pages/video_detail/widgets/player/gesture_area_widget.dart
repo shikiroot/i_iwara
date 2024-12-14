@@ -139,6 +139,8 @@ class _GestureAreaState extends State<GestureArea>
 
   void _onLongPressEnd(LongPressEndDetails details) {
     widget.setLongPressing?.call(LongPressType.normal, false);
+    // 恢复正常播放速度
+    widget.myVideoStateController.player.setRate(1.0);
   }
 
   // 检查左侧和中心区域是否可以处理垂直拖动
