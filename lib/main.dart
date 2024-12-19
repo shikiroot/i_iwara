@@ -27,6 +27,7 @@ import 'app/services/user_preference_service.dart';
 import 'app/services/user_service.dart';
 import 'db/database_service.dart';
 import 'app/services/translation_service.dart';
+import 'i18n/strings.g.dart';
 
 void main() {
 
@@ -37,6 +38,8 @@ void main() {
 
     // 确保Flutter初始化
     WidgetsFlutterBinding.ensureInitialized();
+    // TODO 临时使用系统语言
+    LocaleSettings.useDeviceLocale();
 
     final dbService = DatabaseService();
     await dbService.init();

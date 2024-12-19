@@ -1,0 +1,22 @@
+# zh-CN.i18n.yaml
+common:
+  appName: Love Iwara
+  ok: 确定
+  cancel: 取消
+  save: 保存
+  delete: 删除
+  loading: 加载中...
+  # 隐私内容，不与展示
+  privacyHint: 隐私内容，不与展示
+
+auth:
+  login: 登录
+  logout: 退出登录
+  email: 邮箱
+  password: 密码
+  welcome: "欢迎，$name！"
+
+errors:
+  required: 此项必填
+  invalidEmail: 邮箱格式不正确
+  networkError: 网络错误，请重试

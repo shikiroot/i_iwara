@@ -1,0 +1,21 @@
+# en.i18n.yaml
+common:
+  appName: Love Iwara
+  ok: OK
+  cancel: Cancel
+  save: Save
+  delete: Delete
+  loading: Loading...
+  privacyHint: Privacy content, not displayed
+
+auth:
+  login: Login
+  logout: Logout
+  email: Email
+  password: Password
+  welcome: "Welcome, $name!"
+
+errors:
+  required: This field is required
+  invalidEmail: Invalid email address
+  networkError: Network error, please try again

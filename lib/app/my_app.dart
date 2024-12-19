@@ -13,6 +13,7 @@ import 'package:i_iwara/app/ui/pages/settings/theme_settings_page.dart';
 import 'package:i_iwara/app/ui/pages/sign_in/sing_in_page.dart';
 import 'package:i_iwara/app/ui/widgets/global_drawer_content_widget.dart';
 import 'package:i_iwara/app/ui/widgets/window_layout_widget.dart';
+import 'package:i_iwara/i18n/strings.g.dart';
 
 import '../utils/proxy/proxy_util.dart';
 import 'models/dto/escape_intent.dart';
@@ -43,7 +44,7 @@ class MyApp extends StatelessWidget {
 
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: "Love iwara",
+      title: t.common.appName,
       getPages: [
         GetPage(
           name: Routes.HOME,
@@ -96,9 +97,9 @@ class PrivacyOverlay extends StatelessWidget {
     return Material(
       child: Container(
         color: Colors.white, // 白色背景
-        child: const Center(
+        child: Center(
           child: Text(
-            '隐私内容，不予展示',
+            t.common.privacyHint,
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
