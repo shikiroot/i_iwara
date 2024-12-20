@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:i_iwara/app/services/app_service.dart';
+import 'package:i_iwara/i18n/strings.g.dart' as slang;
 
 class CommentInputDialog extends StatefulWidget {
   final String? initialText;
@@ -37,6 +38,7 @@ class _CommentInputDialogState extends State<CommentInputDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final t = slang.Translations.of(context);
     return Dialog(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -55,8 +57,8 @@ class _CommentInputDialogState extends State<CommentInputDialog> {
             TextField(
               controller: _controller,
               maxLines: 5,
-              decoration: const InputDecoration(
-                hintText: '写下你的评论...',
+              decoration: InputDecoration(
+                hintText: t.common.writeYourCommentHere,
                 border: OutlineInputBorder(),
               ),
             ),
@@ -66,7 +68,7 @@ class _CommentInputDialogState extends State<CommentInputDialog> {
               children: [
                 TextButton(
                   onPressed: () => AppService.tryPop(),
-                  child: const Text('取消'),
+                  child: Text(t.common.cancel),
                 ),
                 const SizedBox(width: 8),
                 ElevatedButton(
@@ -75,7 +77,6 @@ class _CommentInputDialogState extends State<CommentInputDialog> {
                       _isLoading = true;
                     });
                     await widget.onSubmit(_controller.text);
-                    print('提交成功');
                     setState(() {
                       _isLoading = false;
                     });

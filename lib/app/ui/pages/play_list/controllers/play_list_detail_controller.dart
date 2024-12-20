@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:i_iwara/app/services/play_list_service.dart';
 import 'package:i_iwara/app/ui/pages/play_list/controllers/play_list_detail_repository.dart';
-
+import 'package:i_iwara/i18n/strings.g.dart' as slang;
 class PlayListDetailController extends GetxController {
   final PlayListService _playListService = Get.find<PlayListService>();
   late PlayListDetailRepository repository;
@@ -39,7 +39,7 @@ class PlayListDetailController extends GetxController {
     if (result.isSuccess) {
       playlistTitle.value = newTitle;
     } else {
-      Get.snackbar('错误', result.message);
+      Get.snackbar(slang.t.errors.error, result.message);
     }
   }
   
@@ -79,9 +79,9 @@ class PlayListDetailController extends GetxController {
   void deleteCurPlaylist() {
     _playListService.deletePlaylist(playlistId: playlistId).then((result) {
       if (result.isSuccess) {
-        Get.snackbar('成功', '删除成功');
+        Get.snackbar(slang.t.common.success, '');
       } else {
-        Get.snackbar('错误', result.message);
+        Get.snackbar(slang.t.errors.error, result.message);
       }
     });
   }

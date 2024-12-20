@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:i_iwara/app/models/play_list.model.dart';
 import 'package:i_iwara/app/services/app_service.dart';
+import 'package:i_iwara/i18n/strings.g.dart' as slang;
 
 class PlaylistItemWidget extends StatelessWidget {
   final PlaylistModel playlist;
@@ -13,6 +14,7 @@ class PlaylistItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = slang.Translations.of(context);
     return Card(
       clipBehavior: Clip.antiAlias,
       child: InkWell(
@@ -51,7 +53,7 @@ class PlaylistItemWidget extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    '${playlist.numVideos} 个视频',
+                    t.common.videoCount(num:playlist.numVideos),
                     style: TextStyle(
                       color: Theme.of(context).textTheme.bodySmall?.color,
                       fontSize: 12,

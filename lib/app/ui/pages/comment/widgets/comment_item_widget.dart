@@ -15,6 +15,7 @@ import '../../../../../common/constants.dart';
 import '../../../../models/comment.model.dart';
 import '../../../widgets/custom_markdown_body_widget.dart';
 import '../widgets/comment_input_dialog.dart';
+import 'package:i_iwara/i18n/strings.g.dart' as slang;
 
 class CommentItem extends StatefulWidget {
   final Comment comment;
@@ -119,7 +120,7 @@ class _CommentItemState extends State<CommentItem> {
       }
     } catch (e) {
       setState(() {
-        _errorMessage = '获取回复时出错，请检查网络连接。';
+        _errorMessage = slang.t.errors.errorWhileFetchingReplies;
         _hasMoreReplies = false;
       });
     } finally {
@@ -139,7 +140,8 @@ class _CommentItemState extends State<CommentItem> {
     }
   }
 
-  Widget _buildRepliesList() {
+  Widget _buildRepliesList(BuildContext context) {
+    final t = slang.Translations.of(context);
     if (_isLoadingReplies && _replies.isEmpty) {
       return Column(
         children: List.generate(
@@ -155,7 +157,7 @@ class _CommentItemState extends State<CommentItem> {
         ),
       );
     } else if (!_isLoadingReplies && _replies.isEmpty) {
-      return const Center(child: Text('暂无回复'));
+      return Center(child: Text(t.common.tmpNoReplies));
     }
 
     return Column(
@@ -184,10 +186,10 @@ class _CommentItemState extends State<CommentItem> {
                       _fetchReplies();
                     }
                   },
-                  child: const Text('加载更多回复'),
+                  child: Text(t.common.loadMore),
                 );
               } else {
-                return const Center(child: Text('没有更多回复了'));
+                return Center(child: Text(t.common.noMoreDatas));
               }
             }
           },
@@ -303,10 +305,10 @@ class _CommentItemState extends State<CommentItem> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Padding(
+              Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 child: Text(
-                  '选择翻译语言',
+                  slang.t.common.selectTranslationLanguage,
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -348,7 +350,8 @@ class _CommentItemState extends State<CommentItem> {
     );
   }
 
-  Widget _buildTranslationButton() {
+  Widget _buildTranslationButton(BuildContext context) {
+    final t = slang.Translations.of(context);
     return Material(
       borderRadius: BorderRadius.circular(20),
       elevation: 2,
@@ -374,7 +377,7 @@ class _CommentItemState extends State<CommentItem> {
                     const Icon(Icons.translate, size: 16),
                   const SizedBox(width: 4),
                   Text(
-                    '翻译',
+                    t.common.translate,
                     style: TextStyle(
                       fontSize: 12,
                       color: Theme.of(context).primaryColor,
@@ -422,14 +425,15 @@ class _CommentItemState extends State<CommentItem> {
       });
     } else {
       setState(() {
-        _translatedText = '翻译失败，请稍后重试';
+        _translatedText = slang.t.common.translateFailedPleaseTryAgainLater;
         _isTranslating = false;
       });
     }
   }
 
   // 构建翻译后的内容区域
-  Widget _buildTranslatedContent() {
+  Widget _buildTranslatedContent(BuildContext context) {
+    final t = slang.Translations.of(context);
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context)
@@ -447,7 +451,7 @@ class _CommentItemState extends State<CommentItem> {
               const Icon(Icons.translate, size: 14),
               const SizedBox(width: 4),
               Text(
-                '翻译结果',
+                t.common.translationResult,
                 style: TextStyle(
                   fontSize: 12,
                   color: Theme.of(context).colorScheme.onSurfaceVariant,
@@ -467,7 +471,7 @@ class _CommentItemState extends State<CommentItem> {
             ],
           ),
           const SizedBox(height: 8),
-          if (_translatedText == '翻译失败，请稍后重试')
+          if (_translatedText == t.common.translateFailedPleaseTryAgainLater)
             Text(
               _translatedText!,
               style: TextStyle(
@@ -509,18 +513,19 @@ class _CommentItemState extends State<CommentItem> {
   }
 
   /// 格式化时间为人性化显示
-  String _formatTimestamp(DateTime timestamp) {
+  String _formatTimestamp(DateTime timestamp, BuildContext context) {
+    final t = slang.Translations.of(context);
     final now = DateTime.now();
     final difference = now.difference(timestamp);
 
     if (difference.inMinutes < 1) {
-      return '刚刚';
+      return t.common.justNow;
     } else if (difference.inHours < 1) {
-      return '${difference.inMinutes}分钟前';
+      return t.common.minutesAgo(num: difference.inMinutes);
     } else if (difference.inDays < 1) {
-      return '${difference.inHours}小时前';
+      return t.common.hoursAgo(num: difference.inHours);
     } else if (difference.inDays < 7) {
-      return '${difference.inDays}天前';
+      return t.common.daysAgo(num: difference.inDays);
     } else {
       return "${timestamp.year}-${_twoDigits(timestamp.month)}-${_twoDigits(timestamp.day)} "
           "${_twoDigits(timestamp.hour)}:${_twoDigits(timestamp.minute)}";
@@ -528,7 +533,8 @@ class _CommentItemState extends State<CommentItem> {
   }
 
   /// 构建时间显示区域
-  Widget _buildTimeInfo(Comment comment) {
+  Widget _buildTimeInfo(Comment comment, BuildContext context) {
+    final t = slang.Translations.of(context);
     if (comment.createdAt == null) return const SizedBox.shrink();
 
     final hasEdit = comment.updatedAt != null &&
@@ -545,11 +551,11 @@ class _CommentItemState extends State<CommentItem> {
       child: Wrap(
         crossAxisAlignment: WrapCrossAlignment.center,
         children: [
-          Text(_formatTimestamp(comment.createdAt!)),
+          Text(_formatTimestamp(comment.createdAt!, context)),
           if (hasEdit) ...[
             const Text(' · '),
             Text(
-              '编辑于${_formatTimestamp(comment.updatedAt!)}',
+              t.common.editedAt(num: _formatTimestamp(comment.updatedAt!, context)),
               style: timeTextStyle.copyWith(),
             ),
           ],
@@ -560,7 +566,7 @@ class _CommentItemState extends State<CommentItem> {
 
   void _showDeleteConfirmDialog() {
     if (widget.controller == null) {
-      Get.snackbar('错误', '无法找到评论控制器');
+      Get.snackbar(slang.t.errors.error, slang.t.errors.canNotFindCommentController);
       return;
     }
 
@@ -576,18 +582,18 @@ class _CommentItemState extends State<CommentItem> {
 
   void _showEditDialog() {
     if (widget.controller == null) {
-      Get.snackbar('错误', '无法找到评论控制器');
+      Get.snackbar(slang.t.errors.error, slang.t.errors.canNotFindCommentController);
       return;
     }
 
     Get.dialog(
       CommentInputDialog(
         initialText: widget.comment.body,
-        title: '编辑评论',
-        submitText: '保存',
+        title: slang.t.common.editComment,
+        submitText: slang.t.common.save,
         onSubmit: (text) async {
           if (text.trim().isEmpty) {
-            Get.snackbar('错误', '评论内容不能为空');
+            Get.snackbar(slang.t.errors.error, slang.t.errors.commentCanNotBeEmpty);
             return;
           }
 
@@ -608,10 +614,10 @@ class _CommentItemState extends State<CommentItem> {
                   );
                 }
               });
-              Get.snackbar('成功', '评论已更新');
+              Get.snackbar(slang.t.common.success, slang.t.common.commentUpdated);
               AppService.tryPop();
             } else {
-              Get.snackbar('错误', result.message);
+              Get.snackbar(slang.t.errors.error, result.message);
             }
           }
         },
@@ -622,17 +628,17 @@ class _CommentItemState extends State<CommentItem> {
 
   void _showReplyDialog() {
     if (widget.controller == null) {
-      Get.snackbar('错误', '无法找到评论控制器');
+      Get.snackbar(slang.t.errors.error, slang.t.errors.canNotFindCommentController);
       return;
     }
 
     Get.dialog(
       CommentInputDialog(
-        title: '回复评论',
-        submitText: '回复',
+        title: slang.t.common.replyComment,
+        submitText: slang.t.common.reply,
         onSubmit: (text) async {
           if (text.trim().isEmpty) {
-            Get.snackbar('错误', '评论内容不能为空');
+            Get.snackbar(slang.t.errors.error, slang.t.errors.commentCanNotBeEmpty);
             return;
           }
           final result = await widget.controller!.postComment(
@@ -653,40 +659,41 @@ class _CommentItemState extends State<CommentItem> {
   }
 
   // 新增操作菜单构建方法
-  Widget _buildActionMenu() {
+  Widget _buildActionMenu(BuildContext context) {
+    final t = slang.Translations.of(context);
     return PopupMenuButton<String>(
       icon: const Icon(Icons.more_vert, size: 16),
       padding: EdgeInsets.zero,
       itemBuilder: (context) => [
         if (widget.comment.parent == null)
-          const PopupMenuItem(
+          PopupMenuItem(
             value: 'reply',
             child: Row(
               children: [
                 Icon(Icons.reply, size: 16),
                 SizedBox(width: 8),
-                Text('回复', style: TextStyle(fontSize: 14)),
+                Text(t.common.reply, style: TextStyle(fontSize: 14)),
               ],
             ),
           ),
         if (_userService.currentUser.value?.id == widget.comment.user?.id) ...[
-          const PopupMenuItem(
+          PopupMenuItem(
             value: 'edit',
             child: Row(
               children: [
                 Icon(Icons.edit, size: 16),
                 SizedBox(width: 8),
-                Text('编辑', style: TextStyle(fontSize: 14)),
+                Text(t.common.edit, style: TextStyle(fontSize: 14)),
               ],
             ),
           ),
-          const PopupMenuItem(
+          PopupMenuItem(
             value: 'delete',
             child: Row(
               children: [
                 Icon(Icons.delete, size: 16),
                 SizedBox(width: 8),
-                Text('删除', style: TextStyle(fontSize: 14)),
+                Text(t.common.delete, style: TextStyle(fontSize: 14)),
               ],
             ),
           ),
@@ -711,6 +718,7 @@ class _CommentItemState extends State<CommentItem> {
   @override
   Widget build(BuildContext context) {
     final comment = widget.comment;
+    final t = slang.Translations.of(context);
 
     return Padding(
       padding: EdgeInsets.only(
@@ -753,7 +761,7 @@ class _CommentItemState extends State<CommentItem> {
                                       ],
                                     ).createShader(bounds),
                                     child: Text(
-                                      comment.user?.name ?? '未知用户',
+                                      comment.user?.name ?? slang.t.common.unknownUser,
                                       style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 14,
@@ -764,7 +772,7 @@ class _CommentItemState extends State<CommentItem> {
                                     ),
                                   )
                                 : Text(
-                                    comment.user?.name ?? '未知用户',
+                                    comment.user?.name ?? slang.t.common.unknownUser,
                                     style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 14,
@@ -776,13 +784,13 @@ class _CommentItemState extends State<CommentItem> {
                             const SizedBox(width: 4),
                             // 各种标签
                             if (comment.user?.id == _userService.currentUser.value?.id)
-                              _buildCommentTag('我', Colors.blue),
+                              _buildCommentTag(t.common.me, Colors.blue),
                             if (comment.user?.premium == true)
-                              _buildCommentTag('会员', Colors.purple),
+                              _buildCommentTag(t.common.premium, Colors.purple),
                             if (comment.user?.id == widget.authorUserId)
-                              _buildCommentTag('作者', Colors.green),
+                              _buildCommentTag(t.common.author, Colors.green),
                             if (comment.user?.role.contains('admin') == true)
-                              _buildCommentTag('Admin', Colors.red),
+                              _buildCommentTag(t.common.admin, Colors.red),
                           ],
                         ),
                         // @用户名
@@ -816,7 +824,7 @@ class _CommentItemState extends State<CommentItem> {
                 ),
                 if (_translatedText != null) ...[
                   const SizedBox(height: 8),
-                  _buildTranslatedContent(),
+                  _buildTranslatedContent(context),
                 ],
                 const SizedBox(height: 8),
                 // 回复、翻译和操作按钮行
@@ -828,19 +836,19 @@ class _CommentItemState extends State<CommentItem> {
                         onPressed: _showReplyDialog,
                         icon: const Icon(Icons.reply, size: 20),
                         visualDensity: VisualDensity.compact,
-                        tooltip: '回复',
+                        tooltip: t.common.reply,
                         style: IconButton.styleFrom(
                           foregroundColor: Theme.of(context).colorScheme.primary,
                         ),
                       ),
                     const Spacer(),
-                    _buildTranslationButton(),
-                    _buildActionMenu(),
+                    _buildTranslationButton(context),
+                    _buildActionMenu(context),
                   ],
                 ),
                 const SizedBox(height: 4),
                 // 时间和查看回复按钮行
-                _buildTimeInfo(comment),
+                _buildTimeInfo(comment, context),
                 if (widget.comment.numReplies > 0)
                   TextButton(
                     onPressed: _handleViewReplies,
@@ -848,7 +856,7 @@ class _CommentItemState extends State<CommentItem> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          _isRepliesExpanded ? '隐藏回复' : '查看回复 (${widget.comment.numReplies})',
+                          _isRepliesExpanded ? t.common.hideReplies : t.common.viewReplies(num: widget.comment.numReplies),
                           style: TextStyle(
                             color: Theme.of(context).primaryColor,
                             fontSize: 12,
@@ -869,7 +877,7 @@ class _CommentItemState extends State<CommentItem> {
             ),
           ),
           // 回复列表
-          if (_isRepliesExpanded) _buildRepliesList(),
+          if (_isRepliesExpanded) _buildRepliesList(context),
         ],
       ),
     );

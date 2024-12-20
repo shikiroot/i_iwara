@@ -7,6 +7,7 @@ import 'package:i_iwara/app/ui/pages/play_list/controllers/play_list_detail_cont
 import 'package:i_iwara/app/ui/pages/popular_media_list/widgets/video_card_list_item_widget.dart';
 import 'package:i_iwara/app/ui/widgets/my_loading_more_indicator_widget.dart';
 import 'package:loading_more_list/loading_more_list.dart';
+import 'package:i_iwara/i18n/strings.g.dart' as slang;
 
 class PlayListDetailPage extends StatefulWidget {
   final String playlistId;
@@ -51,7 +52,7 @@ class _PlayListDetailPageState extends State<PlayListDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _buildAppBar(),
+      appBar: _buildAppBar(context),
       body: LoadingMoreCustomScrollView(
         controller: _scrollController,
         slivers: <Widget>[
@@ -130,12 +131,12 @@ class _PlayListDetailPageState extends State<PlayListDetailPage> {
   void _showShareDialog() {
     Get.dialog(
       AlertDialog(
-        title: const Text('分享播放列表'),
-        content: const Text('要分享这个播放列表吗?'),
+        title: Text(slang.t.common.share),
+        content: Text(slang.t.common.areYouSureYouWantToShareThisPlaylist),
         actions: [
           TextButton(
             onPressed: () => AppService.tryPop(),
-            child: const Text('取消'),
+            child: Text(slang.t.common.cancel),
           ),
           TextButton(
             onPressed: () {
@@ -143,14 +144,15 @@ class _PlayListDetailPageState extends State<PlayListDetailPage> {
               ShareService.sharePlayListDetail(
                   widget.playlistId, controller.playlistTitle.value);
             },
-            child: const Text('分享'),
+            child: Text(slang.t.common.share),
           ),
         ],
       ),
     );
   }
 
-  PreferredSizeWidget _buildAppBar() {
+  PreferredSizeWidget _buildAppBar(BuildContext context) {
+    final t = slang.Translations.of(context);
     return AppBar(
       title: Obx(() => Text(controller.playlistTitle.value)),
       actions: [
@@ -173,24 +175,24 @@ class _PlayListDetailPageState extends State<PlayListDetailPage> {
           },
           itemBuilder: (context) => [
             if (widget.isMine)
-              const PopupMenuItem(
+              PopupMenuItem(
                 value: 'edit',
                 child: Row(
                   children: [
                     Icon(Icons.edit),
                     SizedBox(width: 8),
-                    Text('编辑标题'),
+                    Text(t.common.editTitle),
                   ],
                 ),
               ),
             if (widget.isMine)
-              const PopupMenuItem(
+              PopupMenuItem(
                 value: 'multiSelect',
                 child: Row(
                   children: [
                     Icon(Icons.checklist),
                     SizedBox(width: 8),
-                    Text('编辑模式'),
+                    Text(t.common.editMode),
                   ],
                 ),
               ),
@@ -206,13 +208,13 @@ class _PlayListDetailPageState extends State<PlayListDetailPage> {
             //   ),
             // ),
             // 分享
-            const PopupMenuItem(
+            PopupMenuItem(
               value: 'share',
               child: Row(
                 children: [
                   Icon(Icons.share),
                   SizedBox(width: 8),
-                  Text('分享'),
+                  Text(t.common.share),
                 ],
               ),
             ),
@@ -229,11 +231,11 @@ class _PlayListDetailPageState extends State<PlayListDetailPage> {
 
     Get.dialog(
       AlertDialog(
-        title: const Text('编辑播放列表标题'),
+        title: Text(slang.t.common.editTitle),
         content: TextField(
           controller: textController,
-          decoration: const InputDecoration(
-            hintText: '请输入新标题',
+          decoration: InputDecoration(
+            hintText: slang.t.common.pleaseEnterNewTitle,
             border: OutlineInputBorder(),
           ),
           autofocus: true,
@@ -241,7 +243,7 @@ class _PlayListDetailPageState extends State<PlayListDetailPage> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('取消'),
+            child: Text(slang.t.common.cancel),
           ),
           TextButton(
             onPressed: () {
@@ -250,7 +252,7 @@ class _PlayListDetailPageState extends State<PlayListDetailPage> {
                 AppService.tryPop();
               }
             },
-            child: const Text('保存'),
+            child: Text(slang.t.common.save),
           ),
         ],
       ),
@@ -260,12 +262,14 @@ class _PlayListDetailPageState extends State<PlayListDetailPage> {
   void _showDeleteConfirmDialog() {
     Get.dialog(
       AlertDialog(
-        title: const Text('确认删除'),
-        content: Text('确定要删除选中的 ${controller.selectedVideos.length} 个视频吗？'),
+        title: Text(slang.t.common.confirmDelete),
+        content: Text(
+            slang.t.common.areYouSureYouWantToDeleteSelectedItems(
+                num: controller.selectedVideos.length)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('取消'),
+            child: Text(slang.t.common.cancel),
           ),
           TextButton(
             onPressed: () {
@@ -275,7 +279,7 @@ class _PlayListDetailPageState extends State<PlayListDetailPage> {
             style: TextButton.styleFrom(
               foregroundColor: Colors.red,
             ),
-            child: const Text('删除'),
+            child: Text(slang.t.common.delete),
           ),
         ],
       ),

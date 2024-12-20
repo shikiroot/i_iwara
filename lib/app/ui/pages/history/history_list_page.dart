@@ -8,7 +8,7 @@ import 'package:i_iwara/app/ui/pages/popular_media_list/widgets/video_card_list_
 import 'package:i_iwara/app/ui/widgets/my_loading_more_indicator_widget.dart';
 import 'package:loading_more_list/loading_more_list.dart';
 import 'controllers/history_list_controller.dart';
-
+import 'package:i_iwara/i18n/strings.g.dart' as slang;  
 class HistoryListPage extends StatefulWidget {
   const HistoryListPage({super.key});
 
@@ -174,7 +174,7 @@ class _HistoryListPageState extends State<HistoryListPage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: _buildSearchField(),
+        title: _buildSearchField(context),
         actions: [
           Obx(() => AnimatedSwitcher(
                 duration: const Duration(milliseconds: 200),
@@ -285,10 +285,10 @@ class _HistoryListPageState extends State<HistoryListPage>
           fontSize: 16,
         ),
         padding: EdgeInsets.zero,
-        tabs: const [
-          Tab(text: '全部'),
-          Tab(text: '视频'),
-          Tab(text: '图片'),
+        tabs: [
+          Tab(text: slang.t.common.all),
+          Tab(text: slang.t.common.video),
+          Tab(text: slang.t.common.gallery),
         ],
       ),
     );
@@ -378,7 +378,7 @@ class _HistoryListPageState extends State<HistoryListPage>
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    '已选择 ${controller.selectedRecords.length} 条记录',
+                    slang.t.common.selectedRecords(num: controller.selectedRecords.length),
                     style: const TextStyle(fontSize: 16),
                   ),
                   Row(
@@ -386,12 +386,12 @@ class _HistoryListPageState extends State<HistoryListPage>
                       TextButton(
                         onPressed: controller.selectAll,
                         child:
-                            Text(controller.isAllSelected ? '取消全选' : '全选'),
+                            Text(controller.isAllSelected ? slang.t.common.cancelSelectAll : slang.t.common.selectAll),
                       ),
                       const SizedBox(width: 16),
                       TextButton(
                         onPressed: controller.toggleMultiSelect,
-                        child: const Text('退出编辑模式'),
+                        child: Text(slang.t.common.exitEditMode),
                       ),
                       const SizedBox(width: 16),
                       ElevatedButton(
@@ -399,7 +399,7 @@ class _HistoryListPageState extends State<HistoryListPage>
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.red,
                         ),
-                        child: const Text('删除'),
+                        child: Text(slang.t.common.delete),
                       ),
                     ],
                   ),
@@ -413,12 +413,12 @@ class _HistoryListPageState extends State<HistoryListPage>
   void _showDeleteConfirmDialog(HistoryListController controller) {
     Get.dialog(
       AlertDialog(
-        title: const Text('确认删除'),
-        content: Text('确定要删除选中的 ${controller.selectedRecords.length} 条记录吗？'),
+        title: Text(slang.t.common.confirmDelete),
+        content: Text(slang.t.common.areYouSureYouWantToDeleteSelectedItems(num: controller.selectedRecords.length)),
         actions: [
           TextButton(
             onPressed: () => AppService.tryPop(),
-            child: const Text('取消'),
+            child: Text(slang.t.common.cancel),
           ),
           TextButton(
             onPressed: () {
@@ -428,19 +428,20 @@ class _HistoryListPageState extends State<HistoryListPage>
             style: TextButton.styleFrom(
               foregroundColor: Colors.red,
             ),
-            child: const Text('删除'),
+            child: Text(slang.t.common.delete),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildSearchField() {
+  Widget _buildSearchField(BuildContext context) {
     final controller = _getControllerForIndex(_tabController.index);
+    final t = slang.Translations.of(context);
     
     return TextField(
       decoration: InputDecoration(
-        hintText: '搜索历史记录...',
+        hintText: t.common.searchHistoryRecords,
         hintStyle: TextStyle(
           color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
         ),

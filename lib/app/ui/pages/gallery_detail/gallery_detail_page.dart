@@ -18,6 +18,7 @@ import '../comment/widgets/comment_section_widget.dart';
 import '../popular_media_list/widgets/image_model_tile_list_item_widget.dart';
 import '../video_detail/controllers/related_media_controller.dart';
 import 'controllers/gallery_detail_controller.dart';
+import 'package:i_iwara/i18n/strings.g.dart' as slang;
 
 class GalleryDetailPage extends StatefulWidget {
   final String imageModelId;
@@ -139,9 +140,9 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                   padding: const EdgeInsets.all(16),
                   child: Row(
                     children: [
-                      const Text(
-                        '评论列表',
-                        style: TextStyle(
+                      Text(
+                        slang.t.common.commentList,
+                        style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
@@ -152,11 +153,11 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                         onPressed: () {
                           Get.dialog(
                             CommentInputDialog(
-                              title: '发表评论',
-                              submitText: '发表',
+                              title: slang.t.common.sendComment,
+                              submitText: slang.t.common.send,
                               onSubmit: (text) async {
                                 if (text.trim().isEmpty) {
-                                  Get.snackbar('错误', '评论内容不能为空');
+                                  Get.snackbar(slang.t.errors.error, slang.t.errors.commentCanNotBeEmpty);
                                   return;
                                 }
                                 await commentController.postComment(text);
@@ -166,7 +167,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                           );
                         },
                         icon: const Icon(Icons.add_comment),
-                        label: const Text('发表评论'),
+                        label: Text(slang.t.common.sendComment),
                       ),
                       // 关闭按钮
                       IconButton(
@@ -192,13 +193,14 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    final t = slang.Translations.of(context);
     if (imageModelId.isEmpty) {
       return CommonErrorWidget(
-        text: '无效的图库ID',
+        text: t.errors.invalidGalleryId,
         children: [
           ElevatedButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('返回'),
+            child: Text(t.common.back),
           ),
         ],
       );
@@ -225,11 +227,11 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
         body: Obx(() {
           if (detailController.errorMessage.value != null) {
             return CommonErrorWidget(
-              text: detailController.errorMessage.value ?? '在加载图库详情时出现了错误',
+              text: detailController.errorMessage.value ?? t.errors.errorWhileLoadingGallery,
               children: [
                 ElevatedButton(
                   onPressed: () => Navigator.of(context).pop(),
-                  child: const Text('返回'),
+                  child: Text(t.common.back),
                 ),
               ],
             );
@@ -319,8 +321,8 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                               Container(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 16),
-                                  child: const Text('作者的其他图库',
-                                      style: TextStyle(fontSize: 18))),
+                                  child: Text(t.galleryDetail.authorOtherGalleries,
+                                      style: const TextStyle(fontSize: 18))),
                               const SizedBox(height: 16),
                               // 作者的其他图库
                               if (detailController
@@ -348,8 +350,8 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                               Container(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 16),
-                                  child: const Text('相关图库',
-                                      style: TextStyle(fontSize: 18))),
+                                  child: Text(t.galleryDetail.relatedGalleries,
+                                      style: const TextStyle(fontSize: 18))),
                               const SizedBox(height: 16),
                               if (relatedMediasController.isLoading.value)
                                 const MediaTileListSkeletonWidget()
@@ -375,9 +377,9 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                             padding: const EdgeInsets.symmetric(horizontal: 16),
                             child: Row(
                               children: [
-                                const Text(
-                                  '评论列表',
-                                  style: TextStyle(
+                                Text(
+                                  t.common.commentList,
+                                  style: const TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold),
                                 ),
@@ -388,7 +390,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                                     showCommentModal(context);
                                   },
                                   icon: const Icon(Icons.add_comment),
-                                  label: const Text('发表评论'),
+                                  label: Text(t.common.sendComment),
                                 ),
                                 // 关闭按钮
                                 IconButton(
@@ -454,8 +456,8 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                         // 作者的其他图库
                         Container(
                             padding: const EdgeInsets.symmetric(horizontal: 16),
-                            child: const Text('作者的其他图库',
-                                style: TextStyle(fontSize: 18))),
+                            child: Text(t.galleryDetail.authorOtherGalleries,
+                                style: const TextStyle(fontSize: 18))),
                         if (detailController
                                     .otherAuthorzImageModelsController !=
                                 null &&
@@ -477,8 +479,8 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                         const SizedBox(height: 16),
                         Container(
                             padding: const EdgeInsets.symmetric(horizontal: 16),
-                            child: const Text('相关图库',
-                                style: TextStyle(fontSize: 18))),
+                            child: Text(t.galleryDetail.relatedGalleries,
+                                style: const TextStyle(fontSize: 18))),
                         const SizedBox(height: 16),
                         if (relatedMediasController.isLoading.value)
                           const MediaTileListSkeletonWidget()
@@ -501,9 +503,9 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: Row(
                         children: [
-                          const Text(
-                            '评论列表',
-                            style: TextStyle(
+                          Text(
+                            t.common.commentList,
+                            style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
@@ -515,7 +517,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                               showCommentModal(context);
                             },
                             icon: const Icon(Icons.add_comment),
-                            label: const Text('发表评论'),
+                            label: Text(t.common.sendComment),
                           ),
                           // 关闭按钮
                           IconButton(

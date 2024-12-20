@@ -4,7 +4,7 @@ import 'package:i_iwara/app/ui/pages/favorites/controllers/favorites_controller.
 import 'package:i_iwara/app/ui/pages/favorites/widgets/favorite_video_list.dart';
 import 'package:i_iwara/app/ui/pages/favorites/widgets/favorite_image_list.dart';
 import 'package:loading_more_list/loading_more_list.dart';
-
+import 'package:i_iwara/i18n/strings.g.dart' as slang;
 class MyFavorites extends StatefulWidget {
   const MyFavorites({super.key});
 
@@ -98,9 +98,10 @@ class _MyFavoritesState extends State<MyFavorites>
 
   @override
   Widget build(BuildContext context) {
+    final t = slang.Translations.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('我的最爱'),
+        title: Text(t.favorites.myFavorites),
         actions: [
           // 使用 GetBuilder 替代 Obx
           Obx(() => AnimatedSwitcher(
@@ -125,12 +126,12 @@ class _MyFavoritesState extends State<MyFavorites>
               }
             },
             icon: const Icon(Icons.refresh),
-            tooltip: '刷新',
+            tooltip: t.common.refresh,
           ),
         ],
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(kToolbarHeight),
-          child: _buildTabBar(),
+          child: _buildTabBar(context),
         ),
       ),
       body: TabBarView(
@@ -143,7 +144,8 @@ class _MyFavoritesState extends State<MyFavorites>
     );
   }
 
-  Widget _buildTabBar() {
+  Widget _buildTabBar(BuildContext context) {
+    final t = slang.Translations.of(context);
     return Container(
       width: 400,
       margin: const EdgeInsets.symmetric(
@@ -181,12 +183,12 @@ class _MyFavoritesState extends State<MyFavorites>
           Tab(
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: const Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(Icons.video_library),
                   SizedBox(width: 8),
-                  Text('视频'),
+                  Text(t.common.video),
                 ],
               ),
             ),
@@ -194,12 +196,12 @@ class _MyFavoritesState extends State<MyFavorites>
           Tab(
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: const Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(Icons.photo_library),
                   SizedBox(width: 8),
-                  Text('图片'),
+                  Text(t.common.gallery),
                 ],
               ),
             ),

@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:i_iwara/app/services/user_service.dart';
 import 'package:i_iwara/app/ui/pages/friends/repositories/friend_list_repository.dart';
 import 'package:i_iwara/app/ui/pages/friends/repositories/friend_request_repository.dart';
-
+import 'package:i_iwara/i18n/strings.g.dart' as slang;
 class FriendsController extends GetxController {
   final UserService _userService = Get.find();
 
@@ -67,7 +67,7 @@ class FriendsController extends GetxController {
       if (!result.isSuccess) {
         // 如果失败，恢复状态
         removedFriendIds.remove(userId);
-        Get.snackbar('错误', result.message);
+        Get.snackbar(slang.t.errors.error, result.message);
       }
     } finally {
       removingFriendIds.remove(userId);
@@ -85,7 +85,7 @@ class FriendsController extends GetxController {
       final result = await _userService.addFriend(userId);
       if (!result.isSuccess) {
         removedFriendIds.add(userId);
-        Get.snackbar('错误', result.message);
+        Get.snackbar(slang.t.errors.error, result.message);
       }
     } finally {
       restoringFriendIds.remove(userId);
@@ -104,7 +104,7 @@ class FriendsController extends GetxController {
         // 刷新好友列表
         friendRepository.refresh();
       } else {
-        Get.snackbar('错误', result.message);
+        Get.snackbar(slang.t.errors.error, result.message);
       }
     } finally {
       acceptingRequestIds.remove(requestId);
@@ -121,7 +121,7 @@ class FriendsController extends GetxController {
       if (result.isSuccess) {
         requestRepository.refresh();
       } else {
-        Get.snackbar('错误', result.message);
+        Get.snackbar(slang.t.errors.error, result.message);
       }
     } finally {
       rejectingRequestIds.remove(requestId);
@@ -138,7 +138,7 @@ class FriendsController extends GetxController {
       if (result.isSuccess) {
         requestRepository.refresh();
       } else {
-        Get.snackbar('错误', result.message);
+        Get.snackbar(slang.t.errors.error, result.message);
       }
     } finally {
       cancelingRequestIds.remove(requestId);

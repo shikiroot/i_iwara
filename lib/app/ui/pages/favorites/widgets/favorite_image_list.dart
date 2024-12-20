@@ -5,7 +5,7 @@ import 'package:i_iwara/app/ui/pages/favorites/controllers/favorites_controller.
 import 'package:i_iwara/app/ui/pages/popular_media_list/widgets/image_model_card_list_item_widget.dart';
 import 'package:i_iwara/app/ui/widgets/my_loading_more_indicator_widget.dart';
 import 'package:loading_more_list/loading_more_list.dart';
-
+import 'package:i_iwara/i18n/strings.g.dart' as slang;
 class FavoriteImageList extends StatefulWidget {
   final ScrollController scrollController;
 
@@ -28,6 +28,7 @@ class _FavoriteImageListState extends State<FavoriteImageList>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    final t = slang.Translations.of(context);
     
     return LoadingMoreCustomScrollView(
       controller: widget.scrollController,
@@ -67,7 +68,7 @@ class _FavoriteImageListState extends State<FavoriteImageList>
                                   ),
                                   const SizedBox(height: 8),
                                   Text(
-                                    '点击恢复最爱',
+                                    t.favorites.clickToRestoreFavorite,
                                     style: Theme.of(context)
                                         .textTheme
                                         .bodyMedium

@@ -5,7 +5,7 @@ import 'package:i_iwara/app/ui/pages/friends/controllers/friends_controller.dart
 import 'package:i_iwara/app/ui/widgets/my_loading_more_indicator_widget.dart';
 import 'package:i_iwara/app/ui/widgets/user_card.dart';
 import 'package:loading_more_list/loading_more_list.dart';
-
+import 'package:i_iwara/i18n/strings.g.dart' as slang;
 class FriendList extends StatelessWidget {
   final ScrollController scrollController;
 
@@ -17,6 +17,7 @@ class FriendList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final FriendsController controller = Get.find();
+    final t = slang.Translations.of(context);
 
     return LoadingMoreCustomScrollView(
       controller: scrollController,
@@ -53,7 +54,7 @@ class FriendList extends StatelessWidget {
                                   ),
                                   const SizedBox(height: 8),
                                   Text(
-                                    '点击恢复好友',
+                                    t.friends.clickToRestoreFriend,
                                     style: Theme.of(context)
                                         .textTheme
                                         .bodyMedium

@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:i_iwara/app/repositories/history_repository.dart';
+import 'package:i_iwara/i18n/strings.g.dart';
 import 'history_list_repository.dart';
 
 class HistoryListController extends GetxController {
@@ -51,7 +52,7 @@ class HistoryListController extends GetxController {
     await _historyRepository.deleteRecords(selectedRecords.toList());
     selectedRecords.clear();
     repository.refresh();
-    Get.snackbar('已删除选中的记录', '');
+    Get.snackbar(t.common.success, '');
   }
 
   void search(String keyword) {

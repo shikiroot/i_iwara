@@ -8,6 +8,7 @@ import 'package:i_iwara/app/ui/pages/play_list/controllers/play_list_controller.
 import 'package:i_iwara/app/ui/pages/play_list/controllers/play_list_repository.dart';
 import 'package:i_iwara/app/ui/widgets/my_loading_more_indicator_widget.dart';
 import 'package:loading_more_list/loading_more_list.dart';
+import 'package:i_iwara/i18n/strings.g.dart' as slang;
 
 class PlayListPage extends StatefulWidget {
   final String userId;
@@ -53,7 +54,7 @@ class _PlayListPageState extends State<PlayListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('我的播放列表'),
+        title: Text(slang.t.playList.myPlayList),
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
@@ -153,7 +154,7 @@ class _PlayListPageState extends State<PlayListPage> {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    '${playlist.numVideos} 个视频',
+                    slang.t.common.videoCount(num: playlist.numVideos),
                     style: TextStyle(
                       color: Theme.of(c).textTheme.bodySmall?.color,
                       fontSize: 12,
@@ -173,11 +174,11 @@ class _PlayListPageState extends State<PlayListPage> {
 
     Get.dialog(
       AlertDialog(
-        title: const Text('创建播放列表'),
+        title: Text(slang.t.common.createPlayList),
         content: TextField(
           controller: textController,
-          decoration: const InputDecoration(
-            hintText: '请输入播放列表标题',
+          decoration: InputDecoration(
+            hintText: slang.t.common.pleaseEnterNewTitle,
             border: OutlineInputBorder(),
           ),
           autofocus: true,
@@ -185,7 +186,7 @@ class _PlayListPageState extends State<PlayListPage> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('取消'),
+            child: Text(slang.t.common.cancel),
           ),
           TextButton(
             onPressed: () async {
@@ -195,7 +196,7 @@ class _PlayListPageState extends State<PlayListPage> {
                 listSourceRepository.refresh();
               }
             },
-            child: const Text('创建'),
+            child: Text(slang.t.common.create),
           ),
         ],
       ),
@@ -205,22 +206,23 @@ class _PlayListPageState extends State<PlayListPage> {
   _showHelpDialog() {
     Get.dialog(
       AlertDialog(
-        title: const Text('💡 友情提示', style: TextStyle(fontSize: 18)),
-        content: const ExtendedText(
-          '亲爱的用户:\n\n'
-          '⚠️ iwara的播放列表系统目前还不太完善...\n'
-          '• 不支持设置封面\n'
-          '• 不能删除列表\n'
-          '• 无法设为私密\n\n'
-          '没错...创建的列表会一直存在且对所有人可见 😅\n\n'
-          '💡 小建议: 如果您比较注重隐私，建议使用"点赞"功能来收藏内容~\n\n'
-          '🤝 如果你有其他的建议或想法，欢迎来 GitHub 讨论!',
+        title: Text('💡 ${slang.t.playList.friendlyTips}',
+            style: TextStyle(fontSize: 18)),
+        content: ExtendedText(
+          '${slang.t.playList.dearUser}:\n\n'
+          '⚠️ ${slang.t.playList.iwaraPlayListSystemIsNotPerfectYet}\n'
+          '• ${slang.t.playList.notSupportSetCover}\n'
+          '• ${slang.t.playList.notSupportDeleteList}\n'
+          '• ${slang.t.playList.notSupportSetPrivate}\n\n'
+          '${slang.t.playList.yesCreateListWillAlwaysExistAndVisibleToEveryone}😅\n\n'
+          '💡 ${slang.t.playList.smallSuggestion}: ${slang.t.playList.useLikeToCollectContent}\n\n'
+          '🤝 ${slang.t.playList.welcomeToDiscussOnGitHub}',
           style: TextStyle(fontSize: 15, height: 1.5),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('明白了', style: TextStyle(fontSize: 16)),
+            child: Text(slang.t.playList.iUnderstand, style: TextStyle(fontSize: 16)),
           ),
         ],
       ),

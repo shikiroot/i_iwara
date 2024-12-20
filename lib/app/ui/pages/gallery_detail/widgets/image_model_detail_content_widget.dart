@@ -29,6 +29,7 @@ import 'horizontial_image_list.dart';
 import 'my_gallery_photo_view_wrapper.dart';
 import '../../../widgets/follow_button_widget.dart';
 import '../../../widgets/like_button_widget.dart';
+import 'package:i_iwara/i18n/strings.g.dart' as slang;
 
 class ImageModelDetailContent extends StatelessWidget {
   final GalleryDetailController controller;
@@ -138,16 +139,17 @@ class ImageModelDetailContent extends StatelessWidget {
 
   // 构建错误信息区域
   Widget _buildErrorContent(BuildContext context) {
+    final t = slang.Translations.of(context);
     return CommonErrorWidget(
-      text: controller.errorMessage.value ?? '在加载图库时出现了错误',
+      text: controller.errorMessage.value ?? t.errors.errorWhileLoadingGallery,
       children: [
         ElevatedButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('回到上一页'),
+          child: Text(t.common.back),
         ),
         ElevatedButton(
           onPressed: () => controller.fetchGalleryDetail(),
-          child: const Text('重试'),
+          child: Text(t.common.retry),
         ),
       ],
     );
@@ -156,9 +158,10 @@ class ImageModelDetailContent extends StatelessWidget {
   // 构建图片列表内容
   Widget _buildImageListContent(BuildContext context) {
     ImageModel? im = controller.imageModelInfo.value;
+    final t = slang.Translations.of(context);
     if (im == null) {
       return _contentLayout(
-          context, const MyEmptyWidget(message: "啊？怎么会没有数据呢？出错了吧 :<"));
+          context, MyEmptyWidget(message: t.errors.howCouldThereBeNoDataItCantBePossible));
     }
 
     List<ImageItem> imageItems = im.files
@@ -180,7 +183,7 @@ class ImageModelDetailContent extends StatelessWidget {
         child: HorizontalImageList(
           images: imageItems,
           onItemTap: (item) => _onImageTap(context, item, imageItems),
-          menuItemsBuilder: (context, item) => _buildImageMenuItems(item),
+          menuItemsBuilder: (context, item) => _buildImageMenuItems(context, item),
         ),
       ),
     );
@@ -201,34 +204,35 @@ class ImageModelDetailContent extends StatelessWidget {
         builder: (context) => MyGalleryPhotoViewWrapper(
           galleryItems: imageItems,
           initialIndex: index,
-          menuItemsBuilder: (context, item) => _buildImageMenuItems(item),
+          menuItemsBuilder: (context, item) => _buildImageMenuItems(context, item),
         ),
       ),
     );
   }
 
   // 构建图片的菜单项
-  List<MenuItem> _buildImageMenuItems(ImageItem item) {
+  List<MenuItem> _buildImageMenuItems(BuildContext context, ImageItem item) {
+    final t = slang.Translations.of(context);
     return [
       MenuItem(
-        title: '复制链接地址',
+        title: t.galleryDetail.copyLink,
         icon: Icons.copy,
         onTap: () => _copyLink(item),
       ),
       MenuItem(
-        title: '复制图片',
+        title: t.galleryDetail.copyImage,
         icon: Icons.copy,
         onTap: () => _copyImage(item),
       ),
       if (GetPlatform.isDesktop && !GetPlatform.isWeb)
         MenuItem(
-          title: '另存为',
+          title: t.galleryDetail.saveAs,
           icon: Icons.download,
           onTap: () => _downloadImageForDesktop(item),
         ),
       if (GetPlatform.isIOS || GetPlatform.isAndroid)
         MenuItem(
-          title: '保存到相册',
+          title: t.galleryDetail.saveToAlbum,
           icon: Icons.save,
           onTap: () => _downloadImageForMobile(item),
         ),
@@ -240,13 +244,13 @@ class ImageModelDetailContent extends StatelessWidget {
     String url =
         item.data.originalUrl.isEmpty ? item.data.url : item.data.originalUrl;
     if (url.isEmpty) {
-      Get.snackbar('提示', '链接地址为空');
+      Get.snackbar(slang.t.common.tips, slang.t.common.linkIsEmpty);
       return;
     }
     final data = DataWriterItem();
     data.add(Formats.plainText(url));
     SystemClipboard.instance?.write([data]);
-    Get.snackbar('提示', '链接地址已复制到剪贴板');
+    Get.snackbar(slang.t.common.tips, slang.t.common.linkCopiedToClipboard);
   }
 
   // 复制图片到剪贴板
@@ -254,7 +258,7 @@ class ImageModelDetailContent extends StatelessWidget {
     String url =
         item.data.originalUrl.isEmpty ? item.data.url : item.data.originalUrl;
     if (url.isEmpty) {
-      Get.snackbar('提示', '链接地址为空');
+      Get.snackbar(slang.t.common.tips, slang.t.common.linkIsEmpty);
       return;
     }
 
@@ -267,16 +271,16 @@ class ImageModelDetailContent extends StatelessWidget {
           DataWriterItem(suggestedName: '${item.data.id}.png');
       dataWriterItem.add(Formats.png(bytes));
       SystemClipboard.instance?.write([dataWriterItem]);
-      Get.snackbar('提示', '图片已复制到剪贴板');
+      Get.snackbar(slang.t.common.tips, slang.t.common.imageCopiedToClipboard);
     } catch (e) {
-      Get.snackbar('提示', '复制图片失败');
+      Get.snackbar(slang.t.common.tips, slang.t.common.copyImageFailed);
     }
   }
 
   // 下载图片: 移动端
   void _downloadImageForMobile(ImageItem item) async {
     // TODO: 移动端的保存图片功能还在开发中
-    Get.snackbar('提示', '移动端的保存图片功能还在开发中');
+    Get.snackbar(slang.t.common.tips, slang.t.common.mobileSaveImageIsUnderDevelopment);
   }
 
   // 下载图片: 桌面
@@ -290,7 +294,7 @@ class ImageModelDetailContent extends StatelessWidget {
       String url =
           item.data.originalUrl.isEmpty ? item.data.url : item.data.originalUrl;
       if (url.isEmpty) {
-        Get.snackbar('提示', '链接地址为空');
+        Get.snackbar(slang.t.common.tips, slang.t.common.linkIsEmpty);
         return;
       }
 
@@ -301,9 +305,9 @@ class ImageModelDetailContent extends StatelessWidget {
             .data;
         final String filePath = '$directoryPath/${item.data.id}.png';
         await File(filePath).writeAsBytes(bytes);
-        Get.snackbar('提示', '图片已保存到：$filePath');
+        Get.snackbar(slang.t.common.tips, '${slang.t.common.imageSavedTo}: $filePath');
       } catch (e) {
-        Get.snackbar('提示', '保存图片失败');
+        Get.snackbar(slang.t.common.tips, slang.t.common.saveImageFailed);
       }
     }
   }
@@ -377,7 +381,7 @@ class ImageModelDetailContent extends StatelessWidget {
         onTap: () {
           final user = controller.imageModelInfo.value?.user;
           if (user != null) {
-            NaviService.navigateToAuthorProfilePage(user.username ?? '');
+            NaviService.navigateToAuthorProfilePage(user.username);
           }
         },
         behavior: HitTestBehavior.opaque,
@@ -492,7 +496,7 @@ class ImageModelDetailContent extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Text(
-        '发布时间：${controller.imageModelInfo.value?.createdAt?.customFormat("SHORT_CHINESE")}    观看次数：${controller.imageModelInfo.value?.numViews?.customFormat()}',
+        '${slang.t.galleryDetail.publishedAt}: ${controller.imageModelInfo.value?.createdAt?.customFormat("SHORT_CHINESE")}    ${slang.t.galleryDetail.viewsCount}: ${controller.imageModelInfo.value?.numViews?.customFormat()}',
         style: const TextStyle(color: Colors.grey),
       ),
     );

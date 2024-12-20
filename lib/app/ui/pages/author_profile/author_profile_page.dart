@@ -16,11 +16,11 @@ import 'package:shimmer/shimmer.dart';
 
 import '../../../../common/constants.dart';
 import '../../../services/user_service.dart';
-import '../../widgets/sliding_card_widget.dart';
 import '../comment/widgets/comment_entry_area_widget.dart';
 import '../comment/widgets/comment_section_widget.dart';
 import '../popular_media_list/widgets/media_description_widget.dart';
 import 'controllers/authro_profile_controller.dart';
+import 'package:i_iwara/i18n/strings.g.dart' as slang;
 
 class AuthorProfilePage extends StatefulWidget {
   final String username;
@@ -88,6 +88,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
   }
 
   void showCommentModal(BuildContext context) {
+    final t = slang.Translations.of(context);
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -108,8 +109,8 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                   padding: const EdgeInsets.all(16),
                   child: Row(
                     children: [
-                      const Text(
-                        '评论列表',
+                      Text(
+                        t.common.commentList,
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -121,11 +122,11 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                         onPressed: () {
                           Get.dialog(
                             CommentInputDialog(
-                              title: '发表评论',
-                              submitText: '发表',
+                              title: t.common.sendComment,
+                              submitText: t.common.send,
                               onSubmit: (text) async {
                                 if (text.trim().isEmpty) {
-                                  Get.snackbar('错误', '评论内容不能为空');
+                                  Get.snackbar(t.errors.error, t.errors.commentCanNotBeEmpty);
                                   return;
                                 }
                                 await profileController.commentController.postComment(text);
@@ -135,7 +136,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                           );
                         },
                         icon: const Icon(Icons.add_comment),
-                        label: const Text('发表评论'),
+                        label: Text(t.common.sendComment),
                       ),
                       // 关闭按钮
                       IconButton(
@@ -161,18 +162,19 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
 
   @override
   Widget build(BuildContext context) {
+    final t = slang.Translations.of(context);
     if (username.isEmpty) {
-      return const Center(child: Text('用户名不能为空'));
+      return Center(child: Text(t.errors.errorWhileFetching));
     }
 
     return Obx(() {
       if (profileController.errorWidget.value != null) {
-        return _buildErrorWidget();
+        return _buildErrorWidget(context);
       } else if (profileController.isProfileLoading.value) {
         return const AuthorProfileSkeleton();
       } else if (!profileController.isProfileLoading.value &&
           profileController.author.value == null) {
-        return const Center(child: Text('未找到用户'));
+        return Center(child: Text(t.errors.errorWhileFetching));
       }
       
       return _buildMainContent();
@@ -194,7 +196,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                   _buildHeaderSliver(context, innerBoxIsScrolled),
               onlyOneScrollInBody: true,
               pinnedHeaderSliverHeightBuilder: () => _calculatePinnedHeaderHeight(),
-              body: _buildTabBarView(),
+              body: _buildTabBarView(context),
             ),
           ),
         ],
@@ -219,7 +221,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
               const VerticalDivider(width: 1),
               // 右侧区域 - Tab内容
               Expanded(
-                child: _buildTabBarView(),
+                child: _buildTabBarView(context),
               ),
             ],
           ),
@@ -228,10 +230,11 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
     );
   }
 
-  Widget _buildErrorWidget() {
+  Widget _buildErrorWidget(BuildContext context) {
+    final t = slang.Translations.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('用户资料'),
+        title: Text(t.authorProfile.userProfile),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -243,7 +246,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
             onPressed: () {
               profileController.fetchAuthorDescription();
             },
-            child: const Text('重试'),
+            child: Text(t.common.retry),
           )
         ],
       ),
@@ -264,6 +267,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
   }
 
   List<Widget> _buildHeaderSliver(BuildContext context, bool innerBoxIsScrolled) {
+    final t = slang.Translations.of(context);
     return <Widget>[
       // header背景图
       SliverAppBar(
@@ -370,7 +374,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                             return isPremium
                                 ? Tooltip(
                                     triggerMode: TooltipTriggerMode.tap,
-                                    message: '高级会员',
+                                    message: t.common.premium,
                                     preferBelow: false,
                                     child: Icon(
                                       Icons.verified,
@@ -388,7 +392,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                             return isFollower
                                 ? Tooltip(
                                     triggerMode: TooltipTriggerMode.tap,
-                                    message: '粉丝',
+                                    message: t.common.follower,
                                     preferBelow: false,
                                     child: Icon(
                                       Icons.favorite,
@@ -406,7 +410,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                             return isFriend
                                 ? Tooltip(
                                     triggerMode: TooltipTriggerMode.tap,
-                                    message: '朋友',
+                                    message: t.common.friend,
                                     preferBelow: false,
                                     child: Icon(
                                       Icons.people,
@@ -443,7 +447,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                                 profileController.followerCounts.value
                                     .customFormat();
                             return Text(
-                              '$followerCount 粉丝',
+                              '$followerCount ${t.common.follower}',
                               style: TextStyle(
                                   color: Colors.grey, fontSize: 16),
                             );
@@ -454,7 +458,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                                 profileController.followingCounts.value
                                     .customFormat();
                             return Text(
-                              '$followingCount 关注',
+                              '$followingCount ${t.common.following}',
                               style: TextStyle(
                                   color: Colors.grey, fontSize: 16),
                             );
@@ -469,7 +473,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                               return SizedBox.shrink();
                             }
                             return Text(
-                              '$videoCount 视频',
+                              '$videoCount ${t.common.video}',
                               style: TextStyle(
                                   color: Colors.grey, fontSize: 16),
                             );
@@ -503,7 +507,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.orange,
                                 ),
-                                child: Text('取消申请'),
+                                child: Text(t.common.cancelFriendRequest),
                               );
                               // 加载中
                             } else if (profileController
@@ -513,7 +517,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                                 highlightColor: Colors.grey[100]!,
                                 child: ElevatedButton(
                                   onPressed: () {},
-                                  child: Text('加载中'),
+                                  child: Text(t.common.loading),
                                 ),
                               );
                               // 是朋友
@@ -530,7 +534,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                                   profileController
                                       .cancelFriendRequest();
                                 },
-                                child: Text('解除朋友'),
+                                child: Text(t.common.removeFriend),
                               );
                             } else {
                               return ElevatedButton(
@@ -539,7 +543,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                                   profileController
                                       .sendFriendRequest();
                                 },
-                                child: Text('添加朋友'),
+                                child: Text(t.common.addFriend),
                               );
                             }
                           }),
@@ -561,7 +565,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                                 highlightColor: Colors.grey[100]!,
                                 child: ElevatedButton(
                                   onPressed: () {},
-                                  child: const Text('加载中'),
+                                  child: Text(t.common.loading),
                                 ),
                               );
                             } else if (profileController
@@ -573,7 +577,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                                   profileController
                                       .unfollowAuthor();
                                 },
-                                child: Text('已关注'),
+                                child: Text(t.common.followed),
                               );
                             } else {
                               return ElevatedButton(
@@ -582,7 +586,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                                   profileController
                                       .followAuthor();
                                 },
-                                child: Text('关注'),
+                                child: Text(t.common.follow),
                               );
                             }
                           }),
@@ -632,7 +636,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                                         '',
                                   ));
                                 },
-                                child: const Text('已特别关注'),
+                                child: Text(t.common.specialFollowed),
                               );
                             } else {
                               return ElevatedButton(
@@ -659,7 +663,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                                         '',
                                   ));
                                 },
-                                child: const Text('特别关注'),
+                                child: Text(t.common.specialFollow),
                               );
                             }
                           })
@@ -696,7 +700,8 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
     ];
   }
 
-  Widget _buildTabBarView() {
+  Widget _buildTabBarView(BuildContext context) {
+    final t = slang.Translations.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -719,13 +724,13 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                 tabAlignment: TabAlignment.start,
                 dividerColor: Colors.transparent,
                 controller: primaryTC,
-                tabs: const [
+                tabs: [
                   Tab(
                     child: Row(
                       children: [
                         Icon(Icons.video_collection),
                         SizedBox(width: 8),
-                        Text("视频"),
+                        Text(t.common.video),
                       ],
                     ),
                   ),
@@ -734,7 +739,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                       children: [
                         Icon(Icons.image),
                         SizedBox(width: 8),
-                        Text("图库"),
+                        Text(t.common.gallery),
                       ],
                     ),
                   ),
@@ -743,7 +748,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                       children: [
                         Icon(Icons.playlist_play),
                         SizedBox(width: 8), 
-                        Text("播放列表"),
+                        Text(t.common.playlist),
                       ],
                     ),
                   ),
@@ -760,7 +765,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                   ? ProfileVideoTabListWidget(
                       key: const Key('video'),
                       userId: profileController.author.value!.id,
-                      tabKey: '视频',
+                      tabKey: t.common.video,
                       tc: videoSecondaryTC,
                       onFetchFinished: ({int? count}) {
                         profileController.videoCounts.value = count;
@@ -770,7 +775,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                   ? ProfileImageModelTabListWidget(
                       key: const Key('image'),
                       userId: profileController.author.value!.id,
-                      tabKey: '图库',
+                      tabKey: t.common.gallery,
                       tc: imageSecondaryTC,
                       onFetchFinished: ({int? count}) {})
                   : const SizedBox.shrink()),
@@ -778,7 +783,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                   ? ProfilePlaylistTabListWidget(
                       key: const Key('playlist'),
                       userId: profileController.author.value!.id,
-                      tabKey: '播放列表',
+                      tabKey: t.common.playlist,
                       tc: playlistSecondaryTC,
                       onFetchFinished: ({int? count}) {})
                   : const SizedBox.shrink()),

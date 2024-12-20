@@ -12,7 +12,7 @@ import 'package:i_iwara/utils/logger_utils.dart';
 import '../../../../../common/enums/media_enums.dart';
 import '../../../../models/user.model.dart';
 import '../../video_detail/controllers/related_media_controller.dart';
-
+import 'package:i_iwara/i18n/strings.g.dart' as slang;
 class GalleryDetailController extends GetxController {
   final String imageModelId;
   final GalleryService _galleryService = Get.find();
@@ -62,7 +62,7 @@ class GalleryDetailController extends GetxController {
           await _galleryService.fetchGalleryDetail(imageModelId);
       if (!res.isSuccess) {
         errorMessage.value = res.message;
-        Get.snackbar('错误', res.message);
+        Get.snackbar(slang.t.errors.error, res.message);
         return;
       }
 

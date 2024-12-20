@@ -7,15 +7,165 @@ common:
   delete: Delete
   loading: Loading...
   privacyHint: Privacy content, not displayed
-
+  latest: Latest
+  likesCount: Likes
+  viewsCount: Views
+  popular: Popular
+  trending: Trending
+  commentList: Comment List
+  sendComment: Send Comment
+  send: Send
+  retry: Retry
+  premium: Premium
+  follower: Follower
+  friend: Friend
+  video: Video
+  following: Following
+  cancelFriendRequest: Cancel Request
+  addFriend: Add Friend
+  removeFriend: Remove Friend
+  followed: Followed
+  follow: Follow
+  specialFollow: Special Follow
+  specialFollowed: Special Followed
+  gallery: Gallery
+  playlist: Playlist
+  commentPostedSuccessfully: Comment Posted Successfully
+  commentPostedFailed: Comment Posted Failed
+  success: Success
+  commentDeletedSuccessfully: Comment Deleted Successfully
+  commentUpdatedSuccessfully: Comment Updated Successfully
+  totalComments: '${count} Comments'
+  writeYourCommentHere: Write your comment here...
+  tmpNoReplies: No replies yet
+  loadMore: Load More
+  noMoreDatas: No more data
+  selectTranslationLanguage: Select Translation Language
+  translate: Translate
+  translateFailedPleaseTryAgainLater: Translate failed, please try again later
+  translationResult: Translation Result
+  justNow: Just Now
+  minutesAgo: '${num} minutes ago'
+  hoursAgo: '${num} hours ago'
+  daysAgo: '${num} days ago'
+  editedAt: 'Edited at ${num} ago'
+  editComment: Edit Comment
+  commentUpdated: Comment Updated
+  replyComment: Reply Comment
+  reply: Reply
+  edit: Edit
+  unknownUser: Unknown User
+  me: Me
+  author: Author
+  admin: Admin
+  viewReplies: 'View Replies (${num})'
+  hideReplies: Hide Replies
+  confirmDelete: Confirm Delete
+  areYouSureYouWantToDeleteThisItem: Are you sure you want to delete this item?
+  tmpNoComments: No comments yet
+  refresh: Refresh
+  back: Back
+  tips: Tips
+  linkIsEmpty: Link is empty
+  linkCopiedToClipboard: Link copied to clipboard
+  imageCopiedToClipboard: Image copied to clipboard
+  copyImageFailed: Copy image failed
+  mobileSaveImageIsUnderDevelopment: Mobile save image is under development
+  imageSavedTo: Image saved to
+  saveImageFailed: Save image failed
+  close: Close
+  more: More
+  moreFeaturesToBeDeveloped: More features to be developed
+  all: All
+  selectedRecords: 'Selected ${num} records'
+  cancelSelectAll: Cancel Select All
+  selectAll: Select All
+  exitEditMode: Exit Edit Mode
+  areYouSureYouWantToDeleteSelectedItems: 'Are you sure you want to delete selected ${num} items?'
+  searchHistoryRecords: Search History Records...
+  settings: Settings
+  subscriptions: Subscriptions
+  videoCount: '${num} videos'
+  share: Share
+  areYouSureYouWantToShareThisPlaylist: Are you sure you want to share this playlist?
+  editTitle: Edit Title
+  editMode: Edit Mode
+  pleaseEnterNewTitle: Please enter new title
+  createPlayList: Create Play List
+  create: Create
 auth:
   login: Login
   logout: Logout
   email: Email
   password: Password
-  welcome: "Welcome, $name!"
+  loginOrRegister: Login / Register
+  register: Register
+  pleaseEnterEmail: Please enter email
+  pleaseEnterPassword: Please enter password
+  passwordMustBeAtLeast6Characters: Password must be at least 6 characters
+  pleaseEnterCaptcha: Please enter captcha
+  captcha: Captcha
+  refreshCaptcha: Refresh Captcha
+  captchaNotLoaded: Captcha not loaded
+  loginSuccess: Login Success
+  emailVerificationSent: Email verification sent
 
 errors:
+  error: Error
   required: This field is required
   invalidEmail: Invalid email address
   networkError: Network error, please try again
+  errorWhileFetching: Error while fetching
+  commentCanNotBeEmpty: Comment content cannot be empty
+  errorWhileFetchingReplies: Error while fetching replies, please check network connection
+  canNotFindCommentController: Can not find comment controller
+  errorWhileLoadingGallery: Error while loading gallery
+  howCouldThereBeNoDataItCantBePossible: How could there be no data? It can't be possible :<
+  unsupportedImageFormat: 'Unsupported image format: ${str}'
+  invalidGalleryId: Invalid gallery ID
+
+friends:
+  clickToRestoreFriend: Click to restore friend
+  friendsList: Friends List
+  friendRequests: Friend Requests
+  friendRequestsList: Friend Requests List
+
+authorProfile:
+  noMoreDatas: No more data
+  userProfile: User Profile
+
+favorites:
+  clickToRestoreFavorite: Click to restore favorite
+  myFavorites: My Favorites
+
+galleryDetail:
+  copyLink: Copy Link
+  copyImage: Copy Image
+  saveAs: Save As
+  saveToAlbum: Save to Album
+  publishedAt: Published At
+  viewsCount: Views Count
+  imageLibraryFunctionIntroduction: Image Library Function Introduction
+  rightClickToSaveSingleImage: Right Click to Save Single Image
+  batchSave: Batch Save
+  keyboardLeftAndRightToSwitch: Keyboard Left and Right to Switch
+  keyboardUpAndDownToZoom: Keyboard Up and Down to Zoom
+  mouseWheelToSwitch: Mouse Wheel to Switch
+  ctrlAndMouseWheelToZoom: CTRL + Mouse Wheel to Zoom
+  moreFeaturesToBeDiscovered: More Features to Be Discovered...
+  authorOtherGalleries: Author's Other Galleries
+  relatedGalleries: Related Galleries
+
+playList:
+  myPlayList: My Play List
+  friendlyTips: Friendly Tips
+  dearUser: Dear User
+  iwaraPlayListSystemIsNotPerfectYet: iwara's play list system is not perfect yet
+  notSupportSetCover: Not support set cover
+  notSupportDeleteList: Not support delete list
+  notSupportSetPrivate: Not support set private
+  yesCreateListWillAlwaysExistAndVisibleToEveryone: Yes... create list will always exist and visible to everyone
+  smallSuggestion: Small Suggestion
+  useLikeToCollectContent: If you are more concerned about privacy, it is recommended to use the "like" function to collect content
+  welcomeToDiscussOnGitHub: If you have other suggestions or ideas, welcome to discuss on GitHub!
+  iUnderstand: I Understand

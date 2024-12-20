@@ -9,6 +9,7 @@ import '../../../models/captcha.model.dart';
 import '../../../routes/app_routes.dart';
 import '../../../services/auth_service.dart';
 import '../../../services/user_service.dart';
+import 'package:i_iwara/i18n/strings.g.dart' as slang;
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -77,7 +78,7 @@ class _LoginPageState extends State<LoginPage>
       if (res.isSuccess) {
         _captcha.value = res.data;
       } else {
-        Get.snackbar('错误', res.message);
+        Get.snackbar(slang.t.errors.error, res.message);
       }
     } finally {
       setState(() {
@@ -100,9 +101,10 @@ class _LoginPageState extends State<LoginPage>
 
   @override
   Widget build(BuildContext context) {
+    final t = slang.Translations.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('登录 / 注册'),
+        title: Text(t.auth.loginOrRegister),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(kToolbarHeight),
           child: Container(
@@ -132,8 +134,8 @@ class _LoginPageState extends State<LoginPage>
                   ),
                   padding: EdgeInsets.zero,
                   tabs: [
-                    Tab(text: '登录'),
-                    Tab(text: '注册'),
+                    Tab(text: t.auth.login),
+                    Tab(text: t.auth.register),
                   ],
                 ),
               ],
@@ -144,14 +146,15 @@ class _LoginPageState extends State<LoginPage>
       body: TabBarView(
         controller: _tabController,
         children: [
-          _buildLoginForm(),
-          _buildRegisterForm(),
+          _buildLoginForm(context),
+          _buildRegisterForm(context),
         ],
       ),
     );
   }
 
-  Widget _buildLoginForm() {
+  Widget _buildLoginForm(BuildContext context) {
+    final t = slang.Translations.of(context);
     return Center(
       child: SingleChildScrollView(
         child: Padding(
@@ -175,7 +178,7 @@ class _LoginPageState extends State<LoginPage>
                       TextFormField(
                         controller: _loginEmailController,
                         decoration: InputDecoration(
-                          labelText: '邮箱',
+                          labelText: t.auth.email,
                           prefixIcon: const Icon(Icons.email),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
@@ -185,10 +188,10 @@ class _LoginPageState extends State<LoginPage>
                         textInputAction: TextInputAction.next,
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
-                            return '请输入邮箱';
+                            return t.auth.pleaseEnterEmail;
                           }
                           if (!GetUtils.isEmail(value.trim())) {
-                            return '请输入有效的邮箱地址';
+                            return t.errors.invalidEmail;
                           }
                           return null;
                         },
@@ -201,7 +204,7 @@ class _LoginPageState extends State<LoginPage>
                       TextFormField(
                         controller: _loginPasswordController,
                         decoration: InputDecoration(
-                          labelText: '密码',
+                          labelText: t.auth.password,
                           prefixIcon: const Icon(Icons.lock),
                           suffixIcon: IconButton(
                             icon: Icon(_isPasswordVisible
@@ -222,10 +225,10 @@ class _LoginPageState extends State<LoginPage>
                         focusNode: _loginPasswordFocus,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return '请输入密码';
+                            return t.auth.pleaseEnterPassword;
                           }
                           if (value.length < 6) {
-                            return '密码至少需要6位';
+                            return t.auth.passwordMustBeAtLeast6Characters;
                           }
                           return null;
                         },
@@ -255,7 +258,7 @@ class _LoginPageState extends State<LoginPage>
                                   strokeWidth: 2,
                                 ),
                               )
-                            : Text('登录', style: const TextStyle(fontSize: 16)),
+                            : Text(t.auth.login, style: const TextStyle(fontSize: 16)),
                       ),
                     ],
                   ),
@@ -268,7 +271,8 @@ class _LoginPageState extends State<LoginPage>
     );
   }
 
-  Widget _buildRegisterForm() {
+  Widget _buildRegisterForm(BuildContext context) {
+    final t = slang.Translations.of(context);
     return Center(
       child: SingleChildScrollView(
         child: Padding(
@@ -292,7 +296,7 @@ class _LoginPageState extends State<LoginPage>
                       TextFormField(
                         controller: _registerEmailController,
                         decoration: InputDecoration(
-                          labelText: '邮箱',
+                          labelText: t.auth.email,
                           prefixIcon: const Icon(Icons.email),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
@@ -302,10 +306,10 @@ class _LoginPageState extends State<LoginPage>
                         textInputAction: TextInputAction.next,
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
-                            return '请输入邮箱';
+                            return t.auth.pleaseEnterEmail;
                           }
                           if (!GetUtils.isEmail(value.trim())) {
-                            return '请输入有效的邮箱地址';
+                            return t.errors.invalidEmail;
                           }
                           return null;
                         },
@@ -333,7 +337,7 @@ class _LoginPageState extends State<LoginPage>
                             TextFormField(
                               controller: _captchaController,
                               decoration: InputDecoration(
-                                labelText: '验证码',
+                                labelText: t.auth.captcha,
                                 prefixIcon: const Icon(Icons.security),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12),
@@ -343,7 +347,7 @@ class _LoginPageState extends State<LoginPage>
                               focusNode: _registerCaptchaFocus,
                               validator: (value) {
                                 if (value == null || value.trim().isEmpty) {
-                                  return '请输入验证码';
+                                  return t.auth.pleaseEnterCaptcha;
                                 }
                                 return null;
                               },
@@ -355,12 +359,12 @@ class _LoginPageState extends State<LoginPage>
                             ),
                             TextButton(
                               onPressed: _isCaptchaLoading ? null : _fetchCaptcha,
-                              child: Text('刷新验证码'),
+                              child: Text(t.auth.refreshCaptcha),
                             ),
                           ],
                         )
                       else
-                        const Text('无法加载验证码'),
+                        Text(t.auth.captchaNotLoaded),
                       const SizedBox(height: 24),
                       ElevatedButton(
                         onPressed: _isRegistering
@@ -385,7 +389,7 @@ class _LoginPageState extends State<LoginPage>
                                   strokeWidth: 2,
                                 ),
                               )
-                            : Text('注册', style: const TextStyle(fontSize: 16)),
+                            : Text(t.auth.register, style: const TextStyle(fontSize: 16)),
                       ),
                     ],
                   ),
@@ -411,14 +415,14 @@ class _LoginPageState extends State<LoginPage>
 
       if (result.isSuccess) {
         await _userService.fetchUserProfile();
-        Get.snackbar('成功', '登录成功');
+        Get.snackbar(slang.t.common.success, slang.t.auth.loginSuccess);
         if (Get.previousRoute == Routes.LOGIN) {
           Get.offAllNamed(Routes.HOME);
         } else {
           Get.back();
         }
       } else {
-        Get.snackbar('错误', result.message);
+        Get.snackbar(slang.t.errors.error, result.message);
       }
     } finally {
       setState(() {
@@ -433,8 +437,8 @@ class _LoginPageState extends State<LoginPage>
 
     if (_captcha.value == null) {
       Get.snackbar(
-        '错误',
-        '验证码未加载',
+        slang.t.errors.error,
+        slang.t.auth.captchaNotLoaded,
         snackPosition: SnackPosition.bottom,
       );
       return;
@@ -449,14 +453,14 @@ class _LoginPageState extends State<LoginPage>
           await _authService.register(email, _captcha.value!.id, captchaAnswer);
       if (result.isSuccess) {
         Get.snackbar(
-          '成功',
-          '邮箱指令已发送',
+          slang.t.common.success,
+          slang.t.auth.emailVerificationSent,
           snackPosition: SnackPosition.bottom,
         );
         // 切换回登录标签
         _tabController.index = 0;
       } else {
-        Get.snackbar('错误', result.message);
+        Get.snackbar(slang.t.errors.error, result.message);
         // 发生错误时刷新验证码
         _fetchCaptcha();
       }

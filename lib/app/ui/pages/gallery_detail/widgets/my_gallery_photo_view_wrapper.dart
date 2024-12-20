@@ -10,6 +10,7 @@ import 'package:photo_view/photo_view_gallery.dart';
 
 import '../../../widgets/loading_button_widget.dart';
 import 'menu_item_widget.dart';
+import 'package:i_iwara/i18n/strings.g.dart' as slang;
 
 class MyGalleryPhotoViewWrapper extends StatefulWidget {
   const MyGalleryPhotoViewWrapper({
@@ -141,8 +142,8 @@ class _MyGalleryPhotoViewWrapperState extends State<MyGalleryPhotoViewWrapper> {
   void _showInfoModal(BuildContext context) {
     Get.dialog(
       AlertDialog(
-        title: const Text('图库功能介绍'),
-        content: const SingleChildScrollView(
+        title: Text(slang.t.galleryDetail.imageLibraryFunctionIntroduction),
+        content: SingleChildScrollView(
           child: ListBody(
             children: [
               // 右键保存单张图片
@@ -150,7 +151,7 @@ class _MyGalleryPhotoViewWrapperState extends State<MyGalleryPhotoViewWrapper> {
                 children: [
                   Icon(Icons.save),
                   SizedBox(width: 8),
-                  Expanded(child: Text('右键保存单张图片')),
+                  Expanded(child: Text(slang.t.galleryDetail.rightClickToSaveSingleImage)),
                 ],
               ),
               SizedBox(height: 8),
@@ -159,7 +160,8 @@ class _MyGalleryPhotoViewWrapperState extends State<MyGalleryPhotoViewWrapper> {
                 children: [
                   Icon(Icons.save_alt),
                   SizedBox(width: 8),
-                  Expanded(child: Text('批量保存')),
+                  // TODO 批量保存功能还未实现
+                  Expanded(child: Text(slang.t.galleryDetail.batchSave)),
                 ],
               ),
               SizedBox(height: 8),
@@ -168,7 +170,7 @@ class _MyGalleryPhotoViewWrapperState extends State<MyGalleryPhotoViewWrapper> {
                 children: [
                   Icon(Icons.keyboard_arrow_left),
                   SizedBox(width: 8),
-                  Expanded(child: Text('键盘的左右控制切换')),
+                  Expanded(child: Text(slang.t.galleryDetail.keyboardLeftAndRightToSwitch)),
                 ],
               ),
               SizedBox(height: 8),
@@ -177,7 +179,7 @@ class _MyGalleryPhotoViewWrapperState extends State<MyGalleryPhotoViewWrapper> {
                 children: [
                   Icon(Icons.keyboard_arrow_up),
                   SizedBox(width: 8),
-                  Expanded(child: Text('键盘的上下控制缩放')),
+                  Expanded(child: Text(slang.t.galleryDetail.keyboardUpAndDownToZoom)),
                 ],
               ),
               SizedBox(height: 8),
@@ -186,7 +188,7 @@ class _MyGalleryPhotoViewWrapperState extends State<MyGalleryPhotoViewWrapper> {
                 children: [
                   Icon(Icons.swap_vert),
                   SizedBox(width: 8),
-                  Expanded(child: Text('鼠标的滚轮滑动控制切换')),
+                  Expanded(child: Text(slang.t.galleryDetail.mouseWheelToSwitch)),
                 ],
               ),
               SizedBox(height: 8),
@@ -195,7 +197,7 @@ class _MyGalleryPhotoViewWrapperState extends State<MyGalleryPhotoViewWrapper> {
                 children: [
                   Icon(Icons.zoom_in),
                   SizedBox(width: 8),
-                  Expanded(child: Text('CTRL + 鼠标滚轮控制缩放')),
+                  Expanded(child: Text(slang.t.galleryDetail.ctrlAndMouseWheelToZoom)),
                 ],
               ),
               SizedBox(height: 8),
@@ -204,7 +206,7 @@ class _MyGalleryPhotoViewWrapperState extends State<MyGalleryPhotoViewWrapper> {
                 children: [
                   Icon(Icons.thumb_up),
                   SizedBox(width: 8),
-                  Expanded(child: Text('更多功能待发现...')),
+                  Expanded(child: Text(slang.t.galleryDetail.moreFeaturesToBeDiscovered)),
                 ],
               ),
             ],
@@ -212,7 +214,7 @@ class _MyGalleryPhotoViewWrapperState extends State<MyGalleryPhotoViewWrapper> {
         ),
         actions: [
           TextButton(
-            child: const Text('关闭'),
+            child: Text(slang.t.common.close),
             onPressed: () {
               AppService.tryPop();
             },
@@ -417,7 +419,7 @@ class _MyGalleryPhotoViewWrapperState extends State<MyGalleryPhotoViewWrapper> {
                                     ),
                                     const SizedBox(height: 16),
                                     Text(
-                                      '不支持的图片格式: .$fileExtension',
+                                      slang.t.errors.unsupportedImageFormat(str: fileExtension),
                                       style: const TextStyle(
                                         color: Colors.white,
                                         fontSize: 16,
@@ -437,9 +439,9 @@ class _MyGalleryPhotoViewWrapperState extends State<MyGalleryPhotoViewWrapper> {
                                     size: 48,
                                   ),
                                   const SizedBox(height: 16),
-                                  const Text(
-                                    '图片加载失败',
-                                    style: TextStyle(
+                                  Text(
+                                    slang.t.errors.errorWhileLoadingGallery,
+                                    style: const TextStyle(
                                       color: Colors.white,
                                       fontSize: 16,
                                     ),
@@ -449,7 +451,7 @@ class _MyGalleryPhotoViewWrapperState extends State<MyGalleryPhotoViewWrapper> {
                                     onPressed: () => Future(() {
                                       _triggerReload(index);
                                     }),
-                                    text: '点击重试',
+                                    text: slang.t.common.retry,
                                     backgroundColor: Colors.white,
                                     foregroundColor: Colors.black,
                                   ),
@@ -490,7 +492,7 @@ class _MyGalleryPhotoViewWrapperState extends State<MyGalleryPhotoViewWrapper> {
                           children: [
                             // 问号信息按钮
                             IconButton(
-                              tooltip: '使用提示',
+                              tooltip: slang.t.common.tips,
                               icon: const Icon(Icons.help_outline,
                                   color: Colors.white),
                               onPressed: () {
@@ -500,12 +502,12 @@ class _MyGalleryPhotoViewWrapperState extends State<MyGalleryPhotoViewWrapper> {
                             // 更多设置按钮
                             const SizedBox(width: 8),
                             IconButton(
-                              tooltip: '更多',
+                              tooltip: slang.t.common.more,
                               icon: const Icon(Icons.more_vert,
                                   color: Colors.white),
                               onPressed: () {
                                 // TODO 还未实现
-                                Get.snackbar('提示', '更多功能待开发');
+                                Get.snackbar(slang.t.common.tips, slang.t.common.moreFeaturesToBeDeveloped);
                               },
                             ),
                             const SizedBox(width: 8),

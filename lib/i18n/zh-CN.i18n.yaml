@@ -1,4 +1,5 @@
 # zh-CN.i18n.yaml
+# 主要的翻译文件，如果有特殊描述，请使用 '# 注释'
 common:
   appName: Love Iwara
   ok: 确定
@@ -8,15 +9,165 @@ common:
   loading: 加载中...
   # 隐私内容，不与展示
   privacyHint: 隐私内容，不与展示
-
+  latest: 最新
+  likesCount: 点赞数
+  viewsCount: 观看次数
+  popular: 受欢迎的
+  trending: 趋势
+  commentList: 评论列表
+  sendComment: 发表评论
+  send: 发表
+  retry: 重试
+  premium: 高级会员
+  follower: 粉丝
+  friend: 朋友
+  video: 视频
+  following: 关注
+  cancelFriendRequest: 取消申请
+  addFriend: 添加朋友
+  removeFriend: 解除朋友
+  followed: 已关注
+  follow: 关注
+  specialFollow: 特别关注
+  specialFollowed: 已特别关注
+  gallery: 图库
+  playlist: 播放列表
+  commentPostedSuccessfully: 评论发表成功
+  commentPostedFailed: 评论发表失败
+  success: 成功
+  commentDeletedSuccessfully: 评论已删除
+  commentUpdatedSuccessfully: 评论已更新
+  totalComments: '评论 ${count} 条'
+  writeYourCommentHere: 写下你的评论...
+  tmpNoReplies: 暂无回复
+  loadMore: 加载更多
+  noMoreDatas: 没有更多数据了
+  selectTranslationLanguage: 选择翻译语言
+  translate: 翻译
+  translateFailedPleaseTryAgainLater: 翻译失败，请稍后重试
+  translationResult: 翻译结果
+  justNow: 刚刚
+  minutesAgo: '${num}分钟前'
+  hoursAgo: '${num}小时前'
+  daysAgo: '${num}天前'
+  editedAt: '编辑于${num}前'
+  editComment: 编辑评论
+  commentUpdated: 评论已更新
+  replyComment: 回复评论
+  reply: 回复
+  edit: 编辑
+  unknownUser: 未知用户
+  me: 我
+  author: 作者
+  admin: 管理员
+  viewReplies: '查看回复 (${num})'
+  hideReplies: 隐藏回复
+  confirmDelete: 确认删除
+  areYouSureYouWantToDeleteThisItem: 确定要删除这条记录吗？
+  tmpNoComments: 暂无评论
+  refresh: 刷新
+  back: 返回
+  tips: 提示
+  linkIsEmpty: 链接地址为空
+  linkCopiedToClipboard: 链接地址已复制到剪贴板
+  imageCopiedToClipboard: 图片已复制到剪贴板
+  copyImageFailed: 复制图片失败
+  mobileSaveImageIsUnderDevelopment: 移动端的保存图片功能还在开发中
+  imageSavedTo: 图片已保存到
+  saveImageFailed: 保存图片失败
+  close: 关闭
+  more: 更多
+  moreFeaturesToBeDeveloped: 更多功能待开发
+  all: 全部
+  selectedRecords: '已选择 ${num} 条记录'
+  cancelSelectAll: 取消全选
+  selectAll: 全选
+  exitEditMode: 退出编辑模式
+  areYouSureYouWantToDeleteSelectedItems: '确定要删除选中的 ${num} 条记录吗？'
+  searchHistoryRecords: 搜索历史记录...
+  settings: 设置
+  subscriptions: 订阅
+  videoCount: '${num} 个视频'
+  share: 分享
+  areYouSureYouWantToShareThisPlaylist: 要分享这个播放列表吗?
+  editTitle: 编辑标题
+  editMode: 编辑模式
+  pleaseEnterNewTitle: 请输入新标题
+  createPlayList: 创建播放列表
+  create: 创建
 auth:
   login: 登录
   logout: 退出登录
   email: 邮箱
   password: 密码
-  welcome: "欢迎，$name！"
+  loginOrRegister: 登录 / 注册
+  register: 注册
+  pleaseEnterEmail: 请输入邮箱
+  pleaseEnterPassword: 请输入密码
+  passwordMustBeAtLeast6Characters: 密码至少需要6位
+  pleaseEnterCaptcha: 请输入验证码
+  captcha: 验证码
+  refreshCaptcha: 刷新验证码
+  captchaNotLoaded: 无法加载验证码
+  loginSuccess: 登录成功
+  emailVerificationSent: 邮箱指令已发送
 
 errors:
+  error: 错误
   required: 此项必填
   invalidEmail: 邮箱格式不正确
   networkError: 网络错误，请重试
+  errorWhileFetching: 获取信息失败
+  commentCanNotBeEmpty: 评论内容不能为空
+  errorWhileFetchingReplies: 获取回复时出错，请检查网络连接
+  canNotFindCommentController: 无法找到评论控制器
+  errorWhileLoadingGallery: 在加载图库时出现了错误
+  howCouldThereBeNoDataItCantBePossible: 啊？怎么会没有数据呢？出错了吧 :<
+  unsupportedImageFormat: '不支持的图片格式: ${str}'
+  invalidGalleryId: 无效的图库ID
+
+friends:
+  clickToRestoreFriend: 点击恢复好友
+  friendsList: 好友列表
+  friendRequests: 好友请求
+  friendRequestsList: 好友请求列表
+
+authorProfile:
+  noMoreDatas: 没有更多数据了
+  userProfile: 用户资料
+
+favorites:
+  clickToRestoreFavorite: 点击恢复最爱
+  myFavorites: 我的最爱
+
+galleryDetail:
+  copyLink: 复制链接地址
+  copyImage: 复制图片
+  saveAs: 另存为
+  saveToAlbum: 保存到相册
+  publishedAt: 发布时间
+  viewsCount: 观看次数
+  imageLibraryFunctionIntroduction: 图库功能介绍
+  rightClickToSaveSingleImage: 右键保存单张图片
+  batchSave: 批量保存
+  keyboardLeftAndRightToSwitch: 键盘的左右控制切换
+  keyboardUpAndDownToZoom: 键盘的上下控制缩放
+  mouseWheelToSwitch: 鼠标的滚轮滑动控制切换
+  ctrlAndMouseWheelToZoom: CTRL + 鼠标滚轮控制缩放
+  moreFeaturesToBeDiscovered: 更多功能待发现...
+  authorOtherGalleries: 作者的其他图库
+  relatedGalleries: 相关图库
+
+playList:
+  myPlayList: 我的播放列表
+  friendlyTips: 友情提示
+  dearUser: 亲爱的用户
+  iwaraPlayListSystemIsNotPerfectYet: iwara的播放列表系统目前还不太完善
+  notSupportSetCover: 不支持设置封面
+  notSupportDeleteList: 不能删除列表
+  notSupportSetPrivate: 无法设为私密
+  yesCreateListWillAlwaysExistAndVisibleToEveryone: 没错...创建的列表会一直存在且对所有人可见
+  smallSuggestion: 小建议
+  useLikeToCollectContent: 如果您比较注重隐私，建议使用"点赞"功能来收藏内容
+  welcomeToDiscussOnGitHub: 如果你有其他的建议或想法，欢迎来 GitHub 讨论!
+  iUnderstand: 明白了

@@ -5,6 +5,7 @@ import 'package:i_iwara/app/services/gallery_service.dart';
 import 'package:i_iwara/app/services/video_service.dart';
 import 'package:i_iwara/app/ui/pages/favorites/repositories/favorite_image_repository.dart';
 import 'package:i_iwara/app/ui/pages/favorites/repositories/favorite_video_repository.dart';
+import 'package:i_iwara/i18n/strings.g.dart';
 
 class FavoritesController extends GetxController {
   late FavoriteVideoRepository videoRepository;
@@ -33,7 +34,7 @@ class FavoritesController extends GetxController {
         if (!result.isSuccess) {
           // 如果失败，恢复状态
           canceledFavoriteVideoIds.add(video.id);
-          Get.snackbar('错误', result.message);
+          Get.snackbar(t.errors.error, result.message);
         }
       });
     } else {
@@ -44,7 +45,7 @@ class FavoritesController extends GetxController {
         if (!result.isSuccess) {
           // 如果失败，恢复状态
           canceledFavoriteVideoIds.remove(video.id);
-          Get.snackbar('错误', result.message);
+          Get.snackbar(t.errors.error, result.message);
         }
       });
     }
@@ -60,7 +61,7 @@ class FavoritesController extends GetxController {
         if (!result.isSuccess) {
           // 如果失败，恢复状态
           canceledFavoriteGalleryIds.add(image.id);
-          Get.snackbar('错误', result.message);
+          Get.snackbar(t.errors.error, result.message);
         }
       });
     } else {
@@ -71,7 +72,7 @@ class FavoritesController extends GetxController {
         if (!result.isSuccess) {
           // 如果失败，恢复状态
           canceledFavoriteGalleryIds.remove(image.id);
-          Get.snackbar('错误', result.message);
+          Get.snackbar(t.errors.error, result.message);
         }
       });
     }

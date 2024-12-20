@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:i_iwara/app/services/app_service.dart';
+import 'package:i_iwara/i18n/strings.g.dart' as slang;
 
 class CommentRemoveDialog extends StatefulWidget {
   final Function onDelete;
@@ -15,6 +15,7 @@ class _CommentRemoveDialogState extends State<CommentRemoveDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final t = slang.Translations.of(context);
     return Dialog(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -22,22 +23,22 @@ class _CommentRemoveDialogState extends State<CommentRemoveDialog> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Text(
-              '确认删除',
-              style: TextStyle(
+            Text(
+              t.common.confirmDelete,
+              style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
             ),
             const SizedBox(height: 16),
-            const Text('确定要删除这条评论吗？'),
+            Text(t.common.areYouSureYouWantToDeleteThisItem),
             const SizedBox(height: 16),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(),
-                  child: const Text('取消'),
+                  child: Text(t.common.cancel),
                 ),
                 const SizedBox(width: 8),
                 ElevatedButton(
@@ -56,7 +57,7 @@ class _CommentRemoveDialogState extends State<CommentRemoveDialog> {
                           height: 20,
                           child: CircularProgressIndicator(strokeWidth: 2),
                         )
-                      : const Text('删除', style: TextStyle(color: Colors.red)),
+                      : Text(t.common.delete, style: const TextStyle(color: Colors.red)),
                 ),
               ],
             ),

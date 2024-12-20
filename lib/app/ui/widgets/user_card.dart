@@ -182,24 +182,28 @@ class UserCard extends StatelessWidget {
             label: 'PREMIUM',
             color: Colors.purple.shade100,
             textColor: Colors.purple,
+            key: 'premium',
           ),
         if (user.friend)
           _buildTag(
             label: '好友',
             color: Colors.green.shade100,
             textColor: Colors.green,
+            key: 'friend',
           ),
         if (user.following)
           _buildTag(
             label: '已关注',
             color: Colors.blue.shade100,
             textColor: Colors.blue,
+            key: 'following',
           ),
         if (user.followedBy)
           _buildTag(
             label: '关注你',
             color: Colors.orange.shade100,
             textColor: Colors.orange,
+            key: 'followedBy',
           ),
       ],
     );
@@ -209,6 +213,7 @@ class UserCard extends StatelessWidget {
     required String label,
     required Color color,
     required Color textColor,
+    required String key,
   }) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
@@ -226,13 +231,13 @@ class UserCard extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (label == 'PREMIUM')
+          if (key == 'premium')
             Icon(Icons.stars, size: 14, color: textColor)
-          else if (label == '好友')
+          else if (key == 'friend')
             Icon(Icons.favorite, size: 14, color: textColor)
-          else if (label == '已关注')
+          else if (key == 'following')
             Icon(Icons.check_circle, size: 14, color: textColor)
-          else if (label == '关注你')
+          else if (key == 'followedBy')
             Icon(Icons.person_add, size: 14, color: textColor),
           if (label != '') const SizedBox(width: 4),
           Text(

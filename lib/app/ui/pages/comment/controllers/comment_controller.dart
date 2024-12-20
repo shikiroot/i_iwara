@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:i_iwara/app/models/api_result.model.dart';
 import 'package:i_iwara/app/services/app_service.dart';
+import 'package:i_iwara/i18n/strings.g.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
 
 import '../../../../../common/constants.dart';
@@ -131,10 +132,10 @@ class CommentController<T extends CommentType> extends GetxController {
         comments.insert(0, result.data!);
       }
       totalComments.value++;
-      Get.snackbar('成功', '评论发表成功');
+      Get.snackbar(t.common.success, t.common.commentPostedSuccessfully);
       AppService.tryPop();
     } else {
-      Get.snackbar('错误', result.message);
+      Get.snackbar(t.errors.error, result.message);
     }
     
     return result;
@@ -146,9 +147,9 @@ class CommentController<T extends CommentType> extends GetxController {
     if (result.isSuccess) {
       comments.removeWhere((comment) => comment.id == commentId);
       totalComments.value--;
-      Get.snackbar('成功', '评论已删除');
+      Get.snackbar(t.common.success, t.common.commentDeletedSuccessfully);
     } else {
-      Get.snackbar('错误', result.message);
+      Get.snackbar(t.errors.error, result.message);
     }
   }
 
@@ -162,11 +163,11 @@ class CommentController<T extends CommentType> extends GetxController {
           body: newBody,
           updatedAt: DateTime.now(),
         );
-        Get.snackbar('成功', '评论已更新');
+        Get.snackbar(t.common.success, t.common.commentUpdatedSuccessfully);
         AppService.tryPop();
       }
     } else {
-      Get.snackbar('错误', result.message);
+      Get.snackbar(t.errors.error, result.message);
     }
   }
 }

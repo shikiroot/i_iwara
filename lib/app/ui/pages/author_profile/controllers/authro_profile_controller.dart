@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:i_iwara/i18n/strings.g.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
 
 import '../../../../../common/constants.dart';
@@ -79,7 +80,7 @@ class AuthorProfileController extends GetxController {
       LogUtils.d('获取的用户信息: $authorData', 'AuthorProfileController');
     } catch (e) {
       LogUtils.e('抓取作者详情失败', tag: 'AuthorProfileController', error: e);
-      errorWidget.value = const Center(child: Text('获取用户信息失败'));
+      errorWidget.value = Center(child: Text(t.errors.errorWhileFetching));
     } finally {
       isProfileLoading.value = false;
     }
@@ -143,7 +144,7 @@ class AuthorProfileController extends GetxController {
       isFollowLoading.value = true;
       ApiResult res = await _userService.followUser(userId);
       if (!res.isSuccess) {
-        Get.snackbar('错误', res.message);
+        Get.snackbar(t.errors.error, res.message);
         return;
       }
       final authorData =
@@ -163,7 +164,7 @@ class AuthorProfileController extends GetxController {
       isFollowLoading.value = true;
       ApiResult res = await _userService.unfollowUser(userId);
       if (!res.isSuccess) {
-        Get.snackbar('错误', res.message);
+        Get.snackbar(t.errors.error, res.message);
         return;
       }
       // 刷新页面
@@ -184,7 +185,7 @@ class AuthorProfileController extends GetxController {
     ApiResult res = await _userService.addFriend(userId);
     isFriendLoading.value = false;
     if (!res.isSuccess) {
-      Get.snackbar('错误', res.message);
+      Get.snackbar(t.errors.error, res.message);
       return;
     }
     isFriendRequestPending.value = true;
@@ -197,7 +198,7 @@ class AuthorProfileController extends GetxController {
     ApiResult res = await _userService.removeFriend(userId);
     isFriendRequestPending.value = false;
     if (!res.isSuccess) {
-      Get.snackbar('错误', res.message);
+      Get.snackbar(t.errors.error, res.message);
       return;
     }
   }

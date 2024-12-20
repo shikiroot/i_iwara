@@ -6,7 +6,7 @@ import 'package:shimmer/shimmer.dart';
 import '../../../../../common/constants.dart';
 import '../../../../services/user_service.dart';
 import '../controllers/comment_controller.dart';
-
+import 'package:i_iwara/i18n/strings.g.dart' as slang;
 
 class CommentEntryAreaButtonWidget extends StatelessWidget {
   final UserService userService = Get.find();
@@ -21,6 +21,7 @@ class CommentEntryAreaButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = slang.Translations.of(context);
     return Obx(() {
       if (commentController.isLoading.value && !commentController.doneFirstTime.value) {
         return _buildShimmerLine();
@@ -42,7 +43,7 @@ class CommentEntryAreaButtonWidget extends StatelessWidget {
                 children: [
                   // 第一行：评论数量
                   Text(
-                    '评论 ${commentController.totalComments.value} 条',
+                    t.common.totalComments(count: commentController.totalComments.value),
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -94,8 +95,8 @@ class CommentEntryAreaButtonWidget extends StatelessWidget {
                       Expanded(
                         child: Text(
                           commentController.comments.isNotEmpty
-                              ? _filterMarkdownImages(commentController.comments.first.body ?? '')
-                              : '写下你的评论...',
+                              ? _filterMarkdownImages(commentController.comments.first.body)
+                              : t.common.writeYourCommentHere,
                           style: TextStyle(
                             fontSize: 14,
                             color: commentController.comments.isNotEmpty ? Colors.black : Colors.grey,

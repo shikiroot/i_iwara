@@ -7,6 +7,7 @@ import 'package:i_iwara/utils/logger_utils.dart';
 import '../../../../models/video.model.dart';
 import '../../popular_media_list/widgets/video_tile_list_item_widget.dart';
 import '../controllers/userz_video_list_controller.dart';
+import 'package:i_iwara/i18n/strings.g.dart' as slang;
 
 class ProfileVideoTabListWidget extends StatefulWidget {
   final String tabKey;
@@ -97,6 +98,7 @@ class _ProfileVideoTabListWidgetState extends State<ProfileVideoTabListWidget>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    final t = slang.Translations.of(context);
     final TabBar secondaryTabBar = TabBar(
       isScrollable: true,
       physics: const NeverScrollableScrollPhysics(),
@@ -105,14 +107,14 @@ class _ProfileVideoTabListWidgetState extends State<ProfileVideoTabListWidget>
       dividerColor: Colors.transparent,
       padding: EdgeInsets.zero,
       controller: widget.tc,
-      tabs: const <Tab>[
+      tabs: <Tab>[
         // date
         Tab(
           child: Row(
             children: [
               Icon(Icons.calendar_today),
               SizedBox(width: 8),
-              Text("最新"),
+              Text(t.common.latest),
             ],
           ),
         ),
@@ -122,7 +124,7 @@ class _ProfileVideoTabListWidgetState extends State<ProfileVideoTabListWidget>
             children: [
               Icon(Icons.favorite),
               SizedBox(width: 8),
-              Text("点赞数"),
+              Text(t.common.likesCount),
             ],
           ),
         ),
@@ -132,7 +134,7 @@ class _ProfileVideoTabListWidgetState extends State<ProfileVideoTabListWidget>
             children: [
               Icon(Icons.remove_red_eye),
               SizedBox(width: 8),
-              Text("观看次数"),
+              Text(t.common.viewsCount),
             ],
           ),
         ),
@@ -142,7 +144,7 @@ class _ProfileVideoTabListWidgetState extends State<ProfileVideoTabListWidget>
             children: [
               Icon(Icons.star),
               SizedBox(width: 8),
-              Text("受欢迎的"),
+              Text(t.common.popular),
             ],
           ),
         ),
@@ -152,7 +154,7 @@ class _ProfileVideoTabListWidgetState extends State<ProfileVideoTabListWidget>
             children: [
               Icon(Icons.trending_up),
               SizedBox(width: 8),
-              Text("趋势"),
+              Text(t.common.trending),
             ],
           ),
         ),
@@ -232,7 +234,7 @@ class _ProfileVideoTabListWidgetState extends State<ProfileVideoTabListWidget>
             return VideoTileListItem(video: video);
           } else {
             // 最后一项显示加载指示器或结束提示
-            return _buildLoadMoreIndicator();
+            return _buildLoadMoreIndicator(context);
           }
         },
       ),
@@ -240,7 +242,8 @@ class _ProfileVideoTabListWidgetState extends State<ProfileVideoTabListWidget>
   }
 
   // 构建加载更多指示器
-  Widget _buildLoadMoreIndicator() {
+  Widget _buildLoadMoreIndicator(BuildContext context) {
+    final t = slang.Translations.of(context);
     if (videoListController.isLoading.value) {
       return const Padding(
         padding: EdgeInsets.symmetric(vertical: 16.0),
@@ -249,11 +252,11 @@ class _ProfileVideoTabListWidgetState extends State<ProfileVideoTabListWidget>
         ),
       );
     } else {
-      return const Padding(
+      return Padding(
         padding: EdgeInsets.symmetric(vertical: 16.0),
         child: Center(
           child: Text(
-            '没有更多视频了',
+            t.authorProfile.noMoreDatas,
             style: TextStyle(color: Colors.grey),
           ),
         ),

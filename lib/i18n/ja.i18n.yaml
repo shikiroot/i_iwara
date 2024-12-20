@@ -7,15 +7,165 @@ common:
   delete: 削除
   loading: 読み込み中...
   privacyHint: プライバシー情報、表示されません
-
+  latest: 最新
+  likesCount: いいね
+  viewsCount: 閲覧数
+  popular: 人気
+  trending: トレンド
+  commentList: コメントリスト
+  sendComment: コメント投稿
+  send: 投稿
+  retry: 再試行
+  premium: プレミアム
+  follower: フォロワー
+  friend: フレンド
+  video: ビデオ
+  following: フォロー
+  cancelFriendRequest: 申請取消
+  addFriend: フレンド追加
+  removeFriend: フレンド解除
+  followed: フォロー済み
+  follow: フォロー
+  specialFollow: 特別フォロー
+  specialFollowed: 特別フォロー済み
+  gallery: ギャラリー
+  playlist: プレイリスト
+  commentPostedSuccessfully: コメント投稿成功
+  commentPostedFailed: コメント投稿失敗
+  success: 成功
+  commentDeletedSuccessfully: コメント削除成功
+  commentUpdatedSuccessfully: コメント更新成功
+  totalComments: '${count} コメント'
+  writeYourCommentHere: コメントを書いてください...
+  tmpNoReplies: まだ返信はありません
+  loadMore: もっと読み込む
+  noMoreDatas: データがありません
+  selectTranslationLanguage: 翻訳言語を選択
+  translate: 翻訳
+  translateFailedPleaseTryAgainLater: 翻訳失敗、再試行してください
+  translationResult: 翻訳結果
+  justNow: たった今
+  minutesAgo: '${num}分前'
+  hoursAgo: '${num}時間前'
+  daysAgo: '${num}日前'
+  editedAt: '編集した${num}前'
+  editComment: コメント編集
+  commentUpdated: コメント更新
+  replyComment: コメント返信
+  reply: 返信
+  edit: 編集
+  unknownUser: 不明なユーザー
+  me: 私
+  author: 作者
+  admin: 管理者
+  viewReplies: '返信 (${num})'
+  hideReplies: 返信を隠す
+  confirmDelete: 削除確認
+  areYouSureYouWantToDeleteThisItem: 削除しますか？
+  tmpNoComments: コメントはありません
+  refresh: 更新
+  back: 戻る
+  tips: ヒント
+  linkIsEmpty: リンクアドレスが空です
+  linkCopiedToClipboard: リンクアドレスをクリップボードにコピーしました
+  imageCopiedToClipboard: 画像をクリップボードにコピーしました
+  copyImageFailed: 画像のコピーに失敗しました
+  mobileSaveImageIsUnderDevelopment: モバイル端末の画像保存機能は開発中です
+  imageSavedTo: 画像を保存しました
+  saveImageFailed: 画像の保存に失敗しました
+  close: 閉じる
+  more: もっと
+  moreFeaturesToBeDeveloped: もっと機能を開発中です
+  all: 全部
+  selectedRecords: '${num} 件選択済み'
+  cancelSelectAll: 全選択を取消
+  selectAll: 全選択
+  exitEditMode: 編集モードを終了
+  areYouSureYouWantToDeleteSelectedItems: '選択した ${num} 件を削除しますか？'
+  searchHistoryRecords: 検索履歴...
+  settings: 設定
+  subscriptions: 購読
+  videoCount: '${num} 個ビデオ'
+  share: 共有
+  areYouSureYouWantToShareThisPlaylist: このプレイリストを共有しますか？
+  editTitle: タイトルを編集
+  editMode: 編集モード
+  pleaseEnterNewTitle: 新しいタイトルを入力してください
+  createPlayList: プレイリストを作成
+  create: 作成
 auth:
   login: ログイン
   logout: ログアウト
   email: メールアドレス
   password: パスワード
-  welcome: "ようこそ、$name！"
+  loginOrRegister: ログイン / 登録
+  register: 登録
+  pleaseEnterEmail: メールアドレスを入力してください
+  pleaseEnterPassword: パスワードを入力してください
+  passwordMustBeAtLeast6Characters: パスワードは6文字以上必要です
+  pleaseEnterCaptcha: 検証コードを入力してください
+  captcha: 検証コード
+  refreshCaptcha: 検証コードを更新
+  captchaNotLoaded: 検証コードが読み込めません
+  loginSuccess: ログイン成功
+  emailVerificationSent: メール検証コードが送信されました
 
 errors:
+  error: エラー
   required: この項目は必須です
   invalidEmail: 無効なメールアドレス
   networkError: ネットワークエラー、再試行してください
+  errorWhileFetching: 情報取得エラー
+  commentCanNotBeEmpty: コメント内容は空にできません
+  errorWhileFetchingReplies: 返信取得エラー、ネットワーク接続を確認してください
+  canNotFindCommentController: コメントコントローラーが見つかりません
+  errorWhileLoadingGallery: ギャラリー読み込みエラー
+  howCouldThereBeNoDataItCantBePossible: ギャラリーにデータがありません。エラーです :<
+  unsupportedImageFormat: 'サポートされていない画像形式: ${str}'
+  invalidGalleryId: 無効なギャラリーID
+friends:
+  clickToRestoreFriend: クリックしてフレンドに戻す
+  friendsList: フレンドリスト
+  friendRequests: フレンドリクエスト
+  friendRequestsList: フレンドリクエストリスト
+
+
+authorProfile:
+  noMoreDatas: データがありません
+  userProfile: ユーザー情報
+
+favorites:
+  clickToRestoreFavorite: クリックしてお気に入りに戻す
+  myFavorites: お気に入り
+
+galleryDetail:
+  copyLink: リンクをコピー
+  copyImage: 画像をコピー
+  saveAs: 名前を付けて保存
+  saveToAlbum: アルバムに保存
+  publishedAt: 投稿日時
+  viewsCount: 閲覧数
+  imageLibraryFunctionIntroduction: 画像ライブラリー機能紹介
+  rightClickToSaveSingleImage: 右クリックで単一画像保存
+  batchSave: バッチ保存
+  keyboardLeftAndRightToSwitch: キーボードの左右で切り替え
+  keyboardUpAndDownToZoom: キーボードの上下で拡大縮小
+  mouseWheelToSwitch: マウスのホイールで切り替え
+  ctrlAndMouseWheelToZoom: CTRL + マウスのホイールで拡大縮小
+  moreFeaturesToBeDiscovered: もっと機能を発見...
+  authorOtherGalleries: 作者の他のギャラリー
+  relatedGalleries: 関連ギャラリー
+
+playList:
+  myPlayList: マイプレイリスト
+  friendlyTips: 友情提示
+  dearUser: お客様
+  iwaraPlayListSystemIsNotPerfectYet: iwaraのプレイリストシステムはまだ不完全です
+  notSupportSetCover: カバーを設定できません
+  notSupportDeleteList: リストを削除できません
+  notSupportSetPrivate: プライベートに設定できません
+  yesCreateListWillAlwaysExistAndVisibleToEveryone: 作成したリストは常に存在し、すべての人に見えます
+  smallSuggestion: 小建议
+  useLikeToCollectContent: もしプライバシーを重視する場合、「いいね」機能を使用してコンテンツを収集することをお勧めします
+  welcomeToDiscussOnGitHub: 他の提案やアイデアがあれば、GitHubで議論してください！
+  iUnderstand: 理解しました

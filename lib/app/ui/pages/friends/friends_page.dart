@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:i_iwara/app/ui/pages/friends/controllers/friends_controller.dart';
 import 'package:i_iwara/app/ui/pages/friends/widgets/friend_list.dart';
 import 'package:i_iwara/app/ui/pages/friends/widgets/friend_request_list.dart';
-
+import 'package:i_iwara/i18n/strings.g.dart' as slang;
 class FriendsPage extends StatefulWidget {
   const FriendsPage({super.key});
 
@@ -41,14 +41,10 @@ class _FriendsPageState extends State<FriendsPage>
 
   @override
   Widget build(BuildContext context) {
-    // 获取屏幕宽度
-    final double screenWidth = MediaQuery.of(context).size.width;
-    // 判断是否是移动设备
-    final bool isMobile = screenWidth < 600;
-
+    final t = slang.Translations.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('好友列表'),
+        title: Text(t.friends.friendsList),
         actions: [
           Obx(
             () {
@@ -74,7 +70,7 @@ class _FriendsPageState extends State<FriendsPage>
             onPressed: () =>
                 _controller.refreshCurrentTab(_tabController.index),
             icon: const Icon(Icons.refresh),
-            tooltip: '刷新',
+            tooltip: t.common.refresh,
           ),
         ],
         bottom: PreferredSize(
@@ -117,7 +113,7 @@ class _FriendsPageState extends State<FriendsPage>
                           children: [
                             Icon(Icons.people),
                             SizedBox(width: 8),
-                            Text('好友'),
+                            Text(t.friends.friendsList),
                           ],
                         ),
                       ),
@@ -130,7 +126,7 @@ class _FriendsPageState extends State<FriendsPage>
                           children: [
                             Icon(Icons.person_add),
                             SizedBox(width: 8),
-                            Text('请求'),
+                            Text(t.friends.friendRequests),
                           ],
                         ),
                       ),

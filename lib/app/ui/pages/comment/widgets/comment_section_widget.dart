@@ -5,6 +5,7 @@ import 'package:shimmer/shimmer.dart';
 import '../../../../models/comment.model.dart';
 import '../controllers/comment_controller.dart';
 import 'comment_item_widget.dart';
+import 'package:i_iwara/i18n/strings.g.dart' as slang;
 
 class CommentSection extends StatelessWidget {
   final CommentController controller;
@@ -21,10 +22,10 @@ class CommentSection extends StatelessWidget {
       } else if (controller.errorMessage.value.isNotEmpty &&
           controller.comments.isEmpty) {
         // 如果有错误且没有评论，显示错误信息和重试按钮
-        return _buildErrorState();
+        return _buildErrorState(context);
       } else if (!controller.isLoading.value && controller.comments.isEmpty) {
         // 如果没有评论，显示空状态
-        return _buildEmptyState();
+        return _buildEmptyState(context);
       } else {
         // 显示评论列表
         return _buildCommentList();
@@ -82,7 +83,8 @@ class CommentSection extends StatelessWidget {
   }
 
   // 构建错误状态视图
-  Widget _buildErrorState() {
+  Widget _buildErrorState(BuildContext context) {
+    final t = slang.Translations.of(context);
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -98,7 +100,7 @@ class CommentSection extends StatelessWidget {
             ElevatedButton.icon(
               onPressed: controller.refreshComments,
               icon: const Icon(Icons.refresh),
-              label: const Text('重试'),
+              label: Text(t.common.retry),
             ),
           ],
         ),
@@ -107,12 +109,13 @@ class CommentSection extends StatelessWidget {
   }
 
   // 构建空状态视图
-  Widget _buildEmptyState() {
-    return const Center(
+  Widget _buildEmptyState(BuildContext context) {
+    final t = slang.Translations.of(context);
+    return Center(
       child: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Text(
-          '暂无评论',
+          t.common.tmpNoComments,
           style: TextStyle(fontSize: 16, color: Colors.grey),
         ),
       ),
@@ -146,7 +149,7 @@ class CommentSection extends StatelessWidget {
             );
           } else {
             // 最后一项显示加载指示器或结束提示
-            return _buildLoadMoreIndicator();
+            return _buildLoadMoreIndicator(context);
           }
         },
       ),
@@ -154,7 +157,8 @@ class CommentSection extends StatelessWidget {
   }
 
   // 构建加载更多指示器
-  Widget _buildLoadMoreIndicator() {
+  Widget _buildLoadMoreIndicator(BuildContext context) {
+    final t = slang.Translations.of(context);
     if (controller.hasMore.value) {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 16.0),
@@ -165,12 +169,12 @@ class CommentSection extends StatelessWidget {
         ),
       );
     } else {
-      return const Padding(
-        padding: EdgeInsets.symmetric(vertical: 16.0),
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 16.0),
         child: Center(
           child: Text(
-            '没有更多评论了',
-            style: TextStyle(color: Colors.grey),
+            t.common.noMoreDatas,
+            style: const TextStyle(color: Colors.grey),
           ),
         ),
       );

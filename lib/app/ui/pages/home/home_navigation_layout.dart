@@ -10,6 +10,7 @@ import '../../../services/app_service.dart';
 import '../popular_media_list/popular_gallery_list_page.dart';
 import '../popular_media_list/popular_video_list_page.dart';
 import '../subscriptions/subscriptions_page.dart';
+import 'package:i_iwara/i18n/strings.g.dart' as slang;  
 
 /// 侧边栏、底部导航栏、主要内容
 class HomeNavigationLayout extends StatelessWidget {
@@ -20,6 +21,7 @@ class HomeNavigationLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = slang.Translations.of(context);
     return _NaviPopScope(
       action: () {
         // TODO 还需要完整的验证Pop逻辑
@@ -54,14 +56,14 @@ class HomeNavigationLayout extends StatelessWidget {
                           children: [
                             IconButton(
                               icon: const Icon(Icons.settings),
-                              tooltip: '设置',
+                              tooltip: t.common.settings,
                               onPressed: () {
                                 AppService.switchGlobalDrawer();
                               },
                             ),
                             IconButton(
                               icon: const Icon(Icons.exit_to_app),
-                              tooltip: '退出',
+                              tooltip: t.common.back,
                               onPressed: () {
                                 AppService.tryPop();
                               },
@@ -85,18 +87,18 @@ class HomeNavigationLayout extends StatelessWidget {
                         (route) => false,
                       );
                     },
-                    destinations: const [
+                    destinations: [
                       NavigationRailDestination(
                         icon: Icon(Icons.video_library),
-                        label: Text('热门视频'),
+                        label: Text(t.common.video),
                       ),
                       NavigationRailDestination(
                         icon: Icon(Icons.photo),
-                        label: Text('图库'),
+                        label: Text(t.common.gallery),
                       ),
                       NavigationRailDestination(
                         icon: Icon(Icons.subscriptions),
-                        label: Text('订阅'),
+                        label: Text(t.common.subscriptions),
                       ),
                     ],
                   );
@@ -187,18 +189,18 @@ class HomeNavigationLayout extends StatelessWidget {
                             (route) => false,
                           );
                         },
-                        items: const [
+                        items: [
                           BottomNavigationBarItem(
                             icon: Icon(Icons.video_library),
-                            label: '热门视频',
+                            label: t.common.video,
                           ),
                           BottomNavigationBarItem(
                             icon: Icon(Icons.photo),
-                            label: '图库',
+                            label: t.common.gallery,
                           ),
                           BottomNavigationBarItem(
                             icon: Icon(Icons.subscriptions),
-                            label: '订阅',
+                            label: t.common.subscriptions,
                           ),
                         ],
                       );

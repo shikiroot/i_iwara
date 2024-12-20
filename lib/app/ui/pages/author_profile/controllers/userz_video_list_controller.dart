@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:i_iwara/app/models/page_data.model.dart';
+import 'package:i_iwara/i18n/strings.g.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
 
 import '../../../../models/api_result.model.dart';
@@ -51,7 +52,7 @@ class UserzVideoListController extends GetxController {
           '[视频搜索controller] 查询参数: userId: ${userId.value}, sort: ${sort.value}, page: $tempPage');
 
       if (!response.isSuccess) {
-        Get.snackbar('错误', response.message);
+        Get.snackbar(t.errors.error, response.message);
         return;
       }
       final newVideos = response.data!.results;
