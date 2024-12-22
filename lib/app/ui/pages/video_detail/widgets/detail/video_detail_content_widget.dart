@@ -14,6 +14,7 @@ import 'like_avatars_widget.dart';
 import '../player/my_video_screen.dart';
 import '../../../../widgets/follow_button_widget.dart';
 import '../../../../widgets/like_button_widget.dart';
+import '../../../../../../i18n/strings.g.dart' as slang;
 
 class VideoDetailContent extends StatelessWidget {
   final MyVideoStateController controller;
@@ -31,6 +32,7 @@ class VideoDetailContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = slang.Translations.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -43,16 +45,16 @@ class VideoDetailContent extends StatelessWidget {
                 // 如果视频加载出错，显示错误组件
                 if (controller.videoErrorMessage.value != null) {
                   return CommonErrorWidget(
-                    text: controller.videoErrorMessage.value ?? '在加载视频时出现了错误',
+                    text: controller.videoErrorMessage.value ?? t.videoDetail.errorLoadingVideo,
                     children: [
                       ElevatedButton(
                         onPressed: () => Get.back(),
-                        child: const Text('回到上一页'),
+                        child: Text(t.common.back),
                       ),
                       ElevatedButton(
                         onPressed: () => controller
                             .fetchVideoDetail(controller.videoId ?? ''),
-                        child: const Text('重试'),
+                        child: Text(t.common.retry),
                       ),
                     ],
                   );
@@ -112,7 +114,7 @@ class VideoDetailContent extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: Obx(() => Text(
-                        '发布时间：${controller.videoInfo.value?.createdAt?.customFormat("SHORT_CHINESE")}    观看次数：${controller.videoInfo.value?.numViews?.customFormat()}',
+                        '${t.galleryDetail.publishedAt}：${controller.videoInfo.value?.createdAt?.customFormat("SHORT_CHINESE")}    ${t.galleryDetail.viewsCount}：${controller.videoInfo.value?.numViews?.customFormat()}',
                         style: const TextStyle(color: Colors.grey),
                       )),
                 ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:i_iwara/app/models/tag.model.dart';
+import 'package:i_iwara/i18n/strings.g.dart' as slang;
 
 class RemoveSearchTagDialog extends StatefulWidget {
   final Function(List<String>) onRemoveIds;
@@ -21,6 +22,7 @@ class _RemoveSearchTagDialogState extends State<RemoveSearchTagDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final t = slang.Translations.of(context);
     return Dialog(
       child: ConstrainedBox(
         constraints: const BoxConstraints(
@@ -29,8 +31,8 @@ class _RemoveSearchTagDialogState extends State<RemoveSearchTagDialog> {
         ),
         child: Column(
           children: [
-            const Text('移除标签', style: TextStyle(fontSize: 20)),
-            _buildHeader(),
+            Text(t.search.removeTag, style: const TextStyle(fontSize: 20)),
+            _buildHeader(context),
             const Divider(),
             Expanded(
               child: _buildTagGrid(),
@@ -41,14 +43,14 @@ class _RemoveSearchTagDialogState extends State<RemoveSearchTagDialog> {
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Row(
         children: [
-          _buildSelectAllButton(),
+          _buildSelectAllButton(context),
           const SizedBox(width: 8),
-          _buildDeleteButton(),
+          _buildDeleteButton(context),
           const Spacer(),
           const SizedBox(width: 8),
           _buildCloseButton(),
@@ -57,15 +59,16 @@ class _RemoveSearchTagDialogState extends State<RemoveSearchTagDialog> {
     );
   }
 
-  Widget _buildSelectAllButton() {
+  Widget _buildSelectAllButton(BuildContext context) {
+    final t = slang.Translations.of(context);
     return Stack(
       children: [
         ElevatedButton(
           onPressed: _toggleSelectAll,
           child: Text(
               selectedIds.length == widget.videoSearchTagHistory.length
-                  ? '取消全选'
-                  : '全选'
+                  ? t.common.cancelSelectAll
+                  : t.common.selectAll
           ),
         ),
         if (selectedIds.isNotEmpty)
@@ -96,10 +99,11 @@ class _RemoveSearchTagDialogState extends State<RemoveSearchTagDialog> {
     );
   }
 
-  Widget _buildDeleteButton() {
+  Widget _buildDeleteButton(BuildContext context) {
+    final t = slang.Translations.of(context);
     return ElevatedButton(
       onPressed: selectedIds.isEmpty ? null : _deleteSelected,
-      child: const Text('删除'),
+      child: Text(t.common.delete),
     );
   }
 

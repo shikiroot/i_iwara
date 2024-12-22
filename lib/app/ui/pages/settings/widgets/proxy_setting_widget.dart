@@ -12,6 +12,8 @@ import '../../../../services/api_service.dart';
 import '../../../../services/auth_service.dart';
 import '../../../../services/config_service.dart';
 
+import 'package:i_iwara/i18n/strings.g.dart' as slang;
+
 class MyHttpOverrides extends HttpOverrides {
   final String url;
 
@@ -108,7 +110,7 @@ class _ProxySettingsWidgetState extends State<ProxySettingsWidget> {
         widget.configService[ConfigService.PROXY_URL]?.toString() ?? '';
     LogUtils.i('开始检测代理: $proxyUrl', _tag);
     if (proxyUrl.isEmpty) {
-      Get.snackbar('错误', '代理地址不能为空。',
+      Get.snackbar(slang.t.errors.error, slang.t.settings.proxyAddressCannotBeEmpty,
           snackPosition: SnackPosition.top,
           backgroundColor: Colors.red.withOpacity(0.7),
           colorText: Colors.white);
@@ -118,7 +120,7 @@ class _ProxySettingsWidgetState extends State<ProxySettingsWidget> {
 
     if (!_isValidProxyAddress(proxyUrl)) {
       LogUtils.e('检测代理格式失败: $proxyUrl', tag: _tag);
-      Get.snackbar('错误', '无效的代理地址格式。请使用 IP:端口 或 域名:端口 格式。',
+      Get.snackbar(slang.t.errors.error, slang.t.settings.invalidProxyAddressFormatPleaseUseTheFormatOfIpPortOrDomainNamePort,
           snackPosition: SnackPosition.top,
           backgroundColor: Colors.red.withOpacity(0.7),
           colorText: Colors.white);
@@ -151,20 +153,20 @@ class _ProxySettingsWidgetState extends State<ProxySettingsWidget> {
             validateStatus: (status) => status! < 500,
           ));
       if (response.statusCode == 200 || response.statusCode == 302) {
-        Get.snackbar('成功', '代理正常工作。',
+        Get.snackbar(slang.t.common.success, slang.t.settings.proxyNormalWork,
             snackPosition: SnackPosition.bottom,
             backgroundColor: Colors.green.withOpacity(0.7),
             colorText: Colors.white);
         LogUtils.i('代理检测成功，响应状态码: ${response.statusCode}', _tag);
       } else {
-        Get.snackbar('失败', '代理请求失败，状态码: ${response.statusCode}',
+        Get.snackbar(slang.t.errors.error, slang.t.settings.testProxyFailedWithStatusCode(code: response.statusCode.toString()),
             snackPosition: SnackPosition.bottom,
             backgroundColor: Colors.red.withOpacity(0.7),
             colorText: Colors.white);
         LogUtils.e('代理检测失败，响应状态码: ${response.statusCode}', tag: _tag);
       }
     } catch (e) {
-      Get.snackbar('失败', '代理请求出错: $e',
+      Get.snackbar(slang.t.errors.error, slang.t.settings.testProxyFailedWithException(exception: e.toString()),
           snackPosition: SnackPosition.bottom,
           backgroundColor: Colors.red.withOpacity(0.7),
           colorText: Colors.white);
@@ -203,6 +205,7 @@ class _ProxySettingsWidgetState extends State<ProxySettingsWidget> {
     final double screenWidth = MediaQuery.of(context).size.width;
     // 定义内容的最大宽度
     const double maxContentWidth = 600;
+    final t = slang.Translations.of(context);
 
     return Center(
       child: SingleChildScrollView(
@@ -214,9 +217,9 @@ class _ProxySettingsWidgetState extends State<ProxySettingsWidget> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                '代理配置',
-                style: TextStyle(
+              Text(
+                t.settings.proxyConfig,
+                style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
@@ -226,20 +229,20 @@ class _ProxySettingsWidgetState extends State<ProxySettingsWidget> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: const Padding(
-                  padding: EdgeInsets.all(16.0),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
                   child: Row(
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.info_outline,
                         color: Colors.white,
                       ),
-                      SizedBox(width: 8),
+                      const SizedBox(width: 8),
                       Expanded(
                         // 使用 Expanded 确保文本不会溢出
                         child: Text(
-                          '此处为http代理地址',
-                          style: TextStyle(
+                          t.settings.thisIsHttpProxyAddress,
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -252,7 +255,7 @@ class _ProxySettingsWidgetState extends State<ProxySettingsWidget> {
               ),
               const SizedBox(height: 16),
               SettingItem(
-                label: '代理地址',
+                label: t.settings.proxyAddress,
                 labelSuffix: Obx(
                   () => _isChecking.value
                       ? SizedBox(
@@ -267,7 +270,7 @@ class _ProxySettingsWidgetState extends State<ProxySettingsWidget> {
                       : ElevatedButton.icon(
                           onPressed: _checkProxy,
                           icon: const Icon(Icons.search_rounded),
-                          label: const Text('检查'),
+                          label: Text(t.settings.checkProxy),
                           style: ElevatedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 16, vertical: 12),
@@ -277,10 +280,10 @@ class _ProxySettingsWidgetState extends State<ProxySettingsWidget> {
                 initialValue: _proxyController.text,
                 validator: (value) {
                   if (value.isEmpty) {
-                    return '代理地址不能为空。';
+                    return t.settings.proxyAddressCannotBeEmpty;
                   }
                   if (!_isValidProxyAddress(value)) {
-                    return '无效的代理地址格式。请使用 IP:端口 或 域名:端口 格式。';
+                    return t.settings.invalidProxyAddressFormatPleaseUseTheFormatOfIpPortOrDomainNamePort;
                   }
                   return null;
                 },
@@ -295,14 +298,14 @@ class _ProxySettingsWidgetState extends State<ProxySettingsWidget> {
                 icon:
                     Icon(Icons.computer, color: Theme.of(context).primaryColor),
                 splitTwoLine: true,
-                inputDecoration: const InputDecoration(
-                  hintText: '请输入代理服务器的URL，例如 127.0.0.1:8080',
-                  border: OutlineInputBorder(),
+                inputDecoration: InputDecoration(
+                  hintText: t.settings.pleaseEnterTheUrlOfTheProxyServerForExample1270018080,
+                  border: const OutlineInputBorder(),
                 ),
               ),
               const SizedBox(height: 24),
               SettingItem(
-                label: '启用代理',
+                label: t.settings.enableProxy,
                 initialValue: '',
                 validator: (_) => null,
                 onValid: (_) {},

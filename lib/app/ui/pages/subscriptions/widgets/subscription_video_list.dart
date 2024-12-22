@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:i_iwara/app/ui/pages/popular_media_list/widgets/video_card_list_item_widget.dart';
 import 'package:i_iwara/app/ui/pages/subscriptions/controllers/subscription_video_controller.dart';
 import 'package:i_iwara/app/ui/widgets/empty_widget.dart';
+import 'package:i_iwara/i18n/strings.g.dart' as slang;
 
 class SubscriptionVideoList extends StatelessWidget {
   final SubscriptionVideoController controller;
@@ -33,7 +34,7 @@ class SubscriptionVideoList extends StatelessWidget {
             }
             if (controller.videos.isEmpty && !controller.isLoading.value) {
               return MyEmptyWidget(
-                message: '暂无订阅视频',
+                message: slang.t.common.noMoreDatas,
                 onRefresh: () => controller.loadVideos(),
               );
             }
@@ -98,11 +99,11 @@ class SubscriptionVideoList extends StatelessWidget {
               child: CircularProgressIndicator(),
             ),
           )
-        : const Padding(
+        : Padding(
             padding: EdgeInsets.symmetric(vertical: 16.0),
             child: Center(
               child: Text(
-                '没有更多视频了',
+                slang.t.common.noMoreDatas,
                 style: TextStyle(color: Colors.grey),
               ),
             ),

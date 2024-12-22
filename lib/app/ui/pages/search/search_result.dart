@@ -7,6 +7,7 @@ import 'package:i_iwara/app/ui/pages/popular_media_list/widgets/video_card_list_
 import 'package:i_iwara/app/ui/pages/video_detail/widgets/media_tile_list_loading_widget.dart';
 import 'package:i_iwara/app/ui/widgets/empty_widget.dart';
 import 'package:i_iwara/app/ui/widgets/user_card.dart';
+import 'package:i_iwara/i18n/strings.g.dart' as slang;
 
 import 'search_dialog.dart';
 
@@ -50,7 +51,8 @@ class _SearchResultState extends State<SearchResult> {
     }
   }
 
-  Widget _buildSearchResult() {
+  Widget _buildSearchResult(BuildContext context) {
+    final t = slang.Translations.of(context);
     return Obx(() {
       if (globalSearchService.errorWidget.value != null) {
         return globalSearchService.errorWidget.value!;
@@ -78,7 +80,7 @@ class _SearchResultState extends State<SearchResult> {
           break;
         default:
           child = Text(
-              '暂未实现当前搜索类型 ${globalSearchService.selectedSegment.value}，敬请期待');
+            t.search.notSupportCurrentSearchType(searchType: globalSearchService.selectedSegment.value));
       }
 
       return Padding(
@@ -114,7 +116,7 @@ class _SearchResultState extends State<SearchResult> {
               if (index < itemCount - 1) {
                 return _buildRow(index, columns, constraints.maxWidth);
               } else {
-                return _buildLoadMoreIndicator();
+                return _buildLoadMoreIndicator(context);
               }
             },
           ),
@@ -165,7 +167,8 @@ class _SearchResultState extends State<SearchResult> {
     return 1;
   }
 
-  Widget _buildLoadMoreIndicator() {
+  Widget _buildLoadMoreIndicator(BuildContext context) {
+    final t = slang.Translations.of(context);
     return Obx(() => globalSearchService.hasMore
         ? const Padding(
             padding: EdgeInsets.symmetric(vertical: 16.0),
@@ -173,12 +176,12 @@ class _SearchResultState extends State<SearchResult> {
               child: CircularProgressIndicator(),
             ),
           )
-        : const Padding(
-            padding: EdgeInsets.symmetric(vertical: 16.0),
+        : Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
             child: Center(
               child: Text(
-                '没有更多内容了',
-                style: TextStyle(color: Colors.grey),
+                t.common.noMoreDatas,
+                style: const TextStyle(color: Colors.grey),
               ),
             ),
           ));
@@ -210,7 +213,7 @@ class _SearchResultState extends State<SearchResult> {
               if (index < itemCount - 1) {
                 return _buildImageRow(index, columns, constraints.maxWidth);
               } else {
-                return _buildLoadMoreIndicator();
+                return _buildLoadMoreIndicator(context);
               }
             },
           ),
@@ -280,7 +283,7 @@ class _SearchResultState extends State<SearchResult> {
               ),
             );
           } else {
-            return _buildLoadMoreIndicator();
+            return _buildLoadMoreIndicator(context);
           }
         },
       ),
@@ -289,9 +292,10 @@ class _SearchResultState extends State<SearchResult> {
 
   @override
   Widget build(BuildContext context) {
+    final t = slang.Translations.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('搜索结果'),
+        title: Text(t.search.searchResult),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -311,7 +315,7 @@ class _SearchResultState extends State<SearchResult> {
                 ),
                 decoration: InputDecoration(
                   hintText: globalSearchService.searchPlaceholder.value.isEmpty
-                      ? '请填写搜索内容'
+                      ? t.search.pleaseEnterSearchContent
                       : globalSearchService.searchPlaceholder.value,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
@@ -355,7 +359,7 @@ class _SearchResultState extends State<SearchResult> {
                           value: 'video',
                           label: globalSearchService.selectedSegment.value ==
                                   'video'
-                              ? const Text('视频')
+                              ? Text(t.common.video)
                               : null,
                           icon: const Icon(Icons.video_library),
                         ),
@@ -363,7 +367,7 @@ class _SearchResultState extends State<SearchResult> {
                           value: 'image',
                           label: globalSearchService.selectedSegment.value ==
                                   'image'
-                              ? const Text('图片')
+                              ? Text(t.common.gallery)
                               : null,
                           icon: const Icon(Icons.image),
                         ),
@@ -371,7 +375,7 @@ class _SearchResultState extends State<SearchResult> {
                           value: 'post',
                           label: globalSearchService.selectedSegment.value ==
                                   'post'
-                              ? const Text('帖子')
+                              ? Text(t.common.post)
                               : null,
                           icon: const Icon(Icons.article),
                         ),
@@ -379,7 +383,7 @@ class _SearchResultState extends State<SearchResult> {
                           value: 'user',
                           label: globalSearchService.selectedSegment.value ==
                                   'user'
-                              ? const Text('用户')
+                              ? Text(t.common.user)
                               : null,
                           icon: const Icon(Icons.person),
                         ),
@@ -414,7 +418,7 @@ class _SearchResultState extends State<SearchResult> {
           const SizedBox(height: 20),
           // 搜索结果
           Expanded(
-            child: _buildSearchResult(),
+            child: _buildSearchResult(context),
           ),
         ],
       ),

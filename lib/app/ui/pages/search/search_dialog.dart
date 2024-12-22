@@ -4,6 +4,7 @@ import 'package:i_iwara/app/services/app_service.dart';
 import 'package:i_iwara/app/services/global_search_service.dart';
 import 'package:i_iwara/app/services/user_preference_service.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
+import 'package:i_iwara/i18n/strings.g.dart' as slang;
 
 enum SearchSegment {
   video,
@@ -31,6 +32,7 @@ class SearchDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = slang.Translations.of(context);
     double screenWidth = MediaQuery.of(context).size.width;
 
     if (screenWidth > 600) {
@@ -51,10 +53,10 @@ class SearchDialog extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      '搜索',
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    Text(
+                      t.common.search,
+                      style: const TextStyle(
+                          fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                     IconButton(
                       icon: const Icon(Icons.close),
@@ -77,7 +79,7 @@ class SearchDialog extends StatelessWidget {
       // 对于窄屏幕，显示为全屏模态
       return Scaffold(
         appBar: AppBar(
-          title: const Text('搜索'),
+          title: Text(t.common.search),
           actions: [
             IconButton(
               icon: const Icon(Icons.close),
@@ -147,7 +149,7 @@ class _SearchContentState extends State<_SearchContent> {
         _controller.text = globalSearchService.searchPlaceholder.value;
         _focusNode.requestFocus(); // 重新聚焦 TextField
       } else {
-        globalSearchService.setSearchError('请输入搜索内容');
+        globalSearchService.setSearchError(slang.t.search.pleaseEnterSearchContent);
       }
       return;
     }
@@ -169,6 +171,7 @@ class _SearchContentState extends State<_SearchContent> {
 
   @override
   Widget build(BuildContext context) {
+    final t = slang.Translations.of(context);
     double width = MediaQuery.of(context).size.width;
     bool isWide = width > 600;
 
@@ -180,12 +183,12 @@ class _SearchContentState extends State<_SearchContent> {
         alignment: WrapAlignment.center,
         crossAxisAlignment: WrapCrossAlignment.center,
         children: [
-          const Row(
+          Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                '搜索历史',
-                style: TextStyle(
+                t.search.searchHistory,
+                style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
@@ -223,8 +226,8 @@ class _SearchContentState extends State<_SearchContent> {
                             const SizedBox(width: 4),
                             Text(
                               userPreferenceService.searchRecordEnabled.value
-                                  ? '记录中'
-                                  : '已暂停',
+                                  ? t.common.recording
+                                  : t.common.paused,
                               style: TextStyle(
                                 fontSize: 14,
                                 color: userPreferenceService
@@ -243,7 +246,7 @@ class _SearchContentState extends State<_SearchContent> {
                 TextButton.icon(
                   onPressed: _clearHistory,
                   icon: const Icon(Icons.delete_outline, size: 18),
-                  label: const Text('清除'),
+                  label: Text(t.common.clear),
                   style: TextButton.styleFrom(
                     foregroundColor: Theme.of(context).colorScheme.error,
                   ),
@@ -277,8 +280,8 @@ class _SearchContentState extends State<_SearchContent> {
                     decoration: InputDecoration(
                       hintText: globalSearchService
                               .searchPlaceholder.value.isEmpty
-                          ? '请填写搜索内容'
-                          : '搜索建议: ${globalSearchService.searchPlaceholder.value}',
+                          ? t.search.pleaseEnterSearchContent
+                          : '${t.search.searchSuggestion}: ${globalSearchService.searchPlaceholder.value}',
                       hintStyle: TextStyle(
                         color: Colors.grey[400],
                         fontWeight: FontWeight.normal,
@@ -347,7 +350,7 @@ class _SearchContentState extends State<_SearchContent> {
                       value: SearchSegment.video.name,
                       label: globalSearchService.selectedSegment
                               .contains(SearchSegment.video.name)
-                          ? const Text('视频')
+                          ? Text(t.common.video)
                           : null,
                       icon: const Icon(Icons.video_library),
                     ),
@@ -355,7 +358,7 @@ class _SearchContentState extends State<_SearchContent> {
                       value: SearchSegment.image.name,
                       label: globalSearchService.selectedSegment
                               .contains(SearchSegment.image.name)
-                          ? const Text('图片')
+                          ? Text(t.common.gallery)
                           : null,
                       icon: const Icon(Icons.image),
                     ),
@@ -363,7 +366,7 @@ class _SearchContentState extends State<_SearchContent> {
                       value: SearchSegment.post.name,
                       label: globalSearchService.selectedSegment
                               .contains(SearchSegment.post.name)
-                          ? const Text('帖子')
+                          ? Text(t.common.post)
                           : null,
                       icon: const Icon(Icons.article),
                     ),
@@ -371,7 +374,7 @@ class _SearchContentState extends State<_SearchContent> {
                       value: SearchSegment.user.name,
                       label: globalSearchService.selectedSegment
                               .contains(SearchSegment.user.name)
-                          ? const Text('用户')
+                          ? Text(t.common.user)
                           : null,
                       icon: const Icon(Icons.person),
                     ),
@@ -395,8 +398,8 @@ class _SearchContentState extends State<_SearchContent> {
           Expanded(
             child: Obx(
               () => userPreferenceService.videoSearchHistory.isEmpty
-                  ? const Center(
-                      child: Text('没有搜索历史'),
+                  ? Center(
+                      child: Text(t.search.noSearchHistoryRecords),
                     )
                   : ListView.builder(
                       itemCount:
@@ -408,7 +411,7 @@ class _SearchContentState extends State<_SearchContent> {
                           leading: const Icon(Icons.history),
                           title: Text(record.keyword),
                           subtitle: Text(
-                            '使用次数: ${record.usedTimes} · 最后使用: ${record.lastUsedAt.toString().split('.')[0]}',
+                            '${t.search.usedTimes}: ${record.usedTimes} · ${t.search.lastUsed}: ${record.lastUsedAt.toString().split('.')[0]}',
                             style: TextStyle(
                                 fontSize: 12, color: Colors.grey[600]),
                           ),

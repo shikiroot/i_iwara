@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:i_iwara/i18n/strings.g.dart' as slang;
 class SignInHeatMap extends StatelessWidget {
   final Map<DateTime, bool> signInStatus;
   final int consecutiveSignIns;
@@ -58,6 +58,7 @@ class SignInHeatMap extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<DateTime> dateList = _generateDateList();
+    final t = slang.Translations.of(context);
 
     // 计算最大连续签到天数以调整颜色渐变
     int maxStreak = 0;
@@ -77,21 +78,19 @@ class SignInHeatMap extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0),
           child: Text(
-            '连续签到天数: $consecutiveSignIns',
+            '${t.signIn.consecutiveSignIns}: $consecutiveSignIns',
             style: Theme.of(context).textTheme.bodyMedium,
           ),
         ),
         // 热点图网格
         LayoutBuilder(
           builder: (context, constraints) {
-            double gridWidth = constraints.maxWidth;
             int crossAxisCount = 7; // 一周7天
             double spacing = 4.0;
-            double cellSize = (gridWidth - (crossAxisCount - 1) * spacing) / crossAxisCount;
 
             return GridView.builder(
               shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               itemCount: dateList.length,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: crossAxisCount,
@@ -121,12 +120,12 @@ class SignInHeatMap extends StatelessWidget {
                       showDialog(
                         context: context,
                         builder: (context) => AlertDialog(
-                          title: Text('破戒原因'),
+                          title: Text(t.signIn.failureReason),
                           content: Text(reason),
                           actions: [
                             TextButton(
                               onPressed: () => Navigator.pop(context),
-                              child: Text('关闭'),
+                              child: Text(t.common.close),
                             ),
                           ],
                         ),

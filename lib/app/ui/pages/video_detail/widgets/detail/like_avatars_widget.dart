@@ -109,7 +109,7 @@ class _LikeAvatarsWidgetState extends State<LikeAvatarsWidget> {
         ),
         const SizedBox(width: 8),
         Text(
-          '$count Likes',
+          '$count',
           style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w500,

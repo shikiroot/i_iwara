@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:i_iwara/i18n/strings.g.dart' as slang;
 class MyEmptyWidget extends StatelessWidget {
   final String? message;
   final IconData? icon;
@@ -20,6 +20,7 @@ class MyEmptyWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = slang.Translations.of(context);
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -49,7 +50,7 @@ class MyEmptyWidget extends StatelessWidget {
             SizedBox(height: spacing),
             TextButton(
               onPressed: onRefresh,
-              child: const Text('点击刷新'),
+              child: Text(t.common.clickToRefresh),
             ),
           ],
         ],

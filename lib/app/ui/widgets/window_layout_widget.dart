@@ -63,7 +63,7 @@ class WindowTitleBarLayout extends StatelessWidget {
                             Expanded(
                               child: DragToMoveArea(
                                 child: Text(
-                                  '💗 Iwara',
+                                  'Love Iwara',
                                   style: TextStyle(
                                     fontSize: 13,
                                     color: (context.brightness == Brightness.dark)

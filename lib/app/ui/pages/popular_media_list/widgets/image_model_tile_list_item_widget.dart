@@ -4,6 +4,7 @@ import 'package:i_iwara/app/services/app_service.dart';
 import 'package:i_iwara/utils/date_time_extension.dart';
 
 import '../../../../models/image.model.dart';
+import 'package:i_iwara/i18n/strings.g.dart' as slang;
 
 class ImageModelTileListItem extends StatelessWidget {
   final ImageModel imageModel;
@@ -141,6 +142,7 @@ class ImageModelTileListItem extends StatelessWidget {
 
   /// 构建图片信息部分（标题、作者和创建时间）
   Widget _buildImageModelInfo(BuildContext context) {
+    final t = slang.Translations.of(context);
     // 格式化创建时间
     String formattedDate = '';
     if (imageModel.createdAt != null) {
@@ -152,7 +154,7 @@ class ImageModelTileListItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            imageModel.title ?? '无标题',
+            imageModel.title,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(
@@ -162,7 +164,7 @@ class ImageModelTileListItem extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            imageModel.user?.name ?? '未知用户',
+            imageModel.user?.name ?? t.common.unknownUser,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(

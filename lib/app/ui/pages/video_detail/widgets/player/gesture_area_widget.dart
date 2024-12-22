@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:logger/logger.dart';
 import 'package:screen_brightness/screen_brightness.dart';
 import 'package:volume_controller/volume_controller.dart';
 
 import '../../../../../services/config_service.dart';
 import '../../controllers/my_video_state_controller.dart';
 import 'my_video_screen.dart';
+import '../../../../../../i18n/strings.g.dart' as slang;
 
 /// 视频播放器的手势区域
 enum GestureRegion { left, right, center }
@@ -39,7 +39,6 @@ class GestureArea extends StatefulWidget {
 
 class _GestureAreaState extends State<GestureArea>
     with SingleTickerProviderStateMixin {
-  final Logger logger = Logger();
   final ConfigService _configService = Get.find();
   VolumeController? _volumeController;
   ScreenBrightness? _screenBrightness;
@@ -112,9 +111,11 @@ class _GestureAreaState extends State<GestureArea>
   void _showInfoMessage() {
     String message;
     if (widget.region == GestureRegion.left) {
-      message = '后退${_configService[ConfigService.REWIND_SECONDS_KEY]}秒';
+      // message = '后退${_configService[ConfigService.REWIND_SECONDS_KEY]}秒';
+      message = slang.t.videoDetail.rewindSeconds(num:_configService[ConfigService.REWIND_SECONDS_KEY]);
     } else {
-      message = '快进${_configService[ConfigService.FAST_FORWARD_SECONDS_KEY]}秒';
+      // message = '快进${_configService[ConfigService.FAST_FORWARD_SECONDS_KEY]}秒';
+      message = slang.t.videoDetail.fastForwardSeconds(num:_configService[ConfigService.FAST_FORWARD_SECONDS_KEY]);
     }
 
     setState(() {
@@ -209,10 +210,8 @@ class _GestureAreaState extends State<GestureArea>
       rx = rx.clamp(0.0, 1.0);
       if (GetPlatform.isAndroid || GetPlatform.isIOS) {
         _volumeController?.setVolume(rx);
-        logger.d('系统音量调整：$rx');
       } else {
         widget.myVideoStateController.player.setVolume(rx * 100); // 调整播放器音量
-        logger.d('播放器音量调整:$rx');
       }
       _configService[ConfigService.VOLUME_KEY] = rx;
 

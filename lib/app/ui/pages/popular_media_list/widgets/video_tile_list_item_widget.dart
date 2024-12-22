@@ -11,6 +11,7 @@ import 'package:vibration/vibration.dart';
 
 import '../../../../models/video.model.dart';
 import 'animated_preview_widget.dart';
+import 'package:i_iwara/i18n/strings.g.dart' as slang;
 
 class VideoTileListItem extends StatefulWidget {
   final Video video;
@@ -134,6 +135,7 @@ class _VideoTileListItemState extends State<VideoTileListItem> {
 
   /// 构建视频信息部分（标题、作者和创建时间）
   Widget _buildVideoInfo(BuildContext context) {
+    final t = slang.Translations.of(context);
     // 格式化创建时间
     String formattedDate = '';
     if (widget.video.createdAt != null) {
@@ -145,7 +147,7 @@ class _VideoTileListItemState extends State<VideoTileListItem> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            widget.video.title ?? '无标题',
+            widget.video.title ?? t.common.noTitle,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(
@@ -155,7 +157,7 @@ class _VideoTileListItemState extends State<VideoTileListItem> {
           ),
           const SizedBox(height: 4),
           Text(
-            widget.video.user?.name ?? '未知用户',
+            widget.video.user?.name ?? t.common.unknownUser,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(
@@ -190,11 +192,12 @@ class _VideoTileListItemState extends State<VideoTileListItem> {
 
   /// 构建 Private 标签
   Widget _buildPrivateTag(BuildContext context) {
+    final t = slang.Translations.of(context);
     return Positioned(
       left: 0,
       top: 0,
       child: _buildTag(
-        label: 'Private',
+        label: t.common.private,
         backgroundColor: Colors.black54,
       ),
     );

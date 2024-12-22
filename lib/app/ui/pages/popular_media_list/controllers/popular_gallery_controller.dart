@@ -4,6 +4,7 @@ import 'package:i_iwara/app/models/api_result.model.dart';
 import 'package:i_iwara/app/models/image.model.dart';
 import 'package:i_iwara/app/models/page_data.model.dart';
 import 'package:i_iwara/app/ui/widgets/error_widget.dart';
+import 'package:i_iwara/i18n/strings.g.dart';
 import 'package:i_iwara/utils/proxy/proxy_util.dart';
 import 'package:i_iwara/utils/widget_extensions.dart';
 
@@ -75,18 +76,18 @@ class PopularGalleryController extends GetxController {
       page++;
     } catch (e) {
       LogUtils.e('获取图片列表失败', tag: 'PopularImageModelController', error: e);
-      Get.snackbar('错误', '处理请求时出现错误');
+      Get.snackbar(t.errors.error, t.errors.errorWhileFetching);
       errorWidget.value = CommonErrorWidget(
-        text: '处理请求时出现错误',
+        text: t.errors.errorWhileFetching,
         children: [
           if (ProxyUtil.isSupportedPlatform())
             ElevatedButton(
               onPressed: () => {Get.toNamed(Routes.PROXY_SETTINGS_PAGE)},
-              child: const Text('检查网络设置'),
+              child: Text(t.common.checkNetworkSettings),
             ).paddingRight(10),
           ElevatedButton(
             onPressed: () => fetchImageModels(refresh: true),
-            child: const Text('刷新'),
+            child: Text(t.common.refresh),
           ),
         ],
       );

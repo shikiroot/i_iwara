@@ -41,6 +41,12 @@ class TranslationsJa implements Translations {
 	@override late final _TranslationsFavoritesJa favorites = _TranslationsFavoritesJa._(_root);
 	@override late final _TranslationsGalleryDetailJa galleryDetail = _TranslationsGalleryDetailJa._(_root);
 	@override late final _TranslationsPlayListJa playList = _TranslationsPlayListJa._(_root);
+	@override late final _TranslationsSearchJa search = _TranslationsSearchJa._(_root);
+	@override late final _TranslationsMediaListJa mediaList = _TranslationsMediaListJa._(_root);
+	@override late final _TranslationsSettingsJa settings = _TranslationsSettingsJa._(_root);
+	@override late final _TranslationsSignInJa signIn = _TranslationsSignInJa._(_root);
+	@override late final _TranslationsSubscriptionsJa subscriptions = _TranslationsSubscriptionsJa._(_root);
+	@override late final _TranslationsVideoDetailJa videoDetail = _TranslationsVideoDetailJa._(_root);
 }
 
 // Path: common
@@ -72,10 +78,12 @@ class _TranslationsCommonJa implements TranslationsCommonEn {
 	@override String get video => 'ビデオ';
 	@override String get following => 'フォロー';
 	@override String get cancelFriendRequest => '申請取消';
+	@override String get cancelSpecialFollow => '特別フォロー取消';
 	@override String get addFriend => 'フレンド追加';
 	@override String get removeFriend => 'フレンド解除';
 	@override String get followed => 'フォロー済み';
 	@override String get follow => 'フォロー';
+	@override String get unfollow => 'フォロー解除';
 	@override String get specialFollow => '特別フォロー';
 	@override String get specialFollowed => '特別フォロー済み';
 	@override String get gallery => 'ギャラリー';
@@ -143,6 +151,36 @@ class _TranslationsCommonJa implements TranslationsCommonEn {
 	@override String get pleaseEnterNewTitle => '新しいタイトルを入力してください';
 	@override String get createPlayList => 'プレイリストを作成';
 	@override String get create => '作成';
+	@override String get general => '大衆的';
+	@override String get r18 => 'R18';
+	@override String get sensitive => '敏感';
+	@override String get year => '年';
+	@override String get tag => 'タグ';
+	@override String get private => 'プライベート';
+	@override String get noTitle => '無タイトル';
+	@override String get search => '検索';
+	@override String get noContent => 'コンテンツがありません';
+	@override String get recording => '記録中';
+	@override String get paused => '一時停止';
+	@override String get clear => 'クリア';
+	@override String get user => 'ユーザー';
+	@override String get post => '投稿';
+	@override String get seconds => '秒';
+	@override String get comingSoon => '敬請期待';
+	@override String get confirm => '確認';
+	@override String get hour => '時';
+	@override String get minute => '分';
+	@override String get clickToRefresh => 'クリックして更新';
+	@override String get history => '履歴';
+	@override String get favorites => 'お気に入り';
+	@override String get friends => 'フレンド';
+	@override String get playList => 'プレイリスト';
+	@override String get checkLicense => 'ライセンスを確認';
+	@override String get logout => 'ログアウト';
+	@override String get checkNetworkSettings => 'ネットワーク設定を確認';
+	@override String get accept => '受け入れる';
+	@override String get fensi => 'ファン';
+	@override String get reject => '拒否する';
 }
 
 // Path: auth
@@ -152,6 +190,7 @@ class _TranslationsAuthJa implements TranslationsAuthEn {
 	final TranslationsJa _root; // ignore: unused_field
 
 	// Translations
+	@override String get checkNetworkSettings => 'ネットワーク設定を確認';
 	@override String get login => 'ログイン';
 	@override String get logout => 'ログアウト';
 	@override String get email => 'メールアドレス';
@@ -167,6 +206,14 @@ class _TranslationsAuthJa implements TranslationsAuthEn {
 	@override String get captchaNotLoaded => '検証コードが読み込めません';
 	@override String get loginSuccess => 'ログイン成功';
 	@override String get emailVerificationSent => 'メール検証コードが送信されました';
+	@override String get notLoggedIn => 'ログインしていません';
+	@override String get clickToLogin => 'ここをクリックしてログイン';
+	@override String get logoutConfirmation => 'ログアウトしますか？';
+	@override String get logoutSuccess => 'ログアウト成功';
+	@override String get logoutFailed => 'ログアウト失敗';
+	@override String get fensi => 'ファン';
+	@override String get accept => '受け入れる';
+	@override String get reject => '拒否する';
 }
 
 // Path: errors
@@ -188,6 +235,15 @@ class _TranslationsErrorsJa implements TranslationsErrorsEn {
 	@override String get howCouldThereBeNoDataItCantBePossible => 'ギャラリーにデータがありません。エラーです :<';
 	@override String unsupportedImageFormat({required Object str}) => 'サポートされていない画像形式: ${str}';
 	@override String get invalidGalleryId => '無効なギャラリーID';
+	@override String get translationFailedPleaseTryAgainLater => '翻訳失敗、再試行してください';
+	@override String get errorOccurred => 'エラーが発生しました、再試行してください';
+	@override String get errorWhileFetchingDatas => 'データ取得エラー、再試行してください';
+	@override String get errorOccurredWhileProcessingRequest => 'リクエスト処理中にエラーが発生しました';
+	@override String get serviceNotInitialized => 'サービスが初期化されていません';
+	@override String get unknownType => '不明なタイプ';
+	@override String errorWhileOpeningLink({required Object link}) => 'リンクを開くエラー: ${link}';
+	@override String get invalidUrl => '無効なURL';
+	@override String get failedToOperate => '操作失敗';
 }
 
 // Path: friends
@@ -271,6 +327,174 @@ class _TranslationsPlayListJa implements TranslationsPlayListEn {
 	@override String get iUnderstand => '理解しました';
 }
 
+// Path: search
+class _TranslationsSearchJa implements TranslationsSearchEn {
+	_TranslationsSearchJa._(this._root);
+
+	final TranslationsJa _root; // ignore: unused_field
+
+	// Translations
+	@override String get searchTags => '検索タグ...';
+	@override String get contentRating => 'コンテンツ評価';
+	@override String get pleaseEnterSearchContent => '検索内容を入力してください';
+	@override String get searchHistory => '検索履歴';
+	@override String get searchSuggestion => '検索提案';
+	@override String get usedTimes => '使用回数';
+	@override String get lastUsed => '最終使用';
+	@override String get noSearchHistoryRecords => '検索履歴がありません';
+	@override String notSupportCurrentSearchType({required Object searchType}) => '現在の検索タイプ ${searchType} はサポートされていません。更新をお待ちください';
+	@override String get searchResult => '検索結果';
+	@override String get removeTag => 'タグを削除';
+}
+
+// Path: mediaList
+class _TranslationsMediaListJa implements TranslationsMediaListEn {
+	_TranslationsMediaListJa._(this._root);
+
+	final TranslationsJa _root; // ignore: unused_field
+
+	// Translations
+	@override String get personalIntroduction => '個人紹介';
+}
+
+// Path: settings
+class _TranslationsSettingsJa implements TranslationsSettingsEn {
+	_TranslationsSettingsJa._(this._root);
+
+	final TranslationsJa _root; // ignore: unused_field
+
+	// Translations
+	@override String get searchConfig => '検索設定';
+	@override String get thisConfigurationDeterminesWhetherThePreviousConfigurationWillBeUsedWhenPlayingVideosAgain => 'この設定は、ビデオを再生する際に前回の設定が使用されるかどうかを決定します。';
+	@override String get playControl => '再生制御';
+	@override String get fastForwardTime => '早送り時間';
+	@override String get fastForwardTimeMustBeAPositiveInteger => '早送り時間は正の整数でなければなりません。';
+	@override String get rewindTime => '巻き戻し時間';
+	@override String get rewindTimeMustBeAPositiveInteger => '巻き戻し時間は正の整数でなければなりません。';
+	@override String get longPressPlaybackSpeed => '長押し再生倍速';
+	@override String get longPressPlaybackSpeedMustBeAPositiveNumber => '長押し再生倍速は正の数でなければなりません。';
+	@override String get repeat => 'ループ再生';
+	@override String get renderVerticalVideoInVerticalScreen => '全屏再生時に縦画面で縦画面ビデオをレンダリング';
+	@override String get thisConfigurationDeterminesWhetherTheVideoWillBeRenderedInVerticalScreenWhenPlayingInFullScreen => 'この設定は、ビデオを全画面再生時に縦画面で縦画面ビデオをレンダリングするかどうかを決定します。';
+	@override String get rememberVolume => '音量を記憶';
+	@override String get thisConfigurationDeterminesWhetherTheVolumeWillBeKeptWhenPlayingVideosAgain => 'この設定は、ビデオを再生する際に前回の音量設定が使用されるかどうかを決定します。';
+	@override String get rememberBrightness => '明るさを記憶';
+	@override String get thisConfigurationDeterminesWhetherTheBrightnessWillBeKeptWhenPlayingVideosAgain => 'この設定は、ビデオを再生する際に前回の明るさ設定が使用されるかどうかを決定します。';
+	@override String get playControlArea => '再生制御領域';
+	@override String get leftAndRightControlAreaWidth => '左右制御領域幅';
+	@override String get thisConfigurationDeterminesTheWidthOfTheControlAreasOnTheLeftAndRightSidesOfThePlayer => 'この設定は、再生器の左右の制御領域の幅を決定します。';
+	@override String get proxyAddressCannotBeEmpty => 'プロキシアドレスを入力してください。';
+	@override String get invalidProxyAddressFormatPleaseUseTheFormatOfIpPortOrDomainNamePort => '無効なプロキシアドレス形式です。IP:ポート または ドメイン名:ポート の形式を使用してください。';
+	@override String get proxyNormalWork => 'プロキシが正常に動作しています。';
+	@override String testProxyFailedWithStatusCode({required Object code}) => 'プロキシテスト失敗、ステータスコード: ${code}';
+	@override String testProxyFailedWithException({required Object exception}) => 'プロキシテスト失敗、例外: ${exception}';
+	@override String get proxyConfig => 'プロキシ設定';
+	@override String get thisIsHttpProxyAddress => 'ここはhttpプロキシアドレスです';
+	@override String get checkProxy => 'プロキシチェック';
+	@override String get proxyAddress => 'プロキシアドレス';
+	@override String get pleaseEnterTheUrlOfTheProxyServerForExample1270018080 => 'プロキシサーバーのURLを入力してください、例えば 127.0.0.1:8080';
+	@override String get enableProxy => 'プロキシを有効にする';
+	@override String get left => '左';
+	@override String get middle => '中';
+	@override String get right => '右';
+	@override String get playerSettings => 'プレイヤー設定';
+	@override String get networkSettings => 'ネットワーク設定';
+	@override String get customizeYourPlaybackExperience => '再生体験をカスタマイズ';
+	@override String get chooseYourFavoriteAppAppearance => 'お好きなアプリの外観を選択';
+	@override String get configureYourProxyServer => 'プロキシサーバーを設定';
+	@override String get settings => '設定';
+	@override String get themeSettings => 'テーマ設定';
+}
+
+// Path: signIn
+class _TranslationsSignInJa implements TranslationsSignInEn {
+	_TranslationsSignInJa._(this._root);
+
+	final TranslationsJa _root; // ignore: unused_field
+
+	// Translations
+	@override String get pleaseLoginFirst => 'ログインしてからサインインしてください';
+	@override String get alreadySignedInToday => '今日はすでにサインインしました！';
+	@override String get youDidNotStickToTheSignIn => 'サインインを継続できませんでした。';
+	@override String get signInSuccess => 'サインイン成功！';
+	@override String get signInFailed => 'サインイン失敗、再試行してください';
+	@override String get consecutiveSignIns => '連続サインイン日数';
+	@override String get failureReason => 'サインインを継続できなかった理由';
+	@override String get selectDateRange => '日付範囲を選択';
+	@override String get startDate => '開始日';
+	@override String get endDate => '終了日';
+	@override String get invalidDate => '無効な日付';
+	@override String get invalidDateRange => '無効な日付範囲';
+	@override String get errorFormatText => '日付形式エラー';
+	@override String get errorInvalidText => '無効な日付範囲';
+	@override String get errorInvalidRangeText => '無効な日付範囲';
+	@override String get dateRangeCantBeMoreThanOneYear => '日付範囲は1年を超えてはいけません';
+	@override String get signIn => 'チェックイン';
+	@override String get signInRecord => '着信記録';
+	@override String get totalSignIns => '総成功署名';
+	@override String get pleaseSelectSignInStatus => 'チェックインステータスを選択してください';
+}
+
+// Path: subscriptions
+class _TranslationsSubscriptionsJa implements TranslationsSubscriptionsEn {
+	_TranslationsSubscriptionsJa._(this._root);
+
+	final TranslationsJa _root; // ignore: unused_field
+
+	// Translations
+	@override String get pleaseLoginFirstToViewYourSubscriptions => 'ログインしてからサブスクリプションを表示してください。';
+}
+
+// Path: videoDetail
+class _TranslationsVideoDetailJa implements TranslationsVideoDetailEn {
+	_TranslationsVideoDetailJa._(this._root);
+
+	final TranslationsJa _root; // ignore: unused_field
+
+	// Translations
+	@override String get videoIdIsEmpty => 'ビデオIDが空です';
+	@override String get videoInfoIsEmpty => 'ビデオ情報が空です';
+	@override String get thisIsAPrivateVideo => 'これはプライベートビデオです';
+	@override String get getVideoInfoFailed => 'ビデオ情報取得失敗、再試行してください';
+	@override String get noVideoSourceFound => 'ビデオソースが見つかりません';
+	@override String tagCopiedToClipboard({required Object tagId}) => 'タグ "${tagId}" をクリップボードにコピーしました';
+	@override String get errorLoadingVideo => 'ビデオの読み込み中にエラーが発生しました';
+	@override String get play => '再生';
+	@override String get pause => '一時停止';
+	@override String get exitAppFullscreen => 'アプリの全画面を終了';
+	@override String get enterAppFullscreen => 'アプリの全画面を開始';
+	@override String get exitSystemFullscreen => 'システムの全画面を終了';
+	@override String get enterSystemFullscreen => 'システムの全画面を開始';
+	@override String get seekTo => '指定時間にジャンプ';
+	@override String get switchResolution => '解像度を切り替え';
+	@override String get switchPlaybackSpeed => '再生倍速を切り替え';
+	@override String rewindSeconds({required Object num}) => '巻き戻し${num}秒';
+	@override String fastForwardSeconds({required Object num}) => '早送り${num}秒';
+	@override String playbackSpeedIng({required Object rate}) => '再生倍速${rate}倍';
+	@override String get brightness => '明るさ';
+	@override String get brightnessLowest => '明るさは最低';
+	@override String get volume => '音量';
+	@override String get volumeMuted => '音量は静音';
+	@override String get home => 'ホーム';
+	@override String get videoPlayer => 'ビデオプレイヤー';
+	@override String get videoPlayerInfo => 'ビデオプレイヤー情報';
+	@override String get moreSettings => 'もっと設定';
+	@override String get videoPlayerFeatureInfo => 'ビデオプレイヤー機能紹介';
+	@override String get autoRewind => '自動巻き戻し';
+	@override String get rewindAndFastForward => '左右两侧双击快进或后退';
+	@override String get volumeAndBrightness => '左右两侧垂直滑动调整音量、亮度';
+	@override String get centerAreaDoubleTapPauseOrPlay => '中心区域双击暂停或播放';
+	@override String get showVerticalVideoInFullScreen => '全画面再生時に縦画面で縦画面ビデオを表示';
+	@override String get keepLastVolumeAndBrightness => '最後に調整した音量、明るさを保持';
+	@override String get setProxy => 'プロキシを設定';
+	@override String get moreFeaturesToBeDiscovered => 'もっと機能を発見...';
+	@override String get videoPlayerSettings => 'ビデオプレイヤー設定';
+	@override String commentCount({required Object num}) => '${num} コメント';
+	@override String get writeYourCommentHere => 'コメントを書いてください...';
+	@override String get authorOtherVideos => '作者の他のビデオ';
+	@override String get relatedVideos => '関連ビデオ';
+}
+
 /// Flat map(s) containing all translations.
 /// Only for edge cases! For simple maps, use the map function of this library.
 extension on TranslationsJa {
@@ -298,10 +522,12 @@ extension on TranslationsJa {
 			case 'common.video': return 'ビデオ';
 			case 'common.following': return 'フォロー';
 			case 'common.cancelFriendRequest': return '申請取消';
+			case 'common.cancelSpecialFollow': return '特別フォロー取消';
 			case 'common.addFriend': return 'フレンド追加';
 			case 'common.removeFriend': return 'フレンド解除';
 			case 'common.followed': return 'フォロー済み';
 			case 'common.follow': return 'フォロー';
+			case 'common.unfollow': return 'フォロー解除';
 			case 'common.specialFollow': return '特別フォロー';
 			case 'common.specialFollowed': return '特別フォロー済み';
 			case 'common.gallery': return 'ギャラリー';
@@ -369,6 +595,37 @@ extension on TranslationsJa {
 			case 'common.pleaseEnterNewTitle': return '新しいタイトルを入力してください';
 			case 'common.createPlayList': return 'プレイリストを作成';
 			case 'common.create': return '作成';
+			case 'common.general': return '大衆的';
+			case 'common.r18': return 'R18';
+			case 'common.sensitive': return '敏感';
+			case 'common.year': return '年';
+			case 'common.tag': return 'タグ';
+			case 'common.private': return 'プライベート';
+			case 'common.noTitle': return '無タイトル';
+			case 'common.search': return '検索';
+			case 'common.noContent': return 'コンテンツがありません';
+			case 'common.recording': return '記録中';
+			case 'common.paused': return '一時停止';
+			case 'common.clear': return 'クリア';
+			case 'common.user': return 'ユーザー';
+			case 'common.post': return '投稿';
+			case 'common.seconds': return '秒';
+			case 'common.comingSoon': return '敬請期待';
+			case 'common.confirm': return '確認';
+			case 'common.hour': return '時';
+			case 'common.minute': return '分';
+			case 'common.clickToRefresh': return 'クリックして更新';
+			case 'common.history': return '履歴';
+			case 'common.favorites': return 'お気に入り';
+			case 'common.friends': return 'フレンド';
+			case 'common.playList': return 'プレイリスト';
+			case 'common.checkLicense': return 'ライセンスを確認';
+			case 'common.logout': return 'ログアウト';
+			case 'common.checkNetworkSettings': return 'ネットワーク設定を確認';
+			case 'common.accept': return '受け入れる';
+			case 'common.fensi': return 'ファン';
+			case 'common.reject': return '拒否する';
+			case 'auth.checkNetworkSettings': return 'ネットワーク設定を確認';
 			case 'auth.login': return 'ログイン';
 			case 'auth.logout': return 'ログアウト';
 			case 'auth.email': return 'メールアドレス';
@@ -384,6 +641,14 @@ extension on TranslationsJa {
 			case 'auth.captchaNotLoaded': return '検証コードが読み込めません';
 			case 'auth.loginSuccess': return 'ログイン成功';
 			case 'auth.emailVerificationSent': return 'メール検証コードが送信されました';
+			case 'auth.notLoggedIn': return 'ログインしていません';
+			case 'auth.clickToLogin': return 'ここをクリックしてログイン';
+			case 'auth.logoutConfirmation': return 'ログアウトしますか？';
+			case 'auth.logoutSuccess': return 'ログアウト成功';
+			case 'auth.logoutFailed': return 'ログアウト失敗';
+			case 'auth.fensi': return 'ファン';
+			case 'auth.accept': return '受け入れる';
+			case 'auth.reject': return '拒否する';
 			case 'errors.error': return 'エラー';
 			case 'errors.required': return 'この項目は必須です';
 			case 'errors.invalidEmail': return '無効なメールアドレス';
@@ -396,6 +661,15 @@ extension on TranslationsJa {
 			case 'errors.howCouldThereBeNoDataItCantBePossible': return 'ギャラリーにデータがありません。エラーです :<';
 			case 'errors.unsupportedImageFormat': return ({required Object str}) => 'サポートされていない画像形式: ${str}';
 			case 'errors.invalidGalleryId': return '無効なギャラリーID';
+			case 'errors.translationFailedPleaseTryAgainLater': return '翻訳失敗、再試行してください';
+			case 'errors.errorOccurred': return 'エラーが発生しました、再試行してください';
+			case 'errors.errorWhileFetchingDatas': return 'データ取得エラー、再試行してください';
+			case 'errors.errorOccurredWhileProcessingRequest': return 'リクエスト処理中にエラーが発生しました';
+			case 'errors.serviceNotInitialized': return 'サービスが初期化されていません';
+			case 'errors.unknownType': return '不明なタイプ';
+			case 'errors.errorWhileOpeningLink': return ({required Object link}) => 'リンクを開くエラー: ${link}';
+			case 'errors.invalidUrl': return '無効なURL';
+			case 'errors.failedToOperate': return '操作失敗';
 			case 'friends.clickToRestoreFriend': return 'クリックしてフレンドに戻す';
 			case 'friends.friendsList': return 'フレンドリスト';
 			case 'friends.friendRequests': return 'フレンドリクエスト';
@@ -432,6 +706,120 @@ extension on TranslationsJa {
 			case 'playList.useLikeToCollectContent': return 'もしプライバシーを重視する場合、「いいね」機能を使用してコンテンツを収集することをお勧めします';
 			case 'playList.welcomeToDiscussOnGitHub': return '他の提案やアイデアがあれば、GitHubで議論してください！';
 			case 'playList.iUnderstand': return '理解しました';
+			case 'search.searchTags': return '検索タグ...';
+			case 'search.contentRating': return 'コンテンツ評価';
+			case 'search.pleaseEnterSearchContent': return '検索内容を入力してください';
+			case 'search.searchHistory': return '検索履歴';
+			case 'search.searchSuggestion': return '検索提案';
+			case 'search.usedTimes': return '使用回数';
+			case 'search.lastUsed': return '最終使用';
+			case 'search.noSearchHistoryRecords': return '検索履歴がありません';
+			case 'search.notSupportCurrentSearchType': return ({required Object searchType}) => '現在の検索タイプ ${searchType} はサポートされていません。更新をお待ちください';
+			case 'search.searchResult': return '検索結果';
+			case 'search.removeTag': return 'タグを削除';
+			case 'mediaList.personalIntroduction': return '個人紹介';
+			case 'settings.searchConfig': return '検索設定';
+			case 'settings.thisConfigurationDeterminesWhetherThePreviousConfigurationWillBeUsedWhenPlayingVideosAgain': return 'この設定は、ビデオを再生する際に前回の設定が使用されるかどうかを決定します。';
+			case 'settings.playControl': return '再生制御';
+			case 'settings.fastForwardTime': return '早送り時間';
+			case 'settings.fastForwardTimeMustBeAPositiveInteger': return '早送り時間は正の整数でなければなりません。';
+			case 'settings.rewindTime': return '巻き戻し時間';
+			case 'settings.rewindTimeMustBeAPositiveInteger': return '巻き戻し時間は正の整数でなければなりません。';
+			case 'settings.longPressPlaybackSpeed': return '長押し再生倍速';
+			case 'settings.longPressPlaybackSpeedMustBeAPositiveNumber': return '長押し再生倍速は正の数でなければなりません。';
+			case 'settings.repeat': return 'ループ再生';
+			case 'settings.renderVerticalVideoInVerticalScreen': return '全屏再生時に縦画面で縦画面ビデオをレンダリング';
+			case 'settings.thisConfigurationDeterminesWhetherTheVideoWillBeRenderedInVerticalScreenWhenPlayingInFullScreen': return 'この設定は、ビデオを全画面再生時に縦画面で縦画面ビデオをレンダリングするかどうかを決定します。';
+			case 'settings.rememberVolume': return '音量を記憶';
+			case 'settings.thisConfigurationDeterminesWhetherTheVolumeWillBeKeptWhenPlayingVideosAgain': return 'この設定は、ビデオを再生する際に前回の音量設定が使用されるかどうかを決定します。';
+			case 'settings.rememberBrightness': return '明るさを記憶';
+			case 'settings.thisConfigurationDeterminesWhetherTheBrightnessWillBeKeptWhenPlayingVideosAgain': return 'この設定は、ビデオを再生する際に前回の明るさ設定が使用されるかどうかを決定します。';
+			case 'settings.playControlArea': return '再生制御領域';
+			case 'settings.leftAndRightControlAreaWidth': return '左右制御領域幅';
+			case 'settings.thisConfigurationDeterminesTheWidthOfTheControlAreasOnTheLeftAndRightSidesOfThePlayer': return 'この設定は、再生器の左右の制御領域の幅を決定します。';
+			case 'settings.proxyAddressCannotBeEmpty': return 'プロキシアドレスを入力してください。';
+			case 'settings.invalidProxyAddressFormatPleaseUseTheFormatOfIpPortOrDomainNamePort': return '無効なプロキシアドレス形式です。IP:ポート または ドメイン名:ポート の形式を使用してください。';
+			case 'settings.proxyNormalWork': return 'プロキシが正常に動作しています。';
+			case 'settings.testProxyFailedWithStatusCode': return ({required Object code}) => 'プロキシテスト失敗、ステータスコード: ${code}';
+			case 'settings.testProxyFailedWithException': return ({required Object exception}) => 'プロキシテスト失敗、例外: ${exception}';
+			case 'settings.proxyConfig': return 'プロキシ設定';
+			case 'settings.thisIsHttpProxyAddress': return 'ここはhttpプロキシアドレスです';
+			case 'settings.checkProxy': return 'プロキシチェック';
+			case 'settings.proxyAddress': return 'プロキシアドレス';
+			case 'settings.pleaseEnterTheUrlOfTheProxyServerForExample1270018080': return 'プロキシサーバーのURLを入力してください、例えば 127.0.0.1:8080';
+			case 'settings.enableProxy': return 'プロキシを有効にする';
+			case 'settings.left': return '左';
+			case 'settings.middle': return '中';
+			case 'settings.right': return '右';
+			case 'settings.playerSettings': return 'プレイヤー設定';
+			case 'settings.networkSettings': return 'ネットワーク設定';
+			case 'settings.customizeYourPlaybackExperience': return '再生体験をカスタマイズ';
+			case 'settings.chooseYourFavoriteAppAppearance': return 'お好きなアプリの外観を選択';
+			case 'settings.configureYourProxyServer': return 'プロキシサーバーを設定';
+			case 'settings.settings': return '設定';
+			case 'settings.themeSettings': return 'テーマ設定';
+			case 'signIn.pleaseLoginFirst': return 'ログインしてからサインインしてください';
+			case 'signIn.alreadySignedInToday': return '今日はすでにサインインしました！';
+			case 'signIn.youDidNotStickToTheSignIn': return 'サインインを継続できませんでした。';
+			case 'signIn.signInSuccess': return 'サインイン成功！';
+			case 'signIn.signInFailed': return 'サインイン失敗、再試行してください';
+			case 'signIn.consecutiveSignIns': return '連続サインイン日数';
+			case 'signIn.failureReason': return 'サインインを継続できなかった理由';
+			case 'signIn.selectDateRange': return '日付範囲を選択';
+			case 'signIn.startDate': return '開始日';
+			case 'signIn.endDate': return '終了日';
+			case 'signIn.invalidDate': return '無効な日付';
+			case 'signIn.invalidDateRange': return '無効な日付範囲';
+			case 'signIn.errorFormatText': return '日付形式エラー';
+			case 'signIn.errorInvalidText': return '無効な日付範囲';
+			case 'signIn.errorInvalidRangeText': return '無効な日付範囲';
+			case 'signIn.dateRangeCantBeMoreThanOneYear': return '日付範囲は1年を超えてはいけません';
+			case 'signIn.signIn': return 'チェックイン';
+			case 'signIn.signInRecord': return '着信記録';
+			case 'signIn.totalSignIns': return '総成功署名';
+			case 'signIn.pleaseSelectSignInStatus': return 'チェックインステータスを選択してください';
+			case 'subscriptions.pleaseLoginFirstToViewYourSubscriptions': return 'ログインしてからサブスクリプションを表示してください。';
+			case 'videoDetail.videoIdIsEmpty': return 'ビデオIDが空です';
+			case 'videoDetail.videoInfoIsEmpty': return 'ビデオ情報が空です';
+			case 'videoDetail.thisIsAPrivateVideo': return 'これはプライベートビデオです';
+			case 'videoDetail.getVideoInfoFailed': return 'ビデオ情報取得失敗、再試行してください';
+			case 'videoDetail.noVideoSourceFound': return 'ビデオソースが見つかりません';
+			case 'videoDetail.tagCopiedToClipboard': return ({required Object tagId}) => 'タグ "${tagId}" をクリップボードにコピーしました';
+			case 'videoDetail.errorLoadingVideo': return 'ビデオの読み込み中にエラーが発生しました';
+			case 'videoDetail.play': return '再生';
+			case 'videoDetail.pause': return '一時停止';
+			case 'videoDetail.exitAppFullscreen': return 'アプリの全画面を終了';
+			case 'videoDetail.enterAppFullscreen': return 'アプリの全画面を開始';
+			case 'videoDetail.exitSystemFullscreen': return 'システムの全画面を終了';
+			case 'videoDetail.enterSystemFullscreen': return 'システムの全画面を開始';
+			case 'videoDetail.seekTo': return '指定時間にジャンプ';
+			case 'videoDetail.switchResolution': return '解像度を切り替え';
+			case 'videoDetail.switchPlaybackSpeed': return '再生倍速を切り替え';
+			case 'videoDetail.rewindSeconds': return ({required Object num}) => '巻き戻し${num}秒';
+			case 'videoDetail.fastForwardSeconds': return ({required Object num}) => '早送り${num}秒';
+			case 'videoDetail.playbackSpeedIng': return ({required Object rate}) => '再生倍速${rate}倍';
+			case 'videoDetail.brightness': return '明るさ';
+			case 'videoDetail.brightnessLowest': return '明るさは最低';
+			case 'videoDetail.volume': return '音量';
+			case 'videoDetail.volumeMuted': return '音量は静音';
+			case 'videoDetail.home': return 'ホーム';
+			case 'videoDetail.videoPlayer': return 'ビデオプレイヤー';
+			case 'videoDetail.videoPlayerInfo': return 'ビデオプレイヤー情報';
+			case 'videoDetail.moreSettings': return 'もっと設定';
+			case 'videoDetail.videoPlayerFeatureInfo': return 'ビデオプレイヤー機能紹介';
+			case 'videoDetail.autoRewind': return '自動巻き戻し';
+			case 'videoDetail.rewindAndFastForward': return '左右两侧双击快进或后退';
+			case 'videoDetail.volumeAndBrightness': return '左右两侧垂直滑动调整音量、亮度';
+			case 'videoDetail.centerAreaDoubleTapPauseOrPlay': return '中心区域双击暂停或播放';
+			case 'videoDetail.showVerticalVideoInFullScreen': return '全画面再生時に縦画面で縦画面ビデオを表示';
+			case 'videoDetail.keepLastVolumeAndBrightness': return '最後に調整した音量、明るさを保持';
+			case 'videoDetail.setProxy': return 'プロキシを設定';
+			case 'videoDetail.moreFeaturesToBeDiscovered': return 'もっと機能を発見...';
+			case 'videoDetail.videoPlayerSettings': return 'ビデオプレイヤー設定';
+			case 'videoDetail.commentCount': return ({required Object num}) => '${num} コメント';
+			case 'videoDetail.writeYourCommentHere': return 'コメントを書いてください...';
+			case 'videoDetail.authorOtherVideos': return '作者の他のビデオ';
+			case 'videoDetail.relatedVideos': return '関連ビデオ';
 			default: return null;
 		}
 	}

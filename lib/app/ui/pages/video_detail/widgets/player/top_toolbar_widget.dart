@@ -7,7 +7,7 @@ import '../../../../../services/config_service.dart';
 import '../../../settings/widgets/player_settings_widget.dart';
 import '../../../settings/widgets/proxy_setting_widget.dart';
 import '../../controllers/my_video_state_controller.dart';
-
+import '../../../../../../i18n/strings.g.dart' as slang;
 class TopToolbar extends StatelessWidget {
   final MyVideoStateController myVideoStateController;
   final bool currentScreenIsFullScreen;
@@ -19,6 +19,7 @@ class TopToolbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = slang.Translations.of(context);
     // 获取状态栏高度
     final double statusBarHeight = MediaQuery.of(context).padding.top;
 
@@ -58,7 +59,7 @@ class TopToolbar extends StatelessWidget {
                   children: [
                     // 返回按钮
                     IconButton(
-                      tooltip: '返回',
+                      tooltip: t.common.back,
                       icon: const Icon(Icons.arrow_back, color: Colors.white),
                       onPressed: () {
                         if (currentScreenIsFullScreen) {
@@ -72,7 +73,7 @@ class TopToolbar extends StatelessWidget {
                     // 如果当前是fullScreen，则不显示主页按钮
                     if (!currentScreenIsFullScreen && !myVideoStateController.isDesktopAppFullScreen.value)
                       IconButton(
-                        tooltip: '主页',
+                        tooltip: t.videoDetail.home,
                         icon: const Icon(Icons.home, color: Colors.white),
                         onPressed: () {
                           AppService appService = Get.find();
@@ -93,7 +94,7 @@ class TopToolbar extends StatelessWidget {
                     Expanded(
                       child: Obx(() => Text(
                             myVideoStateController.videoInfo.value?.title ??
-                                '视频播放器',
+                                t.videoDetail.videoPlayer,
                             style: const TextStyle(
                                 color: Colors.white, fontSize: 18),
                             overflow: TextOverflow.ellipsis,
@@ -108,7 +109,7 @@ class TopToolbar extends StatelessWidget {
                 children: [
                   // 问号信息按钮
                   IconButton(
-                    tooltip: '播放器信息',
+                    tooltip: t.videoDetail.videoPlayerInfo,
                     icon: const Icon(Icons.help_outline, color: Colors.white),
                     onPressed: () {
                       showInfoModal(context);
@@ -116,7 +117,7 @@ class TopToolbar extends StatelessWidget {
                   ),
                   // 更多设置按钮
                   IconButton(
-                    tooltip: '更多设置',
+                    tooltip: t.videoDetail.moreSettings,
                     icon: const Icon(Icons.more_vert, color: Colors.white),
                     onPressed: () {
                       showSettingsModal(context);
@@ -162,82 +163,82 @@ class TopToolbar extends StatelessWidget {
   void showInfoModal(BuildContext context) {
     Get.dialog(
       AlertDialog(
-        title: const Text('播放器功能介绍'),
+        title: Text(slang.t.videoDetail.videoPlayerFeatureInfo),
         content: SingleChildScrollView(
           child: ListBody(
             children: [
               // 自动重播
-              const Row(
+              Row(
                 children: [
                   Icon(Icons.repeat),
                   SizedBox(width: 8),
-                  Expanded(child: Text('自动重播')),
+                  Expanded(child: Text(slang.t.videoDetail.autoRewind)),
                 ],
               ),
               const SizedBox(height: 8),
               // 左右两侧双击快进或后退
-              const Row(
+              Row(
                 children: [
                   Icon(Icons.fast_forward),
                   SizedBox(width: 8),
-                  Expanded(child: Text('左右两侧双击快进或后退')),
+                  Expanded(child: Text(slang.t.videoDetail.rewindAndFastForward)),
                 ],
               ),
               const SizedBox(height: 8),
               // 左右两侧垂直滑动调整音量、亮度
-              const Row(
+              Row(
                 children: [
                   Icon(Icons.volume_up),
                   SizedBox(width: 8),
-                  Expanded(child: Text('左右两侧垂直滑动调整音量、亮度')),
+                  Expanded(child: Text(slang.t.videoDetail.volumeAndBrightness)),
                 ],
               ),
               const SizedBox(height: 8),
               // 中心区域双击暂停或播放
-              const Row(
+              Row(
                 children: [
                   Icon(Icons.pause_circle_filled),
                   SizedBox(width: 8),
-                  Expanded(child: Text('中心区域双击暂停或播放')),
+                  Expanded(child: Text(slang.t.videoDetail.centerAreaDoubleTapPauseOrPlay)),
                 ],
               ),
               const SizedBox(height: 8),
               // 在全屏时可以以竖屏方式显示竖屏视频（仅限Android和iOS）
               if (GetPlatform.isAndroid || GetPlatform.isIOS)
-                const Row(
+                Row(
                   children: [
                     Icon(Icons.screen_rotation),
                     SizedBox(width: 8),
-                    Expanded(child: Text('在全屏时可以以竖屏方式显示竖屏视频')),
+                    Expanded(child: Text(slang.t.videoDetail.showVerticalVideoInFullScreen)),
                   ],
                 ),
               if (GetPlatform.isAndroid || GetPlatform.isIOS)
                 const SizedBox(height: 8),
               // 保持上次调整的音量、亮度
-              const Row(
+              Row(
                 children: [
                   Icon(Icons.settings_backup_restore),
                   SizedBox(width: 8),
-                  Expanded(child: Text('保持上次调整的音量、亮度')),
+                  Expanded(child: Text(slang.t.videoDetail.keepLastVolumeAndBrightness)),
                 ],
               ),
               // 设置代理（如果支持平台）
               if (ProxyUtil.isSupportedPlatform()) ...[
                 const SizedBox(height: 8),
-                const Row(
+                Row(
                   children: [
                     Icon(Icons.laptop),
                     SizedBox(width: 8),
-                    Expanded(child: Text('设置代理')),
+                    Expanded(child: Text(slang.t.videoDetail.setProxy)),
                   ],
                 ),
               ],
               const SizedBox(height: 8),
-              const Row(
+              Row(
                 children: [
                   Icon(Icons.thumb_up),
                   SizedBox(width: 8),
-                  Expanded(child: Text('更多功能待发现...')),
+                  Expanded(child: Text(slang.t.videoDetail.moreFeaturesToBeDiscovered)),
                 ],
               ),
             ],
@@ -245,7 +246,7 @@ class TopToolbar extends StatelessWidget {
         ),
         actions: [
           TextButton(
-            child: const Text('关闭'),
+            child: Text(slang.t.common.close),
             onPressed: () {
               AppService.tryPop();
             },
@@ -272,6 +273,7 @@ class SettingsContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = slang.Translations.of(context);
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: const BoxDecoration(
@@ -294,7 +296,7 @@ class SettingsContent extends StatelessWidget {
           ),
           // 标题
           Text(
-            '播放器设置',
+            t.videoDetail.videoPlayerSettings,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                   color: Theme.of(context).primaryColor,

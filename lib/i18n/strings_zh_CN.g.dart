@@ -41,6 +41,12 @@ class TranslationsZhCn implements Translations {
 	@override late final _TranslationsFavoritesZhCn favorites = _TranslationsFavoritesZhCn._(_root);
 	@override late final _TranslationsGalleryDetailZhCn galleryDetail = _TranslationsGalleryDetailZhCn._(_root);
 	@override late final _TranslationsPlayListZhCn playList = _TranslationsPlayListZhCn._(_root);
+	@override late final _TranslationsSearchZhCn search = _TranslationsSearchZhCn._(_root);
+	@override late final _TranslationsMediaListZhCn mediaList = _TranslationsMediaListZhCn._(_root);
+	@override late final _TranslationsSettingsZhCn settings = _TranslationsSettingsZhCn._(_root);
+	@override late final _TranslationsSignInZhCn signIn = _TranslationsSignInZhCn._(_root);
+	@override late final _TranslationsSubscriptionsZhCn subscriptions = _TranslationsSubscriptionsZhCn._(_root);
+	@override late final _TranslationsVideoDetailZhCn videoDetail = _TranslationsVideoDetailZhCn._(_root);
 }
 
 // Path: common
@@ -72,10 +78,12 @@ class _TranslationsCommonZhCn implements TranslationsCommonEn {
 	@override String get video => '视频';
 	@override String get following => '关注';
 	@override String get cancelFriendRequest => '取消申请';
+	@override String get cancelSpecialFollow => '取消特别关注';
 	@override String get addFriend => '添加朋友';
 	@override String get removeFriend => '解除朋友';
 	@override String get followed => '已关注';
 	@override String get follow => '关注';
+	@override String get unfollow => '取消关注';
 	@override String get specialFollow => '特别关注';
 	@override String get specialFollowed => '已特别关注';
 	@override String get gallery => '图库';
@@ -143,6 +151,36 @@ class _TranslationsCommonZhCn implements TranslationsCommonEn {
 	@override String get pleaseEnterNewTitle => '请输入新标题';
 	@override String get createPlayList => '创建播放列表';
 	@override String get create => '创建';
+	@override String get checkNetworkSettings => '检查网络设置';
+	@override String get general => '大众的';
+	@override String get r18 => 'R18';
+	@override String get sensitive => '敏感';
+	@override String get year => '年份';
+	@override String get tag => '标签';
+	@override String get private => '私密';
+	@override String get noTitle => '无标题';
+	@override String get search => '搜索';
+	@override String get noContent => '没有内容哦';
+	@override String get recording => '记录中';
+	@override String get paused => '已暂停';
+	@override String get clear => '清除';
+	@override String get user => '用户';
+	@override String get post => '帖子';
+	@override String get seconds => '秒';
+	@override String get comingSoon => '敬请期待';
+	@override String get confirm => '确认';
+	@override String get hour => '时';
+	@override String get minute => '分';
+	@override String get clickToRefresh => '点击刷新';
+	@override String get history => '历史记录';
+	@override String get favorites => '最爱';
+	@override String get friends => '好友';
+	@override String get playList => '播放列表';
+	@override String get checkLicense => '查看许可';
+	@override String get logout => '退出登录';
+	@override String get fensi => '粉丝';
+	@override String get accept => '接受';
+	@override String get reject => '拒绝';
 }
 
 // Path: auth
@@ -167,6 +205,11 @@ class _TranslationsAuthZhCn implements TranslationsAuthEn {
 	@override String get captchaNotLoaded => '无法加载验证码';
 	@override String get loginSuccess => '登录成功';
 	@override String get emailVerificationSent => '邮箱指令已发送';
+	@override String get notLoggedIn => '未登录';
+	@override String get clickToLogin => '点击此处登录';
+	@override String get logoutConfirmation => '你确定要退出登录吗？';
+	@override String get logoutSuccess => '退出登录成功';
+	@override String get logoutFailed => '退出登录失败';
 }
 
 // Path: errors
@@ -188,6 +231,15 @@ class _TranslationsErrorsZhCn implements TranslationsErrorsEn {
 	@override String get howCouldThereBeNoDataItCantBePossible => '啊？怎么会没有数据呢？出错了吧 :<';
 	@override String unsupportedImageFormat({required Object str}) => '不支持的图片格式: ${str}';
 	@override String get invalidGalleryId => '无效的图库ID';
+	@override String get translationFailedPleaseTryAgainLater => '翻译失败，请稍后重试';
+	@override String get errorOccurred => '出错了，请稍后再试';
+	@override String get errorOccurredWhileProcessingRequest => '处理请求时出错';
+	@override String get errorWhileFetchingDatas => '获取数据时出错，请稍后再试';
+	@override String get serviceNotInitialized => '服务未初始化';
+	@override String get unknownType => '未知类型';
+	@override String errorWhileOpeningLink({required Object link}) => '无法打开链接: ${link}';
+	@override String get invalidUrl => '无效的URL';
+	@override String get failedToOperate => '操作失败';
 }
 
 // Path: friends
@@ -271,6 +323,174 @@ class _TranslationsPlayListZhCn implements TranslationsPlayListEn {
 	@override String get iUnderstand => '明白了';
 }
 
+// Path: search
+class _TranslationsSearchZhCn implements TranslationsSearchEn {
+	_TranslationsSearchZhCn._(this._root);
+
+	final TranslationsZhCn _root; // ignore: unused_field
+
+	// Translations
+	@override String get searchTags => '搜索标签...';
+	@override String get contentRating => '内容评级';
+	@override String get removeTag => '移除标签';
+	@override String get pleaseEnterSearchContent => '请输入搜索内容';
+	@override String get searchHistory => '搜索历史';
+	@override String get searchSuggestion => '搜索建议';
+	@override String get usedTimes => '使用次数';
+	@override String get lastUsed => '最后使用';
+	@override String get noSearchHistoryRecords => '没有搜索历史';
+	@override String notSupportCurrentSearchType({required Object searchType}) => '暂未实现当前搜索类型 ${searchType}，敬请期待';
+	@override String get searchResult => '搜索结果';
+}
+
+// Path: mediaList
+class _TranslationsMediaListZhCn implements TranslationsMediaListEn {
+	_TranslationsMediaListZhCn._(this._root);
+
+	final TranslationsZhCn _root; // ignore: unused_field
+
+	// Translations
+	@override String get personalIntroduction => '个人简介';
+}
+
+// Path: settings
+class _TranslationsSettingsZhCn implements TranslationsSettingsEn {
+	_TranslationsSettingsZhCn._(this._root);
+
+	final TranslationsZhCn _root; // ignore: unused_field
+
+	// Translations
+	@override String get searchConfig => '搜索配置';
+	@override String get thisConfigurationDeterminesWhetherThePreviousConfigurationWillBeUsedWhenPlayingVideosAgain => '此配置决定当你之后播放视频时是否会沿用之前的配置。';
+	@override String get playControl => '播放控制';
+	@override String get fastForwardTime => '快进时间';
+	@override String get fastForwardTimeMustBeAPositiveInteger => '快进时间必须是一个正整数。';
+	@override String get rewindTime => '后退时间';
+	@override String get rewindTimeMustBeAPositiveInteger => '后退时间必须是一个正整数。';
+	@override String get longPressPlaybackSpeed => '长按播放倍速';
+	@override String get longPressPlaybackSpeedMustBeAPositiveNumber => '长按播放倍速必须是一个正数。';
+	@override String get repeat => '循环播放';
+	@override String get renderVerticalVideoInVerticalScreen => '全屏播放时以竖屏模式渲染竖屏视频';
+	@override String get thisConfigurationDeterminesWhetherTheVideoWillBeRenderedInVerticalScreenWhenPlayingInFullScreen => '此配置决定当你在全屏播放时是否以竖屏模式渲染竖屏视频。';
+	@override String get rememberVolume => '记住音量';
+	@override String get thisConfigurationDeterminesWhetherTheVolumeWillBeKeptWhenPlayingVideosAgain => '此配置决定当你之后播放视频时是否会沿用之前的音量设置。';
+	@override String get rememberBrightness => '记住亮度';
+	@override String get thisConfigurationDeterminesWhetherTheBrightnessWillBeKeptWhenPlayingVideosAgain => '此配置决定当你之后播放视频时是否会沿用之前的亮度设置。';
+	@override String get playControlArea => '播放控制区域';
+	@override String get leftAndRightControlAreaWidth => '左右控制区域宽度';
+	@override String get thisConfigurationDeterminesTheWidthOfTheControlAreasOnTheLeftAndRightSidesOfThePlayer => '此配置决定播放器左右两侧的控制区域宽度。';
+	@override String get proxyAddressCannotBeEmpty => '代理地址不能为空。';
+	@override String get invalidProxyAddressFormatPleaseUseTheFormatOfIpPortOrDomainNamePort => '无效的代理地址格式。请使用 IP:端口 或 域名:端口 格式。';
+	@override String get proxyNormalWork => '代理正常工作。';
+	@override String testProxyFailedWithStatusCode({required Object code}) => '代理请求失败，状态码: ${code}';
+	@override String testProxyFailedWithException({required Object exception}) => '代理请求出错: ${exception}';
+	@override String get proxyConfig => '代理配置';
+	@override String get thisIsHttpProxyAddress => '此处为http代理地址';
+	@override String get checkProxy => '检查代理';
+	@override String get proxyAddress => '代理地址';
+	@override String get pleaseEnterTheUrlOfTheProxyServerForExample1270018080 => '请输入代理服务器的URL，例如 127.0.0.1:8080';
+	@override String get enableProxy => '启用代理';
+	@override String get left => '左侧';
+	@override String get middle => '中间';
+	@override String get right => '右侧';
+	@override String get playerSettings => '播放器设置';
+	@override String get networkSettings => '网络设置';
+	@override String get customizeYourPlaybackExperience => '自定义您的播放体验';
+	@override String get chooseYourFavoriteAppAppearance => '选择您喜欢的应用外观';
+	@override String get configureYourProxyServer => '配置您的代理服务器';
+	@override String get settings => '设置';
+	@override String get themeSettings => '主题设置';
+}
+
+// Path: signIn
+class _TranslationsSignInZhCn implements TranslationsSignInEn {
+	_TranslationsSignInZhCn._(this._root);
+
+	final TranslationsZhCn _root; // ignore: unused_field
+
+	// Translations
+	@override String get pleaseLoginFirst => '请先登录后再签到';
+	@override String get alreadySignedInToday => '您今天已经签到过了！';
+	@override String get youDidNotStickToTheSignIn => '您未能坚持签到。';
+	@override String get signInSuccess => '签到成功！';
+	@override String get signInFailed => '签到失败，请稍后再试';
+	@override String get consecutiveSignIns => '连续签到天数';
+	@override String get failureReason => '未能坚持签到的原因';
+	@override String get selectDateRange => '选择日期范围';
+	@override String get startDate => '开始日期';
+	@override String get endDate => '结束日期';
+	@override String get invalidDate => '日期格式错误';
+	@override String get invalidDateRange => '日期范围无效';
+	@override String get errorFormatText => '日期格式错误';
+	@override String get errorInvalidText => '日期范围无效';
+	@override String get errorInvalidRangeText => '日期范围无效';
+	@override String get dateRangeCantBeMoreThanOneYear => '日期范围不能超过1年';
+	@override String get signIn => '签到';
+	@override String get signInRecord => '签到记录';
+	@override String get totalSignIns => '总成功签到';
+	@override String get pleaseSelectSignInStatus => '请选择签到状态';
+}
+
+// Path: subscriptions
+class _TranslationsSubscriptionsZhCn implements TranslationsSubscriptionsEn {
+	_TranslationsSubscriptionsZhCn._(this._root);
+
+	final TranslationsZhCn _root; // ignore: unused_field
+
+	// Translations
+	@override String get pleaseLoginFirstToViewYourSubscriptions => '请登录以查看您的订阅内容。';
+}
+
+// Path: videoDetail
+class _TranslationsVideoDetailZhCn implements TranslationsVideoDetailEn {
+	_TranslationsVideoDetailZhCn._(this._root);
+
+	final TranslationsZhCn _root; // ignore: unused_field
+
+	// Translations
+	@override String get videoIdIsEmpty => '视频ID为空';
+	@override String get videoInfoIsEmpty => '视频信息为空';
+	@override String get thisIsAPrivateVideo => '这是一个私密视频';
+	@override String get getVideoInfoFailed => '获取视频信息失败，请稍后再试';
+	@override String get noVideoSourceFound => '未找到对应的视频源';
+	@override String tagCopiedToClipboard({required Object tagId}) => '标签 "${tagId}" 已复制到剪贴板';
+	@override String get errorLoadingVideo => '在加载视频时出现了错误';
+	@override String get play => '播放';
+	@override String get pause => '暂停';
+	@override String get exitAppFullscreen => '退出应用全屏';
+	@override String get enterAppFullscreen => '应用全屏';
+	@override String get exitSystemFullscreen => '退出系统全屏';
+	@override String get enterSystemFullscreen => '系统全屏';
+	@override String get seekTo => '跳转到指定时间';
+	@override String get switchResolution => '切换分辨率';
+	@override String get switchPlaybackSpeed => '切换播放倍速';
+	@override String rewindSeconds({required Object num}) => '后退${num}秒';
+	@override String fastForwardSeconds({required Object num}) => '快进${num}秒';
+	@override String playbackSpeedIng({required Object rate}) => '正在以${rate}倍速播放';
+	@override String get brightness => '亮度';
+	@override String get brightnessLowest => '亮度已最低';
+	@override String get volume => '音量';
+	@override String get volumeMuted => '音量已静音';
+	@override String get home => '主页';
+	@override String get videoPlayer => '视频播放器';
+	@override String get videoPlayerInfo => '播放器信息';
+	@override String get moreSettings => '更多设置';
+	@override String get videoPlayerFeatureInfo => '播放器功能介绍';
+	@override String get autoRewind => '自动重播';
+	@override String get rewindAndFastForward => '左右两侧双击快进或后退';
+	@override String get volumeAndBrightness => '左右两侧垂直滑动调整音量、亮度';
+	@override String get centerAreaDoubleTapPauseOrPlay => '中心区域双击暂停或播放';
+	@override String get showVerticalVideoInFullScreen => '在全屏时可以以竖屏方式显示竖屏视频';
+	@override String get keepLastVolumeAndBrightness => '保持上次调整的音量、亮度';
+	@override String get setProxy => '设置代理';
+	@override String get moreFeaturesToBeDiscovered => '更多功能待发现...';
+	@override String get videoPlayerSettings => '播放器设置';
+	@override String commentCount({required Object num}) => '评论 ${num} 条';
+	@override String get writeYourCommentHere => '写下你的评论...';
+	@override String get authorOtherVideos => '作者的其他视频';
+	@override String get relatedVideos => '相关视频';
+}
+
 /// Flat map(s) containing all translations.
 /// Only for edge cases! For simple maps, use the map function of this library.
 extension on TranslationsZhCn {
@@ -298,10 +518,12 @@ extension on TranslationsZhCn {
 			case 'common.video': return '视频';
 			case 'common.following': return '关注';
 			case 'common.cancelFriendRequest': return '取消申请';
+			case 'common.cancelSpecialFollow': return '取消特别关注';
 			case 'common.addFriend': return '添加朋友';
 			case 'common.removeFriend': return '解除朋友';
 			case 'common.followed': return '已关注';
 			case 'common.follow': return '关注';
+			case 'common.unfollow': return '取消关注';
 			case 'common.specialFollow': return '特别关注';
 			case 'common.specialFollowed': return '已特别关注';
 			case 'common.gallery': return '图库';
@@ -369,6 +591,36 @@ extension on TranslationsZhCn {
 			case 'common.pleaseEnterNewTitle': return '请输入新标题';
 			case 'common.createPlayList': return '创建播放列表';
 			case 'common.create': return '创建';
+			case 'common.checkNetworkSettings': return '检查网络设置';
+			case 'common.general': return '大众的';
+			case 'common.r18': return 'R18';
+			case 'common.sensitive': return '敏感';
+			case 'common.year': return '年份';
+			case 'common.tag': return '标签';
+			case 'common.private': return '私密';
+			case 'common.noTitle': return '无标题';
+			case 'common.search': return '搜索';
+			case 'common.noContent': return '没有内容哦';
+			case 'common.recording': return '记录中';
+			case 'common.paused': return '已暂停';
+			case 'common.clear': return '清除';
+			case 'common.user': return '用户';
+			case 'common.post': return '帖子';
+			case 'common.seconds': return '秒';
+			case 'common.comingSoon': return '敬请期待';
+			case 'common.confirm': return '确认';
+			case 'common.hour': return '时';
+			case 'common.minute': return '分';
+			case 'common.clickToRefresh': return '点击刷新';
+			case 'common.history': return '历史记录';
+			case 'common.favorites': return '最爱';
+			case 'common.friends': return '好友';
+			case 'common.playList': return '播放列表';
+			case 'common.checkLicense': return '查看许可';
+			case 'common.logout': return '退出登录';
+			case 'common.fensi': return '粉丝';
+			case 'common.accept': return '接受';
+			case 'common.reject': return '拒绝';
 			case 'auth.login': return '登录';
 			case 'auth.logout': return '退出登录';
 			case 'auth.email': return '邮箱';
@@ -384,6 +636,11 @@ extension on TranslationsZhCn {
 			case 'auth.captchaNotLoaded': return '无法加载验证码';
 			case 'auth.loginSuccess': return '登录成功';
 			case 'auth.emailVerificationSent': return '邮箱指令已发送';
+			case 'auth.notLoggedIn': return '未登录';
+			case 'auth.clickToLogin': return '点击此处登录';
+			case 'auth.logoutConfirmation': return '你确定要退出登录吗？';
+			case 'auth.logoutSuccess': return '退出登录成功';
+			case 'auth.logoutFailed': return '退出登录失败';
 			case 'errors.error': return '错误';
 			case 'errors.required': return '此项必填';
 			case 'errors.invalidEmail': return '邮箱格式不正确';
@@ -396,6 +653,15 @@ extension on TranslationsZhCn {
 			case 'errors.howCouldThereBeNoDataItCantBePossible': return '啊？怎么会没有数据呢？出错了吧 :<';
 			case 'errors.unsupportedImageFormat': return ({required Object str}) => '不支持的图片格式: ${str}';
 			case 'errors.invalidGalleryId': return '无效的图库ID';
+			case 'errors.translationFailedPleaseTryAgainLater': return '翻译失败，请稍后重试';
+			case 'errors.errorOccurred': return '出错了，请稍后再试';
+			case 'errors.errorOccurredWhileProcessingRequest': return '处理请求时出错';
+			case 'errors.errorWhileFetchingDatas': return '获取数据时出错，请稍后再试';
+			case 'errors.serviceNotInitialized': return '服务未初始化';
+			case 'errors.unknownType': return '未知类型';
+			case 'errors.errorWhileOpeningLink': return ({required Object link}) => '无法打开链接: ${link}';
+			case 'errors.invalidUrl': return '无效的URL';
+			case 'errors.failedToOperate': return '操作失败';
 			case 'friends.clickToRestoreFriend': return '点击恢复好友';
 			case 'friends.friendsList': return '好友列表';
 			case 'friends.friendRequests': return '好友请求';
@@ -432,6 +698,120 @@ extension on TranslationsZhCn {
 			case 'playList.useLikeToCollectContent': return '如果您比较注重隐私，建议使用"点赞"功能来收藏内容';
 			case 'playList.welcomeToDiscussOnGitHub': return '如果你有其他的建议或想法，欢迎来 GitHub 讨论!';
 			case 'playList.iUnderstand': return '明白了';
+			case 'search.searchTags': return '搜索标签...';
+			case 'search.contentRating': return '内容评级';
+			case 'search.removeTag': return '移除标签';
+			case 'search.pleaseEnterSearchContent': return '请输入搜索内容';
+			case 'search.searchHistory': return '搜索历史';
+			case 'search.searchSuggestion': return '搜索建议';
+			case 'search.usedTimes': return '使用次数';
+			case 'search.lastUsed': return '最后使用';
+			case 'search.noSearchHistoryRecords': return '没有搜索历史';
+			case 'search.notSupportCurrentSearchType': return ({required Object searchType}) => '暂未实现当前搜索类型 ${searchType}，敬请期待';
+			case 'search.searchResult': return '搜索结果';
+			case 'mediaList.personalIntroduction': return '个人简介';
+			case 'settings.searchConfig': return '搜索配置';
+			case 'settings.thisConfigurationDeterminesWhetherThePreviousConfigurationWillBeUsedWhenPlayingVideosAgain': return '此配置决定当你之后播放视频时是否会沿用之前的配置。';
+			case 'settings.playControl': return '播放控制';
+			case 'settings.fastForwardTime': return '快进时间';
+			case 'settings.fastForwardTimeMustBeAPositiveInteger': return '快进时间必须是一个正整数。';
+			case 'settings.rewindTime': return '后退时间';
+			case 'settings.rewindTimeMustBeAPositiveInteger': return '后退时间必须是一个正整数。';
+			case 'settings.longPressPlaybackSpeed': return '长按播放倍速';
+			case 'settings.longPressPlaybackSpeedMustBeAPositiveNumber': return '长按播放倍速必须是一个正数。';
+			case 'settings.repeat': return '循环播放';
+			case 'settings.renderVerticalVideoInVerticalScreen': return '全屏播放时以竖屏模式渲染竖屏视频';
+			case 'settings.thisConfigurationDeterminesWhetherTheVideoWillBeRenderedInVerticalScreenWhenPlayingInFullScreen': return '此配置决定当你在全屏播放时是否以竖屏模式渲染竖屏视频。';
+			case 'settings.rememberVolume': return '记住音量';
+			case 'settings.thisConfigurationDeterminesWhetherTheVolumeWillBeKeptWhenPlayingVideosAgain': return '此配置决定当你之后播放视频时是否会沿用之前的音量设置。';
+			case 'settings.rememberBrightness': return '记住亮度';
+			case 'settings.thisConfigurationDeterminesWhetherTheBrightnessWillBeKeptWhenPlayingVideosAgain': return '此配置决定当你之后播放视频时是否会沿用之前的亮度设置。';
+			case 'settings.playControlArea': return '播放控制区域';
+			case 'settings.leftAndRightControlAreaWidth': return '左右控制区域宽度';
+			case 'settings.thisConfigurationDeterminesTheWidthOfTheControlAreasOnTheLeftAndRightSidesOfThePlayer': return '此配置决定播放器左右两侧的控制区域宽度。';
+			case 'settings.proxyAddressCannotBeEmpty': return '代理地址不能为空。';
+			case 'settings.invalidProxyAddressFormatPleaseUseTheFormatOfIpPortOrDomainNamePort': return '无效的代理地址格式。请使用 IP:端口 或 域名:端口 格式。';
+			case 'settings.proxyNormalWork': return '代理正常工作。';
+			case 'settings.testProxyFailedWithStatusCode': return ({required Object code}) => '代理请求失败，状态码: ${code}';
+			case 'settings.testProxyFailedWithException': return ({required Object exception}) => '代理请求出错: ${exception}';
+			case 'settings.proxyConfig': return '代理配置';
+			case 'settings.thisIsHttpProxyAddress': return '此处为http代理地址';
+			case 'settings.checkProxy': return '检查代理';
+			case 'settings.proxyAddress': return '代理地址';
+			case 'settings.pleaseEnterTheUrlOfTheProxyServerForExample1270018080': return '请输入代理服务器的URL，例如 127.0.0.1:8080';
+			case 'settings.enableProxy': return '启用代理';
+			case 'settings.left': return '左侧';
+			case 'settings.middle': return '中间';
+			case 'settings.right': return '右侧';
+			case 'settings.playerSettings': return '播放器设置';
+			case 'settings.networkSettings': return '网络设置';
+			case 'settings.customizeYourPlaybackExperience': return '自定义您的播放体验';
+			case 'settings.chooseYourFavoriteAppAppearance': return '选择您喜欢的应用外观';
+			case 'settings.configureYourProxyServer': return '配置您的代理服务器';
+			case 'settings.settings': return '设置';
+			case 'settings.themeSettings': return '主题设置';
+			case 'signIn.pleaseLoginFirst': return '请先登录后再签到';
+			case 'signIn.alreadySignedInToday': return '您今天已经签到过了！';
+			case 'signIn.youDidNotStickToTheSignIn': return '您未能坚持签到。';
+			case 'signIn.signInSuccess': return '签到成功！';
+			case 'signIn.signInFailed': return '签到失败，请稍后再试';
+			case 'signIn.consecutiveSignIns': return '连续签到天数';
+			case 'signIn.failureReason': return '未能坚持签到的原因';
+			case 'signIn.selectDateRange': return '选择日期范围';
+			case 'signIn.startDate': return '开始日期';
+			case 'signIn.endDate': return '结束日期';
+			case 'signIn.invalidDate': return '日期格式错误';
+			case 'signIn.invalidDateRange': return '日期范围无效';
+			case 'signIn.errorFormatText': return '日期格式错误';
+			case 'signIn.errorInvalidText': return '日期范围无效';
+			case 'signIn.errorInvalidRangeText': return '日期范围无效';
+			case 'signIn.dateRangeCantBeMoreThanOneYear': return '日期范围不能超过1年';
+			case 'signIn.signIn': return '签到';
+			case 'signIn.signInRecord': return '签到记录';
+			case 'signIn.totalSignIns': return '总成功签到';
+			case 'signIn.pleaseSelectSignInStatus': return '请选择签到状态';
+			case 'subscriptions.pleaseLoginFirstToViewYourSubscriptions': return '请登录以查看您的订阅内容。';
+			case 'videoDetail.videoIdIsEmpty': return '视频ID为空';
+			case 'videoDetail.videoInfoIsEmpty': return '视频信息为空';
+			case 'videoDetail.thisIsAPrivateVideo': return '这是一个私密视频';
+			case 'videoDetail.getVideoInfoFailed': return '获取视频信息失败，请稍后再试';
+			case 'videoDetail.noVideoSourceFound': return '未找到对应的视频源';
+			case 'videoDetail.tagCopiedToClipboard': return ({required Object tagId}) => '标签 "${tagId}" 已复制到剪贴板';
+			case 'videoDetail.errorLoadingVideo': return '在加载视频时出现了错误';
+			case 'videoDetail.play': return '播放';
+			case 'videoDetail.pause': return '暂停';
+			case 'videoDetail.exitAppFullscreen': return '退出应用全屏';
+			case 'videoDetail.enterAppFullscreen': return '应用全屏';
+			case 'videoDetail.exitSystemFullscreen': return '退出系统全屏';
+			case 'videoDetail.enterSystemFullscreen': return '系统全屏';
+			case 'videoDetail.seekTo': return '跳转到指定时间';
+			case 'videoDetail.switchResolution': return '切换分辨率';
+			case 'videoDetail.switchPlaybackSpeed': return '切换播放倍速';
+			case 'videoDetail.rewindSeconds': return ({required Object num}) => '后退${num}秒';
+			case 'videoDetail.fastForwardSeconds': return ({required Object num}) => '快进${num}秒';
+			case 'videoDetail.playbackSpeedIng': return ({required Object rate}) => '正在以${rate}倍速播放';
+			case 'videoDetail.brightness': return '亮度';
+			case 'videoDetail.brightnessLowest': return '亮度已最低';
+			case 'videoDetail.volume': return '音量';
+			case 'videoDetail.volumeMuted': return '音量已静音';
+			case 'videoDetail.home': return '主页';
+			case 'videoDetail.videoPlayer': return '视频播放器';
+			case 'videoDetail.videoPlayerInfo': return '播放器信息';
+			case 'videoDetail.moreSettings': return '更多设置';
+			case 'videoDetail.videoPlayerFeatureInfo': return '播放器功能介绍';
+			case 'videoDetail.autoRewind': return '自动重播';
+			case 'videoDetail.rewindAndFastForward': return '左右两侧双击快进或后退';
+			case 'videoDetail.volumeAndBrightness': return '左右两侧垂直滑动调整音量、亮度';
+			case 'videoDetail.centerAreaDoubleTapPauseOrPlay': return '中心区域双击暂停或播放';
+			case 'videoDetail.showVerticalVideoInFullScreen': return '在全屏时可以以竖屏方式显示竖屏视频';
+			case 'videoDetail.keepLastVolumeAndBrightness': return '保持上次调整的音量、亮度';
+			case 'videoDetail.setProxy': return '设置代理';
+			case 'videoDetail.moreFeaturesToBeDiscovered': return '更多功能待发现...';
+			case 'videoDetail.videoPlayerSettings': return '播放器设置';
+			case 'videoDetail.commentCount': return ({required Object num}) => '评论 ${num} 条';
+			case 'videoDetail.writeYourCommentHere': return '写下你的评论...';
+			case 'videoDetail.authorOtherVideos': return '作者的其他视频';
+			case 'videoDetail.relatedVideos': return '相关视频';
 			default: return null;
 		}
 	}

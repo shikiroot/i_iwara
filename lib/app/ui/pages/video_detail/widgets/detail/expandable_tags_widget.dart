@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:super_clipboard/super_clipboard.dart';
 
 import '../../../../../models/tag.model.dart';
+import 'package:i_iwara/i18n/strings.g.dart' as slang;
 
 class ExpandableTagsWidget extends StatefulWidget {
   final List<Tag> tags;
@@ -98,8 +99,8 @@ class _ExpandableTagsWidgetState extends State<ExpandableTagsWidget>
     data.add(Formats.plainText(tag.id));
     SystemClipboard.instance?.write([data]);
     Get.snackbar(
-      '提示',
-      '标签 "${tag.id}" 已复制到剪贴板',
+      slang.t.common.tips,
+      slang.t.videoDetail.tagCopiedToClipboard(tagId: tag.id),
       snackPosition: SnackPosition.bottom,
       duration: const Duration(seconds: 1),
     );

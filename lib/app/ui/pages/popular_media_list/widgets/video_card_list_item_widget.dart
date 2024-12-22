@@ -10,6 +10,7 @@ import 'package:vibration/vibration.dart';
 import '../../../../../common/constants.dart';
 import '../../../../models/video.model.dart';
 import 'animated_preview_widget.dart';
+import 'package:i_iwara/i18n/strings.g.dart' as slang;
 
 class VideoCardListItemWidget extends StatefulWidget {
   final Video video;
@@ -182,6 +183,7 @@ class _VideoCardListItemWidgetState extends State<VideoCardListItemWidget> {
   }
 
   Widget _buildPrivateTag(BuildContext context) {
+    final t = slang.Translations.of(context);
     return ClipRRect(
       borderRadius: const BorderRadius.only(
         topLeft: Radius.circular(12),
@@ -194,7 +196,7 @@ class _VideoCardListItemWidgetState extends State<VideoCardListItemWidget> {
           color: Colors.black54,
         ),
         child: Text(
-          'Private',
+          t.common.private,
           style: TextStyle(
             color: Theme.of(context).colorScheme.onPrimary,
             fontWeight: FontWeight.bold,
@@ -264,6 +266,7 @@ class _VideoCardListItemWidgetState extends State<VideoCardListItemWidget> {
   }
 
   Widget _buildAuthorInfo(TextTheme textTheme, BuildContext context) {
+    final t = slang.Translations.of(context);
     return GestureDetector(
       onTap: () => NaviService.navigateToAuthorProfilePage(widget.video.user?.username ?? ''),
       child: Row(
@@ -281,7 +284,7 @@ class _VideoCardListItemWidgetState extends State<VideoCardListItemWidget> {
                     ],
                   ).createShader(bounds),
                   child: Text(
-                    widget.video.user?.name ?? 'Unknown User',
+                    widget.video.user?.name ?? t.common.unknownUser,
                     style: const TextStyle(
                       fontSize: 14,
                       color: Colors.white,
@@ -292,7 +295,7 @@ class _VideoCardListItemWidgetState extends State<VideoCardListItemWidget> {
                   ),
                 )
               : Text(
-                  widget.video.user?.name ?? 'Unknown User',
+                  widget.video.user?.name ?? t.common.unknownUser,
                   style: textTheme.bodySmall,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,

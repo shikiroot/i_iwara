@@ -7,6 +7,7 @@ import '../../../common/constants.dart';
 import '../../routes/app_routes.dart';
 import '../../services/auth_service.dart';
 import '../../services/user_service.dart';
+import 'package:i_iwara/i18n/strings.g.dart' as slang;
 
 class GlobalDrawerColumns extends StatelessWidget {
   GlobalDrawerColumns({super.key});
@@ -17,6 +18,7 @@ class GlobalDrawerColumns extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = slang.Translations.of(context);
     return Column(
       children: [
         Obx(() => _buildHeader(context, appService)),
@@ -25,46 +27,46 @@ class GlobalDrawerColumns extends StatelessWidget {
             padding: EdgeInsets.zero,
             children: [
               // 历史记录
-              _buildMenuItem(Icons.history, '历史记录', () {
+              _buildMenuItem(Icons.history, t.common.history, () {
                 NaviService.navigateToHistoryListPage();
                 AppService.switchGlobalDrawer();
               }),
               // 最爱
-              _buildMenuItem(Icons.favorite, '最爱', () {
+              _buildMenuItem(Icons.favorite, t.common.favorites, () {
                 if (userService.isLogin) {
                   NaviService.navigateToFavoritePage();
                   AppService.switchGlobalDrawer();
                 } else {
-                  Get.snackbar('错误', '请先登录');
+                  Get.snackbar(t.errors.error, t.signIn.pleaseLoginFirst);
                 }
               }),
               // 好友
-              _buildMenuItem(Icons.people, '好友', () {
+              _buildMenuItem(Icons.people, t.common.friends, () {
                 if (userService.isLogin) {
                   NaviService.navigateToFriendsPage();
                   AppService.switchGlobalDrawer();
                 } else {
-                  Get.snackbar('错误', '请先登录');
+                  Get.snackbar(t.errors.error, t.signIn.pleaseLoginFirst);
                 }
               }),
               // 播放列表
-              _buildMenuItem(Icons.playlist_play, '播放列表', () {
+              _buildMenuItem(Icons.playlist_play, t.common.playList, () {
                 if (userService.isLogin) {
                   NaviService.navigateToPlayListPage(
                       userService.currentUser.value!.id,
                       isMine: true);
                   AppService.switchGlobalDrawer();
                 } else {
-                  Get.snackbar('错误', '请先登录');
+                  Get.snackbar(t.errors.error, t.signIn.pleaseLoginFirst);
                 }
               }),
               // 戒律签到
-              _buildMenuItem(Icons.calendar_today, '戒律签到', () {
+              _buildMenuItem(Icons.calendar_today, t.signIn.signIn, () {
                 NaviService.navigateToSignInPage();
                 AppService.switchGlobalDrawer();
               }),
               // 设置
-              _buildMenuItem(Icons.settings, '设置', () {
+              _buildMenuItem(Icons.settings, t.common.settings, () {
                 AppService.switchGlobalDrawer();
                 Get.toNamed(Routes.SETTINGS_PAGE);
               }),
@@ -74,7 +76,7 @@ class GlobalDrawerColumns extends StatelessWidget {
               //   Get.snackbar('操作', '你点击了关于');
               // }),
               // 查看许可
-              _buildMenuItem(Icons.code, '查看许可', () {
+              _buildMenuItem(Icons.code, t.common.checkLicense, () {
                 AppService.switchGlobalDrawer();
                 showLicensePage(
                   context: Get.context!,
@@ -84,7 +86,7 @@ class GlobalDrawerColumns extends StatelessWidget {
                   ? Column(
                       children: [
                         const Divider(),
-                        _buildMenuItem(Icons.exit_to_app, '退出',
+                        _buildMenuItem(Icons.exit_to_app, t.common.logout,
                             () => _showLogoutDialog(appService)),
                       ],
                     )
@@ -97,6 +99,7 @@ class GlobalDrawerColumns extends StatelessWidget {
   }
 
   Widget _buildHeader(BuildContext context, AppService globalDrawerService) {
+    final t = slang.Translations.of(context);
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       child: GestureDetector(
@@ -161,7 +164,7 @@ class GlobalDrawerColumns extends StatelessWidget {
                     Text(
                       userService.isLogin
                           ? userService.currentUser.value!.name
-                          : '未登录',
+                          : t.auth.notLoggedIn,
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 22,
@@ -172,7 +175,7 @@ class GlobalDrawerColumns extends StatelessWidget {
                   Text(
                     userService.isLogin
                         ? '@${userService.currentUser.value!.username}'
-                        : '点击此处登录',
+                        : t.auth.clickToLogin,
                     style: const TextStyle(
                       color: Colors.white70,
                       fontSize: 14,
@@ -257,23 +260,24 @@ class LogoutDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = slang.Translations.of(context);
     return AlertDialog(
-      title: const Text('退出登录'),
-      content: const Text('你确定要退出登录吗？'),
+      title: Text(t.auth.logout),
+      content: Text(t.auth.logoutConfirmation),
       actions: [
         TextButton(
-          child: const Text('取消'),
+          child: Text(t.common.cancel),
           onPressed: () => Navigator.pop(context),
         ),
         ElevatedButton(
-          child: const Text('确定'),
+          child: Text(t.common.confirm),
           onPressed: () async {
             Navigator.pop(context);
             try {
               await userService.logout();
-              Get.snackbar('操作', '你已退出登录');
+              Get.snackbar(t.common.success, t.auth.logoutSuccess);
             } catch (e) {
-              Get.snackbar('错误', '退出登录失败: $e');
+              Get.snackbar(t.errors.error, '${t.auth.logoutFailed}: $e');
             }
           },
         ),

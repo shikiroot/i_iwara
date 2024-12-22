@@ -9,6 +9,7 @@ import 'package:i_iwara/utils/widget_extensions.dart';
 import '../../../../../utils/proxy/proxy_util.dart';
 import '../../../../routes/app_routes.dart';
 import '../../../widgets/error_widget.dart';
+import 'package:i_iwara/i18n/strings.g.dart' as slang;
 
 class SubscriptionVideoController extends GetxController {
   final VideoService _videoService = Get.find();
@@ -53,16 +54,16 @@ class SubscriptionVideoController extends GetxController {
         if (hasMore.value) _currentPage++;
       } else {
         errorWidget.value = CommonErrorWidget(
-          text: '处理请求时出现错误',
+          text: slang.t.errors.errorOccurredWhileProcessingRequest,
           children: [
             if (ProxyUtil.isSupportedPlatform())
               ElevatedButton(
                 onPressed: () => {Get.toNamed(Routes.PROXY_SETTINGS_PAGE)},
-                child: const Text('检查网络设置'),
+                child: Text(slang.t.common.checkNetworkSettings),
               ).paddingRight(10),
             ElevatedButton(
               onPressed: () => loadVideos(refresh: true),
-              child: const Text('刷新'),
+              child: Text(slang.t.common.refresh),
             ),
           ],
         );

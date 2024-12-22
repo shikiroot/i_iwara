@@ -1,0 +1,344 @@
+common:
+  appName: Love Iwara
+  ok: 確定
+  cancel: 取消
+  save: 儲存
+  delete: 刪除
+  loading: 載入中...
+  # 隱私內容，不與展示
+  privacyHint: 隱私內容，不與展示
+  latest: 最新
+  likesCount: 按讚數
+  viewsCount: 觀看次數
+  popular: 受歡迎的
+  trending: 趨勢
+  commentList: 評論列表
+  sendComment: 發表評論
+  send: 發表
+  retry: 重試
+  premium: 高級會員
+  follower: 粉絲
+  friend: 朋友
+  video: 影片
+  following: 追蹤中
+  cancelFriendRequest: 取消申請
+  cancelSpecialFollow: 取消特別關注
+  addFriend: 加為朋友
+  removeFriend: 解除朋友
+  followed: 已追蹤
+  follow: 追蹤
+  unfollow: 取消追蹤
+  specialFollow: 特別關注
+  specialFollowed: 已特別關注
+  gallery: 圖庫
+  playlist: 播放清單
+  commentPostedSuccessfully: 評論發表成功
+  commentPostedFailed: 評論發表失敗
+  success: 成功
+  commentDeletedSuccessfully: 評論已刪除
+  commentUpdatedSuccessfully: 評論已更新
+  totalComments: '評論 ${count} 則'
+  writeYourCommentHere: 請寫下你的評論...
+  tmpNoReplies: 暫無回覆
+  loadMore: 載入更多
+  noMoreDatas: 沒有更多資料了
+  selectTranslationLanguage: 選擇翻譯語言
+  translate: 翻譯
+  translateFailedPleaseTryAgainLater: 翻譯失敗，請稍後再試
+  translationResult: 翻譯結果
+  justNow: 剛剛
+  minutesAgo: '${num} 分鐘前'
+  hoursAgo: '${num} 小時前'
+  daysAgo: '${num} 天前'
+  editedAt: '編輯於 ${num} 前'
+  editComment: 編輯評論
+  commentUpdated: 評論已更新
+  replyComment: 回覆評論
+  reply: 回覆
+  edit: 編輯
+  unknownUser: 未知使用者
+  me: 我
+  author: 作者
+  admin: 管理員
+  viewReplies: '查看回覆 (${num})'
+  hideReplies: 隱藏回覆
+  confirmDelete: 確認刪除
+  areYouSureYouWantToDeleteThisItem: 確定要刪除這筆資料嗎？
+  tmpNoComments: 暫無評論
+  refresh: 更新
+  back: 返回
+  tips: 提示
+  linkIsEmpty: 連結地址為空
+  linkCopiedToClipboard: 連結地址已複製到剪貼簿
+  imageCopiedToClipboard: 圖片已複製到剪貼簿
+  copyImageFailed: 複製圖片失敗
+  mobileSaveImageIsUnderDevelopment: 移動端的儲存圖片功能尚在開發中
+  imageSavedTo: 圖片已儲存至
+  saveImageFailed: 儲存圖片失敗
+  close: 關閉
+  more: 更多
+  moreFeaturesToBeDeveloped: 更多功能待開發
+  all: 全部
+  selectedRecords: '已選擇 ${num} 筆資料'
+  cancelSelectAll: 取消全選
+  selectAll: 全選
+  exitEditMode: 退出編輯模式
+  areYouSureYouWantToDeleteSelectedItems: '確定要刪除選中的 ${num} 筆資料嗎？'
+  searchHistoryRecords: 搜尋歷史紀錄...
+  settings: 設定
+  subscriptions: 訂閱
+  videoCount: '${num} 支影片'
+  share: 分享
+  areYouSureYouWantToShareThisPlaylist: 要分享這個播放清單嗎？
+  editTitle: 編輯標題
+  editMode: 編輯模式
+  pleaseEnterNewTitle: 請輸入新標題
+  createPlayList: 創建播放清單
+  create: 創建
+  checkNetworkSettings: 檢查網路設定
+  general: 大眾
+  r18: R18
+  sensitive: 敏感
+  year: 年份
+  tag: 標籤
+  private: 私密
+  noTitle: 無標題
+  search: 搜尋
+  noContent: 沒有內容哦
+  recording: 記錄中
+  paused: 已暫停
+  clear: 清除
+  user: 使用者
+  post: 帖子
+  seconds: 秒
+  comingSoon: 敬請期待
+  confirm: 確認
+  hour: 小時
+  minute: 分鐘
+  clickToRefresh: 點擊更新
+  history: 歷史紀錄
+  favorites: 最愛
+  friends: 朋友
+  playList: 播放清單
+  checkLicense: 查看授權
+  logout: 登出
+  fensi: 粉絲
+  accept: 接受
+  reject: 拒絕
+
+auth:
+  login: 登入
+  logout: 登出
+  email: 電子郵件
+  password: 密碼
+  loginOrRegister: 登入 / 註冊
+  register: 註冊
+  pleaseEnterEmail: 請輸入電子郵件
+  pleaseEnterPassword: 請輸入密碼
+  passwordMustBeAtLeast6Characters: 密碼至少需要 6 位
+  pleaseEnterCaptcha: 請輸入驗證碼
+  captcha: 驗證碼
+  refreshCaptcha: 更新驗證碼
+  captchaNotLoaded: 無法載入驗證碼
+  loginSuccess: 登入成功
+  emailVerificationSent: 已發送郵件驗證指令
+  notLoggedIn: 尚未登入
+  clickToLogin: 點擊此處登入
+  logoutConfirmation: 你確定要登出嗎？
+  logoutSuccess: 登出成功
+  logoutFailed: 登出失敗
+
+errors:
+  error: 錯誤
+  required: 此項為必填
+  invalidEmail: 電子郵件格式錯誤
+  networkError: 網路錯誤，請重試
+  errorWhileFetching: 取得資料失敗
+  commentCanNotBeEmpty: 評論內容不能為空
+  errorWhileFetchingReplies: 取得回覆時出錯，請檢查網路連線
+  canNotFindCommentController: 無法找到評論控制器
+  errorWhileLoadingGallery: 載入圖庫時出錯
+  howCouldThereBeNoDataItCantBePossible: 啊？怎麼會沒有資料呢？出錯了吧 :<
+  unsupportedImageFormat: '不支援的圖片格式: ${str}'
+  invalidGalleryId: 無效的圖庫ID
+  translationFailedPleaseTryAgainLater: 翻譯失敗，請稍後再試
+  errorOccurred: 發生錯誤，請稍後再試
+  errorOccurredWhileProcessingRequest: 處理請求時出錯
+  errorWhileFetchingDatas: 取得資料時出錯，請稍後再試
+  serviceNotInitialized: 服務未初始化
+  unknownType: 未知類型
+  errorWhileOpeningLink: '無法開啟連結: ${link}'
+  invalidUrl: 無效的URL
+  failedToOperate: 操作失敗
+
+friends:
+  clickToRestoreFriend: 點擊恢復朋友
+  friendsList: 朋友列表
+  friendRequests: 朋友請求
+  friendRequestsList: 朋友請求列表
+
+authorProfile:
+  noMoreDatas: 沒有更多資料了
+  userProfile: 使用者資料
+
+favorites:
+  clickToRestoreFavorite: 點擊恢復最愛
+  myFavorites: 我的最愛
+
+galleryDetail:
+  copyLink: 複製連結地址
+  copyImage: 複製圖片
+  saveAs: 另存為
+  saveToAlbum: 儲存到相簿
+  publishedAt: 發布時間
+  viewsCount: 觀看次數
+  imageLibraryFunctionIntroduction: 圖庫功能介紹
+  rightClickToSaveSingleImage: 右鍵儲存單張圖片
+  batchSave: 批次儲存
+  keyboardLeftAndRightToSwitch: 鍵盤左右控制切換
+  keyboardUpAndDownToZoom: 鍵盤上下控制縮放
+  mouseWheelToSwitch: 滑鼠滾輪控制切換
+  ctrlAndMouseWheelToZoom: CTRL + 滑鼠滾輪控制縮放
+  moreFeaturesToBeDiscovered: 更多功能待發掘...
+  authorOtherGalleries: 作者的其他圖庫
+  relatedGalleries: 相關圖庫
+
+playList:
+  myPlayList: 我的播放清單
+  friendlyTips: 友情提示
+  dearUser: 親愛的使用者
+  iwaraPlayListSystemIsNotPerfectYet: iwara的播放清單系統目前還不太完善
+  notSupportSetCover: 不支援設定封面
+  notSupportDeleteList: 無法刪除播放清單
+  notSupportSetPrivate: 無法設為私密
+  yesCreateListWillAlwaysExistAndVisibleToEveryone: 沒錯...創建的播放清單會一直存在且對所有人可見
+  smallSuggestion: 小建議
+  useLikeToCollectContent: 如果您比較注重隱私，建議使用"按讚"功能來收藏內容
+  welcomeToDiscussOnGitHub: 如果你有其他建議或想法，歡迎來 GitHub 討論！
+  iUnderstand: 明白了
+
+search:
+  searchTags: 搜尋標籤...
+  contentRating: 內容評級
+  removeTag: 移除標籤
+  pleaseEnterSearchContent: 請輸入搜尋內容
+  searchHistory: 搜尋歷史
+  searchSuggestion: 搜尋建議
+  usedTimes: 使用次數
+  lastUsed: 最後使用
+  noSearchHistoryRecords: 沒有搜尋歷史
+  notSupportCurrentSearchType: '目前尚未支援此搜尋類型 ${searchType}，敬請期待'
+  searchResult: 搜尋結果
+
+mediaList:
+  personalIntroduction: 個人簡介
+
+settings:
+  searchConfig: 搜尋設定
+  thisConfigurationDeterminesWhetherThePreviousConfigurationWillBeUsedWhenPlayingVideosAgain: 此設定將決定您之後播放影片時是否會沿用之前的設定。
+  playControl: 播放控制
+  fastForwardTime: 快進時間
+  fastForwardTimeMustBeAPositiveInteger: 快進時間必須是正整數。
+  rewindTime: 快退時間
+  rewindTimeMustBeAPositiveInteger: 快退時間必須是正整數。
+  longPressPlaybackSpeed: 長按播放倍速
+  longPressPlaybackSpeedMustBeAPositiveNumber: 長按播放倍速必須是正數。
+  repeat: 循環播放
+  renderVerticalVideoInVerticalScreen: 全螢幕播放時以直向模式呈現直向影片
+  thisConfigurationDeterminesWhetherTheVideoWillBeRenderedInVerticalScreenWhenPlayingInFullScreen: 此設定將決定當您在全螢幕播放時，是否以直向模式呈現直向影片。
+  rememberVolume: 記住音量
+  thisConfigurationDeterminesWhetherTheVolumeWillBeKeptWhenPlayingVideosAgain: 此設定將決定當您之後播放影片時，是否會保留先前的音量設定。
+  rememberBrightness: 記住亮度
+  thisConfigurationDeterminesWhetherTheBrightnessWillBeKeptWhenPlayingVideosAgain: 此設定將決定當您之後播放影片時，是否會保留先前的亮度設定。
+  playControlArea: 播放控制區域
+  leftAndRightControlAreaWidth: 左右控制區域寬度
+  thisConfigurationDeterminesTheWidthOfTheControlAreasOnTheLeftAndRightSidesOfThePlayer: 此設定將決定播放器左右兩側控制區域的寬度。
+  proxyAddressCannotBeEmpty: 代理伺服器地址不能為空。
+  invalidProxyAddressFormatPleaseUseTheFormatOfIpPortOrDomainNamePort: 無效的代理伺服器地址格式，請使用 IP:端口 或 域名:端口 格式。
+  proxyNormalWork: 代理伺服器正常工作。
+  testProxyFailedWithStatusCode: '代理請求失敗，狀態碼: ${code}'
+  testProxyFailedWithException: '代理請求出錯: ${exception}'
+  proxyConfig: 代理設定
+  thisIsHttpProxyAddress: 此為 HTTP 代理伺服器地址
+  checkProxy: 檢查代理
+  proxyAddress: 代理地址
+  pleaseEnterTheUrlOfTheProxyServerForExample1270018080: 請輸入代理伺服器的 URL，例如 127.0.0.1:8080
+  enableProxy: 啟用代理
+  left: 左側
+  middle: 中間
+  right: 右側
+  playerSettings: 播放器設定
+  networkSettings: 網路設定
+  customizeYourPlaybackExperience: 自訂您的播放體驗
+  chooseYourFavoriteAppAppearance: 選擇您喜愛的應用程式外觀
+  configureYourProxyServer: 配置您的代理伺服器
+  settings: 設定
+  themeSettings: 主題設定
+
+signIn:
+  pleaseLoginFirst: 請先登入後再簽到
+  alreadySignedInToday: 您今天已經簽到過了！
+  youDidNotStickToTheSignIn: 您未能持續簽到。
+  signInSuccess: 簽到成功！
+  signInFailed: 簽到失敗，請稍後再試
+  consecutiveSignIns: 連續簽到天數
+  failureReason: 未能持續簽到的原因
+  selectDateRange: 選擇日期範圍
+  startDate: 開始日期
+  endDate: 結束日期
+  invalidDate: 日期格式錯誤
+  invalidDateRange: 日期範圍無效
+  errorFormatText: 日期格式錯誤
+  errorInvalidText: 日期範圍無效
+  errorInvalidRangeText: 日期範圍無效
+  dateRangeCantBeMoreThanOneYear: 日期範圍不能超過1年
+  signIn: 簽到
+  signInRecord: 簽到紀錄
+  totalSignIns: 總簽到次數
+  pleaseSelectSignInStatus: 請選擇簽到狀態
+
+subscriptions:
+  pleaseLoginFirstToViewYourSubscriptions: 請登入以查看您的訂閱內容。
+
+videoDetail:
+  videoIdIsEmpty: 影片ID為空
+  videoInfoIsEmpty: 影片資訊為空
+  thisIsAPrivateVideo: 這是私密影片
+  getVideoInfoFailed: '取得影片資訊失敗，請稍後再試'
+  noVideoSourceFound: 未找到對應的影片來源
+  tagCopiedToClipboard: '標籤 "${tagId}" 已複製到剪貼簿'
+  errorLoadingVideo: 載入影片時出錯
+  play: 播放
+  pause: 暫停
+  exitAppFullscreen: 退出應用全螢幕
+  enterAppFullscreen: 應用全螢幕
+  exitSystemFullscreen: 退出系統全螢幕
+  enterSystemFullscreen: 系統全螢幕
+  seekTo: 跳轉到指定時間
+  switchResolution: 切換解析度
+  switchPlaybackSpeed: 切換播放倍速
+  rewindSeconds: '快退 ${num} 秒'
+  fastForwardSeconds: '快進 ${num} 秒'
+  playbackSpeedIng: '正在以 ${rate} 倍速播放'
+  brightness: 亮度
+  brightnessLowest: 亮度已最低
+  volume: 音量
+  volumeMuted: 音量已靜音
+  home: 主頁
+  videoPlayer: 影片播放器
+  videoPlayerInfo: 播放器資訊
+  moreSettings: 更多設定
+  videoPlayerFeatureInfo: 播放器功能介紹
+  autoRewind: 自動重播
+  rewindAndFastForward: 左右雙擊快進或快退
+  volumeAndBrightness: 左右滑動調整音量、亮度
+  centerAreaDoubleTapPauseOrPlay: 中央區域雙擊暫停或播放
+  showVerticalVideoInFullScreen: 在全螢幕時顯示直向影片
+  keepLastVolumeAndBrightness: 保持最後調整的音量、亮度
+  setProxy: 設定代理
+  moreFeaturesToBeDiscovered: 更多功能待發掘...
+  videoPlayerSettings: 播放器設定
+  commentCount: '評論 ${num} 則'
+  writeYourCommentHere: 請寫下您的評論...
+  authorOtherVideos: 作者的其他影片
+  relatedVideos: 相關影片

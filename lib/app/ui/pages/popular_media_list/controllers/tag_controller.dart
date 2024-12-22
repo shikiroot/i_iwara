@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:i_iwara/app/models/tag.model.dart';
 import 'package:i_iwara/app/services/tag_service.dart';
+import 'package:i_iwara/i18n/strings.g.dart';
 
 /// 标签控制器
 class TagController extends GetxController {
@@ -33,7 +34,7 @@ class TagController extends GetxController {
       });
       if (result.isFail) {
         isLoading.value = false;
-        Get.snackbar('获取标签失败', result.message);
+        Get.snackbar(t.errors.error, result.message);
         return;
       }
       List<Tag> newTags = result.data!.results;
@@ -51,7 +52,7 @@ class TagController extends GetxController {
       isLoading.value = false;
     } catch (e) {
       isLoading.value = false;
-      Get.snackbar('获取标签失败', e.toString());
+      Get.snackbar(t.errors.error, t.errors.errorWhileFetching);
     }
   }
 

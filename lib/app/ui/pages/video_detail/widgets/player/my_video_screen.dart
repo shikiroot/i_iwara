@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:i_iwara/app/services/app_service.dart';
 import 'package:i_iwara/app/ui/pages/video_detail/widgets/player/rapple_painter.dart';
 import 'package:i_iwara/utils/common_utils.dart';
-import 'package:logger/logger.dart';
+import 'package:i_iwara/utils/logger_utils.dart';
 import 'package:media_kit_video/media_kit_video.dart';
 import 'package:vibration/vibration.dart';
 
@@ -15,11 +15,10 @@ import 'bottom_toolbar_widget.dart';
 import 'gesture_area_widget.dart';
 import 'top_toolbar_widget.dart';
 import '../../controllers/my_video_state_controller.dart';
-
+import '../../../../../../i18n/strings.g.dart' as slang;
 class MyVideoScreen extends StatefulWidget {
   final bool isFullScreen;
   final MyVideoStateController myVideoStateController;
-  final Logger logger = Logger();
 
   MyVideoScreen({
     super.key,
@@ -56,7 +55,7 @@ class _MyVideoScreenState extends State<MyVideoScreen>
 
   @override
   void initState() {
-    widget.logger.i("[${widget.isFullScreen ? '全屏' : '内嵌'} 初始化]");
+    LogUtils.d("[${widget.isFullScreen ? '全屏' : '内嵌'} 初始化]", 'MyVideoScreen');
     super.initState();
     // 如果是全屏状态
     if (widget.isFullScreen) {
@@ -129,7 +128,7 @@ class _MyVideoScreenState extends State<MyVideoScreen>
   /// 处理键盘事件
   /// TODO: [不会修] 当连续按下时，会导致这里监听不到消息，但播放器却自己进行了回退进度的操作，疑似是被media_kit的原生按键监听给拦截了
   void _handleKeyEvent(KeyEvent event) {
-    print('[键盘输入事件] ${event.logicalKey.keyLabel} ${event.runtimeType}');
+    LogUtils.d('[键盘输入事件] ${event.logicalKey.keyLabel} ${event.runtimeType}', 'MyVideoScreen');
     if (event is KeyDownEvent) {
       if (event.logicalKey.keyLabel == LogicalKeyboardKey.space.keyLabel) {
         // 空格键播放/暂停切换
@@ -139,11 +138,11 @@ class _MyVideoScreenState extends State<MyVideoScreen>
           widget.myVideoStateController.player.play();
         }
       } else if (event.logicalKey.keyLabel == LogicalKeyboardKey.arrowLeft.keyLabel) {
-        print('[键盘事件] 左键');
+        LogUtils.d('[键盘事件] 左键', 'MyVideoScreen');
         // 左键
         _triggerLeftRipple();
       } else if (event.logicalKey.keyLabel == LogicalKeyboardKey.arrowRight.keyLabel) {
-        print('[键盘事件] 右键');
+        LogUtils.d('[键盘事件] 右键', 'MyVideoScreen');
         // 右键
         _triggerRightRipple();
       } else if (event.logicalKey.keyLabel == LogicalKeyboardKey.enter.keyLabel && !widget.isFullScreen) {
@@ -598,7 +597,7 @@ class _MyVideoScreenState extends State<MyVideoScreen>
           const VideoRatingAnimation(),
           const SizedBox(width: 4),
           Text(
-            '正在以$rate倍速播放',
+            slang.t.videoDetail.playbackSpeedIng(rate: rate),
             style: const TextStyle(color: Colors.white, fontSize: 16),
           ),
         ],
@@ -615,26 +614,26 @@ class _MyVideoScreenState extends State<MyVideoScreen>
       switch ((curBrightness * 10).toInt()) {
         case 0:
           brightnessIcon = Icons.brightness_3_rounded;
-          brightnessText = '亮度已最低';
+          brightnessText = slang.t.videoDetail.brightnessLowest;
           break;
         case 1:
         case 2:
           brightnessIcon = Icons.brightness_2_rounded;
-          brightnessText = '亮度: ${(curBrightness * 100).toInt()}%';
+          brightnessText = '${slang.t.videoDetail.brightness}: ${(curBrightness * 100).toInt()}%';
           break;
         case 3:
         case 4:
           brightnessIcon = Icons.brightness_5_rounded;
-          brightnessText = '亮度: ${(curBrightness * 100).toInt()}%';
+          brightnessText = '${slang.t.videoDetail.brightness}: ${(curBrightness * 100).toInt()}%';
           break;
         case 5:
         case 6:
           brightnessIcon = Icons.brightness_4_rounded;
-          brightnessText = '亮度: ${(curBrightness * 100).toInt()}%';
+          brightnessText = '${slang.t.videoDetail.brightness}: ${(curBrightness * 100).toInt()}%';
           break;
         default:
           brightnessIcon = Icons.brightness_7_rounded;
-          brightnessText = '亮度: ${(curBrightness * 100).toInt()}%';
+          brightnessText = '${slang.t.videoDetail.brightness}: ${(curBrightness * 100).toInt()}%';
           break;
       }
 
@@ -661,12 +660,12 @@ class _MyVideoScreenState extends State<MyVideoScreen>
       switch ((curVolume * 10).toInt()) {
         case 0:
           volumeIcon = Icons.volume_off;
-          volumeText = '音量已静音';
+          volumeText = slang.t.videoDetail.volumeMuted;
           break;
         case 1:
         case 2:
           volumeIcon = Icons.volume_down;
-          volumeText = '音量: ${(curVolume * 100).toInt()}%';
+          volumeText = '${slang.t.videoDetail.volume}: ${(curVolume * 100).toInt()}%';
           break;
         case 3:
         case 4:
@@ -677,11 +676,11 @@ class _MyVideoScreenState extends State<MyVideoScreen>
         case 9:
         case 10:
           volumeIcon = Icons.volume_up;
-          volumeText = '音量: ${(curVolume * 100).toInt()}%';
+          volumeText = '${slang.t.videoDetail.volume}: ${(curVolume * 100).toInt()}%';
           break;
         default:
           volumeIcon = Icons.volume_off;
-          volumeText = '音量: ${(curVolume * 100).toInt()}%';
+          volumeText = '${slang.t.videoDetail.volume}: ${(curVolume * 100).toInt()}%';
           break;
       }
 

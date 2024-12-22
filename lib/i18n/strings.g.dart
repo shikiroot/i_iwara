@@ -3,10 +3,10 @@
 /// Source: lib/i18n
 /// To regenerate, run: `dart run slang`
 ///
-/// Locales: 3
-/// Strings: 468 (156 per locale)
+/// Locales: 4
+/// Strings: 1268 (317 per locale)
 ///
-/// Built on 2024-12-20 at 01:28 UTC
+/// Built on 2024-12-22 at 06:55 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint, unused_import
@@ -19,6 +19,7 @@ export 'package:slang_flutter/slang_flutter.dart';
 
 import 'strings_ja.g.dart' deferred as l_ja;
 import 'strings_zh_CN.g.dart' deferred as l_zh_CN;
+import 'strings_zh_TW.g.dart' deferred as l_zh_TW;
 part 'strings_en.g.dart';
 
 /// Supported locales.
@@ -30,7 +31,8 @@ part 'strings_en.g.dart';
 enum AppLocale with BaseAppLocale<AppLocale, Translations> {
 	en(languageCode: 'en'),
 	ja(languageCode: 'ja'),
-	zhCn(languageCode: 'zh', countryCode: 'CN');
+	zhCn(languageCode: 'zh', countryCode: 'CN'),
+	zhTw(languageCode: 'zh', countryCode: 'TW');
 
 	const AppLocale({
 		required this.languageCode,
@@ -69,6 +71,13 @@ enum AppLocale with BaseAppLocale<AppLocale, Translations> {
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
+			case AppLocale.zhTw:
+				await l_zh_TW.loadLibrary();
+				return l_zh_TW.TranslationsZhTw(
+					overrides: overrides,
+					cardinalResolver: cardinalResolver,
+					ordinalResolver: ordinalResolver,
+				);
 		}
 	}
 
@@ -93,6 +102,12 @@ enum AppLocale with BaseAppLocale<AppLocale, Translations> {
 				);
 			case AppLocale.zhCn:
 				return l_zh_CN.TranslationsZhCn(
+					overrides: overrides,
+					cardinalResolver: cardinalResolver,
+					ordinalResolver: ordinalResolver,
+				);
+			case AppLocale.zhTw:
+				return l_zh_TW.TranslationsZhTw(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,

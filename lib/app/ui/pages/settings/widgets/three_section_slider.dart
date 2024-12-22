@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
-import 'package:logger/logger.dart';
-
+import 'package:i_iwara/i18n/strings.g.dart' as slang;
 typedef SlideChangeCallback = void Function(
     double leftRatio, double middleRatio, double rightRatio);
 
@@ -70,6 +69,7 @@ class _ThreeSectionSliderState extends State<ThreeSectionSlider> {
 
   @override
   Widget build(BuildContext context) {
+    final t = slang.Translations.of(context);
     return Column(
       children: [
         // 三段式滑块
@@ -77,11 +77,11 @@ class _ThreeSectionSliderState extends State<ThreeSectionSlider> {
           height: 50,
           child: Row(
             children: [
-              _buildSection(Colors.red, leftRatio, '左侧'),
+              _buildSection(Colors.red, leftRatio, t.settings.left),
               _buildDivider(0),
-              _buildSection(Colors.green, middleRatio, '中间'),
+              _buildSection(Colors.green, middleRatio, t.settings.middle),
               _buildDivider(1),
-              _buildSection(Colors.blue, rightRatio, '右侧'),
+              _buildSection(Colors.blue, rightRatio, t.settings.right),
             ],
           ),
         ),
@@ -89,9 +89,9 @@ class _ThreeSectionSliderState extends State<ThreeSectionSlider> {
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: Text(
-            '左侧: ${(leftRatio * 100).toStringAsFixed(1)}% | '
-            '中间: ${(middleRatio * 100).toStringAsFixed(1)}% | '
-            '右侧: ${(rightRatio * 100).toStringAsFixed(1)}%',
+            '${t.settings.left}: ${(leftRatio * 100).toStringAsFixed(1)}% | '
+            '${t.settings.middle}: ${(middleRatio * 100).toStringAsFixed(1)}% | '
+            '${t.settings.right}: ${(rightRatio * 100).toStringAsFixed(1)}%',
             style: const TextStyle(fontSize: 16),
           ),
         ),

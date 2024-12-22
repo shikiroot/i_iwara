@@ -4,6 +4,7 @@ import 'package:i_iwara/app/models/api_result.model.dart';
 import 'package:i_iwara/app/services/config_service.dart';
 import 'package:i_iwara/app/services/translation_service.dart';
 import 'package:i_iwara/common/constants.dart';
+import 'package:i_iwara/i18n/strings.g.dart' as slang;
 
 import '../../../widgets/custom_markdown_body_widget.dart';
 
@@ -31,7 +32,8 @@ class _MediaDescriptionWidgetState extends State<MediaDescriptionWidget> {
   final TranslationService _translationService = Get.find();
   final ConfigService _configService = Get.find();
 
-  Widget _buildTranslationButton() {
+  Widget _buildTranslationButton(BuildContext context) {
+    final t = slang.Translations.of(context);
     return Card(
       elevation: 2,
       shape: RoundedRectangleBorder(
@@ -60,7 +62,7 @@ class _MediaDescriptionWidgetState extends State<MediaDescriptionWidget> {
                       const Icon(Icons.translate, size: 16),
                     const SizedBox(width: 4),
                     Text(
-                      '翻译',
+                      t.common.translate,
                       style: TextStyle(
                         fontSize: 12,
                         color: Theme.of(context).primaryColor,
@@ -133,13 +135,14 @@ class _MediaDescriptionWidgetState extends State<MediaDescriptionWidget> {
       });
     } else {
       setState(() {
-        _translatedText = '翻译失败，请稍后重试';
+        _translatedText = slang.t.errors.translationFailedPleaseTryAgainLater;
         _isTranslating = false;
       });
     }
   }
 
-  Widget _buildTranslatedContent() {
+  Widget _buildTranslatedContent(BuildContext context) {
+    final t = slang.Translations.of(context);
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.3),
@@ -154,7 +157,7 @@ class _MediaDescriptionWidgetState extends State<MediaDescriptionWidget> {
               const Icon(Icons.translate, size: 14),
               const SizedBox(width: 4),
               Text(
-                '翻译结果',
+                t.common.translationResult,
                 style: TextStyle(
                   fontSize: 12,
                   color: Theme.of(context).colorScheme.onSurfaceVariant,
@@ -171,7 +174,7 @@ class _MediaDescriptionWidgetState extends State<MediaDescriptionWidget> {
             ],
           ),
           const SizedBox(height: 8),
-          if (_translatedText == '翻译失败，请稍后重试')
+          if (_translatedText == t.errors.translationFailedPleaseTryAgainLater)
             Text(
               _translatedText!,
               style: TextStyle(
@@ -191,6 +194,7 @@ class _MediaDescriptionWidgetState extends State<MediaDescriptionWidget> {
     // 获取当前主题的文本样式，以动态计算行高
     final textStyle = Theme.of(context).textTheme.bodyMedium ?? const TextStyle(fontSize: 14.0);
     final lineHeight = textStyle.height ?? 1.2; // 默认行高为1.2
+    final t = slang.Translations.of(context);
 
     return Obx(() {
       final expanded = widget.isDescriptionExpanded.value;
@@ -201,14 +205,14 @@ class _MediaDescriptionWidgetState extends State<MediaDescriptionWidget> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                '个人简介',
-                style: TextStyle(
+              Text(
+                t.mediaList.personalIntroduction,
+                style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              _buildTranslationButton(),
+              _buildTranslationButton(context),
             ],
           ),
           if (_showTranslationMenu)
@@ -232,7 +236,7 @@ class _MediaDescriptionWidgetState extends State<MediaDescriptionWidget> {
                     CustomMarkdownBody(data: widget.description ?? ''),
                     if (_translatedText != null) ...[
                       const SizedBox(height: 12),
-                      _buildTranslatedContent(),
+                      _buildTranslatedContent(context),
                     ],
                   ],
                 ),

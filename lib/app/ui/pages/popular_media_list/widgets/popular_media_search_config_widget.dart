@@ -9,6 +9,7 @@ import '../../../../models/tag.model.dart';
 import '../../../widgets/empty_widget.dart';
 import 'add_search_tag_dialog.dart';
 import 'remove_search_tag_dialog.dart';
+import 'package:i_iwara/i18n/strings.g.dart' as slang;
 
 /// 热门视频的搜索配置
 class PopularMediaSearchConfig extends StatefulWidget {
@@ -54,6 +55,7 @@ class _PopularMediaSearchConfigState extends State<PopularMediaSearchConfig> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
+    final t = slang.Translations.of(context);
 
     if (screenWidth > 600) {
       // 屏幕宽度大于600，使用Dialog形式展示
@@ -74,9 +76,9 @@ class _PopularMediaSearchConfigState extends State<PopularMediaSearchConfig> {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('搜索配置', style: TextStyle(fontSize: 20)),
+                      Text(t.settings.searchConfig, style: const TextStyle(fontSize: 20)),
                       const SizedBox(height: 16),
-                      _buildPageContent(),
+                      _buildPageContent(context),
                     ],
                   ),
                   Positioned(
@@ -98,7 +100,7 @@ class _PopularMediaSearchConfigState extends State<PopularMediaSearchConfig> {
       // 屏幕宽度小于等于600，使用普通页面展示
       return Scaffold(
         appBar: AppBar(
-          title: const Text('搜索配置'),
+          title: Text(t.settings.searchConfig),
           actions: [
             IconButton(
               icon: const Icon(Icons.check),
@@ -111,32 +113,33 @@ class _PopularMediaSearchConfigState extends State<PopularMediaSearchConfig> {
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: _buildPageContent(),
+          child: _buildPageContent(context),
         ),
       );
     }
   }
 
   // 构建页面内容
-  Widget _buildPageContent() {
+  Widget _buildPageContent(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildContentRatingSection(),
-          _buildYearSelectionSection(),
-          _buildTagSelectionSection(),
+          _buildContentRatingSection(context),
+          _buildYearSelectionSection(context),
+          _buildTagSelectionSection(context),
         ],
       ),
     );
   }
 
   // 构建内容评级部分
-  Widget _buildContentRatingSection() {
+  Widget _buildContentRatingSection(BuildContext context) {
+    final t = slang.Translations.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('内容评级: ', style: TextStyle(fontSize: 16)).paddingBottom(8),
+        Text('${t.search.contentRating}: ', style: const TextStyle(fontSize: 16)).paddingBottom(8),
         SegmentedButton<MediaRating>(
           segments: MediaRating.values.map((MediaRating rating) {
             return ButtonSegment<MediaRating>(
@@ -157,14 +160,15 @@ class _PopularMediaSearchConfigState extends State<PopularMediaSearchConfig> {
   }
 
   // 构建年份选择部分
-  Widget _buildYearSelectionSection() {
+  Widget _buildYearSelectionSection(BuildContext context) {
+    final t = slang.Translations.of(context);
     final currentYear = DateTime.now().year;
     const startYear = 2010;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('年份: ', style: TextStyle(fontSize: 16)).paddingBottom(8),
+        Text('${t.common.year}: ', style: const TextStyle(fontSize: 16)).paddingBottom(8),
         ScrollConfiguration(
           behavior: ScrollConfiguration.of(context).copyWith(
             dragDevices: {
@@ -193,7 +197,7 @@ class _PopularMediaSearchConfigState extends State<PopularMediaSearchConfig> {
                     return Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 4),
                       child: ChoiceChip(
-                        label: const Text('全部'),
+                        label: Text(t.common.all),
                         selected: year.isEmpty,
                         onSelected: (bool selected) {
                           if (selected) {
@@ -231,14 +235,15 @@ class _PopularMediaSearchConfigState extends State<PopularMediaSearchConfig> {
   }
 
   // 构建标签选择部分
-  Widget _buildTagSelectionSection() {
+  Widget _buildTagSelectionSection(BuildContext context) {
+    final t = slang.Translations.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text('标签: ', style: TextStyle(fontSize: 16)),
+            Text('${t.common.tag}: ', style: const TextStyle(fontSize: 16)),
             Row(
               children: [
                 const SizedBox(width: 8),

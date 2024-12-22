@@ -3,6 +3,7 @@ import 'package:i_iwara/app/models/user.model.dart';
 import '../../../../../utils/logger_utils.dart';
 import '../../../../repositories/sign_in_repository.dart';
 import '../../../../services/user_service.dart';
+import 'package:i_iwara/i18n/strings.g.dart' as slang;
 
 class SignInController extends GetxController {
   final SignInRepository _signInRepository = SignInRepository.instance;
@@ -49,7 +50,7 @@ class SignInController extends GetxController {
       }
     } catch (e) {
       LogUtils.e('检查签到状态时出错', error: e);
-      Get.snackbar('错误', '检查签到状态时出错，请稍后再试');
+      Get.snackbar(slang.t.errors.error, slang.t.errors.errorOccurred);
     } finally {
       isLoading.value = false;
     }
@@ -59,12 +60,12 @@ class SignInController extends GetxController {
   Future<void> signIn({required bool isSuccess, String? reason}) async {
     final user = _userService.currentUser.value;
     if (user == null) {
-      Get.snackbar('提示', '请先登录后再签到');
+      Get.snackbar(slang.t.errors.error, slang.t.signIn.pleaseLoginFirst);
       return;
     }
     if (hasSignedInToday.value) {
       LogUtils.i('用户已签到，无需重复签到');
-      Get.snackbar('提示', '您今天已经签到过了！');
+      Get.snackbar(slang.t.errors.error, slang.t.signIn.alreadySignedInToday);
       return;
     }
     isLoading.value = true;
@@ -73,10 +74,10 @@ class SignInController extends GetxController {
       hasSignedInToday.value = true;
       if (isSuccess) {
         totalSignIns.value += 1;
-        Get.snackbar('成功', '签到成功！');
+        Get.snackbar(slang.t.common.success, slang.t.signIn.signInSuccess);
       } else {
         failureReason.value = reason ?? '';
-        Get.snackbar('提示', '您未能坚持签到。');
+        Get.snackbar(slang.t.errors.error, slang.t.signIn.youDidNotStickToTheSignIn);
       }
       // 更新连续签到天数
       consecutiveSignIns.value = await _signInRepository.getConsecutiveSignIns(user.id);
@@ -84,7 +85,7 @@ class SignInController extends GetxController {
       await _fetchSignInHistory(user.id);
     } catch (e) {
       LogUtils.e('签到失败', error: e);
-      Get.snackbar('错误', '签到失败，请稍后再试');
+      Get.snackbar(slang.t.errors.error, slang.t.signIn.signInFailed);
     } finally {
       isLoading.value = false;
     }
@@ -109,7 +110,7 @@ class SignInController extends GetxController {
       consecutiveSignIns.value = await _signInRepository.getConsecutiveSignIns(userId);
     } catch (e) {
       LogUtils.e('获取签到历史时出错', error: e);
-      Get.snackbar('错误', '获取签到历史时出错，请稍后再试');
+      Get.snackbar(slang.t.errors.error, slang.t.errors.errorWhileFetchingDatas);
     } finally {
       isLoading.value = false;
     }

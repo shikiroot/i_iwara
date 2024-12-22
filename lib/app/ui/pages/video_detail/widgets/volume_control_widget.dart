@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 
+import '../../../../../../i18n/strings.g.dart' as slang;
+
 import '../../../../services/config_service.dart';
 import '../controllers/my_video_state_controller.dart';
 
@@ -83,6 +85,7 @@ class _VolumeControlState extends State<VolumeControl>
 
   @override
   Widget build(BuildContext context) {
+    final t = slang.Translations.of(context);
     return MouseRegion(
       onEnter: (_) => _onHoverChanged(true),
       onExit: (_) => _onHoverChanged(false),
@@ -95,7 +98,7 @@ class _VolumeControlState extends State<VolumeControl>
                 widget.myVideoStateController.setVolume(0);
               },
               icon: _getVolumeIcon(volume),
-              tooltip: '音量: ${(volume * 100).toInt()}%',
+              tooltip: '${t.videoDetail.volume}: ${(volume * 100).toInt()}%',
             ).animate().fadeIn(duration: 300.ms).scale(duration: 300.ms),
             // 使用 SliderTheme 包裹 Slider
             SizeTransition(

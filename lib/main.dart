@@ -38,8 +38,16 @@ void main() {
 
     // 确保Flutter初始化
     WidgetsFlutterBinding.ensureInitialized();
-    // TODO 临时使用系统语言
-    LocaleSettings.useDeviceLocale();
+    // 现在有 简中、英文、日文
+    // 获取系统语言，如果是支持的语言，则使用，如果不是，则使用英文；
+    String systemLanguage = Get.deviceLocale?.languageCode ?? 'en';
+    if (systemLanguage == 'zh' || systemLanguage == 'ja' || systemLanguage == 'zh-TW') {
+      LocaleSettings.useDeviceLocale();
+    } else if (systemLanguage == 'zh-HK') {
+      LocaleSettings.setLocaleRaw('zh-TW');
+    } else {
+      LocaleSettings.setLocaleRaw('en');
+    }
 
     final dbService = DatabaseService();
     await dbService.init();
@@ -86,7 +94,7 @@ void main() {
     MediaKit.ensureInitialized();
 
     // 运行应用
-    runApp(const MyApp());
+    runApp(TranslationProvider(child: const MyApp()));
 
     if (GetPlatform.isDesktop && !GetPlatform.isWeb) {
       await windowManager.ensureInitialized();

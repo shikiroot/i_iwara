@@ -1,12 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:i_iwara/app/models/image.model.dart';
 import 'package:i_iwara/app/services/app_service.dart';
 import 'package:i_iwara/utils/date_time_extension.dart';
 
 import '../../../../../common/constants.dart';
-import '../../../../routes/app_routes.dart';
 
 class ImageModelCardListItemWidget extends StatelessWidget {
   final ImageModel imageModel;
@@ -230,7 +228,7 @@ class ImageModelCardListItemWidget extends StatelessWidget {
     return SizedBox(
       height: textTheme.bodyLarge!.fontSize! * 3.5,
       child: Text(
-        imageModel.title ?? '',
+        imageModel.title,
         maxLines: 2,
         overflow: TextOverflow.ellipsis,
         style: TextStyle(

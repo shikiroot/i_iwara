@@ -7,7 +7,7 @@ import '../../../../../common/constants.dart';
 import '../../../../models/video.model.dart';
 import 'package:i_iwara/utils/date_time_extension.dart';
 import 'animated_preview_widget.dart';
-
+import 'package:i_iwara/i18n/strings.g.dart' as slang;
 class VideoPreviewDetailModal extends StatelessWidget {
   final Video video;
 
@@ -19,6 +19,7 @@ class VideoPreviewDetailModal extends StatelessWidget {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     final textTheme = theme.textTheme;
+    final t = slang.Translations.of(context);
 
     return Center(
       child: Material(
@@ -105,7 +106,7 @@ class VideoPreviewDetailModal extends StatelessWidget {
                                             left: 0,
                                             top: 0,
                                             child: _buildPrivateTag(
-                                              label: 'Private',
+                                              label: t.common.private,
                                               backgroundColor: Colors.black54,
                                               textColor: colorScheme.onPrimary,
                                               theme: theme,
@@ -179,7 +180,7 @@ class VideoPreviewDetailModal extends StatelessWidget {
                                   const SizedBox(width: 8),
                                   Flexible(
                                     child: Text(
-                                      video.user?.name ?? 'Unknown User',
+                                      video.user?.name ?? t.common.unknownUser,
                                       style: textTheme.bodyLarge,
                                       overflow: TextOverflow.ellipsis,
                                     ),

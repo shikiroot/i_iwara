@@ -4,6 +4,7 @@ import 'package:i_iwara/app/models/dto/user_dto.dart';
 import 'package:i_iwara/app/models/user.model.dart';
 import 'package:i_iwara/app/services/user_preference_service.dart';
 import 'package:i_iwara/app/services/user_service.dart';
+import 'package:i_iwara/i18n/strings.g.dart' as slang;
 
 class FollowButtonWidget extends StatefulWidget {
   final User user;
@@ -32,7 +33,8 @@ class _FollowButtonWidgetState extends State<FollowButtonWidget> {
   }
 
   // 构建加载中的按钮
-  Widget _buildLoadingButton({bool isFollowing = false}) {
+  Widget _buildLoadingButton({bool isFollowing = false, required BuildContext context}) {
+    final t = slang.Translations.of(context);
     return ElevatedButton(
       onPressed: null,
       style: ElevatedButton.styleFrom(
@@ -60,7 +62,7 @@ class _FollowButtonWidgetState extends State<FollowButtonWidget> {
               ),
             ),
             const SizedBox(width: 4),
-            Text(isFollowing ? '已关注' : '关注'),
+            Text(isFollowing ? t.common.followed : t.common.follow),
           ],
         ),
       ),
@@ -68,7 +70,8 @@ class _FollowButtonWidgetState extends State<FollowButtonWidget> {
   }
 
   // 显示关注选项底部菜单
-  void _showFollowOptionsSheet() {
+  void _showFollowOptionsSheet(BuildContext context) {
+    final t = slang.Translations.of(context);
     final RxBool isProcessing = false.obs;
     final UserDTO? likedUser =
         _userPreferenceService.getLikedUser(_currentUser.id);
@@ -90,7 +93,7 @@ class _FollowButtonWidgetState extends State<FollowButtonWidget> {
                   likedUser != null ? Icons.star : Icons.star_border,
                   color: likedUser != null ? Colors.amber : null,
                 ),
-                title: Text(likedUser != null ? '取消特别关注' : '加入特别关注'),
+                title: Text(likedUser != null ? t.common.cancelSpecialFollow : t.common.specialFollow),
                 trailing: isProcessing.value
                     ? const SizedBox(
                         width: 16,
@@ -105,7 +108,7 @@ class _FollowButtonWidgetState extends State<FollowButtonWidget> {
                     _userPreferenceService.addLikedUser(UserDTO(
                       id: _currentUser.id,
                       name: _currentUser.name,
-                      username: _currentUser.username ?? '',
+                      username: _currentUser.username,
                       avatarUrl: _currentUser.avatar?.avatarUrl ?? '',
                     ));
                   }
@@ -117,7 +120,7 @@ class _FollowButtonWidgetState extends State<FollowButtonWidget> {
               ListTile(
                 enabled: !isProcessing.value,
                 leading: const Icon(Icons.person_remove),
-                title: const Text('取消关注'),
+                title: Text(t.common.unfollow),
                 trailing: isProcessing.value
                     ? const SizedBox(
                         width: 16,
@@ -149,10 +152,10 @@ class _FollowButtonWidgetState extends State<FollowButtonWidget> {
                         Get.closeAllBottomSheets();
                       }
                     } else {
-                      Get.snackbar('错误', result.message);
+                      Get.snackbar(t.errors.error, result.message);
                     }
                   } catch (e) {
-                    Get.snackbar('错误', '操作失败');
+                    Get.snackbar(t.errors.error, t.errors.failedToOperate);
                   } finally {
                     isProcessing.value = false;
                   }
@@ -169,13 +172,14 @@ class _FollowButtonWidgetState extends State<FollowButtonWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final t = slang.Translations.of(context);
     // 如果是自己，不显示关注按钮
     if (_userService.currentUser.value?.id == _currentUser.id) {
       return const SizedBox.shrink();
     }
 
     if (_isLoading) {
-      return _buildLoadingButton(isFollowing: _currentUser.following);
+      return _buildLoadingButton(isFollowing: _currentUser.following, context: context);
     }
 
     if (!_currentUser.following) {
@@ -194,24 +198,24 @@ class _FollowButtonWidgetState extends State<FollowButtonWidget> {
               });
               widget.onUserUpdated?.call(updatedUser);
             } else {
-              Get.snackbar('错误', result.message);
+              Get.snackbar(t.errors.error, result.message);
             }
           } catch (e) {
-            Get.snackbar('错误', '操作失败');
+            Get.snackbar(t.errors.error, t.errors.failedToOperate);
           } finally {
             setState(() {
               _isLoading = false;
             });
           }
         },
-        child: const Text('关注'),
+        child: Text(t.common.follow),
       );
     }
 
     return ElevatedButton.icon(
-      onPressed: _showFollowOptionsSheet,
+      onPressed: () => _showFollowOptionsSheet(context),
       icon: const Icon(Icons.check, size: 18),
-      label: const Text('已关注'),
+      label: Text(t.common.followed),
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.grey[300],
         foregroundColor: Colors.black87,

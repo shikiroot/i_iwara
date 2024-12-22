@@ -11,6 +11,7 @@ import '../../widgets/top_padding_height_widget.dart';
 import '../search/search_dialog.dart';
 import 'controllers/popular_gallery_controller.dart';
 import 'widgets/popular_media_search_config_widget.dart';
+import 'package:i_iwara/i18n/strings.g.dart' as slang;
 
 class PopularGalleryListPage extends StatefulWidget {
   final List<Sort> sorts = CommonConstants.mediaSorts;
@@ -159,6 +160,7 @@ class _PopularGalleryListPageState extends State<PopularGalleryListPage>
 
   @override
   Widget build(BuildContext context) {
+    final t = slang.Translations.of(context);
     return Scaffold(
       body: Column(
         children: [
@@ -176,9 +178,9 @@ class _PopularGalleryListPageState extends State<PopularGalleryListPage>
               // 搜索框
               Expanded(
                 child: TextField(
-                  decoration: const InputDecoration(
-                    hintText: '搜索',
-                    prefixIcon: Icon(Icons.search),
+                  decoration: InputDecoration(
+                    hintText: t.common.search,
+                    prefixIcon: const Icon(Icons.search),
                   ),
                   onTap: () {
                     Get.dialog(SearchDialog(
@@ -315,7 +317,7 @@ class _KeepAliveTabViewState extends State<KeepAliveTabView>
                 return const Center(child: CircularProgressIndicator());
               } else if (!widget.controller.isInit.value &&
                   widget.controller.images.isEmpty) {
-                return _buildEmptyView();
+                return _buildEmptyView(context);
               } else {
                 final itemCount =
                     (widget.controller.images.length / columns).ceil() + 1;
@@ -328,7 +330,7 @@ class _KeepAliveTabViewState extends State<KeepAliveTabView>
                     if (index < itemCount - 1) {
                       return _buildRow(index, columns, constraints.maxWidth);
                     } else {
-                      return _buildLoadMoreIndicator();
+                      return _buildLoadMoreIndicator(context);
                     }
                   },
                 );
@@ -374,7 +376,8 @@ class _KeepAliveTabViewState extends State<KeepAliveTabView>
   }
 
   // 添加加载更多指示器组件
-  Widget _buildLoadMoreIndicator() {
+  Widget _buildLoadMoreIndicator(BuildContext context) {
+    final t = slang.Translations.of(context);
     return Obx(() => widget.controller.hasMore.value
         ? const Padding(
             padding: EdgeInsets.symmetric(vertical: 16.0),
@@ -382,19 +385,20 @@ class _KeepAliveTabViewState extends State<KeepAliveTabView>
               child: CircularProgressIndicator(),
             ),
           )
-        : const Padding(
-            padding: EdgeInsets.symmetric(vertical: 16.0),
+        : Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
             child: Center(
               child: Text(
-                '没有更多图片了',
-                style: TextStyle(color: Colors.grey),
+                t.common.noMoreDatas,
+                style: const TextStyle(color: Colors.grey),
               ),
             ),
           ));
   }
 
   // 添加空视图组件
-  Widget _buildEmptyView() {
+  Widget _buildEmptyView(BuildContext context) {
+    final t = slang.Translations.of(context);
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -404,9 +408,9 @@ class _KeepAliveTabViewState extends State<KeepAliveTabView>
           color: Colors.grey,
         ),
         const SizedBox(height: 16),
-        const Text(
-          '没有内容哦',
-          style: TextStyle(
+        Text(
+          t.common.noContent,
+          style: const TextStyle(
             fontSize: 18,
             color: Colors.grey,
           ),
@@ -417,7 +421,7 @@ class _KeepAliveTabViewState extends State<KeepAliveTabView>
             widget.controller.fetchImageModels(refresh: true);
           },
           icon: const Icon(Icons.refresh),
-          label: const Text('刷新'),
+          label: Text(t.common.refresh),
           style: ElevatedButton.styleFrom(
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
             textStyle: const TextStyle(fontSize: 16),

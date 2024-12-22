@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:i_iwara/app/ui/pages/settings/widgets/setting_item_widget.dart';
 import 'package:i_iwara/app/ui/pages/settings/widgets/three_section_slider.dart';
-
+import 'package:i_iwara/i18n/strings.g.dart' as slang;
 import '../../../../services/config_service.dart';
 
 class PlayerSettingsWidget extends StatelessWidget {
@@ -23,7 +23,9 @@ class PlayerSettingsWidget extends StatelessWidget {
     String? infoMessage,
     required RxBool rxValue,
     required Function(bool) onChanged,
+    required BuildContext context,
   }) {
+    final t = slang.Translations.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -33,7 +35,7 @@ class PlayerSettingsWidget extends StatelessWidget {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
-            child: const Padding(
+            child: Padding(
               padding: EdgeInsets.all(16.0),
               child: Row(
                 children: [
@@ -45,7 +47,8 @@ class PlayerSettingsWidget extends StatelessWidget {
                   Expanded(
                     // 使用 Expanded 确保文本不会溢出
                     child: Text(
-                      '此配置决定当你之后播放视频时是否会沿用之前的配置。',
+                      // '此配置决定当你之后播放视频时是否会沿用之前的配置。',
+                      t.settings.thisConfigurationDeterminesWhetherThePreviousConfigurationWillBeUsedWhenPlayingVideosAgain,
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 16,
@@ -103,14 +106,15 @@ class PlayerSettingsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = slang.Translations.of(context);
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // 播放控制部分
-          const Text(
-            '播放控制',
-            style: TextStyle(
+          Text(
+            t.settings.playControl,
+            style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
@@ -119,14 +123,14 @@ class PlayerSettingsWidget extends StatelessWidget {
 
           // 快进时间设置
           Obx(() => SettingItem(
-                label: '快进时间',
+                label: t.settings.fastForwardTime,
                 initialValue:
                     _configService[ConfigService.FAST_FORWARD_SECONDS_KEY]
                         .toString(),
                 validator: (value) {
                   final parsed = int.tryParse(value);
                   if (parsed == null || parsed <= 0) {
-                    return '快进时间必须是一个正整数。';
+                    return t.settings.fastForwardTimeMustBeAPositiveInteger;
                   }
                   return null;
                 },
@@ -138,7 +142,7 @@ class PlayerSettingsWidget extends StatelessWidget {
                 icon: Icon(Icons.fast_forward,
                     color: Theme.of(context).primaryColor),
                 inputDecoration: InputDecoration(
-                  suffixText: '秒',
+                  suffixText: t.common.seconds,
                   suffixStyle: TextStyle(color: Theme.of(context).primaryColor),
                   border: const OutlineInputBorder(),
                 ),
@@ -148,13 +152,13 @@ class PlayerSettingsWidget extends StatelessWidget {
 
           // 后退时间设置
           Obx(() => SettingItem(
-                label: '后退时间',
+                label: t.settings.rewindTime,
                 initialValue:
                     _configService[ConfigService.REWIND_SECONDS_KEY].toString(),
                 validator: (value) {
                   final parsed = int.tryParse(value);
                   if (parsed == null || parsed <= 0) {
-                    return '后退时间必须是一个正整数。';
+                    return t.settings.rewindTimeMustBeAPositiveInteger;
                   }
                   return null;
                 },
@@ -166,7 +170,7 @@ class PlayerSettingsWidget extends StatelessWidget {
                 icon: Icon(Icons.fast_rewind,
                     color: Theme.of(context).primaryColor),
                 inputDecoration: InputDecoration(
-                  suffixText: '秒',
+                  suffixText: t.common.seconds,
                   suffixStyle: TextStyle(color: Theme.of(context).primaryColor),
                   border: const OutlineInputBorder(),
                 ),
@@ -176,14 +180,14 @@ class PlayerSettingsWidget extends StatelessWidget {
 
           // 长按播放倍速设置
           Obx(() => SettingItem(
-                label: '长按播放倍速',
+                label: t.settings.longPressPlaybackSpeed,
                 initialValue:
                     _configService[ConfigService.LONG_PRESS_PLAYBACK_SPEED_KEY]
                         .toString(),
                 validator: (value) {
                   final parsed = double.tryParse(value);
                   if (parsed == null || parsed <= 0.0) {
-                    return '长按播放倍速必须是一个正数。';
+                    return t.settings.longPressPlaybackSpeedMustBeAPositiveNumber;
                   }
                   return null;
                 },
@@ -205,8 +209,9 @@ class PlayerSettingsWidget extends StatelessWidget {
 
           // 循环播放
           _buildSwitchSetting(
+            context: context,
             iconData: Icons.loop,
-            label: '循环播放',
+            label: t.settings.repeat,
             showInfoCard: false,
             infoMessage: null,
             rxValue: _configService.settings[ConfigService.REPEAT_KEY],
@@ -218,10 +223,11 @@ class PlayerSettingsWidget extends StatelessWidget {
           // 以竖屏模式渲染竖屏视频
           if (GetPlatform.isAndroid || GetPlatform.isIOS)
             _buildSwitchSetting(
+              context: context,
               iconData: Icons.smartphone,
-              label: '全屏播放时以竖屏模式渲染竖屏视频',
+              label: t.settings.renderVerticalVideoInVerticalScreen,
               showInfoCard: true,
-              infoMessage: '此配置决定当你在全屏播放时是否以竖屏模式渲染竖屏视频。',
+              infoMessage: t.settings.thisConfigurationDeterminesWhetherTheVideoWillBeRenderedInVerticalScreenWhenPlayingInFullScreen,
               rxValue: _configService
                   .settings[ConfigService.RENDER_VERTICAL_VIDEO_IN_VERTICAL_SCREEN],
               onChanged: (value) {
@@ -232,10 +238,11 @@ class PlayerSettingsWidget extends StatelessWidget {
 
           // 记住音量
           _buildSwitchSetting(
+            context: context,
             iconData: Icons.volume_up,
-            label: '记住音量',
+            label: t.settings.rememberVolume,
             showInfoCard: true,
-            infoMessage: '此配置决定当你之后播放视频时是否会沿用之前的音量设置。',
+            infoMessage: t.settings.thisConfigurationDeterminesWhetherTheVolumeWillBeKeptWhenPlayingVideosAgain,
             rxValue: _configService.settings[ConfigService.KEEP_LAST_VOLUME_KEY],
             onChanged: (value) {
               _configService[ConfigService.KEEP_LAST_VOLUME_KEY] = value;
@@ -245,10 +252,11 @@ class PlayerSettingsWidget extends StatelessWidget {
           // 记住亮度（仅限特定平台）
           if (!GetPlatform.isDesktop && !GetPlatform.isWeb)
             _buildSwitchSetting(
+              context: context,
               iconData: Icons.brightness_medium,
-              label: '记住亮度',
+              label: t.settings.rememberBrightness,
               showInfoCard: true,
-              infoMessage: '此配置决定当你之后播放视频时是否会沿用之前的亮度设置。',
+              infoMessage: t.settings.thisConfigurationDeterminesWhetherTheBrightnessWillBeKeptWhenPlayingVideosAgain,
               rxValue:
                   _configService.settings[ConfigService.KEEP_LAST_BRIGHTNESS_KEY],
               onChanged: (value) {
@@ -259,9 +267,9 @@ class PlayerSettingsWidget extends StatelessWidget {
           const SizedBox(height: 16),
 
           // 播放控制区域设置部分
-          const Text(
-            '播放控制区域',
-            style: TextStyle(
+          Text(
+            t.settings.playControlArea,
+            style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
@@ -286,10 +294,10 @@ class PlayerSettingsWidget extends StatelessWidget {
                 // 标题和帮助图标
                 Row(
                   children: [
-                    const Expanded(
+                    Expanded(
                       child: Text(
-                        '左右控制区域宽度',
-                        style: TextStyle(
+                        t.settings.leftAndRightControlAreaWidth,
+                        style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
@@ -298,7 +306,7 @@ class PlayerSettingsWidget extends StatelessWidget {
                     Tooltip(
                       triggerMode: TooltipTriggerMode.tap,
                       preferBelow: false,
-                      message: "指定播放器左右两侧的控制区域宽度",
+                      message: t.settings.thisConfigurationDeterminesTheWidthOfTheControlAreasOnTheLeftAndRightSidesOfThePlayer,
                       child: Icon(
                         Icons.help_outline,
                         size: 20,

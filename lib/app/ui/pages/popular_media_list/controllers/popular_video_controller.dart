@@ -5,6 +5,7 @@ import 'package:i_iwara/app/models/page_data.model.dart';
 import 'package:i_iwara/app/models/video.model.dart';
 import 'package:i_iwara/app/services/video_service.dart';
 import 'package:i_iwara/app/ui/widgets/error_widget.dart';
+import 'package:i_iwara/i18n/strings.g.dart';
 import 'package:i_iwara/utils/proxy/proxy_util.dart';
 import 'package:i_iwara/utils/widget_extensions.dart';
 
@@ -76,18 +77,18 @@ class PopularVideoController extends GetxController {
       page++;
     } catch (e) {
       LogUtils.e('获取视频列表失败', tag: 'PopularVideoController', error: e);
-      Get.snackbar('错误', '处理请求时出现错误');
+      Get.snackbar(t.errors.error, t.errors.errorWhileFetching);
       errorWidget.value = CommonErrorWidget(
-        text: '处理请求时出现错误',
+        text: t.errors.errorWhileFetching,
         children: [
           if (ProxyUtil.isSupportedPlatform())
             ElevatedButton(
               onPressed: () => {Get.toNamed(Routes.PROXY_SETTINGS_PAGE)},
-              child: const Text('检查网络设置'),
+              child: Text(t.common.checkNetworkSettings),
             ).paddingRight(10),
           ElevatedButton(
             onPressed: () => fetchVideos(refresh: true),
-            child: const Text('刷新'),
+            child: Text(t.common.refresh),
           ),
         ],
       );

@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-
+import 'package:i_iwara/i18n/strings.g.dart' as slang;
 import '../../../../../common/constants.dart';
 
 /// 订阅列表选择框
@@ -41,7 +41,7 @@ class _SubscriptionSelectListState extends State<SubscriptionSelectList> {
 
   final allSubscriptionItem = SubscriptionSelectItem(
     id: '',
-    label: '全部动态',
+    label: slang.t.common.all,
     avatarUrl: '',
   );
 

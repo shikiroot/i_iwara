@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:i_iwara/app/models/user.model.dart';
 import 'package:i_iwara/common/constants.dart';
+import 'package:i_iwara/i18n/strings.g.dart' as slang;
 
 class UserCard extends StatelessWidget {
   final User user;
@@ -59,7 +60,7 @@ class UserCard extends StatelessWidget {
                       _buildUserName(),
                     ],
                     const SizedBox(height: 8),
-                    _buildTags(),
+                    _buildTags(context),
                   ],
                 ),
               ),
@@ -172,35 +173,36 @@ class UserCard extends StatelessWidget {
     );
   }
 
-  Widget _buildTags() {
+  Widget _buildTags(BuildContext context) {
+    final t = slang.Translations.of(context);
     return Wrap(
       spacing: 4,
       runSpacing: 4,
       children: [
         if (user.premium)
           _buildTag(
-            label: 'PREMIUM',
+            label: t.common.premium,
             color: Colors.purple.shade100,
             textColor: Colors.purple,
             key: 'premium',
           ),
         if (user.friend)
           _buildTag(
-            label: '好友',
+            label: t.common.friends,
             color: Colors.green.shade100,
             textColor: Colors.green,
             key: 'friend',
           ),
         if (user.following)
           _buildTag(
-            label: '已关注',
+            label: t.common.followed,
             color: Colors.blue.shade100,
             textColor: Colors.blue,
             key: 'following',
           ),
         if (user.followedBy)
           _buildTag(
-            label: '关注你',
+            label: t.common.fensi,
             color: Colors.orange.shade100,
             textColor: Colors.orange,
             key: 'followedBy',
@@ -254,6 +256,7 @@ class UserCard extends StatelessWidget {
   }
 
   Widget _buildRemoveFriendButton(BuildContext context) {
+    final t = slang.Translations.of(context);
     return IconButton(
       icon: isRemovingFriend
           ? const SizedBox(
@@ -264,11 +267,12 @@ class UserCard extends StatelessWidget {
           : const Icon(Icons.person_remove),
       color: Colors.red,
       onPressed: isRemovingFriend ? null : () => onRemoveFriend?.call(user.id),
-      tooltip: '删除好友',
+      tooltip: t.common.removeFriend,
     );
   }
 
   Widget _buildFriendRequestButtons(BuildContext context) {
+    final t = slang.Translations.of(context);
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -285,7 +289,7 @@ class UserCard extends StatelessWidget {
               : const Icon(Icons.check_circle),
           color: Colors.green,
           onPressed: isAcceptingRequest ? null : () => onAcceptFriendRequest?.call(user.id),
-          tooltip: '接受',
+          tooltip: t.common.accept,
         ),
         IconButton(
           icon: isRejectingRequest
@@ -300,13 +304,14 @@ class UserCard extends StatelessWidget {
               : const Icon(Icons.cancel),
           color: Colors.red,
           onPressed: isRejectingRequest ? null : () => onRejectFriendRequest?.call(user.id),
-          tooltip: '拒绝',
+          tooltip: t.common.reject,
         ),
       ],
     );
   }
 
   Widget _buildCancelRequestButton(BuildContext context) {
+    final t = slang.Translations.of(context);
     return IconButton(
       icon: isCancelingRequest
           ? const SizedBox(
@@ -320,7 +325,7 @@ class UserCard extends StatelessWidget {
           : const Icon(Icons.person_remove),
       color: Colors.orange,
       onPressed: isCancelingRequest ? null : () => onCancelFriendRequest?.call(user.id),
-      tooltip: '取消申请',
+      tooltip: t.common.cancelFriendRequest,
     );
   }
 }

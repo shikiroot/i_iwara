@@ -45,6 +45,12 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	late final TranslationsFavoritesEn favorites = TranslationsFavoritesEn._(_root);
 	late final TranslationsGalleryDetailEn galleryDetail = TranslationsGalleryDetailEn._(_root);
 	late final TranslationsPlayListEn playList = TranslationsPlayListEn._(_root);
+	late final TranslationsSearchEn search = TranslationsSearchEn._(_root);
+	late final TranslationsMediaListEn mediaList = TranslationsMediaListEn._(_root);
+	late final TranslationsSettingsEn settings = TranslationsSettingsEn._(_root);
+	late final TranslationsSignInEn signIn = TranslationsSignInEn._(_root);
+	late final TranslationsSubscriptionsEn subscriptions = TranslationsSubscriptionsEn._(_root);
+	late final TranslationsVideoDetailEn videoDetail = TranslationsVideoDetailEn._(_root);
 }
 
 // Path: common
@@ -76,10 +82,12 @@ class TranslationsCommonEn {
 	String get video => 'Video';
 	String get following => 'Following';
 	String get cancelFriendRequest => 'Cancel Request';
+	String get cancelSpecialFollow => 'Cancel Special Follow';
 	String get addFriend => 'Add Friend';
 	String get removeFriend => 'Remove Friend';
 	String get followed => 'Followed';
 	String get follow => 'Follow';
+	String get unfollow => 'Unfollow';
 	String get specialFollow => 'Special Follow';
 	String get specialFollowed => 'Special Followed';
 	String get gallery => 'Gallery';
@@ -147,6 +155,36 @@ class TranslationsCommonEn {
 	String get pleaseEnterNewTitle => 'Please enter new title';
 	String get createPlayList => 'Create Play List';
 	String get create => 'Create';
+	String get checkNetworkSettings => 'Check Network Settings';
+	String get general => 'General';
+	String get r18 => 'R18';
+	String get sensitive => 'Sensitive';
+	String get year => 'Year';
+	String get tag => 'Tag';
+	String get private => 'Private';
+	String get noTitle => 'No Title';
+	String get search => 'Search';
+	String get noContent => 'No content';
+	String get recording => 'Recording';
+	String get paused => 'Paused';
+	String get clear => 'Clear';
+	String get user => 'User';
+	String get post => 'Post';
+	String get seconds => 'Seconds';
+	String get comingSoon => 'Coming Soon';
+	String get confirm => 'Confirm';
+	String get hour => 'Hour';
+	String get minute => 'Minute';
+	String get clickToRefresh => 'Click to Refresh';
+	String get history => 'History';
+	String get favorites => 'Favorites';
+	String get friends => 'Friends';
+	String get playList => 'Play List';
+	String get checkLicense => 'Check License';
+	String get logout => 'Logout';
+	String get fensi => 'Fans';
+	String get accept => 'Accept';
+	String get reject => 'Reject';
 }
 
 // Path: auth
@@ -171,6 +209,11 @@ class TranslationsAuthEn {
 	String get captchaNotLoaded => 'Captcha not loaded';
 	String get loginSuccess => 'Login Success';
 	String get emailVerificationSent => 'Email verification sent';
+	String get notLoggedIn => 'Not Logged In';
+	String get clickToLogin => 'Click to Login';
+	String get logoutConfirmation => 'Are you sure you want to logout?';
+	String get logoutSuccess => 'Logout Success';
+	String get logoutFailed => 'Logout Failed';
 }
 
 // Path: errors
@@ -192,6 +235,15 @@ class TranslationsErrorsEn {
 	String get howCouldThereBeNoDataItCantBePossible => 'How could there be no data? It can\'t be possible :<';
 	String unsupportedImageFormat({required Object str}) => 'Unsupported image format: ${str}';
 	String get invalidGalleryId => 'Invalid gallery ID';
+	String get translationFailedPleaseTryAgainLater => 'Translation failed, please try again later';
+	String get errorOccurred => 'Error occurred, please try again later';
+	String get errorOccurredWhileProcessingRequest => 'Error occurred while processing request';
+	String get errorWhileFetchingDatas => 'Error while fetching datas, please try again later';
+	String get serviceNotInitialized => 'Service not initialized';
+	String get unknownType => 'Unknown type';
+	String errorWhileOpeningLink({required Object link}) => 'Error while opening link: ${link}';
+	String get invalidUrl => 'Invalid URL';
+	String get failedToOperate => 'Failed to operate';
 }
 
 // Path: friends
@@ -275,6 +327,174 @@ class TranslationsPlayListEn {
 	String get iUnderstand => 'I Understand';
 }
 
+// Path: search
+class TranslationsSearchEn {
+	TranslationsSearchEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get searchTags => 'Search Tags...';
+	String get contentRating => 'Content Rating';
+	String get removeTag => 'Remove Tag';
+	String get pleaseEnterSearchContent => 'Please enter search content';
+	String get searchHistory => 'Search History';
+	String get searchSuggestion => 'Search Suggestion';
+	String get usedTimes => 'Used Times';
+	String get lastUsed => 'Last Used';
+	String get noSearchHistoryRecords => 'No search history';
+	String notSupportCurrentSearchType({required Object searchType}) => 'Not support current search type ${searchType}, please wait for the update';
+	String get searchResult => 'Search Result';
+}
+
+// Path: mediaList
+class TranslationsMediaListEn {
+	TranslationsMediaListEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get personalIntroduction => 'Personal Introduction';
+}
+
+// Path: settings
+class TranslationsSettingsEn {
+	TranslationsSettingsEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get searchConfig => 'Search Config';
+	String get thisConfigurationDeterminesWhetherThePreviousConfigurationWillBeUsedWhenPlayingVideosAgain => 'This configuration determines whether the previous configuration will be used when playing videos again.';
+	String get playControl => 'Play Control';
+	String get fastForwardTime => 'Fast Forward Time';
+	String get fastForwardTimeMustBeAPositiveInteger => 'Fast forward time must be a positive integer.';
+	String get rewindTime => 'Rewind Time';
+	String get rewindTimeMustBeAPositiveInteger => 'Rewind time must be a positive integer.';
+	String get longPressPlaybackSpeed => 'Long Press Playback Speed';
+	String get longPressPlaybackSpeedMustBeAPositiveNumber => 'Long press playback speed must be a positive number.';
+	String get repeat => 'Repeat';
+	String get renderVerticalVideoInVerticalScreen => 'Render Vertical Video in Vertical Screen';
+	String get thisConfigurationDeterminesWhetherTheVideoWillBeRenderedInVerticalScreenWhenPlayingInFullScreen => 'This configuration determines whether the video will be rendered in vertical screen when playing in full screen.';
+	String get rememberVolume => 'Remember Volume';
+	String get thisConfigurationDeterminesWhetherTheVolumeWillBeKeptWhenPlayingVideosAgain => 'This configuration determines whether the volume will be kept when playing videos again.';
+	String get rememberBrightness => 'Remember Brightness';
+	String get thisConfigurationDeterminesWhetherTheBrightnessWillBeKeptWhenPlayingVideosAgain => 'This configuration determines whether the brightness will be kept when playing videos again.';
+	String get playControlArea => 'Play Control Area';
+	String get leftAndRightControlAreaWidth => 'Left and Right Control Area Width';
+	String get thisConfigurationDeterminesTheWidthOfTheControlAreasOnTheLeftAndRightSidesOfThePlayer => 'This configuration determines the width of the control areas on the left and right sides of the player.';
+	String get proxyAddressCannotBeEmpty => 'Proxy address cannot be empty.';
+	String get invalidProxyAddressFormatPleaseUseTheFormatOfIpPortOrDomainNamePort => 'Invalid proxy address format. Please use the format of IP:port or domain name:port.';
+	String get proxyNormalWork => 'Proxy normal work.';
+	String testProxyFailedWithStatusCode({required Object code}) => 'Test proxy failed, status code: ${code}';
+	String testProxyFailedWithException({required Object exception}) => 'Test proxy failed, exception: ${exception}';
+	String get proxyConfig => 'Proxy Config';
+	String get thisIsHttpProxyAddress => 'This is http proxy address';
+	String get checkProxy => 'Check Proxy';
+	String get proxyAddress => 'Proxy Address';
+	String get pleaseEnterTheUrlOfTheProxyServerForExample1270018080 => 'Please enter the URL of the proxy server, for example 127.0.0.1:8080';
+	String get enableProxy => 'Enable Proxy';
+	String get left => 'Left';
+	String get middle => 'Middle';
+	String get right => 'Right';
+	String get playerSettings => 'Player Settings';
+	String get networkSettings => 'Network Settings';
+	String get customizeYourPlaybackExperience => 'Customize Your Playback Experience';
+	String get chooseYourFavoriteAppAppearance => 'Choose Your Favorite App Appearance';
+	String get configureYourProxyServer => 'Configure Your Proxy Server';
+	String get settings => 'Settings';
+	String get themeSettings => 'Theme Settings';
+}
+
+// Path: signIn
+class TranslationsSignInEn {
+	TranslationsSignInEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get pleaseLoginFirst => 'Please login first';
+	String get alreadySignedInToday => 'You have already signed in today!';
+	String get youDidNotStickToTheSignIn => 'You did not stick to the sign in.';
+	String get signInSuccess => 'Sign in successfully!';
+	String get signInFailed => 'Sign in failed, please try again later';
+	String get consecutiveSignIns => 'Consecutive Sign Ins';
+	String get failureReason => 'Failure Reason';
+	String get selectDateRange => 'Select Date Range';
+	String get startDate => 'Start Date';
+	String get endDate => 'End Date';
+	String get invalidDate => 'Invalid Date';
+	String get invalidDateRange => 'Invalid Date Range';
+	String get errorFormatText => 'Date Format Error';
+	String get errorInvalidText => 'Invalid Date Range';
+	String get errorInvalidRangeText => 'Invalid Date Range';
+	String get dateRangeCantBeMoreThanOneYear => 'Date range cannot be more than one year';
+	String get signIn => 'Sign In';
+	String get signInRecord => 'Sign In Record';
+	String get totalSignIns => 'Total Sign Ins';
+	String get pleaseSelectSignInStatus => 'Please select sign in status';
+}
+
+// Path: subscriptions
+class TranslationsSubscriptionsEn {
+	TranslationsSubscriptionsEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get pleaseLoginFirstToViewYourSubscriptions => 'Please login first to view your subscriptions.';
+}
+
+// Path: videoDetail
+class TranslationsVideoDetailEn {
+	TranslationsVideoDetailEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get videoIdIsEmpty => 'Video ID is empty';
+	String get videoInfoIsEmpty => 'Video info is empty';
+	String get thisIsAPrivateVideo => 'This is a private video';
+	String get getVideoInfoFailed => 'Get video info failed, please try again later';
+	String get noVideoSourceFound => 'No video source found';
+	String tagCopiedToClipboard({required Object tagId}) => 'Tag "${tagId}" copied to clipboard';
+	String get errorLoadingVideo => 'Error loading video';
+	String get play => 'Play';
+	String get pause => 'Pause';
+	String get exitAppFullscreen => 'Exit App Fullscreen';
+	String get enterAppFullscreen => 'Enter App Fullscreen';
+	String get exitSystemFullscreen => 'Exit System Fullscreen';
+	String get enterSystemFullscreen => 'Enter System Fullscreen';
+	String get seekTo => 'Seek To';
+	String get switchResolution => 'Switch Resolution';
+	String get switchPlaybackSpeed => 'Switch Playback Speed';
+	String rewindSeconds({required Object num}) => 'Rewind ${num} seconds';
+	String fastForwardSeconds({required Object num}) => 'Fast Forward ${num} seconds';
+	String playbackSpeedIng({required Object rate}) => 'Playing at ${rate}x speed';
+	String get brightness => 'Brightness';
+	String get brightnessLowest => 'Brightness is lowest';
+	String get volume => 'Volume';
+	String get volumeMuted => 'Volume is muted';
+	String get home => 'Home';
+	String get videoPlayer => 'Video Player';
+	String get videoPlayerInfo => 'Video Player Info';
+	String get moreSettings => 'More Settings';
+	String get videoPlayerFeatureInfo => 'Video Player Feature Info';
+	String get autoRewind => 'Auto Rewind';
+	String get rewindAndFastForward => 'Rewind and Fast Forward';
+	String get volumeAndBrightness => 'Volume and Brightness';
+	String get centerAreaDoubleTapPauseOrPlay => 'Center Area Double Tap Pause or Play';
+	String get showVerticalVideoInFullScreen => 'Show Vertical Video in Full Screen';
+	String get keepLastVolumeAndBrightness => 'Keep Last Volume and Brightness';
+	String get setProxy => 'Set Proxy';
+	String get moreFeaturesToBeDiscovered => 'More Features to Be Discovered...';
+	String get videoPlayerSettings => 'Video Player Settings';
+	String commentCount({required Object num}) => '${num} comments';
+	String get writeYourCommentHere => 'Write your comment here...';
+	String get authorOtherVideos => 'Author\'s Other Videos';
+	String get relatedVideos => 'Related Videos';
+}
+
 /// Flat map(s) containing all translations.
 /// Only for edge cases! For simple maps, use the map function of this library.
 extension on Translations {
@@ -302,10 +522,12 @@ extension on Translations {
 			case 'common.video': return 'Video';
 			case 'common.following': return 'Following';
 			case 'common.cancelFriendRequest': return 'Cancel Request';
+			case 'common.cancelSpecialFollow': return 'Cancel Special Follow';
 			case 'common.addFriend': return 'Add Friend';
 			case 'common.removeFriend': return 'Remove Friend';
 			case 'common.followed': return 'Followed';
 			case 'common.follow': return 'Follow';
+			case 'common.unfollow': return 'Unfollow';
 			case 'common.specialFollow': return 'Special Follow';
 			case 'common.specialFollowed': return 'Special Followed';
 			case 'common.gallery': return 'Gallery';
@@ -373,6 +595,36 @@ extension on Translations {
 			case 'common.pleaseEnterNewTitle': return 'Please enter new title';
 			case 'common.createPlayList': return 'Create Play List';
 			case 'common.create': return 'Create';
+			case 'common.checkNetworkSettings': return 'Check Network Settings';
+			case 'common.general': return 'General';
+			case 'common.r18': return 'R18';
+			case 'common.sensitive': return 'Sensitive';
+			case 'common.year': return 'Year';
+			case 'common.tag': return 'Tag';
+			case 'common.private': return 'Private';
+			case 'common.noTitle': return 'No Title';
+			case 'common.search': return 'Search';
+			case 'common.noContent': return 'No content';
+			case 'common.recording': return 'Recording';
+			case 'common.paused': return 'Paused';
+			case 'common.clear': return 'Clear';
+			case 'common.user': return 'User';
+			case 'common.post': return 'Post';
+			case 'common.seconds': return 'Seconds';
+			case 'common.comingSoon': return 'Coming Soon';
+			case 'common.confirm': return 'Confirm';
+			case 'common.hour': return 'Hour';
+			case 'common.minute': return 'Minute';
+			case 'common.clickToRefresh': return 'Click to Refresh';
+			case 'common.history': return 'History';
+			case 'common.favorites': return 'Favorites';
+			case 'common.friends': return 'Friends';
+			case 'common.playList': return 'Play List';
+			case 'common.checkLicense': return 'Check License';
+			case 'common.logout': return 'Logout';
+			case 'common.fensi': return 'Fans';
+			case 'common.accept': return 'Accept';
+			case 'common.reject': return 'Reject';
 			case 'auth.login': return 'Login';
 			case 'auth.logout': return 'Logout';
 			case 'auth.email': return 'Email';
@@ -388,6 +640,11 @@ extension on Translations {
 			case 'auth.captchaNotLoaded': return 'Captcha not loaded';
 			case 'auth.loginSuccess': return 'Login Success';
 			case 'auth.emailVerificationSent': return 'Email verification sent';
+			case 'auth.notLoggedIn': return 'Not Logged In';
+			case 'auth.clickToLogin': return 'Click to Login';
+			case 'auth.logoutConfirmation': return 'Are you sure you want to logout?';
+			case 'auth.logoutSuccess': return 'Logout Success';
+			case 'auth.logoutFailed': return 'Logout Failed';
 			case 'errors.error': return 'Error';
 			case 'errors.required': return 'This field is required';
 			case 'errors.invalidEmail': return 'Invalid email address';
@@ -400,6 +657,15 @@ extension on Translations {
 			case 'errors.howCouldThereBeNoDataItCantBePossible': return 'How could there be no data? It can\'t be possible :<';
 			case 'errors.unsupportedImageFormat': return ({required Object str}) => 'Unsupported image format: ${str}';
 			case 'errors.invalidGalleryId': return 'Invalid gallery ID';
+			case 'errors.translationFailedPleaseTryAgainLater': return 'Translation failed, please try again later';
+			case 'errors.errorOccurred': return 'Error occurred, please try again later';
+			case 'errors.errorOccurredWhileProcessingRequest': return 'Error occurred while processing request';
+			case 'errors.errorWhileFetchingDatas': return 'Error while fetching datas, please try again later';
+			case 'errors.serviceNotInitialized': return 'Service not initialized';
+			case 'errors.unknownType': return 'Unknown type';
+			case 'errors.errorWhileOpeningLink': return ({required Object link}) => 'Error while opening link: ${link}';
+			case 'errors.invalidUrl': return 'Invalid URL';
+			case 'errors.failedToOperate': return 'Failed to operate';
 			case 'friends.clickToRestoreFriend': return 'Click to restore friend';
 			case 'friends.friendsList': return 'Friends List';
 			case 'friends.friendRequests': return 'Friend Requests';
@@ -436,6 +702,120 @@ extension on Translations {
 			case 'playList.useLikeToCollectContent': return 'If you are more concerned about privacy, it is recommended to use the "like" function to collect content';
 			case 'playList.welcomeToDiscussOnGitHub': return 'If you have other suggestions or ideas, welcome to discuss on GitHub!';
 			case 'playList.iUnderstand': return 'I Understand';
+			case 'search.searchTags': return 'Search Tags...';
+			case 'search.contentRating': return 'Content Rating';
+			case 'search.removeTag': return 'Remove Tag';
+			case 'search.pleaseEnterSearchContent': return 'Please enter search content';
+			case 'search.searchHistory': return 'Search History';
+			case 'search.searchSuggestion': return 'Search Suggestion';
+			case 'search.usedTimes': return 'Used Times';
+			case 'search.lastUsed': return 'Last Used';
+			case 'search.noSearchHistoryRecords': return 'No search history';
+			case 'search.notSupportCurrentSearchType': return ({required Object searchType}) => 'Not support current search type ${searchType}, please wait for the update';
+			case 'search.searchResult': return 'Search Result';
+			case 'mediaList.personalIntroduction': return 'Personal Introduction';
+			case 'settings.searchConfig': return 'Search Config';
+			case 'settings.thisConfigurationDeterminesWhetherThePreviousConfigurationWillBeUsedWhenPlayingVideosAgain': return 'This configuration determines whether the previous configuration will be used when playing videos again.';
+			case 'settings.playControl': return 'Play Control';
+			case 'settings.fastForwardTime': return 'Fast Forward Time';
+			case 'settings.fastForwardTimeMustBeAPositiveInteger': return 'Fast forward time must be a positive integer.';
+			case 'settings.rewindTime': return 'Rewind Time';
+			case 'settings.rewindTimeMustBeAPositiveInteger': return 'Rewind time must be a positive integer.';
+			case 'settings.longPressPlaybackSpeed': return 'Long Press Playback Speed';
+			case 'settings.longPressPlaybackSpeedMustBeAPositiveNumber': return 'Long press playback speed must be a positive number.';
+			case 'settings.repeat': return 'Repeat';
+			case 'settings.renderVerticalVideoInVerticalScreen': return 'Render Vertical Video in Vertical Screen';
+			case 'settings.thisConfigurationDeterminesWhetherTheVideoWillBeRenderedInVerticalScreenWhenPlayingInFullScreen': return 'This configuration determines whether the video will be rendered in vertical screen when playing in full screen.';
+			case 'settings.rememberVolume': return 'Remember Volume';
+			case 'settings.thisConfigurationDeterminesWhetherTheVolumeWillBeKeptWhenPlayingVideosAgain': return 'This configuration determines whether the volume will be kept when playing videos again.';
+			case 'settings.rememberBrightness': return 'Remember Brightness';
+			case 'settings.thisConfigurationDeterminesWhetherTheBrightnessWillBeKeptWhenPlayingVideosAgain': return 'This configuration determines whether the brightness will be kept when playing videos again.';
+			case 'settings.playControlArea': return 'Play Control Area';
+			case 'settings.leftAndRightControlAreaWidth': return 'Left and Right Control Area Width';
+			case 'settings.thisConfigurationDeterminesTheWidthOfTheControlAreasOnTheLeftAndRightSidesOfThePlayer': return 'This configuration determines the width of the control areas on the left and right sides of the player.';
+			case 'settings.proxyAddressCannotBeEmpty': return 'Proxy address cannot be empty.';
+			case 'settings.invalidProxyAddressFormatPleaseUseTheFormatOfIpPortOrDomainNamePort': return 'Invalid proxy address format. Please use the format of IP:port or domain name:port.';
+			case 'settings.proxyNormalWork': return 'Proxy normal work.';
+			case 'settings.testProxyFailedWithStatusCode': return ({required Object code}) => 'Test proxy failed, status code: ${code}';
+			case 'settings.testProxyFailedWithException': return ({required Object exception}) => 'Test proxy failed, exception: ${exception}';
+			case 'settings.proxyConfig': return 'Proxy Config';
+			case 'settings.thisIsHttpProxyAddress': return 'This is http proxy address';
+			case 'settings.checkProxy': return 'Check Proxy';
+			case 'settings.proxyAddress': return 'Proxy Address';
+			case 'settings.pleaseEnterTheUrlOfTheProxyServerForExample1270018080': return 'Please enter the URL of the proxy server, for example 127.0.0.1:8080';
+			case 'settings.enableProxy': return 'Enable Proxy';
+			case 'settings.left': return 'Left';
+			case 'settings.middle': return 'Middle';
+			case 'settings.right': return 'Right';
+			case 'settings.playerSettings': return 'Player Settings';
+			case 'settings.networkSettings': return 'Network Settings';
+			case 'settings.customizeYourPlaybackExperience': return 'Customize Your Playback Experience';
+			case 'settings.chooseYourFavoriteAppAppearance': return 'Choose Your Favorite App Appearance';
+			case 'settings.configureYourProxyServer': return 'Configure Your Proxy Server';
+			case 'settings.settings': return 'Settings';
+			case 'settings.themeSettings': return 'Theme Settings';
+			case 'signIn.pleaseLoginFirst': return 'Please login first';
+			case 'signIn.alreadySignedInToday': return 'You have already signed in today!';
+			case 'signIn.youDidNotStickToTheSignIn': return 'You did not stick to the sign in.';
+			case 'signIn.signInSuccess': return 'Sign in successfully!';
+			case 'signIn.signInFailed': return 'Sign in failed, please try again later';
+			case 'signIn.consecutiveSignIns': return 'Consecutive Sign Ins';
+			case 'signIn.failureReason': return 'Failure Reason';
+			case 'signIn.selectDateRange': return 'Select Date Range';
+			case 'signIn.startDate': return 'Start Date';
+			case 'signIn.endDate': return 'End Date';
+			case 'signIn.invalidDate': return 'Invalid Date';
+			case 'signIn.invalidDateRange': return 'Invalid Date Range';
+			case 'signIn.errorFormatText': return 'Date Format Error';
+			case 'signIn.errorInvalidText': return 'Invalid Date Range';
+			case 'signIn.errorInvalidRangeText': return 'Invalid Date Range';
+			case 'signIn.dateRangeCantBeMoreThanOneYear': return 'Date range cannot be more than one year';
+			case 'signIn.signIn': return 'Sign In';
+			case 'signIn.signInRecord': return 'Sign In Record';
+			case 'signIn.totalSignIns': return 'Total Sign Ins';
+			case 'signIn.pleaseSelectSignInStatus': return 'Please select sign in status';
+			case 'subscriptions.pleaseLoginFirstToViewYourSubscriptions': return 'Please login first to view your subscriptions.';
+			case 'videoDetail.videoIdIsEmpty': return 'Video ID is empty';
+			case 'videoDetail.videoInfoIsEmpty': return 'Video info is empty';
+			case 'videoDetail.thisIsAPrivateVideo': return 'This is a private video';
+			case 'videoDetail.getVideoInfoFailed': return 'Get video info failed, please try again later';
+			case 'videoDetail.noVideoSourceFound': return 'No video source found';
+			case 'videoDetail.tagCopiedToClipboard': return ({required Object tagId}) => 'Tag "${tagId}" copied to clipboard';
+			case 'videoDetail.errorLoadingVideo': return 'Error loading video';
+			case 'videoDetail.play': return 'Play';
+			case 'videoDetail.pause': return 'Pause';
+			case 'videoDetail.exitAppFullscreen': return 'Exit App Fullscreen';
+			case 'videoDetail.enterAppFullscreen': return 'Enter App Fullscreen';
+			case 'videoDetail.exitSystemFullscreen': return 'Exit System Fullscreen';
+			case 'videoDetail.enterSystemFullscreen': return 'Enter System Fullscreen';
+			case 'videoDetail.seekTo': return 'Seek To';
+			case 'videoDetail.switchResolution': return 'Switch Resolution';
+			case 'videoDetail.switchPlaybackSpeed': return 'Switch Playback Speed';
+			case 'videoDetail.rewindSeconds': return ({required Object num}) => 'Rewind ${num} seconds';
+			case 'videoDetail.fastForwardSeconds': return ({required Object num}) => 'Fast Forward ${num} seconds';
+			case 'videoDetail.playbackSpeedIng': return ({required Object rate}) => 'Playing at ${rate}x speed';
+			case 'videoDetail.brightness': return 'Brightness';
+			case 'videoDetail.brightnessLowest': return 'Brightness is lowest';
+			case 'videoDetail.volume': return 'Volume';
+			case 'videoDetail.volumeMuted': return 'Volume is muted';
+			case 'videoDetail.home': return 'Home';
+			case 'videoDetail.videoPlayer': return 'Video Player';
+			case 'videoDetail.videoPlayerInfo': return 'Video Player Info';
+			case 'videoDetail.moreSettings': return 'More Settings';
+			case 'videoDetail.videoPlayerFeatureInfo': return 'Video Player Feature Info';
+			case 'videoDetail.autoRewind': return 'Auto Rewind';
+			case 'videoDetail.rewindAndFastForward': return 'Rewind and Fast Forward';
+			case 'videoDetail.volumeAndBrightness': return 'Volume and Brightness';
+			case 'videoDetail.centerAreaDoubleTapPauseOrPlay': return 'Center Area Double Tap Pause or Play';
+			case 'videoDetail.showVerticalVideoInFullScreen': return 'Show Vertical Video in Full Screen';
+			case 'videoDetail.keepLastVolumeAndBrightness': return 'Keep Last Volume and Brightness';
+			case 'videoDetail.setProxy': return 'Set Proxy';
+			case 'videoDetail.moreFeaturesToBeDiscovered': return 'More Features to Be Discovered...';
+			case 'videoDetail.videoPlayerSettings': return 'Video Player Settings';
+			case 'videoDetail.commentCount': return ({required Object num}) => '${num} comments';
+			case 'videoDetail.writeYourCommentHere': return 'Write your comment here...';
+			case 'videoDetail.authorOtherVideos': return 'Author\'s Other Videos';
+			case 'videoDetail.relatedVideos': return 'Related Videos';
 			default: return null;
 		}
 	}

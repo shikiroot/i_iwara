@@ -5,6 +5,7 @@ import 'package:i_iwara/app/ui/pages/sign_in/widgets/sign_in_heatmap_widget.dart
 import '../../../routes/app_routes.dart';
 import '../../../services/user_service.dart';
 import 'controllers/sign_in_controller.dart';
+import 'package:i_iwara/i18n/strings.g.dart' as slang;
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -32,24 +33,24 @@ class _SignInPageState extends State<SignInPage> {
       lastDate: DateTime.now(),
       initialDateRange: DateTimeRange(start: startDate, end: endDate),
       // 各种text
-      helpText: '选择日期范围',
-      cancelText: '取消',
-      confirmText: '确认',
-      saveText: '保存',
-      errorFormatText: '日期格式错误',
-      errorInvalidText: '日期范围无效',
-      errorInvalidRangeText: '日期范围无效',
-      fieldStartHintText: '开始日期',
-      fieldEndHintText: '结束日期',
-      fieldStartLabelText: '开始日期',
-      fieldEndLabelText: '结束日期',
-      barrierLabel: '选择日期范围',
+      helpText: slang.t.signIn.selectDateRange,
+      cancelText: slang.t.common.cancel,
+      confirmText: slang.t.common.confirm,
+      saveText: slang.t.common.save,
+      errorFormatText: slang.t.signIn.invalidDate,
+      errorInvalidText: slang.t.signIn.invalidDateRange,
+      errorInvalidRangeText: slang.t.signIn.invalidDateRange,
+      fieldStartHintText: slang.t.signIn.startDate,
+      fieldEndHintText: slang.t.signIn.endDate,
+      fieldStartLabelText: slang.t.signIn.startDate,
+      fieldEndLabelText: slang.t.signIn.endDate,
+      barrierLabel: slang.t.signIn.selectDateRange,
     );
 
     if (picked != null) {
       // 确保日期范围不超过1年
       if (picked.end.difference(picked.start).inDays > 365) {
-        Get.snackbar('提示', '日期范围不能超过1年');
+        Get.snackbar(slang.t.common.tips, slang.t.signIn.dateRangeCantBeMoreThanOneYear);
         return;
       }
       setState(() {
@@ -60,7 +61,7 @@ class _SignInPageState extends State<SignInPage> {
   }
 
   String _formatDate(DateTime date) {
-    return '${date.year}年${date.month}月${date.day}日';
+    return '${date.year}-${date.month}-${date.day}';
   }
 
   @override
@@ -71,17 +72,18 @@ class _SignInPageState extends State<SignInPage> {
 
   @override
   Widget build(BuildContext context) {
+    final t = slang.Translations.of(context);
     final UserService userService = Get.find<UserService>();
     final bool isWideScreen = MediaQuery.of(context).size.width > 600;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('戒律签到'),
+        title: Text(t.signIn.signIn),
         centerTitle: true,
         actions: [
           IconButton(
             icon: Icon(Icons.date_range),
-            tooltip: '选择日期范围',
+            tooltip: t.signIn.selectDateRange,
             onPressed: _selectDateRange,
           ),
         ],
@@ -98,14 +100,14 @@ class _SignInPageState extends State<SignInPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        '您还未登录，请先登录。',
+                        t.signIn.pleaseLoginFirst,
                         style: Theme.of(context).textTheme.titleLarge,
                       ),
                       SizedBox(height: 24),
                       ElevatedButton.icon(
                         onPressed: () => Get.toNamed(Routes.LOGIN),
                         icon: Icon(Icons.login),
-                        label: Text('去登录'),
+                        label: Text(t.auth.login),
                         style: ElevatedButton.styleFrom(
                           padding: EdgeInsets.symmetric(
                               horizontal: 32, vertical: 16),
@@ -161,6 +163,7 @@ class _SignInPageState extends State<SignInPage> {
   }
 
   Widget _buildMainContent(BuildContext context) {
+    final t = slang.Translations.of(context);
     return LayoutBuilder(
       builder: (context, constraints) {
         final bool useVerticalLayout = constraints.maxWidth < 400;
@@ -171,7 +174,7 @@ class _SignInPageState extends State<SignInPage> {
               ElevatedButton.icon(
                       onPressed: _showSignInDialog,
                       icon: Icon(Icons.check_circle_outline),
-                      label: Text('立即签到'),
+                      label: Text(t.signIn.signIn),
                       style: ElevatedButton.styleFrom(
                         padding:
                             EdgeInsets.symmetric(horizontal: 32, vertical: 16),
@@ -182,13 +185,13 @@ class _SignInPageState extends State<SignInPage> {
               Column(
                 children: [
                   _buildStatisticCard(
-                    title: '总成功签到',
+                    title: t.signIn.totalSignIns,
                     count: controller.totalSignIns.value,
                     icon: Icons.calendar_today,
                   ),
                   SizedBox(height: 16),
                   _buildStatisticCard(
-                    title: '连续签到',
+                    title: t.signIn.consecutiveSignIns,
                     count: controller.consecutiveSignIns.value,
                     icon: Icons.trending_up,
                   ),
@@ -201,7 +204,7 @@ class _SignInPageState extends State<SignInPage> {
                   children: [
                     Expanded(
                       child: _buildStatisticCard(
-                        title: '总成功签到',
+                        title: t.signIn.totalSignIns,
                         count: controller.totalSignIns.value,
                         icon: Icons.calendar_today,
                       ),
@@ -209,7 +212,7 @@ class _SignInPageState extends State<SignInPage> {
                     SizedBox(width: 16),
                     Expanded(
                       child: _buildStatisticCard(
-                        title: '连续签到',
+                        title: t.signIn.consecutiveSignIns,
                         count: controller.consecutiveSignIns.value,
                         icon: Icons.trending_up,
                       ),
@@ -224,6 +227,7 @@ class _SignInPageState extends State<SignInPage> {
   }
 
   Widget _buildHeatMapCard(BuildContext context) {
+    final t = slang.Translations.of(context);
     return Card(
       child: Padding(
         padding: EdgeInsets.all(16),
@@ -234,7 +238,7 @@ class _SignInPageState extends State<SignInPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  '签到记录',
+                  t.signIn.signInRecord,
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 Text(
@@ -310,6 +314,7 @@ class _SignInDialogState extends State<SignInDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final t = slang.Translations.of(context);
     return Dialog(
       child: Padding(
         padding: EdgeInsets.all(24),
@@ -318,13 +323,13 @@ class _SignInDialogState extends State<SignInDialog> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              '签到',
+              t.signIn.signIn,
               style: Theme.of(context).textTheme.titleLarge,
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 16),
             Text(
-              '请选择签到状态',
+              t.signIn.pleaseSelectSignInStatus,
               style: Theme.of(context).textTheme.titleMedium,
               textAlign: TextAlign.center,
             ),
@@ -334,7 +339,7 @@ class _SignInDialogState extends State<SignInDialog> {
               children: [
                 Expanded(
                   child: RadioListTile<bool>(
-                    title: Text('成功'),
+                    title: Text(t.signIn.signInSuccess),
                     value: true,
                     groupValue: isSuccess,
                     onChanged: (value) {
@@ -344,7 +349,7 @@ class _SignInDialogState extends State<SignInDialog> {
                 ),
                 Expanded(
                   child: RadioListTile<bool>(
-                    title: Text('失败'),
+                    title: Text(t.signIn.signInFailed),
                     value: false,
                     groupValue: isSuccess,
                     onChanged: (value) {
@@ -359,7 +364,7 @@ class _SignInDialogState extends State<SignInDialog> {
               TextField(
                 controller: reasonController,
                 decoration: InputDecoration(
-                  labelText: '破戒原因（可选）',
+                  labelText: t.signIn.failureReason,
                   border: OutlineInputBorder(),
                   filled: true,
                 ),
@@ -372,7 +377,7 @@ class _SignInDialogState extends State<SignInDialog> {
               children: [
                 TextButton(
                   onPressed: () => Navigator.pop(context),
-                  child: Text('取消'),
+                  child: Text(t.common.cancel),
                 ),
                 SizedBox(width: 16),
                 ElevatedButton(
@@ -383,7 +388,7 @@ class _SignInDialogState extends State<SignInDialog> {
                       reason: isSuccess ? null : reasonController.text.trim(),
                     );
                   },
-                  child: Text('确认'),
+                  child: Text(t.common.confirm),
                 ),
               ],
             ),

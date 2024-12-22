@@ -24,10 +24,12 @@ common:
   video: 视频
   following: 关注
   cancelFriendRequest: 取消申请
+  cancelSpecialFollow: 取消特别关注
   addFriend: 添加朋友
   removeFriend: 解除朋友
   followed: 已关注
   follow: 关注
+  unfollow: 取消关注
   specialFollow: 特别关注
   specialFollowed: 已特别关注
   gallery: 图库
@@ -95,6 +97,36 @@ common:
   pleaseEnterNewTitle: 请输入新标题
   createPlayList: 创建播放列表
   create: 创建
+  checkNetworkSettings: 检查网络设置
+  general: 大众的
+  r18: R18
+  sensitive: 敏感
+  year: 年份
+  tag: 标签
+  private: 私密
+  noTitle: 无标题
+  search: 搜索
+  noContent: 没有内容哦
+  recording: 记录中
+  paused: 已暂停
+  clear: 清除
+  user: 用户
+  post: 帖子
+  seconds: 秒
+  comingSoon: 敬请期待
+  confirm: 确认
+  hour: 时
+  minute: 分
+  clickToRefresh: 点击刷新
+  history: 历史记录
+  favorites: 最爱
+  friends: 好友
+  playList: 播放列表
+  checkLicense: 查看许可
+  logout: 退出登录
+  fensi: 粉丝
+  accept: 接受
+  reject: 拒绝
 auth:
   login: 登录
   logout: 退出登录
@@ -111,6 +143,11 @@ auth:
   captchaNotLoaded: 无法加载验证码
   loginSuccess: 登录成功
   emailVerificationSent: 邮箱指令已发送
+  notLoggedIn: 未登录
+  clickToLogin: 点击此处登录
+  logoutConfirmation: 你确定要退出登录吗？
+  logoutSuccess: 退出登录成功
+  logoutFailed: 退出登录失败
 
 errors:
   error: 错误
@@ -125,6 +162,15 @@ errors:
   howCouldThereBeNoDataItCantBePossible: 啊？怎么会没有数据呢？出错了吧 :<
   unsupportedImageFormat: '不支持的图片格式: ${str}'
   invalidGalleryId: 无效的图库ID
+  translationFailedPleaseTryAgainLater: 翻译失败，请稍后重试
+  errorOccurred: 出错了，请稍后再试
+  errorOccurredWhileProcessingRequest: 处理请求时出错
+  errorWhileFetchingDatas: 获取数据时出错，请稍后再试
+  serviceNotInitialized: 服务未初始化
+  unknownType: 未知类型
+  errorWhileOpeningLink: '无法打开链接: ${link}'
+  invalidUrl: 无效的URL
+  failedToOperate: 操作失败
 
 friends:
   clickToRestoreFriend: 点击恢复好友
@@ -171,3 +217,128 @@ playList:
   useLikeToCollectContent: 如果您比较注重隐私，建议使用"点赞"功能来收藏内容
   welcomeToDiscussOnGitHub: 如果你有其他的建议或想法，欢迎来 GitHub 讨论!
   iUnderstand: 明白了
+
+search:
+  searchTags: 搜索标签...
+  contentRating: 内容评级
+  removeTag: 移除标签
+  pleaseEnterSearchContent: 请输入搜索内容
+  searchHistory: 搜索历史
+  searchSuggestion: 搜索建议
+  usedTimes: 使用次数
+  lastUsed: 最后使用
+  noSearchHistoryRecords: 没有搜索历史
+  notSupportCurrentSearchType: '暂未实现当前搜索类型 ${searchType}，敬请期待'
+  searchResult: 搜索结果
+mediaList:
+  personalIntroduction: 个人简介
+
+settings:
+  searchConfig: 搜索配置
+  thisConfigurationDeterminesWhetherThePreviousConfigurationWillBeUsedWhenPlayingVideosAgain: 此配置决定当你之后播放视频时是否会沿用之前的配置。
+  playControl: 播放控制
+  fastForwardTime: 快进时间
+  fastForwardTimeMustBeAPositiveInteger: 快进时间必须是一个正整数。
+  rewindTime: 后退时间
+  rewindTimeMustBeAPositiveInteger: 后退时间必须是一个正整数。
+  longPressPlaybackSpeed: 长按播放倍速
+  longPressPlaybackSpeedMustBeAPositiveNumber: 长按播放倍速必须是一个正数。
+  repeat: 循环播放
+  renderVerticalVideoInVerticalScreen: 全屏播放时以竖屏模式渲染竖屏视频
+  thisConfigurationDeterminesWhetherTheVideoWillBeRenderedInVerticalScreenWhenPlayingInFullScreen: 此配置决定当你在全屏播放时是否以竖屏模式渲染竖屏视频。
+  rememberVolume: 记住音量
+  thisConfigurationDeterminesWhetherTheVolumeWillBeKeptWhenPlayingVideosAgain: 此配置决定当你之后播放视频时是否会沿用之前的音量设置。
+  rememberBrightness: 记住亮度
+  thisConfigurationDeterminesWhetherTheBrightnessWillBeKeptWhenPlayingVideosAgain: 此配置决定当你之后播放视频时是否会沿用之前的亮度设置。
+  playControlArea: 播放控制区域
+  leftAndRightControlAreaWidth: 左右控制区域宽度
+  thisConfigurationDeterminesTheWidthOfTheControlAreasOnTheLeftAndRightSidesOfThePlayer: 此配置决定播放器左右两侧的控制区域宽度。
+  proxyAddressCannotBeEmpty: 代理地址不能为空。
+  invalidProxyAddressFormatPleaseUseTheFormatOfIpPortOrDomainNamePort: 无效的代理地址格式。请使用 IP:端口 或 域名:端口 格式。
+  proxyNormalWork: 代理正常工作。
+  testProxyFailedWithStatusCode: '代理请求失败，状态码: ${code}'
+  testProxyFailedWithException: '代理请求出错: ${exception}'
+  proxyConfig: 代理配置
+  thisIsHttpProxyAddress: 此处为http代理地址
+  checkProxy: 检查代理
+  proxyAddress: 代理地址
+  pleaseEnterTheUrlOfTheProxyServerForExample1270018080: 请输入代理服务器的URL，例如 127.0.0.1:8080
+  enableProxy: 启用代理
+  left: 左侧
+  middle: 中间
+  right: 右侧
+  playerSettings: 播放器设置
+  networkSettings: 网络设置
+  customizeYourPlaybackExperience: 自定义您的播放体验
+  chooseYourFavoriteAppAppearance: 选择您喜欢的应用外观 
+  configureYourProxyServer: 配置您的代理服务器
+  settings: 设置
+  themeSettings: 主题设置
+
+signIn:
+  pleaseLoginFirst: 请先登录后再签到
+  alreadySignedInToday: 您今天已经签到过了！
+  youDidNotStickToTheSignIn: 您未能坚持签到。
+  signInSuccess: 签到成功！
+  signInFailed: 签到失败，请稍后再试
+  consecutiveSignIns: 连续签到天数
+  failureReason: 未能坚持签到的原因
+  selectDateRange: 选择日期范围
+  startDate: 开始日期
+  endDate: 结束日期
+  invalidDate: 日期格式错误
+  invalidDateRange: 日期范围无效
+  errorFormatText: 日期格式错误
+  errorInvalidText: 日期范围无效
+  errorInvalidRangeText: 日期范围无效
+  dateRangeCantBeMoreThanOneYear: 日期范围不能超过1年
+  signIn: 签到
+  signInRecord: 签到记录
+  totalSignIns: 总成功签到
+  pleaseSelectSignInStatus: 请选择签到状态
+
+subscriptions:
+  pleaseLoginFirstToViewYourSubscriptions: 请登录以查看您的订阅内容。
+
+videoDetail:
+  videoIdIsEmpty: 视频ID为空
+  videoInfoIsEmpty: 视频信息为空
+  thisIsAPrivateVideo: 这是一个私密视频
+  getVideoInfoFailed: '获取视频信息失败，请稍后再试'
+  noVideoSourceFound: 未找到对应的视频源
+  tagCopiedToClipboard: '标签 "${tagId}" 已复制到剪贴板'
+  errorLoadingVideo: 在加载视频时出现了错误
+  play: 播放
+  pause: 暂停
+  exitAppFullscreen: 退出应用全屏
+  enterAppFullscreen: 应用全屏
+  exitSystemFullscreen: 退出系统全屏
+  enterSystemFullscreen: 系统全屏
+  seekTo: 跳转到指定时间
+  switchResolution: 切换分辨率  
+  switchPlaybackSpeed: 切换播放倍速
+  rewindSeconds: '后退${num}秒'
+  fastForwardSeconds: '快进${num}秒'
+  playbackSpeedIng: '正在以${rate}倍速播放'
+  brightness: 亮度
+  brightnessLowest: 亮度已最低
+  volume: 音量
+  volumeMuted: 音量已静音
+  home: 主页
+  videoPlayer: 视频播放器
+  videoPlayerInfo: 播放器信息
+  moreSettings: 更多设置
+  videoPlayerFeatureInfo: 播放器功能介绍
+  autoRewind: 自动重播
+  rewindAndFastForward: 左右两侧双击快进或后退
+  volumeAndBrightness: 左右两侧垂直滑动调整音量、亮度
+  centerAreaDoubleTapPauseOrPlay: 中心区域双击暂停或播放
+  showVerticalVideoInFullScreen: 在全屏时可以以竖屏方式显示竖屏视频
+  keepLastVolumeAndBrightness: 保持上次调整的音量、亮度
+  setProxy: 设置代理
+  moreFeaturesToBeDiscovered: 更多功能待发现...
+  videoPlayerSettings: 播放器设置
+  commentCount: '评论 ${num} 条'
+  writeYourCommentHere: 写下你的评论...
+  authorOtherVideos: 作者的其他视频
+  relatedVideos: 相关视频

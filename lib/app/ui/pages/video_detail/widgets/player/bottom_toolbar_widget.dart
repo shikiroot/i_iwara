@@ -10,6 +10,7 @@ import '../../../../../../utils/common_utils.dart';
 import '../../../../../services/config_service.dart';
 import '../../controllers/my_video_state_controller.dart';
 import 'custom_slider_bar_shape_widget.dart';
+import '../../../../../../i18n/strings.g.dart' as slang;
 
 class BottomToolbar extends StatelessWidget {
   final MyVideoStateController myVideoStateController;
@@ -26,6 +27,7 @@ class BottomToolbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = slang.Translations.of(context);
     return SlideTransition(
       position: myVideoStateController.bottomBarAnimation,
       child: Container(
@@ -67,8 +69,8 @@ class BottomToolbar extends StatelessWidget {
                     // 播放/暂停按钮
                     Obx(() => _buildSwitchIconButton(
                           tooltip: myVideoStateController.videoPlaying.value
-                              ? '暂停'
-                              : '播放',
+                              ? slang.t.videoDetail.pause
+                              : slang.t.videoDetail.play,
                           icon: myVideoStateController.videoPlaying.value
                               ? const Icon(
                                   Icons.pause,
@@ -127,8 +129,8 @@ class BottomToolbar extends StatelessWidget {
                       _buildIconButton(
                         tooltip:
                             myVideoStateController.isDesktopAppFullScreen.value
-                                ? '退出应用全屏'
-                                : '应用全屏',
+                                ? t.videoDetail.exitAppFullscreen
+                                : t.videoDetail.enterAppFullscreen,
                         icon: Obx(() {
                           return SizedBox(
                             width: 24,
@@ -141,8 +143,8 @@ class BottomToolbar extends StatelessWidget {
                                         Colors.white, BlendMode.srcIn),
                                     semanticsLabel: myVideoStateController
                                             .isDesktopAppFullScreen.value
-                                        ? '退出应用全屏'
-                                        : '应用全屏',
+                                        ? t.videoDetail.exitAppFullscreen
+                                        : t.videoDetail.enterAppFullscreen,
                                   )
                                 : SvgPicture.asset(
                                     'assets/svg/app_enter_fullscreen.svg',
@@ -150,8 +152,8 @@ class BottomToolbar extends StatelessWidget {
                                         Colors.white, BlendMode.srcIn),
                                     semanticsLabel: myVideoStateController
                                             .isDesktopAppFullScreen.value
-                                        ? '退出应用全屏'
-                                        : '应用全屏',
+                                        ? t.videoDetail.exitAppFullscreen
+                                        : t.videoDetail.enterAppFullscreen,
                                   ),
                           );
                         }),
@@ -170,7 +172,9 @@ class BottomToolbar extends StatelessWidget {
                       ),
                     // 全屏按钮
                     _buildIconButton(
-                      tooltip: currentScreenIsFullScreen ? '退出系统全屏' : '系统全屏',
+                      tooltip: currentScreenIsFullScreen
+                          ? t.videoDetail.exitSystemFullscreen
+                          : t.videoDetail.enterSystemFullscreen,
                       icon: Icon(
                         currentScreenIsFullScreen
                             ? Icons.fullscreen_exit
@@ -199,6 +203,7 @@ class BottomToolbar extends StatelessWidget {
 
   /// 显示跳转进度的对话框
   void _showSeekDialog(BuildContext context) {
+    final t = slang.Translations.of(context);
     // 获取当前和总时长
     final Duration currentPosition =
         myVideoStateController.currentPosition.value;
@@ -218,7 +223,7 @@ class BottomToolbar extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('跳转到指定时间'),
+          title: Text(t.videoDetail.seekTo),
           content: StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
               return Column(
@@ -228,14 +233,14 @@ class BottomToolbar extends StatelessWidget {
                   if (totalHours > 0)
                     Row(
                       children: [
-                        const Text('时'),
+                        Text(t.common.hour),
                         Expanded(
                           child: Slider(
                             value: selectedHours.toDouble(),
                             min: 0,
                             max: totalHours.toDouble(),
                             divisions: totalHours > 0 ? totalHours : 1,
-                            label: '$selectedHours 时',
+                            label: '$selectedHours ${t.common.hour}',
                             onChanged: (double value) {
                               setState(() {
                                 selectedHours = value.round();
@@ -258,7 +263,7 @@ class BottomToolbar extends StatelessWidget {
                   if (totalMinutes > 0)
                     Row(
                       children: [
-                        const Text('分'),
+                        Text(t.common.minute),
                         Expanded(
                           child: Slider(
                             value: selectedMinutes.toDouble(),
@@ -269,7 +274,7 @@ class BottomToolbar extends StatelessWidget {
                             divisions: (selectedHours < totalHours)
                                 ? 59
                                 : (totalMinutes > 0 ? totalMinutes : 1),
-                            label: '$selectedMinutes 分',
+                            label: '$selectedMinutes ${t.common.minute}',
                             onChanged: (double value) {
                               setState(() {
                                 selectedMinutes = value.round();
@@ -289,7 +294,7 @@ class BottomToolbar extends StatelessWidget {
                   // 秒钟滑块
                   Row(
                     children: [
-                      const Text('秒'),
+                      Text(t.common.seconds),
                       Expanded(
                         child: Slider(
                           value: selectedSeconds.toDouble(),
@@ -302,7 +307,7 @@ class BottomToolbar extends StatelessWidget {
                                   selectedMinutes < totalMinutes)
                               ? 59
                               : (totalSeconds > 0 ? totalSeconds : 1),
-                          label: '$selectedSeconds 秒',
+                          label: '$selectedSeconds ${t.common.seconds}',
                           onChanged: (double value) {
                             setState(() {
                               selectedSeconds = value.round();
@@ -323,7 +328,7 @@ class BottomToolbar extends StatelessWidget {
                 // 关闭对话框
                 Navigator.of(context).pop();
               },
-              child: const Text('取消'),
+              child: Text(t.common.cancel),
             ),
             ElevatedButton(
               onPressed: () {
@@ -344,7 +349,7 @@ class BottomToolbar extends StatelessWidget {
                 // 关闭对话框
                 Navigator.of(context).pop();
               },
-              child: const Text('跳转'),
+              child: Text(t.common.confirm),
             ),
           ],
         );
@@ -420,6 +425,7 @@ class BottomToolbar extends StatelessWidget {
 
   /// 分辨率切换器
   Widget _buildResolutionSwitcher(BuildContext context) {
+    final t = slang.Translations.of(context);
     return Obx(() {
       String? currentResolution =
           myVideoStateController.currentResolutionTag.value;
@@ -436,7 +442,7 @@ class BottomToolbar extends StatelessWidget {
 
       return PopupMenuButton<String>(
         initialValue: currentResolution,
-        tooltip: '切换分辨率',
+        tooltip: t.videoDetail.switchResolution,
         icon: Icon(
           resolutionIcons[currentResolution] ?? Icons.settings,
           color: Colors.white,
@@ -476,6 +482,7 @@ class BottomToolbar extends StatelessWidget {
 
   /// 播放速度切换器
   Widget _buildPlaybackSpeedSwitcher(BuildContext context) {
+    final t = slang.Translations.of(context);
     return Obx(() {
       double currentSpeed = myVideoStateController.playerPlaybackSpeed.value;
       List<double> speeds = [
@@ -498,7 +505,7 @@ class BottomToolbar extends StatelessWidget {
 
       return PopupMenuButton<double>(
         initialValue: currentSpeed,
-        tooltip: '切换播放倍速',
+        tooltip: t.videoDetail.switchPlaybackSpeed,
         icon: const Icon(
           Icons.speed,
           color: Colors.white,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
+import 'package:i_iwara/app/routes/app_routes.dart';
 import 'package:i_iwara/app/services/user_preference_service.dart';
 import 'package:i_iwara/app/services/user_service.dart';
 import 'package:i_iwara/app/ui/pages/subscriptions/controllers/subscription_image_controller.dart';
@@ -8,7 +8,7 @@ import 'package:i_iwara/app/ui/pages/subscriptions/controllers/subscription_vide
 import 'package:i_iwara/app/ui/pages/subscriptions/widgets/subscription_image_list.dart';
 import 'package:i_iwara/app/ui/pages/subscriptions/widgets/subscription_select_list_widget.dart';
 import 'package:i_iwara/app/ui/pages/subscriptions/widgets/subscription_video_list.dart';
-
+import 'package:i_iwara/i18n/strings.g.dart' as slang;
 import '../../../models/dto/user_dto.dart';
 import '../../../services/app_service.dart';
 import '../../widgets/top_padding_height_widget.dart';
@@ -110,14 +110,15 @@ class _SubscriptionsPageState extends State<SubscriptionsPage>
   Widget build(BuildContext context) {
     return Obx(() {
       if (userService.isLogin) {
-        return _buildLoggedInView();
+        return _buildLoggedInView(context);
       } else {
-        return _buildNotLoggedIn();
+        return _buildNotLoggedIn(context);
       }
     });
   }
 
-  Widget _buildContent() {
+  Widget _buildContent(BuildContext context) {
+    final t = slang.Translations.of(context);
     return NestedScrollView(
       controller: _scrollController,
       headerSliverBuilder: (context, innerBoxIsScrolled) => [
@@ -135,10 +136,10 @@ class _SubscriptionsPageState extends State<SubscriptionsPage>
                         AppService.switchGlobalDrawer();
                       },
                     ),
-                    const Expanded(
+                    Expanded(
                       child: Text(
-                        '订阅',
-                        style: TextStyle(
+                        t.common.subscriptions,
+                        style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
@@ -171,9 +172,9 @@ class _SubscriptionsPageState extends State<SubscriptionsPage>
                     tabAlignment: TabAlignment.start,
                     dividerColor: Colors.transparent,
                     controller: _tabController,
-                    tabs: const [
-                      Tab(text: '视频'),
-                      Tab(text: '图库'),
+                    tabs: [
+                      Tab(text: t.common.video),
+                      Tab(text: t.common.gallery),
                     ],
                   ),
                   const Spacer(),
@@ -195,9 +196,9 @@ class _SubscriptionsPageState extends State<SubscriptionsPage>
     );
   }
 
-  Widget _buildLoggedInView() {
+  Widget _buildLoggedInView(BuildContext context) {
     return Scaffold(
-      body: _buildContent(),
+      body: _buildContent(context),
       floatingActionButton: AnimatedSlide(
         duration: const Duration(milliseconds: 200),
         offset: _showBackToTop ? Offset.zero : const Offset(0, 2),
@@ -213,7 +214,8 @@ class _SubscriptionsPageState extends State<SubscriptionsPage>
     );
   }
 
-  Widget _buildNotLoggedIn() {
+  Widget _buildNotLoggedIn(BuildContext context) {
+    final t = slang.Translations.of(context);
     return Scaffold(
       body: Center(
         child: Column(
@@ -235,16 +237,16 @@ class _SubscriptionsPageState extends State<SubscriptionsPage>
                         color: Colors.grey[400],
                       ),
                       const SizedBox(height: 20),
-                      const Text(
-                        '您尚未登录',
-                        style: TextStyle(
+                      Text(
+                        t.signIn.pleaseLoginFirst,
+                        style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        '请登录以查看您的订阅内容。',
+                        t.subscriptions.pleaseLoginFirstToViewYourSubscriptions,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 16,
@@ -253,7 +255,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage>
                       ),
                       const SizedBox(height: 30),
                       ElevatedButton(
-                        onPressed: () => Get.toNamed('/login'),
+                        onPressed: () => Get.toNamed(Routes.LOGIN),
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 40,
@@ -261,9 +263,9 @@ class _SubscriptionsPageState extends State<SubscriptionsPage>
                           ),
                           minimumSize: const Size(200, 0),
                         ),
-                        child: const Text(
-                          '前往登录',
-                          style: TextStyle(fontSize: 16),
+                        child: Text(
+                          t.auth.login,
+                          style: const TextStyle(fontSize: 16),
                         ),
                       ),
                     ],

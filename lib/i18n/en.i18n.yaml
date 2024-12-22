@@ -22,10 +22,12 @@ common:
   video: Video
   following: Following
   cancelFriendRequest: Cancel Request
+  cancelSpecialFollow: Cancel Special Follow
   addFriend: Add Friend
   removeFriend: Remove Friend
   followed: Followed
   follow: Follow
+  unfollow: Unfollow
   specialFollow: Special Follow
   specialFollowed: Special Followed
   gallery: Gallery
@@ -93,6 +95,38 @@ common:
   pleaseEnterNewTitle: Please enter new title
   createPlayList: Create Play List
   create: Create
+  checkNetworkSettings: Check Network Settings
+  general: General
+  r18: R18
+  sensitive: Sensitive
+  year: Year
+  tag: Tag
+  private: Private
+  noTitle: No Title
+  search: Search
+  noContent: No content
+  recording: Recording
+  paused: Paused
+  clear: Clear
+  user: User
+  post: Post
+  seconds: Seconds
+  comingSoon: Coming Soon
+  confirm: Confirm
+  hour: Hour
+  minute: Minute
+  clickToRefresh: Click to Refresh
+  history: History
+  favorites: Favorites
+  friends: Friends
+  playList: Play List
+  checkLicense: Check License
+  logout: Logout
+  fensi: Fans
+  accept: Accept
+  reject: Reject
+
+
 auth:
   login: Login
   logout: Logout
@@ -109,6 +143,11 @@ auth:
   captchaNotLoaded: Captcha not loaded
   loginSuccess: Login Success
   emailVerificationSent: Email verification sent
+  notLoggedIn: Not Logged In
+  clickToLogin: Click to Login
+  logoutConfirmation: Are you sure you want to logout?
+  logoutSuccess: Logout Success
+  logoutFailed: Logout Failed
 
 errors:
   error: Error
@@ -123,7 +162,15 @@ errors:
   howCouldThereBeNoDataItCantBePossible: How could there be no data? It can't be possible :<
   unsupportedImageFormat: 'Unsupported image format: ${str}'
   invalidGalleryId: Invalid gallery ID
-
+  translationFailedPleaseTryAgainLater: Translation failed, please try again later
+  errorOccurred: Error occurred, please try again later
+  errorOccurredWhileProcessingRequest: Error occurred while processing request
+  errorWhileFetchingDatas: Error while fetching datas, please try again later
+  serviceNotInitialized: Service not initialized
+  unknownType: Unknown type
+  errorWhileOpeningLink: 'Error while opening link: ${link}'
+  invalidUrl: Invalid URL
+  failedToOperate: Failed to operate
 friends:
   clickToRestoreFriend: Click to restore friend
   friendsList: Friends List
@@ -169,3 +216,128 @@ playList:
   useLikeToCollectContent: If you are more concerned about privacy, it is recommended to use the "like" function to collect content
   welcomeToDiscussOnGitHub: If you have other suggestions or ideas, welcome to discuss on GitHub!
   iUnderstand: I Understand
+
+search:
+  searchTags: Search Tags...
+  contentRating: Content Rating
+  removeTag: Remove Tag
+  pleaseEnterSearchContent: Please enter search content
+  searchHistory: Search History
+  searchSuggestion: Search Suggestion
+  usedTimes: Used Times
+  lastUsed: Last Used
+  noSearchHistoryRecords: No search history
+  notSupportCurrentSearchType: 'Not support current search type ${searchType}, please wait for the update'
+  searchResult: Search Result
+mediaList:
+  personalIntroduction: Personal Introduction
+
+settings:
+  searchConfig: Search Config
+  thisConfigurationDeterminesWhetherThePreviousConfigurationWillBeUsedWhenPlayingVideosAgain: This configuration determines whether the previous configuration will be used when playing videos again.
+  playControl: Play Control
+  fastForwardTime: Fast Forward Time
+  fastForwardTimeMustBeAPositiveInteger: Fast forward time must be a positive integer.
+  rewindTime: Rewind Time
+  rewindTimeMustBeAPositiveInteger: Rewind time must be a positive integer.
+  longPressPlaybackSpeed: Long Press Playback Speed
+  longPressPlaybackSpeedMustBeAPositiveNumber: Long press playback speed must be a positive number.
+  repeat: Repeat
+  renderVerticalVideoInVerticalScreen: Render Vertical Video in Vertical Screen
+  thisConfigurationDeterminesWhetherTheVideoWillBeRenderedInVerticalScreenWhenPlayingInFullScreen: This configuration determines whether the video will be rendered in vertical screen when playing in full screen.
+  rememberVolume: Remember Volume
+  thisConfigurationDeterminesWhetherTheVolumeWillBeKeptWhenPlayingVideosAgain: This configuration determines whether the volume will be kept when playing videos again.
+  rememberBrightness: Remember Brightness
+  thisConfigurationDeterminesWhetherTheBrightnessWillBeKeptWhenPlayingVideosAgain: This configuration determines whether the brightness will be kept when playing videos again.
+  playControlArea: Play Control Area
+  leftAndRightControlAreaWidth: Left and Right Control Area Width
+  thisConfigurationDeterminesTheWidthOfTheControlAreasOnTheLeftAndRightSidesOfThePlayer: This configuration determines the width of the control areas on the left and right sides of the player.
+  proxyAddressCannotBeEmpty: Proxy address cannot be empty.
+  invalidProxyAddressFormatPleaseUseTheFormatOfIpPortOrDomainNamePort: Invalid proxy address format. Please use the format of IP:port or domain name:port.
+  proxyNormalWork: Proxy normal work.
+  testProxyFailedWithStatusCode: 'Test proxy failed, status code: ${code}'
+  testProxyFailedWithException: 'Test proxy failed, exception: ${exception}'
+  proxyConfig: Proxy Config
+  thisIsHttpProxyAddress: This is http proxy address
+  checkProxy: Check Proxy
+  proxyAddress: Proxy Address
+  pleaseEnterTheUrlOfTheProxyServerForExample1270018080: Please enter the URL of the proxy server, for example 127.0.0.1:8080
+  enableProxy: Enable Proxy
+  left: Left
+  middle: Middle
+  right: Right
+  playerSettings: Player Settings
+  networkSettings: Network Settings
+  customizeYourPlaybackExperience: Customize Your Playback Experience
+  chooseYourFavoriteAppAppearance: Choose Your Favorite App Appearance
+  configureYourProxyServer: Configure Your Proxy Server
+  settings: Settings
+  themeSettings: Theme Settings
+
+signIn:
+  pleaseLoginFirst: Please login first
+  alreadySignedInToday: You have already signed in today!
+  youDidNotStickToTheSignIn: You did not stick to the sign in.
+  signInSuccess: Sign in successfully!
+  signInFailed: Sign in failed, please try again later
+  consecutiveSignIns: Consecutive Sign Ins
+  failureReason: Failure Reason
+  selectDateRange: Select Date Range
+  startDate: Start Date
+  endDate: End Date
+  invalidDate: Invalid Date
+  invalidDateRange: Invalid Date Range
+  errorFormatText: Date Format Error
+  errorInvalidText: Invalid Date Range
+  errorInvalidRangeText: Invalid Date Range
+  dateRangeCantBeMoreThanOneYear: Date range cannot be more than one year
+  signIn: Sign In
+  signInRecord: Sign In Record
+  totalSignIns: Total Sign Ins
+  pleaseSelectSignInStatus: Please select sign in status
+
+subscriptions:
+  pleaseLoginFirstToViewYourSubscriptions: Please login first to view your subscriptions.
+
+videoDetail:
+  videoIdIsEmpty: Video ID is empty
+  videoInfoIsEmpty: Video info is empty
+  thisIsAPrivateVideo: This is a private video
+  getVideoInfoFailed: 'Get video info failed, please try again later'
+  noVideoSourceFound: No video source found
+  tagCopiedToClipboard: 'Tag "${tagId}" copied to clipboard'
+  errorLoadingVideo: Error loading video
+  play: Play
+  pause: Pause
+  exitAppFullscreen: Exit App Fullscreen
+  enterAppFullscreen: Enter App Fullscreen
+  exitSystemFullscreen: Exit System Fullscreen
+  enterSystemFullscreen: Enter System Fullscreen
+  seekTo: Seek To
+  switchResolution: Switch Resolution
+  switchPlaybackSpeed: Switch Playback Speed
+  rewindSeconds: 'Rewind ${num} seconds'
+  fastForwardSeconds: 'Fast Forward ${num} seconds'
+  playbackSpeedIng: 'Playing at ${rate}x speed'
+  brightness: Brightness
+  brightnessLowest: Brightness is lowest
+  volume: Volume
+  volumeMuted: Volume is muted
+  home: Home
+  videoPlayer: Video Player
+  videoPlayerInfo: Video Player Info
+  moreSettings: More Settings
+  videoPlayerFeatureInfo: Video Player Feature Info
+  autoRewind: Auto Rewind
+  rewindAndFastForward: Rewind and Fast Forward
+  volumeAndBrightness: Volume and Brightness
+  centerAreaDoubleTapPauseOrPlay: Center Area Double Tap Pause or Play
+  showVerticalVideoInFullScreen: Show Vertical Video in Full Screen
+  keepLastVolumeAndBrightness: Keep Last Volume and Brightness
+  setProxy: Set Proxy
+  moreFeaturesToBeDiscovered: More Features to Be Discovered...
+  videoPlayerSettings: Video Player Settings
+  commentCount: '${num} comments'
+  writeYourCommentHere: Write your comment here...
+  authorOtherVideos: Author's Other Videos
+  relatedVideos: Related Videos

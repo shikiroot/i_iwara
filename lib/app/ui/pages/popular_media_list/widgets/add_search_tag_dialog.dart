@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:i_iwara/app/services/user_preference_service.dart';
 import 'package:i_iwara/app/ui/widgets/empty_widget.dart';
-
+import 'package:i_iwara/i18n/strings.g.dart' as slang;
 import '../../../../../common/enums/media_enums.dart';
 import '../../../../models/tag.model.dart';
 import '../controllers/tag_controller.dart';
@@ -47,6 +47,7 @@ class _AddSearchTagDialogState extends State<AddSearchTagDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final t = slang.Translations.of(context);
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
@@ -66,8 +67,8 @@ class _AddSearchTagDialogState extends State<AddSearchTagDialog> {
                   Expanded(
                     child: TextField(
                       controller: textEditingController,
-                      decoration: const InputDecoration(
-                        hintText: '搜索标签...',
+                      decoration: InputDecoration(
+                        hintText: t.search.searchTags,
                       ),
                       onSubmitted: (value) {
                         tagController.getTags(refresh: true);
@@ -114,7 +115,7 @@ class _AddSearchTagDialogState extends State<AddSearchTagDialog> {
                     final tag = tagController.tags[index];
                     return ListTile(
                       title: Text(tag.id, style: const TextStyle(fontSize: 16)),
-                      subtitle: _buildTagRatings(tag),
+                      subtitle: _buildTagRatings(tag, context),
                       trailing: Obx(() => IconButton(
                         icon: Icon(
                           userPreferenceService.isUserSearchTagObject(tag) ? Icons.favorite : Icons.favorite_border,
@@ -146,26 +147,27 @@ class _AddSearchTagDialogState extends State<AddSearchTagDialog> {
     );
   }
 
-  Widget _buildTagRatings(Tag tag) {
+  Widget _buildTagRatings(Tag tag, BuildContext context) {
     bool sensitive = tag.sensitive;
+    final t = slang.Translations.of(context);
     return Row(
       children: [
         if (tag.type == MediaRating.GENERAL.value) ...[
           const Icon(Icons.local_offer, size: 16),
           const SizedBox(width: 4),
-          const Text('大众的', style: TextStyle(fontSize: 12)),
+          Text(t.common.general, style: const TextStyle(fontSize: 12)),
         ],
         if (tag.type == MediaRating.ECCHI.value) ...[
           const Icon(Icons.local_offer, size: 16, color: Colors.red),
           const SizedBox(width: 4),
-          const Text('R18', style: TextStyle(fontSize: 12, color: Colors.red)),
+          Text(t.common.r18, style: TextStyle(fontSize: 12, color: Colors.red)),
         ],
         // 敏感标签
         if (sensitive) ...[
           const SizedBox(width: 8),
           const Icon(Icons.warning, size: 16, color: Colors.red),
           const SizedBox(width: 4),
-          const Text('敏感', style: TextStyle(fontSize: 12, color: Colors.red)),
+          Text(t.common.sensitive, style: TextStyle(fontSize: 12, color: Colors.red)),
         ]
       ],
     );

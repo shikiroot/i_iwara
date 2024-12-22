@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:i_iwara/app/ui/pages/settings/widgets/proxy_setting_widget.dart';
 import 'package:i_iwara/app/ui/pages/settings/widgets/settings_app_bar.dart';
-
+import 'package:i_iwara/i18n/strings.g.dart' as slang;
 
 class ProxySettingsPage extends StatelessWidget {
   final bool isWideScreen;
@@ -10,9 +10,10 @@ class ProxySettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = slang.Translations.of(context);
     return Scaffold(
       appBar: SettingsAppBar(
-        title: '网络代理设置',
+        title: t.settings.networkSettings,
         isWideScreen: isWideScreen,
       ),
       body: SingleChildScrollView(

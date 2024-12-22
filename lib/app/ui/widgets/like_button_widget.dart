@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:i_iwara/i18n/strings.g.dart';
 
 class LikeButtonWidget extends StatefulWidget {
   final String mediaId;
@@ -55,7 +56,7 @@ class _LikeButtonWidgetState extends State<LikeButtonWidget> {
         widget.onLikeChanged?.call(_isLiked);
       }
     } catch (e) {
-      Get.snackbar('错误', '操作失败');
+      Get.snackbar(t.errors.error, t.errors.errorOccurred);
     } finally {
       setState(() {
         _isLoading = false;

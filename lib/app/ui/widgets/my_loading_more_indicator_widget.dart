@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:i_iwara/app/ui/widgets/empty_widget.dart';
 import 'package:loading_more_list/loading_more_list.dart';
+import 'package:i_iwara/i18n/strings.g.dart' as slang;
 
 Widget myLoadingMoreIndicator(BuildContext context, IndicatorStatus status,
     {bool isSliver = true, LoadingMoreBase? loadingMoreBase}) {
   Widget? widget;
+  final t = slang.Translations.of(context);
 
   switch (status) {
     case IndicatorStatus.none:
@@ -21,7 +23,7 @@ Widget myLoadingMoreIndicator(BuildContext context, IndicatorStatus status,
             width: 15.0,
             child: getIndicator(context),
           ),
-          const Text('正在加载...')
+          Text(t.common.loading)
         ],
       );
       break;
@@ -37,7 +39,7 @@ Widget myLoadingMoreIndicator(BuildContext context, IndicatorStatus status,
             child: getIndicator(context),
           ),
           const SizedBox(width: 10.0),
-          const Text('正在加载...')
+          Text(t.common.loading)
         ],
       );
       widget = isSliver
@@ -52,9 +54,9 @@ Widget myLoadingMoreIndicator(BuildContext context, IndicatorStatus status,
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const <Widget>[
-              Icon(Icons.error, color: Colors.red),
-              Text('啊哦，好像出现了问题呢？'),
+            children: <Widget>[
+              const Icon(Icons.error, color: Colors.red),
+              Text(t.errors.errorOccurred),
             ],
           ),
         ),
@@ -65,9 +67,9 @@ Widget myLoadingMoreIndicator(BuildContext context, IndicatorStatus status,
         onTap: () => loadingMoreBase?.errorRefresh(),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const <Widget>[
-            Icon(Icons.error, color: Colors.red),
-            Text('啊哦，好像出现了问题呢？'),
+          children: <Widget>[
+            const Icon(Icons.error, color: Colors.red),
+            Text(t.errors.errorOccurred),
           ],
         ),
       );
@@ -80,7 +82,7 @@ Widget myLoadingMoreIndicator(BuildContext context, IndicatorStatus status,
     case IndicatorStatus.noMoreLoad:
       widget = Center(
         child: Text(
-          '没有更多了',
+          t.common.noMoreDatas,
           style: TextStyle(
             color: Theme.of(context).textTheme.bodySmall?.color,
           ),
@@ -88,7 +90,7 @@ Widget myLoadingMoreIndicator(BuildContext context, IndicatorStatus status,
       );
       break;
     case IndicatorStatus.empty:
-      widget = const MyEmptyWidget(message: '没有数据');
+      widget = MyEmptyWidget(message: t.common.noMoreDatas);
       widget = isSliver
           ? SliverToBoxAdapter(child: widget)
           : CustomScrollView(

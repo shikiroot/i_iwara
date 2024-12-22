@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:i_iwara/app/models/api_result.model.dart';
 import 'package:i_iwara/app/services/app_service.dart';
 import 'package:i_iwara/app/services/light_service.dart';
+import 'package:i_iwara/i18n/strings.g.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -136,7 +137,7 @@ class _CustomMarkdownBodyState extends State<CustomMarkdownBody> {
       lightService = Get.find<LightService>();
     } catch (e) {
       LogUtils.e('LightService 未找到', tag: 'CustomMarkdownBody', error: e);
-      return ApiResult.fail('服务未初始化');
+      return ApiResult.fail(t.errors.serviceNotInitialized);
     }
 
     try {
@@ -160,11 +161,11 @@ class _CustomMarkdownBodyState extends State<CustomMarkdownBody> {
           }
           return ApiResult.fail(result.message);
         default:
-          return ApiResult.fail('未知类型');
+          return ApiResult.fail(t.errors.unknownType);
       }
     } catch (e) {
       LogUtils.e('获取信息失败', tag: 'CustomMarkdownBody', error: e);
-      return ApiResult.fail('获取信息失败');
+      return ApiResult.fail(t.errors.errorWhileFetching);
     }
   }
 
@@ -234,12 +235,12 @@ class _CustomMarkdownBodyState extends State<CustomMarkdownBody> {
           await launchUrl(uri);
         } else {
           LogUtils.e('无法打开链接: $href', tag: 'CustomMarkdownBody');
-          Get.snackbar('错误', '无法打开链接: $href');
+          Get.snackbar(t.errors.error, t.errors.errorWhileOpeningLink(link: href));
         }
       }
     } catch (e) {
       LogUtils.e('处理链接点击时发生错误', tag: 'CustomMarkdownBody', error: e);
-      Get.snackbar('错误', '处理链接点击时发生错误');
+      Get.snackbar(t.errors.error, t.errors.errorWhileOpeningLink(link: href));
     }
   }
 
@@ -265,7 +266,7 @@ class _CustomMarkdownBodyState extends State<CustomMarkdownBody> {
           final imageUrl = uri.toString();
           final parsedUri = Uri.tryParse(imageUrl);
           if (parsedUri == null || !parsedUri.hasAbsolutePath) {
-            throw const FormatException('无效的图片 URL');
+            throw FormatException(t.errors.invalidUrl);
           }
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),

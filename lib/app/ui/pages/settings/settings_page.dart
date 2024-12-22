@@ -6,12 +6,14 @@ import '../../../routes/app_routes.dart';
 import 'player_settings_page.dart';
 import 'proxy_settings_page.dart';
 import 'theme_settings_page.dart';
+import 'package:i_iwara/i18n/strings.g.dart' as slang;
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final t = slang.Translations.of(context);
     // 获取屏幕宽度
     final double screenWidth = MediaQuery.of(context).size.width;
     // 定义宽屏的阈值
@@ -23,22 +25,22 @@ class SettingsPage extends StatelessWidget {
     final List<SettingItem> settingItems = [
       if (ProxyUtil.isSupportedPlatform())
         SettingItem(
-          title: '网络代理设置',
-          subtitle: '配置您的代理服务器',
+          title: t.settings.networkSettings,
+          subtitle: t.settings.configureYourProxyServer,
           icon: Icons.wifi,
           page: ProxySettingsPage(isWideScreen: isWideScreen),
           route: Routes.PROXY_SETTINGS_PAGE,
         ),
       SettingItem(
-        title: '播放器设置',
-        subtitle: '自定义您的播放体验',
+        title: t.settings.playerSettings,
+        subtitle: t.settings.customizeYourPlaybackExperience,
         icon: Icons.play_circle_outline,
         page: PlayerSettingsPage(isWideScreen: isWideScreen),
         route: Routes.PLAYER_SETTINGS_PAGE,
       ),
       SettingItem(
-        title: '主题设置',
-        subtitle: '选择您喜欢的应用外观',
+        title: t.settings.themeSettings,
+        subtitle: t.settings.chooseYourFavoriteAppAppearance,
         icon: Icons.color_lens,
         page: ThemeSettingsPage(isWideScreen: isWideScreen),
         route: Routes.THEME_SETTINGS_PAGE,
@@ -47,7 +49,7 @@ class SettingsPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('设置', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text(t.settings.settings, style: const TextStyle(fontWeight: FontWeight.bold)),
         elevation: 2,
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         iconTheme: IconThemeData(color: Theme.of(context).primaryColor),

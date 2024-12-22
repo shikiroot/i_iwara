@@ -7,7 +7,7 @@ import 'package:i_iwara/app/ui/pages/home/home_navigation_layout.dart';
 import 'package:i_iwara/app/ui/pages/video_detail/widgets/media_tile_list_loading_widget.dart';
 import 'package:i_iwara/app/ui/pages/video_detail/widgets/detail/video_detail_content_widget.dart';
 import 'package:i_iwara/app/ui/pages/video_detail/widgets/video_detail_info_skeleton_widget.dart';
-import 'package:logger/logger.dart';
+import 'package:i_iwara/utils/logger_utils.dart';
 import '../../../../common/enums/media_enums.dart';
 import '../../widgets/error_widget.dart';
 import '../../widgets/sliding_card_widget.dart';
@@ -17,6 +17,7 @@ import '../comment/widgets/comment_section_widget.dart';
 import '../popular_media_list/widgets/video_tile_list_item_widget.dart';
 import 'controllers/my_video_state_controller.dart';
 import 'controllers/related_media_controller.dart';
+import '../../../../i18n/strings.g.dart' as slang;
 
 class MyVideoDetailPage extends StatefulWidget {
   final String videoId;
@@ -28,7 +29,6 @@ class MyVideoDetailPage extends StatefulWidget {
 }
 
 class _MyVideoDetailPageState extends State<MyVideoDetailPage> {
-  final Logger logger = Logger();
   final String uniqueTag = UniqueKey().toString();
   late String videoId;
   final AppService appService = Get.find();
@@ -41,7 +41,7 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> {
   void _onRouteChange(Route? route, Route? previousRoute) {
     // 当前页面被覆盖时暂停视频
     if (route != null && route.settings.name != Routes.VIDEO_DETAIL(videoId)) {
-      logger.d("[详情页路由监听]跳转到其他页面: ${route.settings.name}");
+      LogUtils.d("[详情页路由监听]跳转到其他页面: ${route.settings.name}", 'video_detail_page_v2');
       controller.player.pause();
     }
   }
@@ -86,7 +86,7 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> {
       Get.delete<CommentController>(tag: uniqueTag);
       Get.delete<RelatedMediasController>(tag: uniqueTag);
     } catch (e) {
-      logger.e('删除控制器失败', error: e);
+      LogUtils.e('删除控制器失败', error: e, tag: 'video_detail_page_v2');
     }
     super.dispose();
   }
@@ -104,8 +104,7 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> {
 
   Size _calcVideoColumnWidthAndHeight(double screenWidth, double screenHeight,
       double videoRatio, double sideColumnMinWidth, double paddingTop) {
-    logger.d(
-        '[DEBUG] screenWidth: $screenWidth, screenHeight: $screenHeight, videoRatio: $videoRatio, sideColumnMinWidth: $sideColumnMinWidth');
+    LogUtils.d('[DEBUG] screenWidth: $screenWidth, screenHeight: $screenHeight, videoRatio: $videoRatio, sideColumnMinWidth: $sideColumnMinWidth', 'video_detail_page_v2');
     // 使用有效的视频比例，如果比例小于1，则使用1.7
     final effectiveVideoRatio = videoRatio < 1 ? 1.7 : videoRatio;
     // 先获取70%屏幕高度时的视频宽度
@@ -132,6 +131,7 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> {
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       builder: (BuildContext context) {
+        final t = slang.Translations.of(context);
         return DraggableScrollableSheet(
           initialChildSize: 0.8,
           minChildSize: 0.2,
@@ -145,9 +145,9 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> {
                   padding: const EdgeInsets.all(16),
                   child: Row(
                     children: [
-                      const Text(
-                        '评论列表',
-                        style: TextStyle(
+                      Text(
+                        t.common.commentList,
+                        style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
@@ -158,11 +158,11 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> {
                         onPressed: () {
                           Get.dialog(
                             CommentInputDialog(
-                              title: '发表评论',
-                              submitText: '发表',
+                              title: t.common.sendComment,
+                              submitText: t.common.send,
                               onSubmit: (text) async {
                                 if (text.trim().isEmpty) {
-                                  Get.snackbar('错误', '评论内容不能为空');
+                                  Get.snackbar(t.errors.error, t.errors.commentCanNotBeEmpty);
                                   return;
                                 }
                                 await commentController.postComment(text);
@@ -172,7 +172,7 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> {
                           );
                         },
                         icon: const Icon(Icons.add_comment),
-                        label: const Text('发表评论'),
+                        label: Text(t.common.sendComment),
                       ),
                       // 关闭按钮
                       IconButton(
@@ -198,13 +198,14 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    final t = slang.Translations.of(context);
     if (videoId.isEmpty) {
       return CommonErrorWidget(
-        text: '视频ID为空',
+        text: t.videoDetail.videoIdIsEmpty,
         children: [
           ElevatedButton(
             onPressed: () => AppService.tryPop,
-            child: const Text('返回'),
+            child: Text(t.common.back),
           ),
         ],
       );
@@ -220,11 +221,11 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> {
       body: Obx(() {
         if (controller.errorMessage.value != null) {
           return CommonErrorWidget(
-            text: controller.errorMessage.value ?? '在加载视频详情时出现了错误',
+            text: controller.errorMessage.value ?? t.errors.errorWhileFetching,
             children: [
               ElevatedButton(
                 onPressed: () => AppService.tryPop,
-                child: const Text('返回'),
+                child: Text(t.common.back),
               ),
             ],
           );
@@ -252,10 +253,10 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> {
                 // 左侧视频详情
                 SizedBox(
                   width: renderVideoSize.width,
-                  child: MediaDetailInfoSkeletonWidget(),
+                  child: const MediaDetailInfoSkeletonWidget(),
                 ),
                 // 右侧评论列表
-                Expanded(child: MediaTileListSkeletonWidget()),
+                const Expanded(child: MediaTileListSkeletonWidget()),
               ],
             );
           }
@@ -317,19 +318,19 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> {
                                       .isLoading.value) ...[
                                 Container(
                                     padding:
-                                        EdgeInsets.symmetric(horizontal: 16),
-                                    child: Text('作者的其他视频',
-                                        style: TextStyle(fontSize: 18))),
-                                MediaTileListSkeletonWidget()
+                                        const EdgeInsets.symmetric(horizontal: 16),
+                                    child: Text(t.videoDetail.authorOtherVideos,
+                                        style: const TextStyle(fontSize: 18))),
+                                const MediaTileListSkeletonWidget()
                               ] else if (controller
                                   .otherAuthorzVideosController!.videos.isEmpty)
                                 const SizedBox.shrink()
                               else ...[
                                 Container(
                                     padding:
-                                        EdgeInsets.symmetric(horizontal: 16),
-                                    child: Text('作者的其他视频',
-                                        style: TextStyle(fontSize: 18))),
+                                        const EdgeInsets.symmetric(horizontal: 16),
+                                    child: Text(t.videoDetail.authorOtherVideos,
+                                        style: const TextStyle(fontSize: 18))),
                                 // 构建作者的其他视频列表
                                 for (var video in controller
                                     .otherAuthorzVideosController!.videos)
@@ -339,19 +340,19 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> {
                                 const SizedBox(height: 16),
                                 Container(
                                     padding:
-                                        EdgeInsets.symmetric(horizontal: 16),
-                                    child: Text('相关视频',
-                                        style: TextStyle(fontSize: 18))),
-                                MediaTileListSkeletonWidget()
+                                        const EdgeInsets.symmetric(horizontal: 16),
+                                    child: Text(t.videoDetail.relatedVideos,
+                                        style: const TextStyle(fontSize: 18))),
+                                const MediaTileListSkeletonWidget()
                               ] else if (relatedVideoController.videos.isEmpty)
                                 const SizedBox.shrink()
                               else ...[
                                 const SizedBox(height: 16),
                                 Container(
                                     padding:
-                                        EdgeInsets.symmetric(horizontal: 16),
-                                    child: Text('相关视频',
-                                        style: TextStyle(fontSize: 18))),
+                                        const EdgeInsets.symmetric(horizontal: 16),
+                                    child: Text(t.videoDetail.relatedVideos,
+                                        style: const TextStyle(fontSize: 18))),
                                 // 构建相关视频列表
                                 for (var video in relatedVideoController.videos)
                                   VideoTileListItem(video: video),
@@ -369,9 +370,9 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> {
                                     const EdgeInsets.symmetric(horizontal: 16),
                                 child: Row(
                                   children: [
-                                    const Text(
-                                      '评论列表',
-                                      style: TextStyle(
+                                    Text(
+                                      t.common.commentList,
+                                      style: const TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.bold),
                                     ),
@@ -381,11 +382,11 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> {
                                       onPressed: () {
                                         Get.dialog(
                                           CommentInputDialog(
-                                            title: '发表评论',
-                                            submitText: '发表',
+                                            title: t.common.sendComment,
+                                            submitText: t.common.send,
                                             onSubmit: (text) async {
                                               if (text.trim().isEmpty) {
-                                                Get.snackbar('错误', '评论内容不能为空');
+                                                Get.snackbar(t.errors.error, t.errors.commentCanNotBeEmpty);
                                                 return;
                                               }
                                               await commentController.postComment(text);
@@ -395,7 +396,7 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> {
                                         );
                                       },
                                       icon: const Icon(Icons.add_comment),
-                                      label: const Text('发表评论'),
+                                      label: Text(t.common.sendComment),
                                     ),
                                     // 关闭按钮
                                     IconButton(
@@ -421,7 +422,7 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> {
         } else {
           // 窄屏布局，使用Stack 覆盖整个屏幕
           if (controller.isVideoInfoLoading.value) {
-            return MediaDetailInfoSkeletonWidget();
+            return const MediaDetailInfoSkeletonWidget();
           }
           return PopScope(
             canPop: !controller.isCommentSheetVisible.value,
@@ -458,18 +459,18 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> {
                             controller.otherAuthorzVideosController!.isLoading
                                 .value) ...[
                           Container(
-                              padding: EdgeInsets.symmetric(horizontal: 16),
-                              child: Text('作者的其他视频',
-                                  style: TextStyle(fontSize: 18))),
-                          MediaTileListSkeletonWidget()
+                              padding: const EdgeInsets.symmetric(horizontal: 16),
+                              child: Text(t.videoDetail.authorOtherVideos,
+                                  style: const TextStyle(fontSize: 18))),
+                          const MediaTileListSkeletonWidget()
                         ] else if (controller
                             .otherAuthorzVideosController!.videos.isEmpty)
                           const SizedBox.shrink()
                         else ...[
                           Container(
-                              padding: EdgeInsets.symmetric(horizontal: 16),
-                              child: Text('作者的其他视频',
-                                  style: TextStyle(fontSize: 18))),
+                              padding: const EdgeInsets.symmetric(horizontal: 16),
+                              child: Text(t.videoDetail.authorOtherVideos,
+                                  style: const TextStyle(fontSize: 18))),
                           // 构建作者的其他视频列表
                           for (var video in controller
                               .otherAuthorzVideosController!.videos)
@@ -479,18 +480,18 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> {
                         if (relatedVideoController.isLoading.value) ...[
                           const SizedBox(height: 16),
                           Container(
-                              padding: EdgeInsets.symmetric(horizontal: 16),
+                              padding: const EdgeInsets.symmetric(horizontal: 16),
                               child:
-                                  Text('相关视频', style: TextStyle(fontSize: 18))),
-                          MediaTileListSkeletonWidget()
+                                  Text(t.videoDetail.relatedVideos, style: const TextStyle(fontSize: 18))),
+                          const MediaTileListSkeletonWidget()
                         ] else if (relatedVideoController.videos.isEmpty)
                           const SizedBox.shrink()
                         else ...[
                           const SizedBox(height: 16),
                           Container(
-                              padding: EdgeInsets.symmetric(horizontal: 16),
+                              padding: const EdgeInsets.symmetric(horizontal: 16),
                               child:
-                                  Text('相关视频', style: TextStyle(fontSize: 18))),
+                                  Text(t.videoDetail.relatedVideos, style: const TextStyle(fontSize: 18))),
                           // 构建相关视频列表
                           for (var video in relatedVideoController.videos)
                             VideoTileListItem(video: video),
@@ -508,9 +509,9 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> {
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           child: Row(
                             children: [
-                              const Text(
-                                '评论列表',
-                                style: TextStyle(
+                              Text(
+                                t.common.commentList,
+                                style: const TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -521,11 +522,11 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> {
                                 onPressed: () {
                                   Get.dialog(
                                     CommentInputDialog(
-                                      title: '发表评论',
-                                      submitText: '发表',
+                                      title: t.common.sendComment,
+                                      submitText: t.common.send,
                                       onSubmit: (text) async {
                                         if (text.trim().isEmpty) {
-                                          Get.snackbar('错误', '评论内容不能为空');
+                                          Get.snackbar(t.errors.error, t.errors.commentCanNotBeEmpty);
                                           return;
                                         }
                                         await commentController.postComment(text);
@@ -535,7 +536,7 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> {
                                   );
                                 },
                                 icon: const Icon(Icons.add_comment),
-                                label: const Text('发表评论'),
+                                label: Text(t.common.sendComment),
                               ),
                               // 关闭按钮
                               IconButton(

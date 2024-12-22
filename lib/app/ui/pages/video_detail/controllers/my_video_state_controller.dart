@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:i_iwara/app/services/app_service.dart';
 import 'package:i_iwara/app/ui/pages/video_detail/controllers/related_media_controller.dart';
 import 'package:i_iwara/common/enums/media_enums.dart';
-import 'package:logger/logger.dart';
+import 'package:i_iwara/utils/logger_utils.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:media_kit_video/media_kit_video.dart';
 import 'package:screen_brightness/screen_brightness.dart';
@@ -20,6 +20,7 @@ import '../../../../models/video.model.dart' as video_model;
 import '../../../../services/api_service.dart';
 import '../../../../services/config_service.dart';
 import '../widgets/player/custom_slider_bar_shape_widget.dart';
+import 'package:i_iwara/i18n/strings.g.dart' as slang;
 
 class MyVideoStateController extends GetxController
     with GetSingleTickerProviderStateMixin {
@@ -27,7 +28,6 @@ class MyVideoStateController extends GetxController
   final AppService appS = Get.find();
   late Player player;
   late VideoController videoController;
-  final Logger logger = Logger();
   VolumeController? volumeController;
 
   final ApiService _apiService = Get.find();
@@ -106,7 +106,7 @@ class MyVideoStateController extends GetxController
     }
 
     if (videoId == null) {
-      errorMessage.value = '视频ID为空';
+      errorMessage.value = slang.t.videoDetail.videoIdIsEmpty;
       return;
     }
 
@@ -136,7 +136,7 @@ class MyVideoStateController extends GetxController
         try {
           ScreenBrightness().setScreenBrightness(lastBrightness);
         } catch (e) {
-          logger.e('设置亮度失败: $e');
+          LogUtils.e('设置亮度失败: $e', tag: 'MyVideoStateController', error: e);
         }
       }
     }
@@ -168,7 +168,7 @@ class MyVideoStateController extends GetxController
         _configService[ConfigService.USE_PROXY]) {
       bool useProxy = _configService[ConfigService.USE_PROXY];
       String proxyUrl = _configService[ConfigService.PROXY_URL];
-      logger.i('使用代理: $useProxy, 代理地址: $proxyUrl');
+      LogUtils.i('使用代理: $useProxy, 代理地址: $proxyUrl', 'MyVideoStateController');
       if (useProxy && proxyUrl.isNotEmpty) {
         // 如果是以 https 开头的地址，需要转换为 http
         var finalProxyUrl = proxyUrl;
@@ -221,7 +221,7 @@ class MyVideoStateController extends GetxController
       var res = await _apiService.get('/video/$videoId');
       videoInfo.value = video_model.Video.fromJson(res.data);
       if (videoInfo.value == null) {
-        errorMessage.value = '视频信息为空';
+        errorMessage.value = slang.t.videoDetail.videoInfoIsEmpty;
         return;
       }
       String? authorId = videoInfo.value!.user?.id;
@@ -244,10 +244,10 @@ class MyVideoStateController extends GetxController
           private: true,
           user: User.fromJson(e.response?.data['user']),
         );
-        errorMessage.value = '这是一个私密视频';
+        errorMessage.value = slang.t.videoDetail.thisIsAPrivateVideo;
       } else {
         // 处理其他错误
-        errorMessage.value = '获取视频信息失败：${e.message}';
+        errorMessage.value = slang.t.videoDetail.getVideoInfoFailed;
       }
     } finally {
       // 无论成功还是失败，都将加载状态设置为 false
@@ -285,7 +285,7 @@ class MyVideoStateController extends GetxController
       );
     } catch (e) {
       // 处理错误
-      videoErrorMessage.value = '获取视频源失败：$e';
+      videoErrorMessage.value = slang.t.videoDetail.getVideoInfoFailed;
     } finally {
       // 无论成功还是失败，都将加载状态设置为 false
       isVideoSourceLoading.value = false;
@@ -294,9 +294,9 @@ class MyVideoStateController extends GetxController
 
   /// 切换清晰度
   Future<void> switchResolution(String resolutionTag) async {
-    logger.i('[切换清晰度] $resolutionTag');
+    LogUtils.i('[切换清晰度] $resolutionTag', 'MyVideoStateController');
     if (resolutionTag == currentResolutionTag.value) {
-      logger.d('清晰度相同，无需切换');
+      LogUtils.d('清晰度相同，无需切换', 'MyVideoStateController');
       return;
     }
 
@@ -323,7 +323,7 @@ class MyVideoStateController extends GetxController
     required List<VideoResolution> videoResolutions,
     Duration position = Duration.zero,
   }) async {
-    logger.i('[重置视频] $title $resolutionTag $videoResolutions $position');
+    LogUtils.i('[重置视频] $title $resolutionTag $videoResolutions $position', 'MyVideoStateController');
 
     await _cancelSubscriptions();
 
@@ -339,7 +339,7 @@ class MyVideoStateController extends GetxController
     String? url =
         CommonUtils.findUrlByResolutionTag(videoResolutions, resolutionTag);
     if (url == null) {
-      errorMessage.value = '未找到对应的视频源';
+      errorMessage.value = slang.t.videoDetail.noVideoSourceFound;
       return;
     }
 
@@ -350,7 +350,7 @@ class MyVideoStateController extends GetxController
       // logger.d('[视频缓冲中] $buffering');
       videoBuffering.value = buffering;
       if (!videoIsReady.value && !buffering) {
-        logger.d('[视频准备好了], 尝试快进到 $currentPosition');
+        LogUtils.d('[视频准备好了], 尝试快进到 $currentPosition', 'MyVideoStateController');
         videoIsReady.value = true;
         await player.seek(currentPosition.value);
       }
@@ -366,7 +366,7 @@ class MyVideoStateController extends GetxController
           position >= totalDuration.value) {
         bool repeat = _configService[ConfigService.REPEAT_KEY];
         if (repeat) {
-          logger.d('[视频播放完成]，尝试重播');
+          LogUtils.d('[视频播放完成]，尝试重播', 'MyVideoStateController');
           await player.seek(Duration.zero);
           await player.play();
         }
@@ -378,13 +378,13 @@ class MyVideoStateController extends GetxController
 
     // 监听视频总时长
     durationSubscription = player.stream.duration.listen((duration) {
-      logger.d('[视频总时长] $duration');
+      LogUtils.d('[视频总时长] $duration', 'MyVideoStateController');
       totalDuration.value = duration;
     });
 
     // 监听视频宽度
     widthSubscription = player.stream.width.listen((width) {
-      logger.d('[视频宽度] $width');
+      LogUtils.d('[视频宽度] $width', 'MyVideoStateController');
       if (width != null) {
         sourceVideoWidth.value = width;
       }
@@ -392,7 +392,7 @@ class MyVideoStateController extends GetxController
 
     // 监听视频高度
     heightSubscription = player.stream.height.listen((height) {
-      logger.d('[视频高度] $height');
+      LogUtils.d('[视频高度] $height', 'MyVideoStateController');
       if (height != null) {
         sourceVideoHeight.value = height;
         _updateAspectRatio();
@@ -415,8 +415,8 @@ class MyVideoStateController extends GetxController
   /// 更新视频宽高比
   void _updateAspectRatio() {
     aspectRatio.value = sourceVideoWidth.value / sourceVideoHeight.value;
-    logger.d(
-        '[更新后的宽高比] $aspectRatio, 视频高度: $sourceVideoHeight, 视频宽度: $sourceVideoWidth');
+    LogUtils.d(
+        '[更新后的宽高比] $aspectRatio, 视频高度: $sourceVideoHeight, 视频宽度: $sourceVideoWidth', 'MyVideoStateController');
   }
 
   /// 进入全屏模式
@@ -505,10 +505,10 @@ class MyVideoStateController extends GetxController
     double newVolume = (configVolume + d).clamp(0.0, 1.0);
     if (GetPlatform.isAndroid || GetPlatform.isIOS) {
       volumeController?.setVolume(newVolume);
-      logger.d('[音量] $newVolume, $d, $configVolume');
+      LogUtils.d('[音量] $newVolume, $d, $configVolume', 'MyVideoStateController');
     } else {
       player.setVolume(newVolume * 100);
-      logger.d('[音量] ${newVolume * 100}, $d, $configVolume');
+      LogUtils.d('[音量] ${newVolume * 100}, $d, $configVolume', 'MyVideoStateController');
     }
     _configService[ConfigService.VOLUME_KEY] = newVolume;
   }
