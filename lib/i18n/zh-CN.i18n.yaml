@@ -127,6 +127,9 @@ common:
   fensi: 粉丝
   accept: 接受
   reject: 拒绝
+  clearAllHistory: 清空所有历史记录
+  clearAllHistoryConfirm: 确定要清空所有历史记录吗？
+
 auth:
   login: 登录
   logout: 退出登录

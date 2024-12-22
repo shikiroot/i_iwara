@@ -338,6 +338,7 @@ class _SearchResultState extends State<SearchResult> {
                       globalSearchService.currentSearch.value = searchInfo;
                       globalSearchService.selectedSegment.value = segment;
                       globalSearchService.fetchSearchResult(refresh: true);
+                      _searchController.text = searchInfo;
                       // 关闭对话框
                       Get.back();
                     },

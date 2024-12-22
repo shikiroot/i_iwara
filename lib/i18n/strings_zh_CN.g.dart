@@ -181,6 +181,8 @@ class _TranslationsCommonZhCn implements TranslationsCommonEn {
 	@override String get fensi => '粉丝';
 	@override String get accept => '接受';
 	@override String get reject => '拒绝';
+	@override String get clearAllHistory => '清空所有历史记录';
+	@override String get clearAllHistoryConfirm => '确定要清空所有历史记录吗？';
 }
 
 // Path: auth
@@ -621,6 +623,8 @@ extension on TranslationsZhCn {
 			case 'common.fensi': return '粉丝';
 			case 'common.accept': return '接受';
 			case 'common.reject': return '拒绝';
+			case 'common.clearAllHistory': return '清空所有历史记录';
+			case 'common.clearAllHistoryConfirm': return '确定要清空所有历史记录吗？';
 			case 'auth.login': return '登录';
 			case 'auth.logout': return '退出登录';
 			case 'auth.email': return '邮箱';

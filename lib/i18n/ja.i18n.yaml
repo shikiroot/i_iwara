@@ -126,6 +126,8 @@ common:
   fensi: フォロワー
   accept: 受け入れる
   reject: 拒否
+  clearAllHistory: すべての履歴をクリア
+  clearAllHistoryConfirm: すべての履歴をクリアしてもよろしいですか？
 
 auth:
   login: ログイン

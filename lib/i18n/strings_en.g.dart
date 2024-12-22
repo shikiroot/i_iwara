@@ -185,6 +185,8 @@ class TranslationsCommonEn {
 	String get fensi => 'Fans';
 	String get accept => 'Accept';
 	String get reject => 'Reject';
+	String get clearAllHistory => 'Clear All History';
+	String get clearAllHistoryConfirm => 'Are you sure you want to clear all history?';
 }
 
 // Path: auth
@@ -625,6 +627,8 @@ extension on Translations {
 			case 'common.fensi': return 'Fans';
 			case 'common.accept': return 'Accept';
 			case 'common.reject': return 'Reject';
+			case 'common.clearAllHistory': return 'Clear All History';
+			case 'common.clearAllHistoryConfirm': return 'Are you sure you want to clear all history?';
 			case 'auth.login': return 'Login';
 			case 'auth.logout': return 'Logout';
 			case 'auth.email': return 'Email';

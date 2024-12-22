@@ -190,6 +190,11 @@ class _HistoryListPageState extends State<HistoryListPage>
                     : const SizedBox.shrink(),
               )),
           IconButton(
+            onPressed: () => _showClearHistoryDialog(),
+            icon: const Icon(Icons.delete_sweep),
+            tooltip: slang.t.common.clearAllHistory,
+          ),
+          IconButton(
             onPressed: () {
               final controller = _getControllerForIndex(_tabController.index);
               controller.toggleMultiSelect();
@@ -305,7 +310,7 @@ class _HistoryListPageState extends State<HistoryListPage>
           SliverListConfig<HistoryRecord>(
             extendedListDelegate:
                 const SliverWaterfallFlowDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: 300,
+              maxCrossAxisExtent: 200,
               crossAxisSpacing: 5,
               mainAxisSpacing: 5,
             ),
@@ -341,12 +346,12 @@ class _HistoryListPageState extends State<HistoryListPage>
           if (record.itemType == 'video')
             VideoCardListItemWidget(
               video: originalData,
-              width: 300,
+              width: 200,
             )
           else
             ImageModelCardListItemWidget(
               imageModel: originalData,
-              width: 300,
+              width: 200,
             ),
           if (isMultiSelect)
             Positioned.fill(
@@ -452,6 +457,34 @@ class _HistoryListPageState extends State<HistoryListPage>
       ),
       onChanged: (value) => controller.search(value),
       controller: TextEditingController(text: controller.searchKeyword.value),
+    );
+  }
+
+  void _showClearHistoryDialog() {
+    final controller = _getControllerForIndex(_tabController.index);
+    final itemType = controller.itemType;
+    
+    Get.dialog(
+      AlertDialog(
+        title: Text(slang.t.common.clearAllHistory),
+        content: Text(slang.t.common.clearAllHistoryConfirm),
+        actions: [
+          TextButton(
+            onPressed: () => AppService.tryPop(),
+            child: Text(slang.t.common.cancel),
+          ),
+          TextButton(
+            onPressed: () async {
+              await controller.clearHistoryByType(itemType);
+              AppService.tryPop();
+            },
+            style: TextButton.styleFrom(
+              foregroundColor: Colors.red,
+            ),
+            child: Text(slang.t.common.confirm),
+          ),
+        ],
+      ),
     );
   }
 } 

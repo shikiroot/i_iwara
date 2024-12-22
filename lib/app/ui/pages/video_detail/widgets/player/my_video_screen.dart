@@ -606,97 +606,82 @@ class _MyVideoScreenState extends State<MyVideoScreen>
   }
 
   Widget _buildBrightnessInfoMessage() {
-    return Obx(() {
-      var curBrightness = _configService[ConfigService.BRIGHTNESS_KEY] as double;
-      IconData brightnessIcon;
-      String brightnessText;
+  return Obx(() {
+    var curBrightness = _configService[ConfigService.BRIGHTNESS_KEY] as double;
+    IconData brightnessIcon;
+    String brightnessText;
 
-      switch ((curBrightness * 10).toInt()) {
-        case 0:
-          brightnessIcon = Icons.brightness_3_rounded;
-          brightnessText = slang.t.videoDetail.brightnessLowest;
-          break;
-        case 1:
-        case 2:
-          brightnessIcon = Icons.brightness_2_rounded;
-          brightnessText = '${slang.t.videoDetail.brightness}: ${(curBrightness * 100).toInt()}%';
-          break;
-        case 3:
-        case 4:
-          brightnessIcon = Icons.brightness_5_rounded;
-          brightnessText = '${slang.t.videoDetail.brightness}: ${(curBrightness * 100).toInt()}%';
-          break;
-        case 5:
-        case 6:
-          brightnessIcon = Icons.brightness_4_rounded;
-          brightnessText = '${slang.t.videoDetail.brightness}: ${(curBrightness * 100).toInt()}%';
-          break;
-        default:
-          brightnessIcon = Icons.brightness_7_rounded;
-          brightnessText = '${slang.t.videoDetail.brightness}: ${(curBrightness * 100).toInt()}%';
-          break;
-      }
+    if (curBrightness <= 0.0) {
+      brightnessIcon = Icons.brightness_3_rounded;
+      brightnessText = slang.t.videoDetail.brightnessLowest;
+    } else if (curBrightness > 0.0 && curBrightness <= 0.2) {
+      brightnessIcon = Icons.brightness_2_rounded;
+      brightnessText = '${slang.t.videoDetail.brightness}: ${(curBrightness * 100).toInt()}%';
+    } else if (curBrightness > 0.2 && curBrightness <= 0.5) {
+      brightnessIcon = Icons.brightness_5_rounded;
+      brightnessText = '${slang.t.videoDetail.brightness}: ${(curBrightness * 100).toInt()}%';
+    } else if (curBrightness > 0.5 && curBrightness <= 0.8) {
+      brightnessIcon = Icons.brightness_4_rounded;
+      brightnessText = '${slang.t.videoDetail.brightness}: ${(curBrightness * 100).toInt()}%';
+    } else if (curBrightness > 0.8 && curBrightness <= 1.0) {
+      brightnessIcon = Icons.brightness_7_rounded;
+      brightnessText = '${slang.t.videoDetail.brightness}: ${(curBrightness * 100).toInt()}%';
+    } else {
+      // 处理意外情况，例如亮度超过范围
+      brightnessIcon = Icons.brightness_3_rounded;
+      brightnessText = '${slang.t.videoDetail.brightness}: ${(curBrightness * 100).toInt()}%';
+    }
 
-      return Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(brightnessIcon, color: Colors.white),
-          const SizedBox(width: 4),
-          Text(
-            brightnessText,
-            style: const TextStyle(color: Colors.white, fontSize: 16),
-          ),
-        ],
-      );
-    });
-  }
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(brightnessIcon, color: Colors.white),
+        const SizedBox(width: 4),
+        Text(
+          brightnessText,
+          style: const TextStyle(color: Colors.white, fontSize: 16),
+        ),
+      ],
+    );
+  });
+}
+
 
   Widget _buildVolumeInfoMessage() {
-    return Obx(() {
-      var curVolume = _configService[ConfigService.VOLUME_KEY] as double;
-      IconData volumeIcon;
-      String volumeText;
+  return Obx(() {
+    var curVolume = _configService[ConfigService.VOLUME_KEY] as double;
+    IconData volumeIcon;
+    String volumeText;
 
-      switch ((curVolume * 10).toInt()) {
-        case 0:
-          volumeIcon = Icons.volume_off;
-          volumeText = slang.t.videoDetail.volumeMuted;
-          break;
-        case 1:
-        case 2:
-          volumeIcon = Icons.volume_down;
-          volumeText = '${slang.t.videoDetail.volume}: ${(curVolume * 100).toInt()}%';
-          break;
-        case 3:
-        case 4:
-        case 5:
-        case 6:
-        case 7:
-        case 8:
-        case 9:
-        case 10:
-          volumeIcon = Icons.volume_up;
-          volumeText = '${slang.t.videoDetail.volume}: ${(curVolume * 100).toInt()}%';
-          break;
-        default:
-          volumeIcon = Icons.volume_off;
-          volumeText = '${slang.t.videoDetail.volume}: ${(curVolume * 100).toInt()}%';
-          break;
-      }
+    if (curVolume == 0.0) {
+      volumeIcon = Icons.volume_off;
+      volumeText = slang.t.videoDetail.volumeMuted;
+    } else if (curVolume > 0.0 && curVolume <= 0.3) {
+      volumeIcon = Icons.volume_down;
+      volumeText = '${slang.t.videoDetail.volume}: ${(curVolume * 100).toInt()}%';
+    } else if (curVolume > 0.3 && curVolume <= 1.0) {
+      volumeIcon = Icons.volume_up;
+      volumeText = '${slang.t.videoDetail.volume}: ${(curVolume * 100).toInt()}%';
+    } else {
+      // 处理意外情况，例如音量超过范围
+      volumeIcon = Icons.volume_off;
+      volumeText = '${slang.t.videoDetail.volume}: ${(curVolume * 100).toInt()}%';
+    }
 
-      return Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(volumeIcon, color: Colors.white),
-          const SizedBox(width: 4),
-          Text(
-            volumeText,
-            style: const TextStyle(color: Colors.white, fontSize: 16),
-          ),
-        ],
-      );
-    });
-  }
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(volumeIcon, color: Colors.white),
+        const SizedBox(width: 4),
+        Text(
+          volumeText,
+          style: const TextStyle(color: Colors.white, fontSize: 16),
+        ),
+      ],
+    );
+  });
+}
+
 
   Widget _buildSeekPreview() {
     return Obx(() {

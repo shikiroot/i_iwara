@@ -125,6 +125,8 @@ common:
   fensi: 粉絲
   accept: 接受
   reject: 拒絕
+  clearAllHistory: 清空所有歷史紀錄
+  clearAllHistoryConfirm: 確定要清空所有歷史紀錄嗎？
 
 auth:
   login: 登入

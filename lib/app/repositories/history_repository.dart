@@ -77,6 +77,11 @@ class HistoryRepository {
     _db.prepare('DELETE FROM history_records').execute();
   }
 
+  // 清空指定类型的历史记录
+  Future<void> clearHistoryByType(String itemType) async {
+    _db.prepare('DELETE FROM history_records WHERE item_type = ?').execute([itemType]);
+  }
+
   // 获取指定类型的历史记录
   Future<List<HistoryRecord>> getRecordsByType(
     String itemType, {

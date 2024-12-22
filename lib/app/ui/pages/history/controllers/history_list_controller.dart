@@ -25,6 +25,17 @@ class HistoryListController extends GetxController {
 
   bool get isAllSelected => selectedRecords.length == repository.length;
 
+
+  Future<void> clearHistoryByType(String itemType) async {
+    if (itemType == 'all') {
+      await _historyRepository.clearHistory();
+    } else {
+      await _historyRepository.clearHistoryByType(itemType);
+    }
+    repository.refresh();
+    Get.snackbar(t.common.success, '');
+  }
+
   void toggleMultiSelect() {
     isMultiSelect.value = !isMultiSelect.value;
     if (!isMultiSelect.value) {

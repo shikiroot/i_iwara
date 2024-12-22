@@ -125,7 +125,8 @@ common:
   fensi: Fans
   accept: Accept
   reject: Reject
-
+  clearAllHistory: Clear All History
+  clearAllHistoryConfirm: Are you sure you want to clear all history?
 
 auth:
   login: Login

@@ -181,6 +181,8 @@ class _TranslationsCommonJa implements TranslationsCommonEn {
 	@override String get fensi => 'フォロワー';
 	@override String get accept => '受け入れる';
 	@override String get reject => '拒否';
+	@override String get clearAllHistory => 'すべての履歴をクリア';
+	@override String get clearAllHistoryConfirm => 'すべての履歴をクリアしてもよろしいですか？';
 }
 
 // Path: auth
@@ -621,6 +623,8 @@ extension on TranslationsJa {
 			case 'common.fensi': return 'フォロワー';
 			case 'common.accept': return '受け入れる';
 			case 'common.reject': return '拒否';
+			case 'common.clearAllHistory': return 'すべての履歴をクリア';
+			case 'common.clearAllHistoryConfirm': return 'すべての履歴をクリアしてもよろしいですか？';
 			case 'auth.login': return 'ログイン';
 			case 'auth.logout': return 'ログアウト';
 			case 'auth.email': return 'メールアドレス';
