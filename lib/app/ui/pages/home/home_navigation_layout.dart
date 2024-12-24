@@ -119,7 +119,7 @@ class HomeNavigationLayout extends StatelessWidget {
                           case Routes.ROOT:
                           case Routes.POPULAR_VIDEOS:
                             builder = (BuildContext context) =>
-                                const PopularVideoListPage();
+                                PopularVideoListPage();
                             route = PageRouteBuilder(
                               pageBuilder:
                                   (context, animation, secondaryAnimation) =>
@@ -130,7 +130,7 @@ class HomeNavigationLayout extends StatelessWidget {
                             break;
                           case Routes.GALLERY:
                             builder = (BuildContext context) =>
-                                const PopularGalleryListPage();
+                                PopularGalleryListPage();
                             route = PageRouteBuilder(
                               pageBuilder:
                                   (context, animation, secondaryAnimation) =>

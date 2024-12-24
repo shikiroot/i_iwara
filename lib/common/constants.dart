@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:i_iwara/app/models/sort.model.dart';
+import 'package:i_iwara/i18n/strings.g.dart';
 
 class CommonConstants {
   CommonConstants._internal();
@@ -21,12 +22,12 @@ class CommonConstants {
   static const String defaultProfileHeaderUrl =
       '$iwaraBaseUrl/images/default-background.jpg';
 
-  static const List<Sort> mediaSorts = [
-    Sort(id: SortId.trending, label: '趋势', icon: Icon(Icons.trending_up)),
-    Sort(id: SortId.date, label: '最新', icon: Icon(Icons.new_releases)),
-    Sort(id: SortId.popularity, label: '受欢迎的', icon: Icon(Icons.star)),
-    Sort(id: SortId.likes, label: '点赞数', icon: Icon(Icons.thumb_up)),
-    Sort(id: SortId.views, label: '观看次数', icon: Icon(Icons.remove_red_eye)),
+  static List<Sort> mediaSorts = [
+    Sort(id: SortId.trending, label: t.common.trending, icon: Icon(Icons.trending_up)),
+    Sort(id: SortId.date, label: t.common.latest, icon: Icon(Icons.new_releases)),
+    Sort(id: SortId.popularity, label: t.common.popular, icon: Icon(Icons.star)),
+    Sort(id: SortId.likes, label: t.common.likesCount, icon: Icon(Icons.thumb_up)),
+    Sort(id: SortId.views, label: t.common.viewsCount, icon: Icon(Icons.remove_red_eye)),
   ];
 
   static const List<Sort> translationSorts = [

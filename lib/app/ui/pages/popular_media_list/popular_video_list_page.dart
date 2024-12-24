@@ -16,7 +16,7 @@ import 'package:i_iwara/i18n/strings.g.dart' as slang;
 class PopularVideoListPage extends StatefulWidget {
   final List<Sort> sorts = CommonConstants.mediaSorts;
 
-  const PopularVideoListPage({super.key});
+  PopularVideoListPage({super.key});
 
   @override
   _PopularVideoListPageState createState() => _PopularVideoListPageState();

@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:i_iwara/app/models/video_source.model.dart';
 
 import '../app/ui/pages/video_detail/controllers/my_video_state_controller.dart';

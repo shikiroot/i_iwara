@@ -16,7 +16,7 @@ import 'package:i_iwara/i18n/strings.g.dart' as slang;
 class PopularGalleryListPage extends StatefulWidget {
   final List<Sort> sorts = CommonConstants.mediaSorts;
 
-  const PopularGalleryListPage({super.key});
+  PopularGalleryListPage({super.key});
 
   @override
   _PopularGalleryListPageState createState() => _PopularGalleryListPageState();
