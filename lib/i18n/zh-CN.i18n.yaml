@@ -277,6 +277,11 @@ settings:
   configureYourProxyServer: 配置您的代理服务器
   settings: 设置
   themeSettings: 主题设置
+  followSystem: 跟随系统
+  lightMode: 浅色模式
+  darkMode: 深色模式
+  presetTheme: 预设主题
+  basicTheme: 基础主题
 
 signIn:
   pleaseLoginFirst: 请先登录后再签到

@@ -402,6 +402,11 @@ class _TranslationsSettingsZhTw implements TranslationsSettingsEn {
 	@override String get configureYourProxyServer => '配置您的代理伺服器';
 	@override String get settings => '設定';
 	@override String get themeSettings => '主題設定';
+	@override String get followSystem => '跟隨系統';
+	@override String get lightMode => '淺色模式';
+	@override String get darkMode => '深色模式';
+	@override String get presetTheme => '預設主題';
+	@override String get basicTheme => '基礎主題';
 }
 
 // Path: signIn
@@ -754,6 +759,11 @@ extension on TranslationsZhTw {
 			case 'settings.configureYourProxyServer': return '配置您的代理伺服器';
 			case 'settings.settings': return '設定';
 			case 'settings.themeSettings': return '主題設定';
+			case 'settings.followSystem': return '跟隨系統';
+			case 'settings.lightMode': return '淺色模式';
+			case 'settings.darkMode': return '深色模式';
+			case 'settings.presetTheme': return '預設主題';
+			case 'settings.basicTheme': return '基礎主題';
 			case 'signIn.pleaseLoginFirst': return '請先登入後再簽到';
 			case 'signIn.alreadySignedInToday': return '您今天已經簽到過了！';
 			case 'signIn.youDidNotStickToTheSignIn': return '您未能持續簽到。';

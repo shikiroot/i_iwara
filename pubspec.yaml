@@ -46,6 +46,7 @@ dependencies:
   share_plus: ^10.1.2
   slang: ^4.4.0
   slang_flutter: ^4.4.0
+  dynamic_color: ^1.7.0
 
 dev_dependencies:
   flutter_test:

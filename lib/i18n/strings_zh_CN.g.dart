@@ -402,6 +402,11 @@ class _TranslationsSettingsZhCn implements TranslationsSettingsEn {
 	@override String get configureYourProxyServer => '配置您的代理服务器';
 	@override String get settings => '设置';
 	@override String get themeSettings => '主题设置';
+	@override String get followSystem => '跟随系统';
+	@override String get lightMode => '浅色模式';
+	@override String get darkMode => '深色模式';
+	@override String get presetTheme => '预设主题';
+	@override String get basicTheme => '基础主题';
 }
 
 // Path: signIn
@@ -754,6 +759,11 @@ extension on TranslationsZhCn {
 			case 'settings.configureYourProxyServer': return '配置您的代理服务器';
 			case 'settings.settings': return '设置';
 			case 'settings.themeSettings': return '主题设置';
+			case 'settings.followSystem': return '跟随系统';
+			case 'settings.lightMode': return '浅色模式';
+			case 'settings.darkMode': return '深色模式';
+			case 'settings.presetTheme': return '预设主题';
+			case 'settings.basicTheme': return '基础主题';
 			case 'signIn.pleaseLoginFirst': return '请先登录后再签到';
 			case 'signIn.alreadySignedInToday': return '您今天已经签到过了！';
 			case 'signIn.youDidNotStickToTheSignIn': return '您未能坚持签到。';

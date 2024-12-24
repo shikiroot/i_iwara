@@ -406,6 +406,11 @@ class TranslationsSettingsEn {
 	String get configureYourProxyServer => 'Configure Your Proxy Server';
 	String get settings => 'Settings';
 	String get themeSettings => 'Theme Settings';
+	String get followSystem => 'Follow System';
+	String get lightMode => 'Light Mode';
+	String get darkMode => 'Dark Mode';
+	String get presetTheme => 'Preset Theme';
+	String get basicTheme => 'Basic Theme';
 }
 
 // Path: signIn
@@ -758,6 +763,11 @@ extension on Translations {
 			case 'settings.configureYourProxyServer': return 'Configure Your Proxy Server';
 			case 'settings.settings': return 'Settings';
 			case 'settings.themeSettings': return 'Theme Settings';
+			case 'settings.followSystem': return 'Follow System';
+			case 'settings.lightMode': return 'Light Mode';
+			case 'settings.darkMode': return 'Dark Mode';
+			case 'settings.presetTheme': return 'Preset Theme';
+			case 'settings.basicTheme': return 'Basic Theme';
 			case 'signIn.pleaseLoginFirst': return 'Please login first';
 			case 'signIn.alreadySignedInToday': return 'You have already signed in today!';
 			case 'signIn.youDidNotStickToTheSignIn': return 'You did not stick to the sign in.';

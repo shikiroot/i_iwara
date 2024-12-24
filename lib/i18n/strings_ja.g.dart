@@ -402,6 +402,11 @@ class _TranslationsSettingsJa implements TranslationsSettingsEn {
 	@override String get configureYourProxyServer => 'プロキシサーバーを設定';
 	@override String get settings => '設定';
 	@override String get themeSettings => 'テーマ設定';
+	@override String get followSystem => 'システムに従う';
+	@override String get lightMode => 'ライトモード';
+	@override String get darkMode => 'ダークモード';
+	@override String get presetTheme => 'プリセットテーマ';
+	@override String get basicTheme => 'ベーシックテーマ';
 }
 
 // Path: signIn
@@ -754,6 +759,11 @@ extension on TranslationsJa {
 			case 'settings.configureYourProxyServer': return 'プロキシサーバーを設定';
 			case 'settings.settings': return '設定';
 			case 'settings.themeSettings': return 'テーマ設定';
+			case 'settings.followSystem': return 'システムに従う';
+			case 'settings.lightMode': return 'ライトモード';
+			case 'settings.darkMode': return 'ダークモード';
+			case 'settings.presetTheme': return 'プリセットテーマ';
+			case 'settings.basicTheme': return 'ベーシックテーマ';
 			case 'signIn.pleaseLoginFirst': return 'サインインする前にログインしてください';
 			case 'signIn.alreadySignedInToday': return '今日は既にサインインしています！';
 			case 'signIn.youDidNotStickToTheSignIn': return 'サインインを続けることができませんでした。';

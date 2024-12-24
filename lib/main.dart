@@ -28,6 +28,7 @@ import 'app/services/user_service.dart';
 import 'db/database_service.dart';
 import 'app/services/translation_service.dart';
 import 'i18n/strings.g.dart';
+import 'app/services/theme_service.dart';
 
 void main() {
 
@@ -80,6 +81,7 @@ void main() {
     Get.put(apiService);
     UserService userService = await UserService().init();
     Get.put(userService);
+    Get.put(await ThemeService().init());
     Get.lazyPut(() => VideoService());
     Get.lazyPut(() => CommentService());
     Get.lazyPut(() => SearchService());
@@ -111,6 +113,7 @@ void main() {
         await windowManager.focus();
       });
     }
+
   }, (error, stackTrace) {
     // 在这里处理未捕获的异常
     LogUtils.e('未捕获的异常: $error', tag: '全局异常处理', stackTrace: stackTrace);
