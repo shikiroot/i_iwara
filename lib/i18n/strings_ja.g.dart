@@ -407,6 +407,8 @@ class _TranslationsSettingsJa implements TranslationsSettingsEn {
 	@override String get darkMode => 'ダークモード';
 	@override String get presetTheme => 'プリセットテーマ';
 	@override String get basicTheme => 'ベーシックテーマ';
+	@override String get needRestartToApply => 'アプリを再起動して設定を適用してください';
+	@override String get themeNeedRestartDescription => 'テーマ設定はアプリを再起動して設定を適用してください';
 }
 
 // Path: signIn
@@ -764,6 +766,8 @@ extension on TranslationsJa {
 			case 'settings.darkMode': return 'ダークモード';
 			case 'settings.presetTheme': return 'プリセットテーマ';
 			case 'settings.basicTheme': return 'ベーシックテーマ';
+			case 'settings.needRestartToApply': return 'アプリを再起動して設定を適用してください';
+			case 'settings.themeNeedRestartDescription': return 'テーマ設定はアプリを再起動して設定を適用してください';
 			case 'signIn.pleaseLoginFirst': return 'サインインする前にログインしてください';
 			case 'signIn.alreadySignedInToday': return '今日は既にサインインしています！';
 			case 'signIn.youDidNotStickToTheSignIn': return 'サインインを続けることができませんでした。';

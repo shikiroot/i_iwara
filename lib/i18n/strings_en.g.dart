@@ -411,6 +411,8 @@ class TranslationsSettingsEn {
 	String get darkMode => 'Dark Mode';
 	String get presetTheme => 'Preset Theme';
 	String get basicTheme => 'Basic Theme';
+	String get needRestartToApply => 'Need to restart the app to apply the settings';
+	String get themeNeedRestartDescription => 'The theme settings need to restart the app to apply the settings';
 }
 
 // Path: signIn
@@ -768,6 +770,8 @@ extension on Translations {
 			case 'settings.darkMode': return 'Dark Mode';
 			case 'settings.presetTheme': return 'Preset Theme';
 			case 'settings.basicTheme': return 'Basic Theme';
+			case 'settings.needRestartToApply': return 'Need to restart the app to apply the settings';
+			case 'settings.themeNeedRestartDescription': return 'The theme settings need to restart the app to apply the settings';
 			case 'signIn.pleaseLoginFirst': return 'Please login first';
 			case 'signIn.alreadySignedInToday': return 'You have already signed in today!';
 			case 'signIn.youDidNotStickToTheSignIn': return 'You did not stick to the sign in.';

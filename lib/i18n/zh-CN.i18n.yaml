@@ -282,6 +282,8 @@ settings:
   darkMode: 深色模式
   presetTheme: 预设主题
   basicTheme: 基础主题
+  needRestartToApply: 需要重启应用以应用设置
+  themeNeedRestartDescription: 主题设置需要重启应用以应用设置
 
 signIn:
   pleaseLoginFirst: 请先登录后再签到

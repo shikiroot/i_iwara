@@ -281,6 +281,9 @@ settings:
   darkMode: ダークモード
   presetTheme: プリセットテーマ
   basicTheme: ベーシックテーマ
+  needRestartToApply: アプリを再起動して設定を適用してください
+  themeNeedRestartDescription: テーマ設定はアプリを再起動して設定を適用してください
+
 
 signIn:
   pleaseLoginFirst: サインインする前にログインしてください

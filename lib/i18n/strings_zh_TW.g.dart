@@ -407,6 +407,8 @@ class _TranslationsSettingsZhTw implements TranslationsSettingsEn {
 	@override String get darkMode => '深色模式';
 	@override String get presetTheme => '預設主題';
 	@override String get basicTheme => '基礎主題';
+	@override String get needRestartToApply => '需要重啟應用以應用設定';
+	@override String get themeNeedRestartDescription => '主題設定需要重啟應用以應用設定';
 }
 
 // Path: signIn
@@ -764,6 +766,8 @@ extension on TranslationsZhTw {
 			case 'settings.darkMode': return '深色模式';
 			case 'settings.presetTheme': return '預設主題';
 			case 'settings.basicTheme': return '基礎主題';
+			case 'settings.needRestartToApply': return '需要重啟應用以應用設定';
+			case 'settings.themeNeedRestartDescription': return '主題設定需要重啟應用以應用設定';
 			case 'signIn.pleaseLoginFirst': return '請先登入後再簽到';
 			case 'signIn.alreadySignedInToday': return '您今天已經簽到過了！';
 			case 'signIn.youDidNotStickToTheSignIn': return '您未能持續簽到。';

@@ -407,6 +407,8 @@ class _TranslationsSettingsZhCn implements TranslationsSettingsEn {
 	@override String get darkMode => '深色模式';
 	@override String get presetTheme => '预设主题';
 	@override String get basicTheme => '基础主题';
+	@override String get needRestartToApply => '需要重启应用以应用设置';
+	@override String get themeNeedRestartDescription => '主题设置需要重启应用以应用设置';
 }
 
 // Path: signIn
@@ -764,6 +766,8 @@ extension on TranslationsZhCn {
 			case 'settings.darkMode': return '深色模式';
 			case 'settings.presetTheme': return '预设主题';
 			case 'settings.basicTheme': return '基础主题';
+			case 'settings.needRestartToApply': return '需要重启应用以应用设置';
+			case 'settings.themeNeedRestartDescription': return '主题设置需要重启应用以应用设置';
 			case 'signIn.pleaseLoginFirst': return '请先登录后再签到';
 			case 'signIn.alreadySignedInToday': return '您今天已经签到过了！';
 			case 'signIn.youDidNotStickToTheSignIn': return '您未能坚持签到。';

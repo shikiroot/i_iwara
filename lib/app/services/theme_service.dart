@@ -9,11 +9,14 @@ class ThemeService extends GetxService {
   
   // 预设的主题色
   static const List<Color> presetColors = [
-    Colors.blue,
-    Colors.purple,
-    Colors.green,
-    Colors.orange,
-    // 注意：添加新的预设颜色时，需要确保在 AppThemeMode 中也添加对应的枚举值
+    Colors.blue,      // 蓝色
+    Colors.purple,    // 紫色
+    Colors.green,     // 绿色
+    Colors.orange,    // 橙色
+    Colors.pink,      // 粉色
+    Colors.red,       // 红色
+    Colors.cyan,      // 青色
+    Colors.brown,     // 棕色
   ];
 
   ThemeService() {
@@ -44,6 +47,18 @@ class ThemeService extends GetxService {
         return _getPresetTheme(presetColors[0]);
       case AppThemeMode.preset2:
         return _getPresetTheme(presetColors[1]);
+      case AppThemeMode.preset3:
+        return _getPresetTheme(presetColors[2]);
+      case AppThemeMode.preset4:
+        return _getPresetTheme(presetColors[3]);
+      case AppThemeMode.preset5:
+        return _getPresetTheme(presetColors[4]);
+      case AppThemeMode.preset6:
+        return _getPresetTheme(presetColors[5]);
+      case AppThemeMode.preset7:
+        return _getPresetTheme(presetColors[6]);
+      case AppThemeMode.preset8:
+        return _getPresetTheme(presetColors[7]);
       default:
         return _getLightTheme(dynamicLight);
     }
