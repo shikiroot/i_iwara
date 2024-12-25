@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:i_iwara/app/services/app_service.dart';
+import 'package:oktoast/oktoast.dart';
 
 import '../../../common/constants.dart';
 import '../../routes/app_routes.dart';
@@ -37,16 +38,18 @@ class GlobalDrawerColumns extends StatelessWidget {
                   NaviService.navigateToFavoritePage();
                   AppService.switchGlobalDrawer();
                 } else {
-                  Get.snackbar(t.errors.error, t.signIn.pleaseLoginFirst);
+                  AppService.switchGlobalDrawer();
+                  showToast(t.errors.pleaseLoginFirst);
                 }
               }),
               // 好友
-              _buildMenuItem(Icons.people, t.common.friends, () {
+              _buildMenuItem(Icons.face, t.common.friends, () {
                 if (userService.isLogin) {
                   NaviService.navigateToFriendsPage();
                   AppService.switchGlobalDrawer();
                 } else {
-                  Get.snackbar(t.errors.error, t.signIn.pleaseLoginFirst);
+                  AppService.switchGlobalDrawer();
+                  showToast(t.errors.pleaseLoginFirst);
                 }
               }),
               // 关注列表
@@ -55,16 +58,18 @@ class GlobalDrawerColumns extends StatelessWidget {
                   NaviService.navigateToFollowingListPage(userService.currentUser.value!.id, userService.currentUser.value!.name, userService.currentUser.value!.username);
                   AppService.switchGlobalDrawer();
                 } else {
-                  Get.snackbar(t.errors.error, t.signIn.pleaseLoginFirst);
+                  AppService.switchGlobalDrawer();
+                  showToast(t.errors.pleaseLoginFirst);
                 }
               }),
               // 粉丝列表
-              _buildMenuItem(Icons.people, t.common.followersList, () {
+              _buildMenuItem(Icons.supervised_user_circle, t.common.followersList, () {
                 if (userService.isLogin) {
                   NaviService.navigateToFollowersListPage(userService.currentUser.value!.id, userService.currentUser.value!.name, userService.currentUser.value!.username);
                   AppService.switchGlobalDrawer();
                 } else {
-                  Get.snackbar(t.errors.error, t.signIn.pleaseLoginFirst);
+                  AppService.switchGlobalDrawer();
+                  showToast(t.errors.pleaseLoginFirst);
                 }
               }),
               // 播放列表
@@ -75,7 +80,8 @@ class GlobalDrawerColumns extends StatelessWidget {
                       isMine: true);
                   AppService.switchGlobalDrawer();
                 } else {
-                  Get.snackbar(t.errors.error, t.signIn.pleaseLoginFirst);
+                  AppService.switchGlobalDrawer();
+                  showToast(t.errors.pleaseLoginFirst);
                 }
               }),
               // 戒律签到
@@ -93,13 +99,6 @@ class GlobalDrawerColumns extends StatelessWidget {
               //   userService.fetchUserProfile();
               //   Get.snackbar('操作', '你点击了关于');
               // }),
-              // 查看许可
-              _buildMenuItem(Icons.code, t.common.checkLicense, () {
-                AppService.switchGlobalDrawer();
-                showLicensePage(
-                  context: Get.context!,
-                );
-              }),
               Obx(() => userService.isLogin
                   ? Column(
                       children: [
@@ -293,9 +292,9 @@ class LogoutDialog extends StatelessWidget {
             Navigator.pop(context);
             try {
               await userService.logout();
-              Get.snackbar(t.common.success, t.auth.logoutSuccess);
+              showToast(t.auth.logoutSuccess);
             } catch (e) {
-              Get.snackbar(t.errors.error, '${t.auth.logoutFailed}: $e');
+              showToast('${t.auth.logoutFailed}: $e');
             }
           },
         ),

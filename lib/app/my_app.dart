@@ -16,6 +16,7 @@ import 'package:i_iwara/app/ui/widgets/global_drawer_content_widget.dart';
 import 'package:i_iwara/app/ui/widgets/window_layout_widget.dart';
 import 'package:i_iwara/i18n/strings.g.dart';
 import 'package:dynamic_color/dynamic_color.dart';
+import 'package:oktoast/oktoast.dart';
 
 import '../utils/proxy/proxy_util.dart';
 import 'models/dto/escape_intent.dart';
@@ -30,55 +31,60 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return DynamicColorBuilder(
       builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
-        return GetMaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: t.common.appName,
-          theme: Get.find<ThemeService>().getTheme(
-            context,
-            dynamicLight: lightDynamic,
-            dynamicDark: darkDynamic,
-          ),
-          getPages: [
-            GetPage(
-              name: Routes.HOME,
-              page: () => HomeNavigationLayout(),
+        return OKToast(
+          child: GetMaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: t.common.appName,
+            theme: Get.find<ThemeService>().getTheme(
+              context,
+              dynamicLight: lightDynamic,
+              dynamicDark: darkDynamic,
             ),
-            GetPage(
-                name: Routes.SETTINGS_PAGE,
-                page: () => const SettingsPage(),
-                transition: Transition.rightToLeft),
-            GetPage(
-                name: Routes.PLAYER_SETTINGS_PAGE,
-                page: () => const PlayerSettingsPage(),
-                transition: Transition.rightToLeft),
-            if (ProxyUtil.isSupportedPlatform())
+            getPages: [
               GetPage(
-                  name: Routes.PROXY_SETTINGS_PAGE,
-                  page: () => const ProxySettingsPage(),
+                name: Routes.HOME,
+                page: () => HomeNavigationLayout(),
+              ),
+              GetPage(
+                  name: Routes.SETTINGS_PAGE,
+                  page: () => const SettingsPage(),
                   transition: Transition.rightToLeft),
-            GetPage(
-                name: Routes.THEME_SETTINGS_PAGE,
-                page: () => const ThemeSettingsPage(),
-                transition: Transition.rightToLeft),
-            GetPage(name: Routes.ABOUT_PAGE, page: () => const AboutPage(), transition: Transition.rightToLeft),
-            GetPage(
-              name: Routes.LOGIN,
-              page: () => const LoginPage(),
-              transition: Transition.cupertino,
-            ),
-            GetPage(
-              name: Routes.SIGN_IN,
-              page: () => const SignInPage(),
-              transition: Transition.cupertino,
-            ),
-          ],
-          initialRoute: Routes.HOME,
-          builder: (context, child) {
-            if (null == child) {
-              return const SizedBox.shrink();
-            }
-            return MyAppLayout(child: child);
-          },
+              GetPage(
+                  name: Routes.PLAYER_SETTINGS_PAGE,
+                  page: () => const PlayerSettingsPage(),
+                  transition: Transition.rightToLeft),
+              if (ProxyUtil.isSupportedPlatform())
+                GetPage(
+                    name: Routes.PROXY_SETTINGS_PAGE,
+                    page: () => const ProxySettingsPage(),
+                    transition: Transition.rightToLeft),
+              GetPage(
+                  name: Routes.THEME_SETTINGS_PAGE,
+                  page: () => const ThemeSettingsPage(),
+                  transition: Transition.rightToLeft),
+              GetPage(
+                  name: Routes.ABOUT_PAGE,
+                  page: () => const AboutPage(),
+                  transition: Transition.rightToLeft),
+              GetPage(
+                name: Routes.LOGIN,
+                page: () => const LoginPage(),
+                transition: Transition.cupertino,
+              ),
+              GetPage(
+                name: Routes.SIGN_IN,
+                page: () => const SignInPage(),
+                transition: Transition.cupertino,
+              ),
+            ],
+            initialRoute: Routes.HOME,
+            builder: (context, child) {
+              if (null == child) {
+                return const SizedBox.shrink();
+              }
+              return MyAppLayout(child: child);
+            },
+          ),
         );
       },
     );
@@ -135,7 +141,8 @@ class _MyAppLayoutState extends State<MyAppLayout> with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    bool activeBackgroundPrivacyMode = _configService[ConfigService.ACTIVE_BACKGROUND_PRIVACY_MODE];
+    bool activeBackgroundPrivacyMode =
+        _configService[ConfigService.ACTIVE_BACKGROUND_PRIVACY_MODE];
     switch (state) {
       case AppLifecycleState.resumed:
         if (_showPrivacyOverlay) {
