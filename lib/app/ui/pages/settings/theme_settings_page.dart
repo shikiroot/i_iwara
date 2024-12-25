@@ -135,31 +135,38 @@ class ThemeSettingsPage extends StatelessWidget {
   ) {
     return Obx(() {
       final isSelected = themeService.themeMode == mode;
-      return InkWell(
-        onTap: () => themeService.setThemeMode(mode),
-        child: Column(
-          children: [
-            Container(
-              width: 48,
-              height: 48,
-              decoration: BoxDecoration(
-                color: color,
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: isSelected ? Theme.of(context).primaryColor : Colors.transparent,
-                  width: 3,
+      return Column(
+        children: [
+          Material(
+            color: Colors.transparent,
+            shape: const CircleBorder(),
+            clipBehavior: Clip.antiAlias,
+            child: InkWell(
+              onTap: () => themeService.setThemeMode(mode),
+              child: Container(
+                width: 48,
+                height: 48,
+                decoration: BoxDecoration(
+                  color: color,
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: isSelected 
+                      ? Theme.of(context).primaryColor 
+                      : Colors.grey.withOpacity(0.2),
+                    width: 3,
+                  ),
                 ),
               ),
             ),
-            const SizedBox(height: 4),
-            Text(
-              label,
-              style: TextStyle(
-                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-              ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            label,
+            style: TextStyle(
+              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
             ),
-          ],
-        ),
+          ),
+        ],
       );
     });
   }

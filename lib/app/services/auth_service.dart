@@ -30,6 +30,8 @@ class AuthService extends GetxService {
   // 刷新token的completer
   Completer<void>? _refreshTokenCompleter;
 
+  Timer? _tokenRefreshTimer;
+
   // resetProxy
   void resetProxy() {
     _dio.httpClientAdapter = IOHttpClientAdapter();
@@ -40,7 +42,26 @@ class AuthService extends GetxService {
     _authToken = await _storage.readSecureData(KeyConstants.authToken);
     _accessToken = await _storage.readSecureData(KeyConstants.accessToken);
     LogUtils.d('初始化完成, token: $_authToken, accessToken: $_accessToken', _tag);
+    
+    _startTokenRefreshTimer();
+    
     return this;
+  }
+
+  // 启动定时任务
+  void _startTokenRefreshTimer() {
+    _tokenRefreshTimer = Timer.periodic(const Duration(minutes: 15), (timer) async {
+      if (hasToken) {
+        await refreshAccessToken();
+      }
+    });
+  }
+
+  // 在服务销毁时取消定时任务
+  @override
+  void onClose() {
+    _tokenRefreshTimer?.cancel();
+    super.onClose();
   }
 
   // 登录

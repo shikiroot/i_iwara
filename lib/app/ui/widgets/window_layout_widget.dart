@@ -189,9 +189,9 @@ class _WindowButtonsState extends State<WindowButtons> with WindowListener {
 
   @override
   Widget build(BuildContext context) {
-    final dark = Theme.of(context).brightness == Brightness.dark;
-    final color = dark ? Colors.white : Colors.black;
-    final hoverColor = dark ? Colors.white30 : Colors.black12;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final defaultIconColor = isDark ? Colors.white.withOpacity(0.8) : Colors.black.withOpacity(0.8);
+    final defaultHoverColor = isDark ? Colors.white.withOpacity(0.08) : Colors.black.withOpacity(0.04);
 
     return SizedBox(
       width: 138,
@@ -199,8 +199,9 @@ class _WindowButtonsState extends State<WindowButtons> with WindowListener {
       child: Row(
         children: [
           WindowButton(
-            icon: MinimizeIcon(color: color),
-            hoverColor: hoverColor,
+            icon: MinimizeIcon(color: defaultIconColor),
+            hoverIconColor: isDark ? Colors.white : Colors.black,
+            hoverColor: defaultHoverColor,
             onPressed: () async {
               bool isMinimized = await windowManager.isMinimized();
               if (isMinimized) {
@@ -212,36 +213,25 @@ class _WindowButtonsState extends State<WindowButtons> with WindowListener {
           ),
           if (isMaximized)
             WindowButton(
-              icon: RestoreIcon(
-                color: color,
-              ),
-              hoverColor: hoverColor,
-              onPressed: () {
-                windowManager.unmaximize();
-              },
+              icon: RestoreIcon(color: defaultIconColor),
+              hoverIconColor: isDark ? Colors.white : Colors.black,
+              hoverColor: defaultHoverColor,
+              onPressed: () => windowManager.unmaximize(),
             )
           else
             WindowButton(
-              icon: MaximizeIcon(
-                color: color,
-              ),
-              hoverColor: hoverColor,
-              onPressed: () {
-                windowManager.maximize();
-              },
+              icon: MaximizeIcon(color: defaultIconColor),
+              hoverIconColor: isDark ? Colors.white : Colors.black,
+              hoverColor: defaultHoverColor,
+              onPressed: () => windowManager.maximize(),
             ),
           WindowButton(
-            icon: CloseIcon(
-              color: color,
-            ),
-            hoverIcon: CloseIcon(
-              color: !dark ? Colors.white : Colors.black,
-            ),
-            hoverColor: Colors.red,
-            onPressed: () {
-              windowManager.close();
-            },
-          )
+            icon: CloseIcon(color: defaultIconColor),
+            hoverIconColor: Colors.white,
+            hoverColor: const Color(0xFFE81123),
+            isCloseButton: true,
+            onPressed: () => windowManager.close(),
+          ),
         ],
       ),
     );
@@ -249,20 +239,20 @@ class _WindowButtonsState extends State<WindowButtons> with WindowListener {
 }
 
 class WindowButton extends StatefulWidget {
-  const WindowButton(
-      {required this.icon,
-      required this.onPressed,
-      required this.hoverColor,
-      this.hoverIcon,
-      super.key});
+  const WindowButton({
+    required this.icon,
+    required this.onPressed,
+    required this.hoverColor,
+    required this.hoverIconColor,
+    this.isCloseButton = false,
+    super.key,
+  });
 
   final Widget icon;
-
   final void Function() onPressed;
-
   final Color hoverColor;
-
-  final Widget? hoverIcon;
+  final Color hoverIconColor;
+  final bool isCloseButton;
 
   @override
   State<WindowButton> createState() => _WindowButtonState();
@@ -270,27 +260,78 @@ class WindowButton extends StatefulWidget {
 
 class _WindowButtonState extends State<WindowButton> {
   bool isHovering = false;
+  bool isPressed = false;
 
   @override
   Widget build(BuildContext context) {
-    return MouseRegion(
-      onEnter: (event) => setState(() {
-        isHovering = true;
-      }),
-      onExit: (event) => setState(() {
-        isHovering = false;
-      }),
-      child: GestureDetector(
-        onTap: widget.onPressed,
-        child: Container(
-          width: 46,
-          height: double.infinity,
-          decoration:
-              BoxDecoration(color: isHovering ? widget.hoverColor : null),
-          child: isHovering ? widget.hoverIcon ?? widget.icon : widget.icon,
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return Material(
+      color: Colors.transparent,
+      child: MouseRegion(
+        onEnter: (event) => setState(() => isHovering = true),
+        onExit: (event) => setState(() {
+          isHovering = false;
+          isPressed = false;
+        }),
+        child: InkWell(
+          onTapDown: (_) => setState(() => isPressed = true),
+          onTapUp: (_) => setState(() => isPressed = false),
+          onTapCancel: () => setState(() => isPressed = false),
+          onTap: widget.onPressed,
+          child: Container(
+            width: 46,
+            height: double.infinity,
+            decoration: BoxDecoration(
+              color: _getBackgroundColor(isDark),
+            ),
+            child: Center(
+              child: _buildIcon(),
+            ),
+          ),
         ),
       ),
     );
+  }
+
+  Color _getBackgroundColor(bool isDark) {
+    if (widget.isCloseButton) {
+      if (isPressed) {
+        return const Color(0xFFBF0F1D);
+      }
+      if (isHovering) {
+        return const Color(0xFFE81123);
+      }
+      return Colors.transparent;
+    }
+
+    if (isPressed) {
+      return isDark 
+          ? Colors.white.withOpacity(0.08)
+          : Colors.black.withOpacity(0.04);
+    }
+    if (isHovering) {
+      return widget.hoverColor;
+    }
+    return Colors.transparent;
+  }
+
+  Widget _buildIcon() {
+    if (isHovering) {
+      if (widget.icon is CloseIcon) {
+        return CloseIcon(color: widget.hoverIconColor);
+      }
+      if (widget.icon is MaximizeIcon) {
+        return MaximizeIcon(color: widget.hoverIconColor);
+      }
+      if (widget.icon is RestoreIcon) {
+        return RestoreIcon(color: widget.hoverIconColor);
+      }
+      if (widget.icon is MinimizeIcon) {
+        return MinimizeIcon(color: widget.hoverIconColor);
+      }
+    }
+    return widget.icon;
   }
 }
 
