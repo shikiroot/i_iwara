@@ -4,6 +4,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:i_iwara/app/models/dto/user_dto.dart';
+import 'package:i_iwara/app/services/app_service.dart';
 import 'package:i_iwara/app/services/user_preference_service.dart';
 import 'package:i_iwara/app/ui/pages/author_profile/widgets/author_profile_skeleton_widget.dart';
 import 'package:i_iwara/app/ui/pages/author_profile/widgets/profile_image_model_tab_list_widget.dart';
@@ -442,40 +443,57 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                               return SizedBox.shrink();
                             }
                           }),
-                          Obx(() {
-                            final followerCount =
-                                profileController.followerCounts.value
-                                    .customFormat();
-                            return Text(
-                              '$followerCount ${t.common.follower}',
-                              style: TextStyle(
-                                  color: Colors.grey, fontSize: 16),
-                            );
-                          }),
+                          MouseRegion(
+                            cursor: SystemMouseCursors.click, // 设置鼠标光标为点击效果
+                            child: Obx(() {
+                              final followerCount = profileController.followerCounts.value.customFormat();
+                              return GestureDetector(
+                                onTap: () {
+                                  NaviService.navigateToFollowersListPage(
+                                    profileController.author.value?.id ?? '',
+                                    profileController.author.value?.name ?? '',
+                                    profileController.author.value?.username ?? '',
+                                  );
+                                },
+                                child: Text(
+                                  '$followerCount ${t.common.follower}',
+                                  style: const TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              );
+                            }),
+                          ),
 
-                          Obx(() {
-                            final followingCount =
-                                profileController.followingCounts.value
-                                    .customFormat();
-                            return Text(
-                              '$followingCount ${t.common.following}',
-                              style: TextStyle(
-                                  color: Colors.grey, fontSize: 16),
-                            );
-                          }),
+                          MouseRegion(
+                            cursor: SystemMouseCursors.click, // 设置鼠标光标为点击效果
+                            child: Obx(() {
+                              final followingCount = profileController.followingCounts.value.customFormat();
+                              return GestureDetector(
+                                onTap: () {
+                                  NaviService.navigateToFollowingListPage(profileController.author.value?.id ?? '', profileController.author.value?.name ?? '', profileController.author.value?.username ?? '');
+                                },
+                                child: Text(
+                                  '$followingCount ${t.common.following}',
+                                  style: const TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              );
+                            }),
+                          ),
 
                           // 视频数
                           Obx(() {
-                            final videoCount = profileController
-                                .videoCounts.value
-                                ?.customFormat();
+                            final videoCount = profileController.videoCounts.value?.customFormat();
                             if (videoCount == null) {
                               return SizedBox.shrink();
                             }
                             return Text(
                               '$videoCount ${t.common.video}',
-                              style: TextStyle(
-                                  color: Colors.grey, fontSize: 16),
+                              style: TextStyle(color: Colors.grey, fontSize: 16),
                             );
                           }),
                         ],

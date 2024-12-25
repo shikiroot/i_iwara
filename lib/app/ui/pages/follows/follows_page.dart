@@ -7,11 +7,15 @@ import 'package:i_iwara/i18n/strings.g.dart' as slang;
 
 class FollowsPage extends StatefulWidget {
   final String userId;
+  final String name;
+  final String username;
   final bool initIsFollowing;
 
   const FollowsPage({
     super.key,
     required this.userId,
+    required this.name,
+    required this.username,
     required this.initIsFollowing,
   });
 
@@ -54,8 +58,26 @@ class _FollowsPageState extends State<FollowsPage>
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(t.common.followsAndFans),
+        title: Text([widget.name, '@${widget.username}'].join(' - ')),
         bottom: TabBar(
+          // 使用Material 3风格的指示器
+          indicator: BoxDecoration(
+            borderRadius: BorderRadius.circular(25),
+            color: Theme.of(context).colorScheme.primary,
+          ),
+          overlayColor: WidgetStateProperty.all(Colors.transparent),
+          indicatorSize: TabBarIndicatorSize.tab,
+          dividerColor: Colors.transparent,
+          // 标签样式
+          labelColor: Theme.of(context).colorScheme.onPrimary,
+          unselectedLabelColor:
+              Theme.of(context).colorScheme.onSurfaceVariant,
+          labelStyle: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+          ),
+          // 取消标签的内边距，让整个区域都可点击
+          padding: EdgeInsets.zero,
           controller: _tabController,
           tabs: [
             Tab(text: t.common.following),
@@ -68,9 +90,11 @@ class _FollowsPageState extends State<FollowsPage>
         children: [
           FollowingList(
             scrollController: controller.followingListScrollController,
+            controller: controller,
           ),
           FollowersList(
             scrollController: controller.followersListScrollController,
+            controller: controller,
           ),
         ],
       ),

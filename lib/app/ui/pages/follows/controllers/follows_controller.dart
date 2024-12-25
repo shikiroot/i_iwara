@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:i_iwara/app/models/user.model.dart';
+import 'package:i_iwara/app/services/user_service.dart';
 import 'package:i_iwara/app/ui/pages/follows/repositories/followers_list_repository.dart';
 import 'package:i_iwara/app/ui/pages/follows/repositories/following_list_repository.dart';
+import 'package:i_iwara/app/services/app_service.dart';
+import 'package:i_iwara/i18n/strings.g.dart';
 
 class FollowsController extends GetxController {
   final String userId;
   final bool initIsFollowing;
+  final UserService _userService = Get.find();
 
   FollowsController({
     required this.userId,
@@ -21,6 +26,9 @@ class FollowsController extends GetxController {
   // 加载状态指示器
   final RxBool isLoadingFollowing = false.obs;
   final RxBool isLoadingFollowers = false.obs;
+
+  // 使用Map来跟踪每个用户的关注/取关状态
+  final RxMap<String, bool> followingUserIds = <String, bool>{}.obs;
 
   @override
   void onInit() {
@@ -46,6 +54,11 @@ class FollowsController extends GetxController {
         isLoadingFollowers.value = false;
       }
     }
+  }
+
+  // 跳转到用户详情页
+  void navigateToUserProfile(String username) {
+    NaviService.navigateToAuthorProfilePage(username);
   }
 
   @override

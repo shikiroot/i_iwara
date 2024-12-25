@@ -1,10 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:i_iwara/app/models/user.model.dart';
+import 'package:i_iwara/app/ui/widgets/follow_button_widget.dart';
 import 'package:i_iwara/common/constants.dart';
 import 'package:i_iwara/i18n/strings.g.dart' as slang;
 
-class UserCard extends StatelessWidget {
+class UserCard extends StatefulWidget {
+
   final User user;
   final VoidCallback? onTap;
   final bool showFriendOptions;
@@ -19,6 +21,7 @@ class UserCard extends StatelessWidget {
   final bool isRejectingRequest;
   final bool isCancelingRequest;
   final bool isRestoringFriend;
+  final bool showFollowButton;
 
   const UserCard({
     super.key,
@@ -27,6 +30,7 @@ class UserCard extends StatelessWidget {
     this.showFriendOptions = false,
     this.showFriendAcceptAndRejectOptions = false,
     this.showCancelFriendRequestOption = false,
+    this.showFollowButton = false,
     this.onRemoveFriend,
     this.onAcceptFriendRequest,
     this.onRejectFriendRequest,
@@ -38,12 +42,25 @@ class UserCard extends StatelessWidget {
     this.isRestoringFriend = false,
   });
 
+  @override 
+  State<UserCard> createState() => _UserCardState();
+}
+
+class _UserCardState extends State<UserCard> {
+  late User user;
+
+  @override
+  void initState() {
+    super.initState();
+    user = widget.user;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
       clipBehavior: Clip.antiAlias,
       child: InkWell(
-        onTap: onTap,
+        onTap: widget.onTap,
         child: Padding(
           padding: const EdgeInsets.all(12.0),
           child: Row(
@@ -64,17 +81,28 @@ class UserCard extends StatelessWidget {
                   ],
                 ),
               ),
-              if (showFriendOptions && user.friend) ...[
+              if (widget.showFriendOptions && user.friend) ...[
                 const SizedBox(width: 8),
                 _buildRemoveFriendButton(context),
               ],
-              if (showFriendAcceptAndRejectOptions) ...[
+              if (widget.showFriendAcceptAndRejectOptions) ...[
                 const SizedBox(width: 8),
                 _buildFriendRequestButtons(context),
               ],
-              if (showCancelFriendRequestOption) ...[
+              if (widget.showCancelFriendRequestOption) ...[
                 const SizedBox(width: 8),
                 _buildCancelRequestButton(context),
+              ],
+              if (widget.showFollowButton) ...[
+                const SizedBox(width: 8),
+                FollowButtonWidget(
+                  user: user,
+                  onUserUpdated: (updatedUser) {
+                    setState(() {
+                      user = updatedUser;
+                    });
+                  },
+                )
               ],
             ],
           ),
@@ -258,7 +286,7 @@ class UserCard extends StatelessWidget {
   Widget _buildRemoveFriendButton(BuildContext context) {
     final t = slang.Translations.of(context);
     return IconButton(
-      icon: isRemovingFriend
+      icon: widget.isRemovingFriend
           ? const SizedBox(
               width: 24,
               height: 24,
@@ -266,7 +294,7 @@ class UserCard extends StatelessWidget {
             )
           : const Icon(Icons.person_remove),
       color: Colors.red,
-      onPressed: isRemovingFriend ? null : () => onRemoveFriend?.call(user.id),
+      onPressed: widget.isRemovingFriend ? null : () => widget.onRemoveFriend?.call(user.id),
       tooltip: t.common.removeFriend,
     );
   }
@@ -277,7 +305,7 @@ class UserCard extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         IconButton(
-          icon: isAcceptingRequest
+          icon: widget.isAcceptingRequest
               ? const SizedBox(
                   width: 24,
                   height: 24,
@@ -288,11 +316,11 @@ class UserCard extends StatelessWidget {
                 )
               : const Icon(Icons.check_circle),
           color: Colors.green,
-          onPressed: isAcceptingRequest ? null : () => onAcceptFriendRequest?.call(user.id),
+          onPressed: widget.isAcceptingRequest ? null : () => widget.onAcceptFriendRequest?.call(user.id),
           tooltip: t.common.accept,
         ),
         IconButton(
-          icon: isRejectingRequest
+          icon: widget.isRejectingRequest
               ? const SizedBox(
                   width: 24,
                   height: 24,
@@ -303,7 +331,7 @@ class UserCard extends StatelessWidget {
                 )
               : const Icon(Icons.cancel),
           color: Colors.red,
-          onPressed: isRejectingRequest ? null : () => onRejectFriendRequest?.call(user.id),
+          onPressed: widget.isRejectingRequest ? null : () => widget.onRejectFriendRequest?.call(user.id),
           tooltip: t.common.reject,
         ),
       ],
@@ -313,7 +341,7 @@ class UserCard extends StatelessWidget {
   Widget _buildCancelRequestButton(BuildContext context) {
     final t = slang.Translations.of(context);
     return IconButton(
-      icon: isCancelingRequest
+      icon: widget.isCancelingRequest
           ? const SizedBox(
               width: 24,
               height: 24,
@@ -324,7 +352,7 @@ class UserCard extends StatelessWidget {
             )
           : const Icon(Icons.person_remove),
       color: Colors.orange,
-      onPressed: isCancelingRequest ? null : () => onCancelFriendRequest?.call(user.id),
+      onPressed: widget.isCancelingRequest ? null : () => widget.onCancelFriendRequest?.call(user.id),
       tooltip: t.common.cancelFriendRequest,
     );
   }

@@ -30,6 +30,7 @@ class _FollowButtonWidgetState extends State<FollowButtonWidget> {
   void initState() {
     super.initState();
     _currentUser = widget.user;
+    print('用户： ${_currentUser.name}, 关注状态: ${_currentUser.following}');
   }
 
   // 构建加载中的按钮

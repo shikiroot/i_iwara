@@ -52,7 +52,7 @@ class GlobalDrawerColumns extends StatelessWidget {
               // 关注列表
               _buildMenuItem(Icons.people, t.common.followingList, () {
                 if (userService.isLogin) {
-                  NaviService.navigateToFollowingListPage(userService.currentUser.value!.id);
+                  NaviService.navigateToFollowingListPage(userService.currentUser.value!.id, userService.currentUser.value!.name, userService.currentUser.value!.username);
                   AppService.switchGlobalDrawer();
                 } else {
                   Get.snackbar(t.errors.error, t.signIn.pleaseLoginFirst);
@@ -61,7 +61,7 @@ class GlobalDrawerColumns extends StatelessWidget {
               // 粉丝列表
               _buildMenuItem(Icons.people, t.common.followersList, () {
                 if (userService.isLogin) {
-                  NaviService.navigateToFollowersListPage(userService.currentUser.value!.id);
+                  NaviService.navigateToFollowersListPage(userService.currentUser.value!.id, userService.currentUser.value!.name, userService.currentUser.value!.username);
                   AppService.switchGlobalDrawer();
                 } else {
                   Get.snackbar(t.errors.error, t.signIn.pleaseLoginFirst);

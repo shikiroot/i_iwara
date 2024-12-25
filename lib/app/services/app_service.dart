@@ -327,25 +327,45 @@ class NaviService {
     ));
   }
 
-  static void navigateToFollowingListPage(String userId) {
+  static void navigateToFollowingListPage(String userId, String name, String username) {
     AppService.homeNavigatorKey.currentState?.push(PageRouteBuilder(
       settings: RouteSettings(name: Routes.FOLLOWING_LIST(userId)),
       pageBuilder: (context, animation, secondaryAnimation) {
-        return FollowsPage(
+        return FollowsPage( 
           userId: userId,
+          name: name,
+          username: username,
           initIsFollowing: true,
+        );
+      },
+      transitionDuration: const Duration(milliseconds: 200),
+      // 从右到左的原生动画
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        return SlideTransition(
+          position: Tween<Offset>(begin: const Offset(1, 0), end: Offset.zero).animate(animation),
+          child: child,
         );
       },
     ));
   }
 
-  static void navigateToFollowersListPage(String userId) {
+  static void navigateToFollowersListPage(String userId, String name, String username) {
     AppService.homeNavigatorKey.currentState?.push(PageRouteBuilder(
       settings: RouteSettings(name: Routes.FOLLOWERS_LIST(userId)),
       pageBuilder: (context, animation, secondaryAnimation) {
         return FollowsPage(
           userId: userId,
+          name: name,
+          username: username,
           initIsFollowing: false,
+        );
+      },
+      transitionDuration: const Duration(milliseconds: 200),
+      // 从右到左的原生动画
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        return SlideTransition(
+          position: Tween<Offset>(begin: const Offset(1, 0), end: Offset.zero).animate(animation),
+          child: child,
         );
       },
     ));
