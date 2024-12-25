@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:i_iwara/app/services/app_service.dart';
 import 'package:i_iwara/app/ui/pages/video_detail/controllers/related_media_controller.dart';
+import 'package:i_iwara/app/ui/widgets/error_widget.dart';
 import 'package:i_iwara/common/enums/media_enums.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
 import 'package:media_kit/media_kit.dart';
@@ -21,6 +22,7 @@ import '../../../../services/api_service.dart';
 import '../../../../services/config_service.dart';
 import '../widgets/player/custom_slider_bar_shape_widget.dart';
 import 'package:i_iwara/i18n/strings.g.dart' as slang;
+import '../widgets/private_video_widget.dart';
 
 class MyVideoStateController extends GetxController
     with GetSingleTickerProviderStateMixin {
@@ -54,7 +56,7 @@ class MyVideoStateController extends GetxController
   // 视频信息 | 详情页状态
   final RxBool isVideoInfoLoading = false.obs;
   final RxBool isVideoSourceLoading = false.obs;
-  final Rxn<String> errorMessage = Rxn<String>(); // 错误信息
+  final Rxn<Widget> mainErrorWidget = Rxn<Widget>(); // 错误信息
   final Rxn<String> videoErrorMessage = Rxn<String>(); // 视频错误信息
   final Rxn<video_model.Video> videoInfo = Rxn<video_model.Video>(); // 视频信息
   final RxBool videoIsReady = false.obs; // 视频是否准备好
@@ -106,7 +108,15 @@ class MyVideoStateController extends GetxController
     }
 
     if (videoId == null) {
-      errorMessage.value = slang.t.videoDetail.videoIdIsEmpty;
+      mainErrorWidget.value = CommonErrorWidget(
+        text: slang.t.videoDetail.videoIdIsEmpty,
+        children: [
+          ElevatedButton(
+            onPressed: () => Get.back(),
+            child: Text(slang.t.common.back),
+          ),
+        ],
+      );
       return;
     }
 
@@ -221,7 +231,15 @@ class MyVideoStateController extends GetxController
       var res = await _apiService.get('/video/$videoId');
       videoInfo.value = video_model.Video.fromJson(res.data);
       if (videoInfo.value == null) {
-        errorMessage.value = slang.t.videoDetail.videoInfoIsEmpty;
+        mainErrorWidget.value = CommonErrorWidget(
+          text: slang.t.videoDetail.videoInfoIsEmpty,
+          children: [
+            ElevatedButton(
+              onPressed: () => Get.back(),
+              child: Text(slang.t.common.back),
+            ),
+          ],
+        );
         return;
       }
       String? authorId = videoInfo.value!.user?.id;
@@ -236,19 +254,28 @@ class MyVideoStateController extends GetxController
           videoInfo.value!.fileUrl != null) {
         fetchVideoSource();
       }
-    } on DioException catch (e) {
+    } catch (e) {
       // 处理 403 错误，表示这是一个私密视频
-      if (e.response?.statusCode == 403) {
-        videoInfo.value = video_model.Video(
-          id: videoId,
-          private: true,
-          user: User.fromJson(e.response?.data['user']),
-        );
-        errorMessage.value = slang.t.videoDetail.thisIsAPrivateVideo;
-      } else {
-        // 处理其他错误
-        errorMessage.value = slang.t.videoDetail.getVideoInfoFailed;
+      LogUtils.e('获取视频详情失败: $e', tag: 'MyVideoStateController', error: e);
+      if (e is DioException && e.response?.statusCode == 403) {
+        var data = e.response?.data;
+        if (data != null && 
+            data['message'] != null && 
+            data['message'] == 'errors.privateVideo') {
+          User author = User.fromJson(data['data']['user']);
+          mainErrorWidget.value = PrivateVideoWidget(author: author);
+          return;
+        }
       }
+      mainErrorWidget.value = CommonErrorWidget(
+        text: slang.t.videoDetail.getVideoInfoFailed,
+        children: [
+          ElevatedButton(
+            onPressed: () => AppService.tryPop(),
+            child: Text(slang.t.common.back),
+          ),
+        ],
+      );
     } finally {
       // 无论成功还是失败，都将加载状态设置为 false
       isVideoInfoLoading.value = false;
@@ -339,7 +366,15 @@ class MyVideoStateController extends GetxController
     String? url =
         CommonUtils.findUrlByResolutionTag(videoResolutions, resolutionTag);
     if (url == null) {
-      errorMessage.value = slang.t.videoDetail.noVideoSourceFound;
+      mainErrorWidget.value = CommonErrorWidget(
+        text: slang.t.videoDetail.noVideoSourceFound,
+        children: [
+          ElevatedButton(
+            onPressed: () => Get.back(),
+            child: Text(slang.t.common.back),
+          ),
+        ],
+      );
       return;
     }
 
@@ -589,7 +624,7 @@ class MyVideoStateController extends GetxController
 //   buffers.value = updatedBuffers;
 // }
 
-  /// 显示/隐藏进度预览
+  /// 显示/隐藏进度预
   void showSeekPreview(bool show) {
     isSeekPreviewVisible.value = show;
   }

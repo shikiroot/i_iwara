@@ -380,6 +380,7 @@ videoDetail:
   writeYourCommentHere: Write your comment here...
   authorOtherVideos: Author's Other Videos
   relatedVideos: Related Videos
+  privateVideo: This is a private video
 
 share:
   sharePlayList: Share Play List

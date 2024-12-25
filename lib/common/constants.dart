@@ -6,7 +6,7 @@ class CommonConstants {
   CommonConstants._internal();
 
   // 应用版本
-  static const String VERSION = '1.0.0';
+  static const String VERSION = '0.0.1';
 
   // 网站基础URL
   static const String iwaraBaseUrl = 'https://www.iwara.tv';
@@ -63,7 +63,7 @@ class CommonConstants {
   static String defaultThumbnailUrl =
       '$iwaraBaseUrl/images/default-thumbnail.jpg';
 
-  static bool enableR18 = false;
+  static bool enableR18 = true;
 
   static String? applicationName = 'i_iwara';
 

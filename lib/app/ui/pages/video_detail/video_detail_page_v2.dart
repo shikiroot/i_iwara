@@ -219,16 +219,8 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> {
 
     return Scaffold(
       body: Obx(() {
-        if (controller.errorMessage.value != null) {
-          return CommonErrorWidget(
-            text: controller.errorMessage.value ?? t.errors.errorWhileFetching,
-            children: [
-              ElevatedButton(
-                onPressed: () => AppService.tryPop,
-                child: Text(t.common.back),
-              ),
-            ],
-          );
+        if (controller.mainErrorWidget.value != null) {
+          return controller.mainErrorWidget.value!;
         }
         bool isDesktopAppFullScreen = controller.isDesktopAppFullScreen.value;
 
@@ -259,6 +251,11 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> {
                 const Expanded(child: MediaTileListSkeletonWidget()),
               ],
             );
+          }
+
+          // 如果videoInfo不为空且videoInfo!.isPrivate为true，则显示私有视频提示
+          if (controller.videoInfo.value?.private == true) {
+            return const SizedBox.shrink();
           }
 
           return PopScope(
@@ -322,8 +319,9 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> {
                                     child: Text(t.videoDetail.authorOtherVideos,
                                         style: const TextStyle(fontSize: 18))),
                                 const MediaTileListSkeletonWidget()
-                              ] else if (controller
-                                  .otherAuthorzVideosController!.videos.isEmpty)
+                              ] else if (
+                                controller.otherAuthorzVideosController != null &&
+                                controller.otherAuthorzVideosController!.videos.isEmpty)
                                 const SizedBox.shrink()
                               else ...[
                                 Container(
@@ -332,6 +330,7 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> {
                                     child: Text(t.videoDetail.authorOtherVideos,
                                         style: const TextStyle(fontSize: 18))),
                                 // 构建作者的其他视频列表
+                                if (controller.otherAuthorzVideosController != null)
                                 for (var video in controller
                                     .otherAuthorzVideosController!.videos)
                                   VideoTileListItem(video: video),
@@ -463,8 +462,9 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> {
                               child: Text(t.videoDetail.authorOtherVideos,
                                   style: const TextStyle(fontSize: 18))),
                           const MediaTileListSkeletonWidget()
-                        ] else if (controller
-                            .otherAuthorzVideosController!.videos.isEmpty)
+                        ] else if (
+                          controller.otherAuthorzVideosController != null &&
+                          controller.otherAuthorzVideosController!.videos.isEmpty)
                           const SizedBox.shrink()
                         else ...[
                           Container(
@@ -472,6 +472,7 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> {
                               child: Text(t.videoDetail.authorOtherVideos,
                                   style: const TextStyle(fontSize: 18))),
                           // 构建作者的其他视频列表
+                          if (controller.otherAuthorzVideosController != null)
                           for (var video in controller
                               .otherAuthorzVideosController!.videos)
                             VideoTileListItem(video: video),

@@ -382,6 +382,7 @@ videoDetail:
   writeYourCommentHere: ここにコメントを入力...
   authorOtherVideos: 作者の他のビデオ
   relatedVideos: 関連ビデオ
+  privateVideo: これはプライベートビデオです
 
 share:
   sharePlayList: プレイリストを共有

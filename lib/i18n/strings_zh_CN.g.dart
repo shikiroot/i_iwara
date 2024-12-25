@@ -532,6 +532,7 @@ class _TranslationsVideoDetailZhCn implements TranslationsVideoDetailEn {
 	@override String get writeYourCommentHere => '写下你的评论...';
 	@override String get authorOtherVideos => '作者的其他视频';
 	@override String get relatedVideos => '相关视频';
+	@override String get privateVideo => '这是一个私密视频';
 }
 
 // Path: share
@@ -913,6 +914,7 @@ extension on TranslationsZhCn {
 			case 'videoDetail.writeYourCommentHere': return '写下你的评论...';
 			case 'videoDetail.authorOtherVideos': return '作者的其他视频';
 			case 'videoDetail.relatedVideos': return '相关视频';
+			case 'videoDetail.privateVideo': return '这是一个私密视频';
 			case 'share.sharePlayList': return '分享播放列表';
 			case 'share.wowDidYouSeeThis': return '哇哦，你看过这个吗？';
 			case 'share.nameIs': return '名字叫做';

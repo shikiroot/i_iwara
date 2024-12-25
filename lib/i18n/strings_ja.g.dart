@@ -531,6 +531,7 @@ class _TranslationsVideoDetailJa implements TranslationsVideoDetailEn {
 	@override String get writeYourCommentHere => 'ここにコメントを入力...';
 	@override String get authorOtherVideos => '作者の他のビデオ';
 	@override String get relatedVideos => '関連ビデオ';
+	@override String get privateVideo => 'これはプライベートビデオです';
 }
 
 // Path: share
@@ -911,6 +912,7 @@ extension on TranslationsJa {
 			case 'videoDetail.writeYourCommentHere': return 'ここにコメントを入力...';
 			case 'videoDetail.authorOtherVideos': return '作者の他のビデオ';
 			case 'videoDetail.relatedVideos': return '関連ビデオ';
+			case 'videoDetail.privateVideo': return 'これはプライベートビデオです';
 			case 'share.sharePlayList': return 'プレイリストを共有';
 			case 'share.wowDidYouSeeThis': return 'ああ、見たの？';
 			case 'share.nameIs': return '名前は';

@@ -535,6 +535,7 @@ class TranslationsVideoDetailEn {
 	String get writeYourCommentHere => 'Write your comment here...';
 	String get authorOtherVideos => 'Author\'s Other Videos';
 	String get relatedVideos => 'Related Videos';
+	String get privateVideo => 'This is a private video';
 }
 
 // Path: share
@@ -915,6 +916,7 @@ extension on Translations {
 			case 'videoDetail.writeYourCommentHere': return 'Write your comment here...';
 			case 'videoDetail.authorOtherVideos': return 'Author\'s Other Videos';
 			case 'videoDetail.relatedVideos': return 'Related Videos';
+			case 'videoDetail.privateVideo': return 'This is a private video';
 			case 'share.sharePlayList': return 'Share Play List';
 			case 'share.wowDidYouSeeThis': return 'Wow, did you see this?';
 			case 'share.nameIs': return 'Name is';
