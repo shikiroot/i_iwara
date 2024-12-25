@@ -1,4 +1,3 @@
-
 // 定义所有路由路径
 abstract class Routes {
   Routes._();
@@ -39,6 +38,8 @@ abstract class Routes {
   static String FOLLOWING_LIST(String userId) => _Paths.FOLLOWING_LIST.replaceAll(':userId', userId);
 
   static String FOLLOWERS_LIST(String userId) => _Paths.FOLLOWERS_LIST.replaceAll(':userId', userId);
+
+  static const ABOUT_PAGE = '/settings/about';
 }
 
 abstract class _Paths {

@@ -8,11 +8,11 @@ import 'package:i_iwara/utils/logger_utils.dart';
 
 class TranslationService extends GetxService {
   final ConfigService _configService = Get.find();
-  final Dio _dio = Dio();
+  final Dio dio = Dio();
 
   Future<ApiResult<String>> translate(String text, {String? targetLanguage}) async {
     try {
-      final response = await _dio.get(
+      final response = await dio.get(
         "https://translate.googleapis.com/translate_a/t",
         queryParameters: {
           "client": "gtx",
@@ -32,6 +32,6 @@ class TranslationService extends GetxService {
   }
 
   void resetProxy() {
-    _dio.httpClientAdapter = IOHttpClientAdapter();
+    dio.httpClientAdapter = IOHttpClientAdapter();
   }
 } 

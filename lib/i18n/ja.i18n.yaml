@@ -303,7 +303,17 @@ settings:
   basicTheme: ベーシックテーマ
   needRestartToApply: アプリを再起動して設定を適用してください
   themeNeedRestartDescription: テーマ設定はアプリを再起動して設定を適用してください
-
+  about: アバウト
+  currentVersion: 現在のバージョン
+  latestVersion: 最新バージョン
+  checkForUpdates: 更新をチェック
+  update: 更新
+  newVersionAvailable: 新しいバージョンが利用可能です
+  projectHome: プロジェクトホーム
+  release: リリース
+  issueReport: 問題報告
+  openSourceLicense: オープンソースライセンス
+  checkForUpdatesFailed: 更新のチェックに失敗しました。後でもう一度お試しください
 
 signIn:
   pleaseLoginFirst: サインインする前にログインしてください

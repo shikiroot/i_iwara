@@ -303,6 +303,18 @@ settings:
   basicTheme: 基礎主題
   needRestartToApply: 需要重啟應用以應用設定
   themeNeedRestartDescription: 主題設定需要重啟應用以應用設定
+  about: 關於
+  currentVersion: 當前版本
+  latestVersion: 最新版本
+  checkForUpdates: 檢查更新
+  update: 更新
+  newVersionAvailable: 發現新版本
+  projectHome: 開源地址
+  release: 版本發布
+  issueReport: 問題回報
+  openSourceLicense: 開源許可
+  checkForUpdatesFailed: 檢查更新失敗，請稍後重試
+
 
 signIn:
   pleaseLoginFirst: 請先登入後再簽到

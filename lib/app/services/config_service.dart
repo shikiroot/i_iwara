@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
+import 'package:i_iwara/app/models/sort.model.dart';
 import 'package:i_iwara/app/services/storage_service.dart';
 import 'package:i_iwara/common/constants.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
-import 'package:i_iwara/app/models/sort.model.dart';
 
 class ConfigService extends GetxService {
   late final StorageService storage;
@@ -32,6 +32,9 @@ class ConfigService extends GetxService {
   static const String DEFAULT_LANGUAGE_KEY = 'default_language'; // 默认语言
   static const String THEME_MODE_KEY = 'theme_mode'; // 添加主题模式配置键
   static const String _TRANSLATION_LANGUAGE = 'translation_language';
+  static const String REMOTE_REPO_PUB_SPEC_YAML_URL = 'remote_repo_pub_spec_yaml_url'; // 远程仓库的 pubspec.yaml 地址
+  static const String REMOTE_REPO_RELEASE_URL = 'remote_repo_release_url'; // 远程仓库的 release 地址
+  static const String REMOTE_REPO_URL = 'remote_repo_url'; // 远程仓库的 url
 
   // 所有配置项的 Map
   final settings = <String, dynamic>{
@@ -53,6 +56,12 @@ class ConfigService extends GetxService {
     ACTIVE_BACKGROUND_PRIVACY_MODE: false.obs,
     DEFAULT_LANGUAGE_KEY: 'zh-CN'.obs,
     THEME_MODE_KEY: 0.obs, // 添加主题模式配置，默认为0(system)
+    // TODO 远程仓库的 pubspec.yaml 地址
+    REMOTE_REPO_PUB_SPEC_YAML_URL: ''.obs,
+    // TODO 远程仓库的 release 地址
+    REMOTE_REPO_RELEASE_URL: ''.obs,
+    // TODO 远程仓库的 url
+    REMOTE_REPO_URL: ''.obs,
   }.obs;
 
   late final Rx<Sort> _currentTranslationSort;

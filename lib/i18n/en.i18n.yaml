@@ -301,6 +301,18 @@ settings:
   basicTheme: Basic Theme
   needRestartToApply: Need to restart the app to apply the settings
   themeNeedRestartDescription: The theme settings need to restart the app to apply the settings
+  about: About
+  currentVersion: Current Version
+  latestVersion: Latest Version
+  checkForUpdates: Check for Updates
+  update: Update
+  newVersionAvailable: New Version Available
+  projectHome: Project Home
+  release: Release
+  issueReport: Issue Report
+  openSourceLicense: Open Source License
+  checkForUpdatesFailed: Check for updates failed, please try again later
+
 signIn:
   pleaseLoginFirst: Please login first
   alreadySignedInToday: You have already signed in today!

@@ -435,6 +435,17 @@ class TranslationsSettingsEn {
 	String get basicTheme => 'Basic Theme';
 	String get needRestartToApply => 'Need to restart the app to apply the settings';
 	String get themeNeedRestartDescription => 'The theme settings need to restart the app to apply the settings';
+	String get about => 'About';
+	String get currentVersion => 'Current Version';
+	String get latestVersion => 'Latest Version';
+	String get checkForUpdates => 'Check for Updates';
+	String get update => 'Update';
+	String get newVersionAvailable => 'New Version Available';
+	String get projectHome => 'Project Home';
+	String get release => 'Release';
+	String get issueReport => 'Issue Report';
+	String get openSourceLicense => 'Open Source License';
+	String get checkForUpdatesFailed => 'Check for updates failed, please try again later';
 }
 
 // Path: signIn
@@ -831,6 +842,17 @@ extension on Translations {
 			case 'settings.basicTheme': return 'Basic Theme';
 			case 'settings.needRestartToApply': return 'Need to restart the app to apply the settings';
 			case 'settings.themeNeedRestartDescription': return 'The theme settings need to restart the app to apply the settings';
+			case 'settings.about': return 'About';
+			case 'settings.currentVersion': return 'Current Version';
+			case 'settings.latestVersion': return 'Latest Version';
+			case 'settings.checkForUpdates': return 'Check for Updates';
+			case 'settings.update': return 'Update';
+			case 'settings.newVersionAvailable': return 'New Version Available';
+			case 'settings.projectHome': return 'Project Home';
+			case 'settings.release': return 'Release';
+			case 'settings.issueReport': return 'Issue Report';
+			case 'settings.openSourceLicense': return 'Open Source License';
+			case 'settings.checkForUpdatesFailed': return 'Check for updates failed, please try again later';
 			case 'signIn.pleaseLoginFirst': return 'Please login first';
 			case 'signIn.alreadySignedInToday': return 'You have already signed in today!';
 			case 'signIn.youDidNotStickToTheSignIn': return 'You did not stick to the sign in.';

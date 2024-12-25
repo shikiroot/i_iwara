@@ -431,6 +431,17 @@ class _TranslationsSettingsJa implements TranslationsSettingsEn {
 	@override String get basicTheme => 'ベーシックテーマ';
 	@override String get needRestartToApply => 'アプリを再起動して設定を適用してください';
 	@override String get themeNeedRestartDescription => 'テーマ設定はアプリを再起動して設定を適用してください';
+	@override String get about => 'アバウト';
+	@override String get currentVersion => '現在のバージョン';
+	@override String get latestVersion => '最新バージョン';
+	@override String get checkForUpdates => '更新をチェック';
+	@override String get update => '更新';
+	@override String get newVersionAvailable => '新しいバージョンが利用可能です';
+	@override String get projectHome => 'プロジェクトホーム';
+	@override String get release => 'リリース';
+	@override String get issueReport => '問題報告';
+	@override String get openSourceLicense => 'オープンソースライセンス';
+	@override String get checkForUpdatesFailed => '更新のチェックに失敗しました。後でもう一度お試しください';
 }
 
 // Path: signIn
@@ -827,6 +838,17 @@ extension on TranslationsJa {
 			case 'settings.basicTheme': return 'ベーシックテーマ';
 			case 'settings.needRestartToApply': return 'アプリを再起動して設定を適用してください';
 			case 'settings.themeNeedRestartDescription': return 'テーマ設定はアプリを再起動して設定を適用してください';
+			case 'settings.about': return 'アバウト';
+			case 'settings.currentVersion': return '現在のバージョン';
+			case 'settings.latestVersion': return '最新バージョン';
+			case 'settings.checkForUpdates': return '更新をチェック';
+			case 'settings.update': return '更新';
+			case 'settings.newVersionAvailable': return '新しいバージョンが利用可能です';
+			case 'settings.projectHome': return 'プロジェクトホーム';
+			case 'settings.release': return 'リリース';
+			case 'settings.issueReport': return '問題報告';
+			case 'settings.openSourceLicense': return 'オープンソースライセンス';
+			case 'settings.checkForUpdatesFailed': return '更新のチェックに失敗しました。後でもう一度お試しください';
 			case 'signIn.pleaseLoginFirst': return 'サインインする前にログインしてください';
 			case 'signIn.alreadySignedInToday': return '今日は既にサインインしています！';
 			case 'signIn.youDidNotStickToTheSignIn': return 'サインインを続けることができませんでした。';

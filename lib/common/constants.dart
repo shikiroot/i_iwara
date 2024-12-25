@@ -5,6 +5,9 @@ import 'package:i_iwara/i18n/strings.g.dart';
 class CommonConstants {
   CommonConstants._internal();
 
+  // 应用版本
+  static const String VERSION = '1.0.0';
+
   // 网站基础URL
   static const String iwaraBaseUrl = 'https://www.iwara.tv';
 

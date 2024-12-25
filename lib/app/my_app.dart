@@ -6,6 +6,7 @@ import 'package:i_iwara/app/services/app_service.dart';
 import 'package:i_iwara/app/services/config_service.dart';
 import 'package:i_iwara/app/ui/pages/home/home_navigation_layout.dart';
 import 'package:i_iwara/app/ui/pages/login/login_page.dart';
+import 'package:i_iwara/app/ui/pages/settings/about_page.dart';
 import 'package:i_iwara/app/ui/pages/settings/player_settings_page.dart';
 import 'package:i_iwara/app/ui/pages/settings/proxy_settings_page.dart';
 import 'package:i_iwara/app/ui/pages/settings/settings_page.dart';
@@ -59,6 +60,7 @@ class MyApp extends StatelessWidget {
                 name: Routes.THEME_SETTINGS_PAGE,
                 page: () => const ThemeSettingsPage(),
                 transition: Transition.rightToLeft),
+            GetPage(name: Routes.ABOUT_PAGE, page: () => const AboutPage(), transition: Transition.rightToLeft),
             GetPage(
               name: Routes.LOGIN,
               page: () => const LoginPage(),

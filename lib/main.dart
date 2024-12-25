@@ -29,6 +29,7 @@ import 'db/database_service.dart';
 import 'app/services/translation_service.dart';
 import 'i18n/strings.g.dart';
 import 'app/services/theme_service.dart';
+import 'app/services/version_service.dart';
 
 void main() {
 
@@ -81,7 +82,11 @@ void main() {
     Get.put(apiService);
     UserService userService = await UserService().init();
     Get.put(userService);
-    Get.put(await ThemeService().init());
+        // 在 main() 函数中初始化服务
+    var versionService = await VersionService().init();
+    Get.put(versionService);
+    var themeService = await ThemeService().init();
+    Get.put(themeService);
     Get.lazyPut(() => VideoService());
     Get.lazyPut(() => CommentService());
     Get.lazyPut(() => SearchService());

@@ -7,6 +7,7 @@ import 'player_settings_page.dart';
 import 'proxy_settings_page.dart';
 import 'theme_settings_page.dart';
 import 'package:i_iwara/i18n/strings.g.dart' as slang;
+import 'about_page.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -44,6 +45,13 @@ class SettingsPage extends StatelessWidget {
         icon: Icons.color_lens,
         page: ThemeSettingsPage(isWideScreen: isWideScreen),
         route: Routes.THEME_SETTINGS_PAGE,
+      ),
+      SettingItem(
+        title: t.settings.about,
+        subtitle: t.settings.checkForUpdates,
+        icon: Icons.info_outline,
+        page: AboutPage(isWideScreen: isWideScreen),
+        route: Routes.ABOUT_PAGE,
       ),
     ];
 

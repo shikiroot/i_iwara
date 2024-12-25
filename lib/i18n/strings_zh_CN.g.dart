@@ -432,6 +432,17 @@ class _TranslationsSettingsZhCn implements TranslationsSettingsEn {
 	@override String get basicTheme => '基础主题';
 	@override String get needRestartToApply => '需要重启应用以应用设置';
 	@override String get themeNeedRestartDescription => '主题设置需要重启应用以应用设置';
+	@override String get about => '关于';
+	@override String get currentVersion => '当前版本';
+	@override String get latestVersion => '最新版本';
+	@override String get checkForUpdates => '检查更新';
+	@override String get update => '更新';
+	@override String get newVersionAvailable => '发现新版本';
+	@override String get projectHome => '开源地址';
+	@override String get release => '版本发布';
+	@override String get issueReport => '问题反馈';
+	@override String get openSourceLicense => '开源许可';
+	@override String get checkForUpdatesFailed => '检查更新失败，请稍后重试';
 }
 
 // Path: signIn
@@ -829,6 +840,17 @@ extension on TranslationsZhCn {
 			case 'settings.basicTheme': return '基础主题';
 			case 'settings.needRestartToApply': return '需要重启应用以应用设置';
 			case 'settings.themeNeedRestartDescription': return '主题设置需要重启应用以应用设置';
+			case 'settings.about': return '关于';
+			case 'settings.currentVersion': return '当前版本';
+			case 'settings.latestVersion': return '最新版本';
+			case 'settings.checkForUpdates': return '检查更新';
+			case 'settings.update': return '更新';
+			case 'settings.newVersionAvailable': return '发现新版本';
+			case 'settings.projectHome': return '开源地址';
+			case 'settings.release': return '版本发布';
+			case 'settings.issueReport': return '问题反馈';
+			case 'settings.openSourceLicense': return '开源许可';
+			case 'settings.checkForUpdatesFailed': return '检查更新失败，请稍后重试';
 			case 'signIn.pleaseLoginFirst': return '请先登录后再签到';
 			case 'signIn.alreadySignedInToday': return '您今天已经签到过了！';
 			case 'signIn.youDidNotStickToTheSignIn': return '您未能坚持签到。';
