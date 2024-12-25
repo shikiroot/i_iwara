@@ -49,6 +49,24 @@ class GlobalDrawerColumns extends StatelessWidget {
                   Get.snackbar(t.errors.error, t.signIn.pleaseLoginFirst);
                 }
               }),
+              // 关注列表
+              _buildMenuItem(Icons.people, t.common.followingList, () {
+                if (userService.isLogin) {
+                  NaviService.navigateToFollowingListPage(userService.currentUser.value!.id);
+                  AppService.switchGlobalDrawer();
+                } else {
+                  Get.snackbar(t.errors.error, t.signIn.pleaseLoginFirst);
+                }
+              }),
+              // 粉丝列表
+              _buildMenuItem(Icons.people, t.common.followersList, () {
+                if (userService.isLogin) {
+                  NaviService.navigateToFollowersListPage(userService.currentUser.value!.id);
+                  AppService.switchGlobalDrawer();
+                } else {
+                  Get.snackbar(t.errors.error, t.signIn.pleaseLoginFirst);
+                }
+              }),
               // 播放列表
               _buildMenuItem(Icons.playlist_play, t.common.playList, () {
                 if (userService.isLogin) {

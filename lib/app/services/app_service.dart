@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:i_iwara/app/ui/pages/favorites/my_favorites.dart';
+import 'package:i_iwara/app/ui/pages/follows/follows_page.dart';
 import 'package:i_iwara/app/ui/pages/friends/friends_page.dart';
 import 'package:i_iwara/app/ui/pages/history/history_list_page.dart';
 import 'package:i_iwara/app/ui/pages/play_list/play_list.dart';
@@ -325,5 +326,28 @@ class NaviService {
       },
     ));
   }
-}
 
+  static void navigateToFollowingListPage(String userId) {
+    AppService.homeNavigatorKey.currentState?.push(PageRouteBuilder(
+      settings: RouteSettings(name: Routes.FOLLOWING_LIST(userId)),
+      pageBuilder: (context, animation, secondaryAnimation) {
+        return FollowsPage(
+          userId: userId,
+          initIsFollowing: true,
+        );
+      },
+    ));
+  }
+
+  static void navigateToFollowersListPage(String userId) {
+    AppService.homeNavigatorKey.currentState?.push(PageRouteBuilder(
+      settings: RouteSettings(name: Routes.FOLLOWERS_LIST(userId)),
+      pageBuilder: (context, animation, secondaryAnimation) {
+        return FollowsPage(
+          userId: userId,
+          initIsFollowing: false,
+        );
+      },
+    ));
+  }
+}

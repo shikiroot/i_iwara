@@ -184,6 +184,11 @@ class _TranslationsCommonZhTw implements TranslationsCommonEn {
 	@override String get reject => '拒絕';
 	@override String get clearAllHistory => '清空所有歷史紀錄';
 	@override String get clearAllHistoryConfirm => '確定要清空所有歷史紀錄嗎？';
+	@override String get followingList => '追蹤中列表';
+	@override String get followersList => '粉絲列表';
+	@override String get follows => '追蹤';
+	@override String get fans => '粉絲';
+	@override String get followsAndFans => '追蹤與粉絲';
 }
 
 // Path: auth
@@ -665,6 +670,11 @@ extension on TranslationsZhTw {
 			case 'common.reject': return '拒絕';
 			case 'common.clearAllHistory': return '清空所有歷史紀錄';
 			case 'common.clearAllHistoryConfirm': return '確定要清空所有歷史紀錄嗎？';
+			case 'common.followingList': return '追蹤中列表';
+			case 'common.followersList': return '粉絲列表';
+			case 'common.follows': return '追蹤';
+			case 'common.fans': return '粉絲';
+			case 'common.followsAndFans': return '追蹤與粉絲';
 			case 'auth.login': return '登入';
 			case 'auth.logout': return '登出';
 			case 'auth.email': return '電子郵件';

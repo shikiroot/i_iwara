@@ -35,6 +35,10 @@ abstract class Routes {
   static const FULL_SCREEN_VIDEO_PLAYER_SCREEN = '/full_screen_video_player_screen';
 
   static String PLAYLIST_DETAIL(String id) => _Paths.PLAYLIST_DETAIL.replaceAll(':id', id);
+
+  static String FOLLOWING_LIST(String userId) => _Paths.FOLLOWING_LIST.replaceAll(':userId', userId);
+
+  static String FOLLOWERS_LIST(String userId) => _Paths.FOLLOWERS_LIST.replaceAll(':userId', userId);
 }
 
 abstract class _Paths {
@@ -59,6 +63,8 @@ abstract class _Paths {
   static const SIGN_IN = '/sign_in';
   static const FAVORITE = '/favorite';
   static const FRIENDS = '/friends';
+  static const FOLLOWING_LIST = '/following_list/:userId';
+  static const FOLLOWERS_LIST = '/followers_list/:userId';
   static const ROOT = '/';
   static const HISTORY_LIST = '/history_list';
 }

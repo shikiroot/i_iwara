@@ -184,6 +184,12 @@ class _TranslationsCommonZhCn implements TranslationsCommonEn {
 	@override String get reject => '拒绝';
 	@override String get clearAllHistory => '清空所有历史记录';
 	@override String get clearAllHistoryConfirm => '确定要清空所有历史记录吗？';
+	@override String get followingList => '关注列表';
+	@override String get followersList => '粉丝列表';
+	@override String get followers => '粉丝';
+	@override String get follows => '关注';
+	@override String get fans => '粉丝';
+	@override String get followsAndFans => '关注与粉丝';
 }
 
 // Path: auth
@@ -665,6 +671,12 @@ extension on TranslationsZhCn {
 			case 'common.reject': return '拒绝';
 			case 'common.clearAllHistory': return '清空所有历史记录';
 			case 'common.clearAllHistoryConfirm': return '确定要清空所有历史记录吗？';
+			case 'common.followingList': return '关注列表';
+			case 'common.followersList': return '粉丝列表';
+			case 'common.followers': return '粉丝';
+			case 'common.follows': return '关注';
+			case 'common.fans': return '粉丝';
+			case 'common.followsAndFans': return '关注与粉丝';
 			case 'auth.login': return '登录';
 			case 'auth.logout': return '退出登录';
 			case 'auth.email': return '邮箱';

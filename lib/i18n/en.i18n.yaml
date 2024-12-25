@@ -127,7 +127,11 @@ common:
   reject: Reject
   clearAllHistory: Clear All History
   clearAllHistoryConfirm: Are you sure you want to clear all history?
-
+  followingList: Following List
+  followersList: Followers List
+  follows: Follows
+  fans: Fans
+  followsAndFans: Follows and Fans
 auth:
   login: Login
   logout: Logout

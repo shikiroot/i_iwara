@@ -188,6 +188,11 @@ class TranslationsCommonEn {
 	String get reject => 'Reject';
 	String get clearAllHistory => 'Clear All History';
 	String get clearAllHistoryConfirm => 'Are you sure you want to clear all history?';
+	String get followingList => 'Following List';
+	String get followersList => 'Followers List';
+	String get follows => 'Follows';
+	String get fans => 'Fans';
+	String get followsAndFans => 'Follows and Fans';
 }
 
 // Path: auth
@@ -669,6 +674,11 @@ extension on Translations {
 			case 'common.reject': return 'Reject';
 			case 'common.clearAllHistory': return 'Clear All History';
 			case 'common.clearAllHistoryConfirm': return 'Are you sure you want to clear all history?';
+			case 'common.followingList': return 'Following List';
+			case 'common.followersList': return 'Followers List';
+			case 'common.follows': return 'Follows';
+			case 'common.fans': return 'Fans';
+			case 'common.followsAndFans': return 'Follows and Fans';
 			case 'auth.login': return 'Login';
 			case 'auth.logout': return 'Logout';
 			case 'auth.email': return 'Email';

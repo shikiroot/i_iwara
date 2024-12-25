@@ -246,7 +246,7 @@ class UserService extends GetxService {
         });
 
       final List<User> results = (response.data['results'] as List)
-          .map((userJson) => User.fromJson(userJson))
+          .map((item) => User.fromJson(item['user']))
           .toList();
 
       final PageData<User> pageData = PageData(
@@ -272,7 +272,7 @@ class UserService extends GetxService {
       });
 
       final List<User> results = (response.data['results'] as List)
-          .map((userJson) => User.fromJson(userJson))
+          .map((item) => User.fromJson(item['follower']))
           .toList();
 
       final PageData<User> pageData = PageData(

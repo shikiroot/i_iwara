@@ -127,6 +127,11 @@ common:
   reject: 拒絕
   clearAllHistory: 清空所有歷史紀錄
   clearAllHistoryConfirm: 確定要清空所有歷史紀錄嗎？
+  followingList: 追蹤中列表
+  followersList: 粉絲列表
+  follows: 追蹤
+  fans: 粉絲
+  followsAndFans: 追蹤與粉絲
 
 auth:
   login: 登入

@@ -184,6 +184,11 @@ class _TranslationsCommonJa implements TranslationsCommonEn {
 	@override String get reject => '拒否';
 	@override String get clearAllHistory => 'すべての履歴をクリア';
 	@override String get clearAllHistoryConfirm => 'すべての履歴をクリアしてもよろしいですか？';
+	@override String get followingList => 'フォロー中リスト';
+	@override String get followersList => 'フォロワーリスト';
+	@override String get follows => 'フォロー';
+	@override String get fans => 'フォロワー';
+	@override String get followsAndFans => 'フォローとフォロワー';
 }
 
 // Path: auth
@@ -665,6 +670,11 @@ extension on TranslationsJa {
 			case 'common.reject': return '拒否';
 			case 'common.clearAllHistory': return 'すべての履歴をクリア';
 			case 'common.clearAllHistoryConfirm': return 'すべての履歴をクリアしてもよろしいですか？';
+			case 'common.followingList': return 'フォロー中リスト';
+			case 'common.followersList': return 'フォロワーリスト';
+			case 'common.follows': return 'フォロー';
+			case 'common.fans': return 'フォロワー';
+			case 'common.followsAndFans': return 'フォローとフォロワー';
 			case 'auth.login': return 'ログイン';
 			case 'auth.logout': return 'ログアウト';
 			case 'auth.email': return 'メールアドレス';

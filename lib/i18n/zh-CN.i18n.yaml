@@ -129,6 +129,12 @@ common:
   reject: 拒绝
   clearAllHistory: 清空所有历史记录
   clearAllHistoryConfirm: 确定要清空所有历史记录吗？
+  followingList: 关注列表
+  followersList: 粉丝列表
+  followers: 粉丝
+  follows: 关注 
+  fans: 粉丝
+  followsAndFans: 关注与粉丝
 
 auth:
   login: 登录
