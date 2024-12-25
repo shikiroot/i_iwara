@@ -2,6 +2,7 @@ import 'package:dio/dio.dart' as dio;
 import 'package:get/get.dart';
 import 'package:i_iwara/app/models/dto/user_request_dto.dart';
 import 'package:i_iwara/app/models/page_data.model.dart';
+import 'package:i_iwara/i18n/strings.g.dart';
 
 import '../../common/constants.dart';
 import '../../utils/logger_utils.dart';
@@ -56,13 +57,13 @@ class UserService extends GetxService {
     } on dio.DioException catch (e) {
       LogUtils.e('遭遇网络错误', error: e);
       if (e.response?.statusCode == 401) {
-        throw UnauthorizedException("会话已过期，请重新登录");
+        throw UnauthorizedException(t.errors.sessionExpired);
       } else {
-        throw AuthServiceException("抓取用户资料失败");
+        throw AuthServiceException(t.errors.failedToFetchData);
       }
     } catch (e) {
       LogUtils.e('抓取用户资料失败', error: e);
-      throw AuthServiceException("未知错误");
+      throw AuthServiceException(t.errors.failedToOperate);
     }
   }
 
@@ -73,7 +74,7 @@ class UserService extends GetxService {
       currentUser.value = null;
     } catch (e) {
       LogUtils.e('用户登出失败', error: e);
-      throw AuthServiceException("未知错误");
+      throw AuthServiceException(t.errors.failedToOperate);
     }
   }
 
@@ -81,13 +82,13 @@ class UserService extends GetxService {
   Future<ApiResult> followUser(String userId) async {
     // 检查用户ID是否为空
     if (userId.isEmpty) {
-      return ApiResult.fail("用户ID不能为空");
+      return ApiResult.fail(t.errors.invalidParameter);
     }
 
     // 登录
     if (!_authService.hasToken) {
       Get.toNamed(Routes.LOGIN);
-      return ApiResult.fail("请先登录");
+      return ApiResult.fail(t.errors.pleaseLoginFirst);
     }
 
     try {
@@ -95,7 +96,7 @@ class UserService extends GetxService {
       return ApiResult.success();
     } catch (e) {
       LogUtils.e('关注失败', error: e);
-      return ApiResult.fail("关注失败");
+      return ApiResult.fail(t.errors.failedToOperate);
     }
   }
 
@@ -103,13 +104,13 @@ class UserService extends GetxService {
   Future<ApiResult> unfollowUser(String userId) async {
     // 检查用户ID是否为空
     if (userId.isEmpty) {
-      return ApiResult.fail("用户ID不能为空");
+      return ApiResult.fail(t.errors.invalidParameter);
     }
 
     // 登录
     if (!_authService.hasToken) {
       Get.toNamed(Routes.LOGIN);
-      return ApiResult.fail("请先登录");
+      return ApiResult.fail(t.errors.pleaseLoginFirst);
     }
 
     try {
@@ -117,7 +118,7 @@ class UserService extends GetxService {
       return ApiResult.success();
     } catch (e) {
       LogUtils.e('取消关注失败', error: e);
-      return ApiResult.fail("取消关注失败");
+      return ApiResult.fail(t.errors.failedToOperate);
     }
   }
 
@@ -125,13 +126,13 @@ class UserService extends GetxService {
   Future<ApiResult> removeFriend(String userId) async {
     // 检查用户ID是否为空
     if (userId.isEmpty) {
-      return ApiResult.fail("用户ID不能为空");
+      return ApiResult.fail(t.errors.invalidParameter);
     }
 
     // 登录
     if (!_authService.hasToken) {
       Get.toNamed(Routes.LOGIN);
-      return ApiResult.fail("请先登录");
+      return ApiResult.fail(t.errors.pleaseLoginFirst);
     }
 
     try {
@@ -139,7 +140,7 @@ class UserService extends GetxService {
       return ApiResult.success();
     } catch (e) {
       LogUtils.e('移除朋友失败', error: e);
-      return ApiResult.fail("移除朋友失败");
+      return ApiResult.fail(t.errors.failedToOperate);
     }
   }
 
@@ -147,13 +148,13 @@ class UserService extends GetxService {
   Future<ApiResult> addFriend(String userId) async {
     // 检查用户ID是否为空
     if (userId.isEmpty) {
-      return ApiResult.fail("用户ID不能为空");
+      return ApiResult.fail(t.errors.invalidParameter);
     }
 
     // 登录
     if (!_authService.hasToken) {
       Get.toNamed(Routes.LOGIN);
-      return ApiResult.fail("请先登录");
+      return ApiResult.fail(t.errors.pleaseLoginFirst);
     }
 
     try {
@@ -161,7 +162,7 @@ class UserService extends GetxService {
       return ApiResult.success();
     } catch (e) {
       LogUtils.e('发送朋友申请失败', error: e);
-      return ApiResult.fail("发送朋友申请失败");
+      return ApiResult.fail(t.errors.failedToOperate);
     }
   }
 
@@ -204,7 +205,7 @@ class UserService extends GetxService {
       return ApiResult.success(data: pageData);
     } catch (e) {
       LogUtils.e('获取朋友列表失败', error: e);
-      return ApiResult.fail('获取朋友列表失败');
+      return ApiResult.fail(t.errors.failedToFetchData);
     }
   }
 
@@ -231,7 +232,59 @@ class UserService extends GetxService {
       return ApiResult.success(data: pageData);
     } catch (e) {
       LogUtils.e('获取朋友请求列表失败', error: e);
-      return ApiResult.fail('获取朋友请求列表失败');
+      return ApiResult.fail(t.errors.failedToFetchData);
+    }
+  }
+
+  /// 获取关注的用户
+  Future<ApiResult<PageData<User>>> fetchFollowingUsers(
+      {int page = 0, int limit = 20, required String userId}) async {
+    try {
+      final response = await _apiService.get(ApiConstants.userFollowing(userId), queryParameters: {
+        'page': page,
+        'limit': limit,
+        });
+
+      final List<User> results = (response.data['results'] as List)
+          .map((userJson) => User.fromJson(userJson))
+          .toList();
+
+      final PageData<User> pageData = PageData(
+        page: response.data['page'],
+        limit: response.data['limit'],
+        count: response.data['count'],
+        results: results,
+      );
+      return ApiResult.success(data: pageData);
+    } catch (e) {
+      LogUtils.e('获取关注用户列表失败', error: e);
+      return ApiResult.fail(t.errors.failedToFetchData);
+    }
+  }
+
+  /// 获取粉丝
+  Future<ApiResult<PageData<User>>> fetchFollowers(
+      {int page = 0, int limit = 20, required String userId}) async {
+    try {
+      final response = await _apiService.get(ApiConstants.userFollowers(userId), queryParameters: {
+        'page': page,
+        'limit': limit,
+      });
+
+      final List<User> results = (response.data['results'] as List)
+          .map((userJson) => User.fromJson(userJson))
+          .toList();
+
+      final PageData<User> pageData = PageData(
+        page: response.data['page'],
+        limit: response.data['limit'],
+        count: response.data['count'],
+        results: results,
+      );
+      return ApiResult.success(data: pageData);
+    } catch (e) {
+      LogUtils.e('获取粉丝列表失败', error: e);
+      return ApiResult.fail(t.errors.failedToFetchData);
     }
   }
 }

@@ -4,6 +4,7 @@ import 'package:i_iwara/app/models/image.model.dart';
 import 'package:i_iwara/app/models/user.model.dart';
 import 'package:i_iwara/app/services/api_service.dart';
 import 'package:i_iwara/common/constants.dart';
+import 'package:i_iwara/i18n/strings.g.dart';
 
 import '../../utils/logger_utils.dart';
 import '../models/page_data.model.dart';
@@ -20,7 +21,7 @@ class GalleryService extends GetxService {
       return ApiResult.success(data: imageModel);
     } catch (e) {
       LogUtils.e('获取图库详情失败', tag: 'GalleryService', error: e);
-      return ApiResult.fail('获取图库详情失败');
+      return ApiResult.fail(t.errors.failedToFetchImageDetail);
     }
   }
 
@@ -73,7 +74,7 @@ class GalleryService extends GetxService {
       return ApiResult.success(data: pageData);
     } catch (e) {
       LogUtils.e('获取图片列表失败', tag: 'ImageModelService', error: e);
-      return ApiResult.fail('噫嘘唏, 获取图片列表失败');
+      return ApiResult.fail(t.errors.failedToFetchImageList);
     }
   }
 
@@ -87,7 +88,7 @@ class GalleryService extends GetxService {
           page: page, limit: limit, url: ApiConstants.relatedImages(mediaId));
     } catch (e) {
       LogUtils.e('获取相关图库列表失败', tag: 'ImageModelService', error: e);
-      return ApiResult.fail('噫嘘唏, 获取相关图库列表失败');
+      return ApiResult.fail(t.errors.failedToFetchImageList);
     }
   }
 
@@ -101,7 +102,7 @@ class GalleryService extends GetxService {
       );
     } catch (e) {
       LogUtils.e('获取作者图库列表失败', tag: 'ImageModelService', error: e);
-      return ApiResult.fail('噫嘘唏, 获取作者图库列表失败');
+      return ApiResult.fail(t.errors.failedToFetchImageList);
     }
   }
 
@@ -128,7 +129,7 @@ class GalleryService extends GetxService {
       return ApiResult.success(data: pageData);
     } catch (e) {
       LogUtils.e('获取点赞用户列表失败', tag: 'ImageModelService', error: e);
-      return ApiResult.fail('噫嘘唏, 获取点赞用户列表失败');
+      return ApiResult.fail(t.errors.failedToFetchImageList);
     }
   }
 
@@ -156,7 +157,7 @@ class GalleryService extends GetxService {
       return ApiResult.success(data: pageData);
     } catch (e) {
       LogUtils.e('获取最爱图库列表失败', tag: 'ImageModelService', error: e);
-      return ApiResult.fail('噫嘘唏, 获取最爱图库列表失败');
+      return ApiResult.fail(t.errors.failedToFetchImageList);
     }
   }
 
@@ -167,7 +168,7 @@ class GalleryService extends GetxService {
       return ApiResult.success();
     } catch (e) {
       LogUtils.e('取消最爱图库失败', tag: 'ImageModelService', error: e);
-      return ApiResult.fail('噫嘘唏, 取消最爱图库失败');
+      return ApiResult.fail(t.errors.failedToOperate);
     }
   }
 
@@ -178,7 +179,7 @@ class GalleryService extends GetxService {
       return ApiResult.success();
     } catch (e) {
       LogUtils.e('设为最爱图库失败', tag: 'ImageModelService', error: e);
-      return ApiResult.fail('噫嘘唏, 设为最爱图库失败');
+      return ApiResult.fail(t.errors.failedToOperate);
     }
   }
 
@@ -189,7 +190,7 @@ class GalleryService extends GetxService {
       return ApiResult.success();
     } catch (e) {
       LogUtils.e('点赞图库失败', tag: 'GalleryService', error: e);
-      return ApiResult.fail('点赞图库失败');
+      return ApiResult.fail(t.errors.failedToOperate);
     }
   }
 
@@ -200,7 +201,7 @@ class GalleryService extends GetxService {
       return ApiResult.success();
     } catch (e) {
       LogUtils.e('取消点赞图库失败', tag: 'GalleryService', error: e);
-      return ApiResult.fail('取消点赞图库失败');
+      return ApiResult.fail(t.errors.failedToOperate);
     }
   }
 }

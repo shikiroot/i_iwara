@@ -3,6 +3,7 @@ import 'package:i_iwara/app/models/api_result.model.dart';
 import 'package:i_iwara/app/models/page_data.model.dart';
 import 'package:i_iwara/app/models/user.model.dart';
 import 'package:i_iwara/app/models/video.model.dart';
+import 'package:i_iwara/i18n/strings.g.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
 
 import '../../common/constants.dart';
@@ -59,7 +60,7 @@ class VideoService extends GetxService {
       return ApiResult.success(data: pageData);
     } catch (e) {
       LogUtils.e('获取视频列表失败', tag: 'VideoService', error: e);
-      return ApiResult.fail('噫嘘唏, 获取视频列表失败');
+      return ApiResult.fail(t.errors.failedToFetchData);
     }
   }
 
@@ -71,7 +72,7 @@ class VideoService extends GetxService {
           page: page, limit: limit, url: ApiConstants.relatedVideos(mediaId));
     } catch (e) {
       LogUtils.e('获取相关视频列表失败', tag: 'VideoService', error: e);
-      return ApiResult.fail('噫嘘唏, 获取相关视频列表失败');
+      return ApiResult.fail(t.errors.failedToFetchData);
     }
   }
 
@@ -88,7 +89,7 @@ class VideoService extends GetxService {
       );
     } catch (e) {
       LogUtils.e('获取作者视频列表失败', tag: 'VideoService', error: e);
-      return ApiResult.fail('噫嘘唏, 获取作者视频列表失败');
+      return ApiResult.fail(t.errors.failedToFetchData);
     }
   }
 
@@ -115,7 +116,7 @@ class VideoService extends GetxService {
       return ApiResult.success(data: pageData);
     } catch (e) {
       LogUtils.e('获取视频点赞用户列表失败', tag: 'VideoService', error: e);
-      return ApiResult.fail('噫嘘唏, 获取视频点赞用户列表失败');
+      return ApiResult.fail(t.errors.failedToFetchData);
     }
   }
 
@@ -143,7 +144,7 @@ class VideoService extends GetxService {
       return ApiResult.success(data: pageData);
     } catch (e) {
       LogUtils.e('获取最爱视频列表失败', tag: 'VideoService', error: e);
-      return ApiResult.fail('噫嘘唏, 获取最爱视频列表失败');
+      return ApiResult.fail(t.errors.failedToFetchData);
     }
   }
 
@@ -154,7 +155,7 @@ class VideoService extends GetxService {
       return ApiResult.success();
     } catch (e) {
       LogUtils.e('取消最爱视频失败', tag: 'VideoService', error: e);
-      return ApiResult.fail('噫嘘唏, 取消最爱视频失败');
+      return ApiResult.fail(t.errors.failedToOperate);
     }
   }
 
@@ -165,7 +166,7 @@ class VideoService extends GetxService {
       return ApiResult.success();
     } catch (e) {
       LogUtils.e('设为最爱视频失败', tag: 'VideoService', error: e);
-      return ApiResult.fail('噫嘘唏, 设为最爱视频失败');
+      return ApiResult.fail(t.errors.failedToOperate);
     }
   }
 
@@ -176,7 +177,7 @@ class VideoService extends GetxService {
       return ApiResult.success();
     } catch (e) {
       LogUtils.e('点赞视频失败', tag: 'VideoService', error: e);
-      return ApiResult.fail('点赞视频失败');
+      return ApiResult.fail(t.errors.failedToOperate);
     }
   }
 
@@ -187,7 +188,7 @@ class VideoService extends GetxService {
       return ApiResult.success();
     } catch (e) {
       LogUtils.e('取消点赞视频失败', tag: 'VideoService', error: e);
-      return ApiResult.fail('取消点赞视频失败');
+      return ApiResult.fail(t.errors.failedToOperate);
     }
   }
 }

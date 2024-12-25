@@ -174,7 +174,21 @@ errors:
   errorWhileOpeningLink: '无法打开链接: ${link}'
   invalidUrl: 无效的URL
   failedToOperate: 操作失败
-
+  permissionDenied: 权限不足
+  youDoNotHavePermissionToAccessThisResource: 您没有权限访问此资源
+  loginFailed: 登录失败
+  unknownError: 未知错误
+  sessionExpired: 会话已过期
+  failedToFetchCaptcha: 获取验证码失败
+  emailAlreadyExists: 邮箱已存在
+  invalidCaptcha: 无效的验证码
+  registerFailed: 注册失败
+  failedToFetchComments: 获取评论失败
+  failedToFetchImageDetail: 获取图库详情失败
+  failedToFetchImageList: 获取图库列表失败
+  failedToFetchData: 获取数据失败
+  invalidParameter: 无效的参数
+  pleaseLoginFirst: 请先登录
 friends:
   clickToRestoreFriend: 点击恢复好友
   friendsList: 好友列表
@@ -233,6 +247,8 @@ search:
   noSearchHistoryRecords: 没有搜索历史
   notSupportCurrentSearchType: '暂未实现当前搜索类型 ${searchType}，敬请期待'
   searchResult: 搜索结果
+  unsupportedSearchType: '不支持的搜索类型: ${searchType}'
+
 mediaList:
   personalIntroduction: 个人简介
 
@@ -352,3 +368,12 @@ videoDetail:
   writeYourCommentHere: 写下你的评论...
   authorOtherVideos: 作者的其他视频
   relatedVideos: 相关视频
+
+share:
+  sharePlayList: 分享播放列表
+  wowDidYouSeeThis: 哇哦，你看过这个吗？
+  nameIs: 名字叫做
+  clickLinkToView: 点击链接查看
+  iReallyLikeThis: 我真的是太喜欢这个了，你也来看看吧！
+  shareFailed: 分享失败，请稍后再试
+  share: 分享

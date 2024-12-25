@@ -47,6 +47,7 @@ class TranslationsZhTw implements Translations {
 	@override late final _TranslationsSignInZhTw signIn = _TranslationsSignInZhTw._(_root);
 	@override late final _TranslationsSubscriptionsZhTw subscriptions = _TranslationsSubscriptionsZhTw._(_root);
 	@override late final _TranslationsVideoDetailZhTw videoDetail = _TranslationsVideoDetailZhTw._(_root);
+	@override late final _TranslationsShareZhTw share = _TranslationsShareZhTw._(_root);
 }
 
 // Path: common
@@ -242,6 +243,21 @@ class _TranslationsErrorsZhTw implements TranslationsErrorsEn {
 	@override String errorWhileOpeningLink({required Object link}) => '無法開啟連結: ${link}';
 	@override String get invalidUrl => '無效的URL';
 	@override String get failedToOperate => '操作失敗';
+	@override String get permissionDenied => '權限不足';
+	@override String get youDoNotHavePermissionToAccessThisResource => '您沒有權限訪問此資源';
+	@override String get loginFailed => '登入失敗';
+	@override String get unknownError => '未知錯誤';
+	@override String get sessionExpired => '會話已過期';
+	@override String get failedToFetchCaptcha => '獲取驗證碼失敗';
+	@override String get emailAlreadyExists => '電子郵件已存在';
+	@override String get invalidCaptcha => '無效的驗證碼';
+	@override String get registerFailed => '註冊失敗';
+	@override String get failedToFetchComments => '獲取評論失敗';
+	@override String get failedToFetchImageDetail => '獲取圖庫詳情失敗';
+	@override String get failedToFetchImageList => '獲取圖庫列表失敗';
+	@override String get failedToFetchData => '獲取資料失敗';
+	@override String get invalidParameter => '無效的參數';
+	@override String get pleaseLoginFirst => '請先登入';
 }
 
 // Path: friends
@@ -343,6 +359,7 @@ class _TranslationsSearchZhTw implements TranslationsSearchEn {
 	@override String get noSearchHistoryRecords => '沒有搜尋歷史';
 	@override String notSupportCurrentSearchType({required Object searchType}) => '目前尚未支援此搜尋類型 ${searchType}，敬請期待';
 	@override String get searchResult => '搜尋結果';
+	@override String unsupportedSearchType({required Object searchType}) => '不支援的搜尋類型: ${searchType}';
 }
 
 // Path: mediaList
@@ -498,6 +515,22 @@ class _TranslationsVideoDetailZhTw implements TranslationsVideoDetailEn {
 	@override String get writeYourCommentHere => '請寫下您的評論...';
 	@override String get authorOtherVideos => '作者的其他影片';
 	@override String get relatedVideos => '相關影片';
+}
+
+// Path: share
+class _TranslationsShareZhTw implements TranslationsShareEn {
+	_TranslationsShareZhTw._(this._root);
+
+	final TranslationsZhTw _root; // ignore: unused_field
+
+	// Translations
+	@override String get sharePlayList => '分享播放列表';
+	@override String get wowDidYouSeeThis => '哇哦，你看过这个吗？';
+	@override String get nameIs => '名字叫做';
+	@override String get clickLinkToView => '點擊連結查看';
+	@override String get iReallyLikeThis => '我真的是太喜歡這個了，你也來看看吧！';
+	@override String get shareFailed => '分享失敗，請稍後再試';
+	@override String get share => '分享';
 }
 
 /// Flat map(s) containing all translations.
@@ -673,6 +706,21 @@ extension on TranslationsZhTw {
 			case 'errors.errorWhileOpeningLink': return ({required Object link}) => '無法開啟連結: ${link}';
 			case 'errors.invalidUrl': return '無效的URL';
 			case 'errors.failedToOperate': return '操作失敗';
+			case 'errors.permissionDenied': return '權限不足';
+			case 'errors.youDoNotHavePermissionToAccessThisResource': return '您沒有權限訪問此資源';
+			case 'errors.loginFailed': return '登入失敗';
+			case 'errors.unknownError': return '未知錯誤';
+			case 'errors.sessionExpired': return '會話已過期';
+			case 'errors.failedToFetchCaptcha': return '獲取驗證碼失敗';
+			case 'errors.emailAlreadyExists': return '電子郵件已存在';
+			case 'errors.invalidCaptcha': return '無效的驗證碼';
+			case 'errors.registerFailed': return '註冊失敗';
+			case 'errors.failedToFetchComments': return '獲取評論失敗';
+			case 'errors.failedToFetchImageDetail': return '獲取圖庫詳情失敗';
+			case 'errors.failedToFetchImageList': return '獲取圖庫列表失敗';
+			case 'errors.failedToFetchData': return '獲取資料失敗';
+			case 'errors.invalidParameter': return '無效的參數';
+			case 'errors.pleaseLoginFirst': return '請先登入';
 			case 'friends.clickToRestoreFriend': return '點擊恢復朋友';
 			case 'friends.friendsList': return '朋友列表';
 			case 'friends.friendRequests': return '朋友請求';
@@ -720,6 +768,7 @@ extension on TranslationsZhTw {
 			case 'search.noSearchHistoryRecords': return '沒有搜尋歷史';
 			case 'search.notSupportCurrentSearchType': return ({required Object searchType}) => '目前尚未支援此搜尋類型 ${searchType}，敬請期待';
 			case 'search.searchResult': return '搜尋結果';
+			case 'search.unsupportedSearchType': return ({required Object searchType}) => '不支援的搜尋類型: ${searchType}';
 			case 'mediaList.personalIntroduction': return '個人簡介';
 			case 'settings.searchConfig': return '搜尋設定';
 			case 'settings.thisConfigurationDeterminesWhetherThePreviousConfigurationWillBeUsedWhenPlayingVideosAgain': return '此設定將決定您之後播放影片時是否會沿用之前的設定。';
@@ -830,6 +879,13 @@ extension on TranslationsZhTw {
 			case 'videoDetail.writeYourCommentHere': return '請寫下您的評論...';
 			case 'videoDetail.authorOtherVideos': return '作者的其他影片';
 			case 'videoDetail.relatedVideos': return '相關影片';
+			case 'share.sharePlayList': return '分享播放列表';
+			case 'share.wowDidYouSeeThis': return '哇哦，你看过这个吗？';
+			case 'share.nameIs': return '名字叫做';
+			case 'share.clickLinkToView': return '點擊連結查看';
+			case 'share.iReallyLikeThis': return '我真的是太喜歡這個了，你也來看看吧！';
+			case 'share.shareFailed': return '分享失敗，請稍後再試';
+			case 'share.share': return '分享';
 			default: return null;
 		}
 	}

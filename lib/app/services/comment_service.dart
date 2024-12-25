@@ -4,6 +4,7 @@ import 'package:i_iwara/app/models/comment.model.dart';
 import 'package:i_iwara/app/models/page_data.model.dart';
 import 'package:i_iwara/app/services/api_service.dart';
 import 'package:i_iwara/common/constants.dart';
+import 'package:i_iwara/i18n/strings.g.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
 
 class CommentService extends GetxService {
@@ -41,7 +42,7 @@ class CommentService extends GetxService {
       return ApiResult.success(data: pageData);
     } catch (e) {
       LogUtils.e('获取评论失败', tag: 'CommentService', error: e);
-      return ApiResult.fail('噫嘘唏, 获取评论失败');
+      return ApiResult.fail(t.errors.failedToFetchComments);
     }
   }
 
@@ -52,7 +53,7 @@ class CommentService extends GetxService {
       return ApiResult.success();
     } catch (e) {
       LogUtils.e('删除评论失败', tag: 'CommentService', error: e);
-      return ApiResult.fail('噫嘘唏, 删除评论失败');
+      return ApiResult.fail(t.errors.failedToOperate);
     }
   }
 
@@ -63,7 +64,7 @@ class CommentService extends GetxService {
       return ApiResult.success();
     } catch (e) {
       LogUtils.e('编辑评论失败', tag: 'CommentService', error: e);
-      return ApiResult.fail('噫嘘唏, 编辑评论失败');
+      return ApiResult.fail(t.errors.failedToOperate);
     }
   }
 
@@ -87,7 +88,7 @@ class CommentService extends GetxService {
       return ApiResult.success(data: Comment.fromJson(response.data));
     } catch (e) {
       LogUtils.e('发表评论失败', tag: 'CommentService', error: e);
-      return ApiResult.fail('噫嘘唏, 发表评论失败');
+      return ApiResult.fail(t.errors.failedToOperate);
     }
   }
 }

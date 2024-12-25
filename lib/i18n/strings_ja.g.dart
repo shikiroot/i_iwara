@@ -47,6 +47,7 @@ class TranslationsJa implements Translations {
 	@override late final _TranslationsSignInJa signIn = _TranslationsSignInJa._(_root);
 	@override late final _TranslationsSubscriptionsJa subscriptions = _TranslationsSubscriptionsJa._(_root);
 	@override late final _TranslationsVideoDetailJa videoDetail = _TranslationsVideoDetailJa._(_root);
+	@override late final _TranslationsShareJa share = _TranslationsShareJa._(_root);
 }
 
 // Path: common
@@ -242,6 +243,21 @@ class _TranslationsErrorsJa implements TranslationsErrorsEn {
 	@override String errorWhileOpeningLink({required Object link}) => 'リンクを開けませんでした: ${link}';
 	@override String get invalidUrl => '無効なURLです';
 	@override String get failedToOperate => '操作に失敗しました';
+	@override String get permissionDenied => '権限がありません';
+	@override String get youDoNotHavePermissionToAccessThisResource => 'このリソースにアクセスする権限がありません';
+	@override String get loginFailed => 'ログインに失敗しました';
+	@override String get unknownError => '不明なエラーです';
+	@override String get sessionExpired => 'セッションが期限切れです';
+	@override String get failedToFetchCaptcha => 'キャプチャの取得に失敗しました';
+	@override String get emailAlreadyExists => 'メールアドレスは既に存在します';
+	@override String get invalidCaptcha => '無効なキャプチャです';
+	@override String get registerFailed => '登録に失敗しました';
+	@override String get failedToFetchComments => 'コメントの取得に失敗しました';
+	@override String get failedToFetchImageDetail => '画像の取得に失敗しました';
+	@override String get failedToFetchImageList => '画像の取得に失敗しました';
+	@override String get failedToFetchData => 'データの取得に失敗しました';
+	@override String get invalidParameter => '無効なパラメータです';
+	@override String get pleaseLoginFirst => 'ログインしてください';
 }
 
 // Path: friends
@@ -343,6 +359,7 @@ class _TranslationsSearchJa implements TranslationsSearchEn {
 	@override String get noSearchHistoryRecords => '検索履歴がありません';
 	@override String notSupportCurrentSearchType({required Object searchType}) => '現在の検索タイプ ${searchType} はまだ実装されていません。お楽しみに';
 	@override String get searchResult => '検索結果';
+	@override String unsupportedSearchType({required Object searchType}) => 'サポートされていない検索タイプ: ${searchType}';
 }
 
 // Path: mediaList
@@ -498,6 +515,22 @@ class _TranslationsVideoDetailJa implements TranslationsVideoDetailEn {
 	@override String get writeYourCommentHere => 'ここにコメントを入力...';
 	@override String get authorOtherVideos => '作者の他のビデオ';
 	@override String get relatedVideos => '関連ビデオ';
+}
+
+// Path: share
+class _TranslationsShareJa implements TranslationsShareEn {
+	_TranslationsShareJa._(this._root);
+
+	final TranslationsJa _root; // ignore: unused_field
+
+	// Translations
+	@override String get sharePlayList => 'プレイリストを共有';
+	@override String get wowDidYouSeeThis => 'ああ、見たの？';
+	@override String get nameIs => '名前は';
+	@override String get clickLinkToView => 'リンクをクリックして見る';
+	@override String get iReallyLikeThis => '本当に好きです';
+	@override String get shareFailed => '共有に失敗しました。後でもう一度お試しください';
+	@override String get share => '共有';
 }
 
 /// Flat map(s) containing all translations.
@@ -673,6 +706,21 @@ extension on TranslationsJa {
 			case 'errors.errorWhileOpeningLink': return ({required Object link}) => 'リンクを開けませんでした: ${link}';
 			case 'errors.invalidUrl': return '無効なURLです';
 			case 'errors.failedToOperate': return '操作に失敗しました';
+			case 'errors.permissionDenied': return '権限がありません';
+			case 'errors.youDoNotHavePermissionToAccessThisResource': return 'このリソースにアクセスする権限がありません';
+			case 'errors.loginFailed': return 'ログインに失敗しました';
+			case 'errors.unknownError': return '不明なエラーです';
+			case 'errors.sessionExpired': return 'セッションが期限切れです';
+			case 'errors.failedToFetchCaptcha': return 'キャプチャの取得に失敗しました';
+			case 'errors.emailAlreadyExists': return 'メールアドレスは既に存在します';
+			case 'errors.invalidCaptcha': return '無効なキャプチャです';
+			case 'errors.registerFailed': return '登録に失敗しました';
+			case 'errors.failedToFetchComments': return 'コメントの取得に失敗しました';
+			case 'errors.failedToFetchImageDetail': return '画像の取得に失敗しました';
+			case 'errors.failedToFetchImageList': return '画像の取得に失敗しました';
+			case 'errors.failedToFetchData': return 'データの取得に失敗しました';
+			case 'errors.invalidParameter': return '無効なパラメータです';
+			case 'errors.pleaseLoginFirst': return 'ログインしてください';
 			case 'friends.clickToRestoreFriend': return '友達を復元するにはクリックしてください';
 			case 'friends.friendsList': return '友達リスト';
 			case 'friends.friendRequests': return '友達リクエスト';
@@ -720,6 +768,7 @@ extension on TranslationsJa {
 			case 'search.noSearchHistoryRecords': return '検索履歴がありません';
 			case 'search.notSupportCurrentSearchType': return ({required Object searchType}) => '現在の検索タイプ ${searchType} はまだ実装されていません。お楽しみに';
 			case 'search.searchResult': return '検索結果';
+			case 'search.unsupportedSearchType': return ({required Object searchType}) => 'サポートされていない検索タイプ: ${searchType}';
 			case 'mediaList.personalIntroduction': return '個人紹介';
 			case 'settings.searchConfig': return '検索設定';
 			case 'settings.thisConfigurationDeterminesWhetherThePreviousConfigurationWillBeUsedWhenPlayingVideosAgain': return 'この設定は、今後動画を再生する際に以前の設定を使用するかどうかを決定します。';
@@ -830,6 +879,13 @@ extension on TranslationsJa {
 			case 'videoDetail.writeYourCommentHere': return 'ここにコメントを入力...';
 			case 'videoDetail.authorOtherVideos': return '作者の他のビデオ';
 			case 'videoDetail.relatedVideos': return '関連ビデオ';
+			case 'share.sharePlayList': return 'プレイリストを共有';
+			case 'share.wowDidYouSeeThis': return 'ああ、見たの？';
+			case 'share.nameIs': return '名前は';
+			case 'share.clickLinkToView': return 'リンクをクリックして見る';
+			case 'share.iReallyLikeThis': return '本当に好きです';
+			case 'share.shareFailed': return '共有に失敗しました。後でもう一度お試しください';
+			case 'share.share': return '共有';
 			default: return null;
 		}
 	}

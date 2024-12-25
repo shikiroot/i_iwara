@@ -51,6 +51,7 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	late final TranslationsSignInEn signIn = TranslationsSignInEn._(_root);
 	late final TranslationsSubscriptionsEn subscriptions = TranslationsSubscriptionsEn._(_root);
 	late final TranslationsVideoDetailEn videoDetail = TranslationsVideoDetailEn._(_root);
+	late final TranslationsShareEn share = TranslationsShareEn._(_root);
 }
 
 // Path: common
@@ -246,6 +247,21 @@ class TranslationsErrorsEn {
 	String errorWhileOpeningLink({required Object link}) => 'Error while opening link: ${link}';
 	String get invalidUrl => 'Invalid URL';
 	String get failedToOperate => 'Failed to operate';
+	String get permissionDenied => 'Permission Denied';
+	String get youDoNotHavePermissionToAccessThisResource => 'You do not have permission to access this resource';
+	String get loginFailed => 'Login Failed';
+	String get unknownError => 'Unknown Error';
+	String get sessionExpired => 'Session Expired';
+	String get failedToFetchCaptcha => 'Failed to fetch captcha';
+	String get emailAlreadyExists => 'Email already exists';
+	String get invalidCaptcha => 'Invalid Captcha';
+	String get registerFailed => 'Register Failed';
+	String get failedToFetchComments => 'Failed to fetch comments';
+	String get failedToFetchImageDetail => 'Failed to fetch image detail';
+	String get failedToFetchImageList => 'Failed to fetch image list';
+	String get failedToFetchData => 'Failed to fetch data';
+	String get invalidParameter => 'Invalid parameter';
+	String get pleaseLoginFirst => 'Please login first';
 }
 
 // Path: friends
@@ -347,6 +363,7 @@ class TranslationsSearchEn {
 	String get noSearchHistoryRecords => 'No search history';
 	String notSupportCurrentSearchType({required Object searchType}) => 'Not support current search type ${searchType}, please wait for the update';
 	String get searchResult => 'Search Result';
+	String unsupportedSearchType({required Object searchType}) => 'Unsupported search type: ${searchType}';
 }
 
 // Path: mediaList
@@ -502,6 +519,22 @@ class TranslationsVideoDetailEn {
 	String get writeYourCommentHere => 'Write your comment here...';
 	String get authorOtherVideos => 'Author\'s Other Videos';
 	String get relatedVideos => 'Related Videos';
+}
+
+// Path: share
+class TranslationsShareEn {
+	TranslationsShareEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get sharePlayList => 'Share Play List';
+	String get wowDidYouSeeThis => 'Wow, did you see this?';
+	String get nameIs => 'Name is';
+	String get clickLinkToView => 'Click link to view';
+	String get iReallyLikeThis => 'I really like this';
+	String get shareFailed => 'Share failed, please try again later';
+	String get share => 'Share';
 }
 
 /// Flat map(s) containing all translations.
@@ -677,6 +710,21 @@ extension on Translations {
 			case 'errors.errorWhileOpeningLink': return ({required Object link}) => 'Error while opening link: ${link}';
 			case 'errors.invalidUrl': return 'Invalid URL';
 			case 'errors.failedToOperate': return 'Failed to operate';
+			case 'errors.permissionDenied': return 'Permission Denied';
+			case 'errors.youDoNotHavePermissionToAccessThisResource': return 'You do not have permission to access this resource';
+			case 'errors.loginFailed': return 'Login Failed';
+			case 'errors.unknownError': return 'Unknown Error';
+			case 'errors.sessionExpired': return 'Session Expired';
+			case 'errors.failedToFetchCaptcha': return 'Failed to fetch captcha';
+			case 'errors.emailAlreadyExists': return 'Email already exists';
+			case 'errors.invalidCaptcha': return 'Invalid Captcha';
+			case 'errors.registerFailed': return 'Register Failed';
+			case 'errors.failedToFetchComments': return 'Failed to fetch comments';
+			case 'errors.failedToFetchImageDetail': return 'Failed to fetch image detail';
+			case 'errors.failedToFetchImageList': return 'Failed to fetch image list';
+			case 'errors.failedToFetchData': return 'Failed to fetch data';
+			case 'errors.invalidParameter': return 'Invalid parameter';
+			case 'errors.pleaseLoginFirst': return 'Please login first';
 			case 'friends.clickToRestoreFriend': return 'Click to restore friend';
 			case 'friends.friendsList': return 'Friends List';
 			case 'friends.friendRequests': return 'Friend Requests';
@@ -724,6 +772,7 @@ extension on Translations {
 			case 'search.noSearchHistoryRecords': return 'No search history';
 			case 'search.notSupportCurrentSearchType': return ({required Object searchType}) => 'Not support current search type ${searchType}, please wait for the update';
 			case 'search.searchResult': return 'Search Result';
+			case 'search.unsupportedSearchType': return ({required Object searchType}) => 'Unsupported search type: ${searchType}';
 			case 'mediaList.personalIntroduction': return 'Personal Introduction';
 			case 'settings.searchConfig': return 'Search Config';
 			case 'settings.thisConfigurationDeterminesWhetherThePreviousConfigurationWillBeUsedWhenPlayingVideosAgain': return 'This configuration determines whether the previous configuration will be used when playing videos again.';
@@ -834,6 +883,13 @@ extension on Translations {
 			case 'videoDetail.writeYourCommentHere': return 'Write your comment here...';
 			case 'videoDetail.authorOtherVideos': return 'Author\'s Other Videos';
 			case 'videoDetail.relatedVideos': return 'Related Videos';
+			case 'share.sharePlayList': return 'Share Play List';
+			case 'share.wowDidYouSeeThis': return 'Wow, did you see this?';
+			case 'share.nameIs': return 'Name is';
+			case 'share.clickLinkToView': return 'Click link to view';
+			case 'share.iReallyLikeThis': return 'I really like this';
+			case 'share.shareFailed': return 'Share failed, please try again later';
+			case 'share.share': return 'Share';
 			default: return null;
 		}
 	}

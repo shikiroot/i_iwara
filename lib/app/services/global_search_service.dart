@@ -9,6 +9,7 @@ import 'package:i_iwara/app/models/user.model.dart';
 import 'package:i_iwara/app/models/video.model.dart';
 import 'package:i_iwara/app/services/search_service.dart';
 import 'package:i_iwara/app/ui/widgets/error_widget.dart';
+import 'package:i_iwara/i18n/strings.g.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
 
 class GlobalSearchService extends GetxService {
@@ -113,20 +114,6 @@ class GlobalSearchService extends GetxService {
     }
   }
 
-  void _updateHasMore(bool value) {
-    switch (selectedSegment.value) {
-      case 'video':
-        _videoHasMore.value = value;
-        break;
-      case 'image':
-        _imageHasMore.value = value;
-        break;
-      case 'user':
-        _userHasMore.value = value;
-        break;
-    }
-  }
-
   bool get isResultEmpty =>
       searchVideoResult.isEmpty && 
       searchImageResult.isEmpty && 
@@ -169,7 +156,7 @@ class GlobalSearchService extends GetxService {
         response = await searchService.fetchUserByQuery(
             page: tmpPage, limit: limit, query: keyword);
       } else {
-        response = ApiResult.fail('尚不支持的搜索类型: $segment');
+        response = ApiResult.fail(t.search.unsupportedSearchType(searchType: segment));
       }
 
       if (!response.isSuccess) {
@@ -177,7 +164,7 @@ class GlobalSearchService extends GetxService {
           text: response.message,
           children: [
             ElevatedButton(
-              child: Text('重试'),
+              child: Text(t.common.retry),
               onPressed: () {
                 fetchSearchResult(refresh: refresh);
               },

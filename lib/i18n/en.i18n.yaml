@@ -172,6 +172,21 @@ errors:
   errorWhileOpeningLink: 'Error while opening link: ${link}'
   invalidUrl: Invalid URL
   failedToOperate: Failed to operate
+  permissionDenied: Permission Denied
+  youDoNotHavePermissionToAccessThisResource: You do not have permission to access this resource
+  loginFailed: Login Failed
+  unknownError: Unknown Error
+  sessionExpired: Session Expired
+  failedToFetchCaptcha: Failed to fetch captcha
+  emailAlreadyExists: Email already exists
+  invalidCaptcha: Invalid Captcha
+  registerFailed: Register Failed
+  failedToFetchComments: Failed to fetch comments
+  failedToFetchImageDetail: Failed to fetch image detail
+  failedToFetchImageList: Failed to fetch image list
+  failedToFetchData: Failed to fetch data
+  invalidParameter: Invalid parameter
+  pleaseLoginFirst: Please login first
 friends:
   clickToRestoreFriend: Click to restore friend
   friendsList: Friends List
@@ -230,6 +245,7 @@ search:
   noSearchHistoryRecords: No search history
   notSupportCurrentSearchType: 'Not support current search type ${searchType}, please wait for the update'
   searchResult: Search Result
+  unsupportedSearchType: 'Unsupported search type: ${searchType}'
 mediaList:
   personalIntroduction: Personal Introduction
 
@@ -348,3 +364,12 @@ videoDetail:
   writeYourCommentHere: Write your comment here...
   authorOtherVideos: Author's Other Videos
   relatedVideos: Related Videos
+
+share:
+  sharePlayList: Share Play List
+  wowDidYouSeeThis: Wow, did you see this?
+  nameIs: Name is
+  clickLinkToView: Click link to view
+  iReallyLikeThis: I really like this
+  shareFailed: Share failed, please try again later
+  share: Share

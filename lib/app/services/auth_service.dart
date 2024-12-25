@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:dio/dio.dart' as dio;
 import 'package:dio/io.dart';
 import 'package:get/get.dart';
+import 'package:i_iwara/i18n/strings.g.dart';
 import '../../common/constants.dart';
 import '../../utils/logger_utils.dart';
 import '../models/api_result.model.dart';
@@ -56,19 +57,19 @@ class AuthService extends GetxService {
         await refreshAccessToken();
         return ApiResult.success();
       } else {
-        return ApiResult.fail(response.data['message'] ?? '无效的登录');
+        return ApiResult.fail(response.data['message'] ?? t.errors.loginFailed);
       }
     } on dio.DioException catch (e) {
       LogUtils.e('登录失败: ${e.message}', tag: _tag);
       if (e.response != null) {
-        final message = e.response?.data['message'] ?? '未知错误';
+        final message = e.response?.data['message'] ?? t.errors.unknownError;
         return ApiResult.fail(message);
       } else {
-        return ApiResult.fail('网络错误');
+        return ApiResult.fail(t.errors.networkError);
       }
     } catch (e) {
       LogUtils.e('登录过程中发生意外错误: $e', tag: _tag);
-      return ApiResult.fail('未知错误');
+      return ApiResult.fail(t.errors.errorOccurred);
     }
   }
 
@@ -91,7 +92,7 @@ class AuthService extends GetxService {
 
     if (_authToken == null) {
       LogUtils.e('刷新时Auth token为空', tag: _tag);
-      throw AuthServiceException('会话已过期');
+      throw AuthServiceException(t.errors.sessionExpired);
     }
 
     _refreshTokenCompleter = Completer<void>();
@@ -110,18 +111,18 @@ class AuthService extends GetxService {
         _refreshTokenCompleter = null;
         return true;
       } else {
-        throw AuthServiceException(response.data['message'] ?? '未知错误');
+        throw AuthServiceException(response.data['message'] ?? t.errors.unknownError);
       }
     } on dio.DioException catch (e) {
       LogUtils.e('刷新token失败: ${e.message}', tag: _tag);
       if (e.response != null && e.response?.statusCode == 401) {
-        throw UnauthorizedException('会话已过期');
+        throw UnauthorizedException(t.errors.sessionExpired);
       } else {
-        throw NetworkException('网络错误');
+        throw NetworkException(t.errors.networkError);
       }
     } catch (e) {
       LogUtils.e('未知错误: $e', tag: _tag);
-      throw AuthServiceException('未知错误');
+      throw AuthServiceException(t.errors.unknownError);
     } finally {
       if (_refreshTokenCompleter != null &&
           !_refreshTokenCompleter!.isCompleted) {
@@ -139,14 +140,14 @@ class AuthService extends GetxService {
         LogUtils.d('成功获取验证码', _tag);
         return ApiResult.success(data: Captcha.fromJson(response.data));
       } else {
-        return ApiResult.fail('获取验证码失败');
+        return ApiResult.fail(t.errors.failedToFetchCaptcha);
       }
     } on dio.DioException catch (e) {
       LogUtils.e('抓取验证码失败: ${e.message}', tag: _tag);
-      return ApiResult.fail('网络错误');
+      return ApiResult.fail(t.errors.networkError);
     } catch (e) {
       LogUtils.e('未知错误: $e', tag: _tag);
-      return ApiResult.fail('未知错误');
+      return ApiResult.fail(t.errors.unknownError);
     }
   }
 
@@ -172,30 +173,30 @@ class AuthService extends GetxService {
         LogUtils.d('注册成功，邮件指令已发送', _tag);
         return ApiResult.success();
       } else {
-        return ApiResult.fail(response.data['message'] ?? '注册失败');
+        return ApiResult.fail(response.data['message'] ?? t.errors.registerFailed);
       }
     } on dio.DioException catch (e) {
       LogUtils.e('注册失败: ${e.message}', tag: _tag);
       if (e.response != null && e.response?.data != null) {
         var errorMessage = e.response!.data['errors']?[0]['message'] ??
             e.response!.data['message'] ??
-            '未知错误';
+            t.errors.unknownError;
         switch (errorMessage) {
           case 'errors.invalidEmail':
-            return ApiResult.fail('无效的电子邮件');
+            return ApiResult.fail(t.errors.invalidEmail);
           case 'errors.emailAlreadyExists':
-            return ApiResult.fail('电子邮件已存在');
+            return ApiResult.fail(t.errors.emailAlreadyExists);
           case 'errors.invalidCaptcha':
-            return ApiResult.fail('无效的验证码');
+            return ApiResult.fail(t.errors.invalidCaptcha);
           default:
             return ApiResult.fail(errorMessage);
         }
       } else {
-        return ApiResult.fail('网络错误');
+        return ApiResult.fail(t.errors.networkError);
       }
     } catch (e) {
       LogUtils.e('注册过程中发生意外错误: $e', tag: _tag);
-      return ApiResult.fail('未知错误');
+      return ApiResult.fail(t.errors.unknownError);
     }
   }
 }

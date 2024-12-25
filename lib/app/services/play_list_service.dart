@@ -4,6 +4,7 @@ import 'package:i_iwara/app/models/page_data.model.dart';
 import 'package:i_iwara/app/models/play_list.model.dart';
 import 'package:i_iwara/app/models/video.model.dart';
 import 'package:i_iwara/app/services/api_service.dart';
+import 'package:i_iwara/i18n/strings.g.dart';
 
 class PlayListService extends GetxService {
   final ApiService apiService = Get.find<ApiService>();
@@ -14,7 +15,7 @@ class PlayListService extends GetxService {
       await apiService.post('/playlists', data: {'title': title});
       return ApiResult.success();
     } catch (e) {
-      return ApiResult.fail("创建播放列表失败");
+      return ApiResult.fail(t.errors.failedToOperate);
     }
   }
 
@@ -27,7 +28,7 @@ class PlayListService extends GetxService {
       await apiService.put('/playlist/$playlistId', data: {'title': title});
       return ApiResult.success();
     } catch (e) {
-      return ApiResult.fail("编辑播放列表标题失败");
+      return ApiResult.fail(t.errors.failedToOperate);
     }
   }
 
@@ -56,7 +57,7 @@ class PlayListService extends GetxService {
       );
       return ApiResult.success(data: pageData);
     } catch (e) {
-      return ApiResult.fail("获取播放列表失败");
+      return ApiResult.fail(t.errors.failedToFetchData);
     }
   }
 
@@ -66,7 +67,7 @@ class PlayListService extends GetxService {
       final response = await apiService.get('/playlist/$playlistId');
       return ApiResult.success(data: response.data['playlist']['title']);
     } catch (e) {
-      return ApiResult.fail("获取播放列表名称失败");
+      return ApiResult.fail(t.errors.failedToFetchData);
     }
   }
 
@@ -79,7 +80,7 @@ class PlayListService extends GetxService {
       await apiService.post('/playlist/$playlistId/$videoId');
       return ApiResult.success();
     } catch (e) {
-      return ApiResult.fail("添加视频到播放列表失败");
+      return ApiResult.fail(t.errors.failedToOperate);
     }
   }
 
@@ -92,7 +93,7 @@ class PlayListService extends GetxService {
       await apiService.delete('/playlist/$playlistId/$videoId');
       return ApiResult.success();
     } catch (e) {
-      return ApiResult.fail("从播放列表移除视频失败");
+      return ApiResult.fail(t.errors.failedToOperate);
     }
   }
 
@@ -122,7 +123,7 @@ class PlayListService extends GetxService {
 
       return ApiResult.success(data: pageData);
     } catch (e) {
-      return ApiResult.fail("获取播放列表的视频失败");
+      return ApiResult.fail(t.errors.failedToFetchData);
     }
   }
 
@@ -132,7 +133,7 @@ class PlayListService extends GetxService {
       await apiService.delete('/playlist/$playlistId');
       return ApiResult.success();
     } catch (e) {
-      return ApiResult.fail("删除播放列表失败");
+      return ApiResult.fail(t.errors.failedToOperate);
     }
   }
 }

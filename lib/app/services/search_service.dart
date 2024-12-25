@@ -6,6 +6,7 @@ import 'package:i_iwara/app/models/user.model.dart';
 import 'package:i_iwara/app/models/video.model.dart';
 import 'package:i_iwara/app/ui/pages/search/search_dialog.dart';
 import 'package:i_iwara/common/constants.dart';
+import 'package:i_iwara/i18n/strings.g.dart';
 
 import 'api_service.dart';
 
@@ -45,7 +46,7 @@ class SearchService extends GetxController {
         ),
       );
     } catch (e) {
-      return ApiResult.fail('噫嘘唏, 请求失败了哦');
+      return ApiResult.fail(t.errors.failedToFetchData);
     }
   }
 

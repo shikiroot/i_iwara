@@ -172,7 +172,21 @@ errors:
   errorWhileOpeningLink: '無法開啟連結: ${link}'
   invalidUrl: 無效的URL
   failedToOperate: 操作失敗
-
+  permissionDenied: 權限不足
+  youDoNotHavePermissionToAccessThisResource: 您沒有權限訪問此資源
+  loginFailed: 登入失敗
+  unknownError: 未知錯誤
+  sessionExpired: 會話已過期
+  failedToFetchCaptcha: 獲取驗證碼失敗
+  emailAlreadyExists: 電子郵件已存在
+  invalidCaptcha: 無效的驗證碼
+  registerFailed: 註冊失敗
+  failedToFetchComments: 獲取評論失敗
+  failedToFetchImageDetail: 獲取圖庫詳情失敗
+  failedToFetchImageList: 獲取圖庫列表失敗
+  failedToFetchData: 獲取資料失敗
+  invalidParameter: 無效的參數
+  pleaseLoginFirst: 請先登入
 friends:
   clickToRestoreFriend: 點擊恢復朋友
   friendsList: 朋友列表
@@ -231,6 +245,7 @@ search:
   noSearchHistoryRecords: 沒有搜尋歷史
   notSupportCurrentSearchType: '目前尚未支援此搜尋類型 ${searchType}，敬請期待'
   searchResult: 搜尋結果
+  unsupportedSearchType: '不支援的搜尋類型: ${searchType}'
 
 mediaList:
   personalIntroduction: 個人簡介
@@ -351,3 +366,12 @@ videoDetail:
   writeYourCommentHere: 請寫下您的評論...
   authorOtherVideos: 作者的其他影片
   relatedVideos: 相關影片
+
+share:
+  sharePlayList: 分享播放列表
+  wowDidYouSeeThis: 哇哦，你看过这个吗？
+  nameIs: 名字叫做
+  clickLinkToView: 點擊連結查看
+  iReallyLikeThis: 我真的是太喜歡這個了，你也來看看吧！
+  shareFailed: 分享失敗，請稍後再試
+  share: 分享

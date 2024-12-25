@@ -173,7 +173,21 @@ errors:
   errorWhileOpeningLink: 'リンクを開けませんでした: ${link}'
   invalidUrl: 無効なURLです
   failedToOperate: 操作に失敗しました
-
+  permissionDenied: 権限がありません
+  youDoNotHavePermissionToAccessThisResource: このリソースにアクセスする権限がありません
+  loginFailed: ログインに失敗しました
+  unknownError: 不明なエラーです
+  sessionExpired: セッションが期限切れです
+  failedToFetchCaptcha: キャプチャの取得に失敗しました
+  emailAlreadyExists: メールアドレスは既に存在します
+  invalidCaptcha: 無効なキャプチャです
+  registerFailed: 登録に失敗しました
+  failedToFetchComments: コメントの取得に失敗しました
+  failedToFetchImageDetail: 画像の取得に失敗しました
+  failedToFetchImageList: 画像の取得に失敗しました
+  failedToFetchData: データの取得に失敗しました
+  invalidParameter: 無効なパラメータです
+  pleaseLoginFirst: ログインしてください
 friends:
   clickToRestoreFriend: 友達を復元するにはクリックしてください
   friendsList: 友達リスト
@@ -232,6 +246,7 @@ search:
   noSearchHistoryRecords: 検索履歴がありません
   notSupportCurrentSearchType: '現在の検索タイプ ${searchType} はまだ実装されていません。お楽しみに'
   searchResult: 検索結果
+  unsupportedSearchType: 'サポートされていない検索タイプ: ${searchType}'
 mediaList:
   personalIntroduction: 個人紹介
 
@@ -352,3 +367,12 @@ videoDetail:
   writeYourCommentHere: ここにコメントを入力...
   authorOtherVideos: 作者の他のビデオ
   relatedVideos: 関連ビデオ
+
+share:
+  sharePlayList: プレイリストを共有
+  wowDidYouSeeThis: ああ、見たの？
+  nameIs: 名前は
+  clickLinkToView: リンクをクリックして見る
+  iReallyLikeThis: 本当に好きです
+  shareFailed: 共有に失敗しました。後でもう一度お試しください
+  share: 共有

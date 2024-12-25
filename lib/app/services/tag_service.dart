@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:i_iwara/common/constants.dart';
+import 'package:i_iwara/i18n/strings.g.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
 
 import '../models/api_result.model.dart';
@@ -39,7 +40,7 @@ class TagService extends GetxService {
       return ApiResult.success(data: pageData);
     } catch (e) {
       LogUtils.e('获取标签列表失败', tag: 'TagService', error: e);
-      return ApiResult.fail('噫嘘唏, 获取标签列表失败');
+      return ApiResult.fail(t.errors.failedToFetchData);
     }
 
   }
