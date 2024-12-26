@@ -220,19 +220,28 @@ class _CustomMarkdownBodyState extends State<CustomMarkdownBody> {
   }
 
   void _onTapLink(String text, String? href, String title) async {
+    print('senko 点击的链接是：$href');
     if (href == null) return;
 
     try {
+      Uri uri = Uri.parse(href);
       if (href.startsWith(
           '${CommonConstants.iwaraBaseUrl}${ApiConstants.profilePrefix()}')) {
-        final userName = href.split('/').last;
+        final userName = uri.pathSegments.last;
         NaviService.navigateToAuthorProfilePage(userName);
       } else if (href.startsWith(
           '${CommonConstants.iwaraBaseUrl}${ApiConstants.galleryDetail()}')) {
-        final imageId = href.split('/').last;
+        final imageId = uri.pathSegments.last;
         NaviService.navigateToGalleryDetailPage(imageId);
+      } else if (href.startsWith(
+          '${CommonConstants.iwaraBaseUrl}/video/')) {
+        final videoId = uri.pathSegments[1];
+        NaviService.navigateToVideoDetailPage(videoId);
+      } else if (href.startsWith(
+          '${CommonConstants.iwaraBaseUrl}/playlist/')) {
+        final playlistId = uri.pathSegments.last;
+        NaviService.navigateToPlayListDetail(playlistId, isMine: false);
       } else {
-        final uri = Uri.parse(href);
         if (await canLaunchUrl(uri)) {
           await launchUrl(uri);
         } else {

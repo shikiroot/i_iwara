@@ -64,10 +64,25 @@
     <key>UIRequiresPersistentWiFi</key>
     <true/>
 
+	<!-- 允许打开其他app -->
     <key>LSApplicationQueriesSchemes</key>
     <array>
       <string>sms</string>
       <string>tel</string>
     </array>
+
+	<!-- 深度链接 -->
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>iwara</string>
+			</array>
+		</dict>
+	</array>
+	<key>FlutterDeepLinkingEnabled</key>
+	<true/>
+
 </dict>
 </plist>

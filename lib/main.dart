@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:i_iwara/app/services/app_service.dart';
 import 'package:i_iwara/app/services/comment_service.dart';
+import 'package:i_iwara/app/services/deep_link_service.dart';
 import 'package:i_iwara/app/services/gallery_service.dart';
 import 'package:i_iwara/app/services/light_service.dart';
 import 'package:i_iwara/app/services/play_list_service.dart';
@@ -48,6 +49,10 @@ void main() {
 
     // 确保Flutter初始化
     WidgetsFlutterBinding.ensureInitialized();
+    // 初始化深度链接服务
+    final deepLinkService = DeepLinkService();
+    await deepLinkService.init();
+    Get.put(deepLinkService);
     // 现在有 简中、英文、日文
     // 获取系统语言，如果是支持的语言，则使用，如果不是，则使用英文；
     String systemLanguage = Get.deviceLocale?.languageCode ?? 'en';

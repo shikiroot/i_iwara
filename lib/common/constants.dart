@@ -100,6 +100,9 @@ class ApiConstants {
   // 图库详情
   static String galleryDetail() => '/image';
 
+  // 视频详情
+  static String videoDetail() => '/video';
+
   // 用户详情
   static String userProfile(String userName) => '/profile/$userName';
 

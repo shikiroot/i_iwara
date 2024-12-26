@@ -48,6 +48,7 @@ dependencies:
   slang_flutter: ^4.4.0
   dynamic_color: ^1.7.0
   oktoast: ^3.4.0
+  app_links: ^6.3.3
 
 dev_dependencies:
   flutter_test:
