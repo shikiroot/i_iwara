@@ -56,12 +56,9 @@ class ConfigService extends GetxService {
     ACTIVE_BACKGROUND_PRIVACY_MODE: false.obs,
     DEFAULT_LANGUAGE_KEY: 'zh-CN'.obs,
     THEME_MODE_KEY: 4.obs, // 添加主题模式配置，默认为0(system)
-    // TODO 远程仓库的 pubspec.yaml 地址
-    REMOTE_REPO_PUB_SPEC_YAML_URL: ''.obs,
-    // TODO 远程仓库的 release 地址
-    REMOTE_REPO_RELEASE_URL: ''.obs,
-    // TODO 远程仓库的 url
-    REMOTE_REPO_URL: ''.obs,
+    REMOTE_REPO_PUB_SPEC_YAML_URL: 'https://raw.githubusercontent.com/FoxSensei001/i_iwara/master/pubspec.yaml'.obs,
+    REMOTE_REPO_RELEASE_URL: 'https://github.com/FoxSensei001/i_iwara/releases'.obs,
+    REMOTE_REPO_URL: 'https://github.com/FoxSensei001/i_iwara'.obs,
   }.obs;
 
   late final Rx<Sort> _currentTranslationSort;
