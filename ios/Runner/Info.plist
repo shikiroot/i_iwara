@@ -63,5 +63,11 @@
     <!-- 蜂窝网络权限描述 -->
     <key>UIRequiresPersistentWiFi</key>
     <true/>
+
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+      <string>sms</string>
+      <string>tel</string>
+    </array>
 </dict>
 </plist>

@@ -51,7 +51,7 @@ class _LikeButtonWidgetState extends State<LikeButtonWidget> {
     }
 
     if (await Vibration.hasVibrator() ?? false) {
-      Vibration.vibrate(pattern: [500]);
+      await Vibration.vibrate(duration: 50);
     }
 
     setState(() {
@@ -71,7 +71,13 @@ class _LikeButtonWidgetState extends State<LikeButtonWidget> {
         widget.onLikeChanged?.call(_isLiked);
       }
     } catch (e) {
-      showToastWidget(MDToastWidget(message: t.errors.errorOccurred, type: MDToastType.error),position: ToastPosition.top);
+      showToastWidget(
+        MDToastWidget(
+          message: t.errors.errorOccurred, 
+          type: MDToastType.error,
+        ),
+        position: ToastPosition.top,
+      );
     } finally {
       setState(() {
         _isLoading = false;

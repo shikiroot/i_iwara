@@ -105,11 +105,13 @@ class VideoDetailContent extends StatelessWidget {
                 // 视频标题
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Obx(() => Text(
-                        controller.videoInfo.value?.title ?? '',
-                        style: const TextStyle(
-                            fontSize: 24, fontWeight: FontWeight.bold),
-                      )),
+                  child: SelectableText.rich(
+                    TextSpan(
+                      text: controller.videoInfo.value?.title ?? '',
+                      style: const TextStyle(
+                          fontSize: 24, fontWeight: FontWeight.bold),
+                    ),
+                  ),
                 ),
                 const SizedBox(height: 8),
                 // 作者信息区域，包括头像和用户名

@@ -354,7 +354,7 @@ class _VideoCardListItemWidgetState extends State<VideoCardListItemWidget> {
 
   void _showDetailsModalWithVibration(BuildContext context) async {
     if (await Vibration.hasVibrator() ?? false) {
-      Vibration.vibrate(pattern: [500]);
+      await Vibration.vibrate(pattern: [500]);
     }
 
     if (context.mounted) {

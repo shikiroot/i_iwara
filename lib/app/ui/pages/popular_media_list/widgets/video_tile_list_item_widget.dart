@@ -252,7 +252,7 @@ class _VideoTileListItemState extends State<VideoTileListItem> {
   void _handleLongPress(BuildContext context) async {
     // 震动反馈
     if (await Vibration.hasVibrator() ?? false) {
-      Vibration.vibrate(pattern: [100]);
+      await Vibration.vibrate(pattern: [500]);
     }
 
     if (!context.mounted) return;

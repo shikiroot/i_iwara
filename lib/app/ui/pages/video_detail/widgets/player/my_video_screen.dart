@@ -16,6 +16,7 @@ import 'gesture_area_widget.dart';
 import 'top_toolbar_widget.dart';
 import '../../controllers/my_video_state_controller.dart';
 import '../../../../../../i18n/strings.g.dart' as slang;
+
 class MyVideoScreen extends StatefulWidget {
   final bool isFullScreen;
   final MyVideoStateController myVideoStateController;
@@ -128,7 +129,8 @@ class _MyVideoScreenState extends State<MyVideoScreen>
   /// 处理键盘事件
   /// TODO: [不会修] 当连续按下时，会导致这里监听不到消息，但播放器却自己进行了回退进度的操作，疑似是被media_kit的原生按键监听给拦截了
   void _handleKeyEvent(KeyEvent event) {
-    LogUtils.d('[键盘输入事件] ${event.logicalKey.keyLabel} ${event.runtimeType}', 'MyVideoScreen');
+    LogUtils.d('[键盘输入事件] ${event.logicalKey.keyLabel} ${event.runtimeType}',
+        'MyVideoScreen');
     if (event is KeyDownEvent) {
       if (event.logicalKey.keyLabel == LogicalKeyboardKey.space.keyLabel) {
         // 空格键播放/暂停切换
@@ -137,15 +139,19 @@ class _MyVideoScreenState extends State<MyVideoScreen>
         } else {
           widget.myVideoStateController.player.play();
         }
-      } else if (event.logicalKey.keyLabel == LogicalKeyboardKey.arrowLeft.keyLabel) {
+      } else if (event.logicalKey.keyLabel ==
+          LogicalKeyboardKey.arrowLeft.keyLabel) {
         LogUtils.d('[键盘事件] 左键', 'MyVideoScreen');
         // 左键
         _triggerLeftRipple();
-      } else if (event.logicalKey.keyLabel == LogicalKeyboardKey.arrowRight.keyLabel) {
+      } else if (event.logicalKey.keyLabel ==
+          LogicalKeyboardKey.arrowRight.keyLabel) {
         LogUtils.d('[键盘事件] 右键', 'MyVideoScreen');
         // 右键
         _triggerRightRipple();
-      } else if (event.logicalKey.keyLabel == LogicalKeyboardKey.enter.keyLabel && !widget.isFullScreen) {
+      } else if (event.logicalKey.keyLabel ==
+              LogicalKeyboardKey.enter.keyLabel &&
+          !widget.isFullScreen) {
         // 应用全屏切换
         widget.myVideoStateController.isDesktopAppFullScreen.toggle();
       }
@@ -237,13 +243,13 @@ class _MyVideoScreenState extends State<MyVideoScreen>
             // 根据屏幕宽度计算图标大小
             // 使用屏幕宽度的15%作为基准，但设置最小和最大值限制
             final playPauseIconSize = (screenSize.width * 0.15).clamp(
-              40.0,  // 最小尺寸
+              40.0, // 最小尺寸
               100.0, // 最大尺寸
             );
-            
+
             // 缓冲动画稍微小一点，使用图标尺寸的80%
             final bufferingSize = playPauseIconSize * 0.8;
-            
+
             final maxRadius = (screenSize.height - paddingTop) * 2 / 3;
 
             return KeyboardListener(
@@ -295,7 +301,8 @@ class _MyVideoScreenState extends State<MyVideoScreen>
             top: 0,
             bottom: 0,
             width: screenSize.width *
-                _configService[ConfigService.VIDEO_LEFT_AND_RIGHT_CONTROL_AREA_RATIO],
+                _configService[
+                    ConfigService.VIDEO_LEFT_AND_RIGHT_CONTROL_AREA_RATIO],
             child: GestureArea(
               setLongPressing: _setLongPressing,
               onTap: _onTap,
@@ -310,7 +317,8 @@ class _MyVideoScreenState extends State<MyVideoScreen>
             top: 0,
             bottom: 0,
             width: screenSize.width *
-                _configService[ConfigService.VIDEO_LEFT_AND_RIGHT_CONTROL_AREA_RATIO],
+                _configService[
+                    ConfigService.VIDEO_LEFT_AND_RIGHT_CONTROL_AREA_RATIO],
             child: GestureArea(
               setLongPressing: _setLongPressing,
               onTap: _onTap,
@@ -321,9 +329,8 @@ class _MyVideoScreenState extends State<MyVideoScreen>
             ),
           )),
       Obx(() {
-        double ratio =
-            _configService[ConfigService.VIDEO_LEFT_AND_RIGHT_CONTROL_AREA_RATIO]
-                as double;
+        double ratio = _configService[
+            ConfigService.VIDEO_LEFT_AND_RIGHT_CONTROL_AREA_RATIO] as double;
         double position = screenSize.width * ratio;
         return Positioned(
           left: position,
@@ -421,46 +428,51 @@ class _MyVideoScreenState extends State<MyVideoScreen>
   Widget _buildPlayPauseIcon(
       MyVideoStateController myVideoStateController, double size) {
     return Obx(() => AnimatedOpacity(
-      opacity: myVideoStateController.videoPlaying.value ? 0.0 : 1.0,
-      duration: const Duration(milliseconds: 150),
-      child: Container(
-        width: size,
-        height: size,
-        decoration: BoxDecoration(
-          color: Colors.black.withOpacity(0.5),
-          shape: BoxShape.circle,
-        ),
-        child: Material(
-          color: Colors.transparent,
-          child: InkWell(
-            onTap: () {
-              myVideoStateController.videoPlaying.value
-                  ? myVideoStateController.player.pause()
-                  : myVideoStateController.player.play();
-            },
-            customBorder: const CircleBorder(),
-            child: AnimatedScale(
-              scale: myVideoStateController.videoPlaying.value ? 1.0 : 0.9,
-              duration: const Duration(milliseconds: 150),
-              child: Icon(
-                myVideoStateController.videoPlaying.value
-                    ? Icons.pause
-                    : Icons.play_arrow,
-                color: Colors.white,
-                size: size * 0.6, // 图标大小为容器的60%
-                shadows: [
-                  Shadow(
-                    blurRadius: 8.0,
-                    color: Colors.black.withOpacity(0.5),
-                    offset: const Offset(0, 2),
+          opacity: myVideoStateController.videoPlaying.value ? 0.0 : 1.0,
+          duration: const Duration(milliseconds: 150),
+          child: Container(
+            width: size,
+            height: size,
+            decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.5),
+              shape: BoxShape.circle,
+            ),
+            child: Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: () async {
+                  // 添加震动反馈
+                  if (await Vibration.hasVibrator() ?? false) {
+                    await Vibration.vibrate(duration: 50);
+                  }
+                  
+                  myVideoStateController.videoPlaying.value
+                      ? myVideoStateController.player.pause()
+                      : myVideoStateController.player.play();
+                },
+                customBorder: const CircleBorder(),
+                child: AnimatedScale(
+                  scale: myVideoStateController.videoPlaying.value ? 1.0 : 0.9,
+                  duration: const Duration(milliseconds: 150),
+                  child: Icon(
+                    myVideoStateController.videoPlaying.value
+                        ? Icons.pause
+                        : Icons.play_arrow,
+                    color: Colors.white,
+                    size: size * 0.6, // 图标大小为容器的60%
+                    shadows: [
+                      Shadow(
+                        blurRadius: 8.0,
+                        color: Colors.black.withOpacity(0.5),
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
           ),
-        ),
-      ),
-    ));
+        ));
   }
 
   /// 构建缓冲动画，尺寸自适应
@@ -480,24 +492,21 @@ class _MyVideoScreenState extends State<MyVideoScreen>
                 valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
                 strokeWidth: size * 0.08, // 线条宽度为尺寸的8%
               ).animate(onPlay: (controller) => controller.repeat()).rotate(
-                duration: const Duration(milliseconds: 1000),
-                curve: Curves.linear,
-              ),
+                    duration: const Duration(milliseconds: 1000),
+                    curve: Curves.linear,
+                  ),
             ),
           )
         : const SizedBox.shrink());
   }
 
-  void vibrate() async {
-    if (await Vibration.hasVibrator() ?? false) {
-      Vibration.vibrate(pattern: [100]);
-    }
-  }
-
-  void _setLongPressing(LongPressType? longPressType, bool value) {
+  void _setLongPressing(LongPressType? longPressType, bool value) async {
     if (value) {
       // 当开始长按时触发震动等逻辑
-      vibrate();
+      if (await Vibration.hasVibrator() ?? false) {
+        // 使用更短的震动时间，并确保震动完成
+        await Vibration.vibrate(duration: 50);
+      }
 
       // 根据长按类型更新UI
       switch (longPressType) {
@@ -507,7 +516,7 @@ class _MyVideoScreenState extends State<MyVideoScreen>
             isSlidingVolumeZone = false;
             isLongPressing = false;
           });
-          _infoMessageFadeController.forward();  // 淡入亮度提示
+          _infoMessageFadeController.forward();
           break;
         case LongPressType.volume:
           setState(() {
@@ -515,7 +524,7 @@ class _MyVideoScreenState extends State<MyVideoScreen>
             isSlidingBrightnessZone = false;
             isLongPressing = false;
           });
-          _infoMessageFadeController.forward();  // 淡入音量提示
+          _infoMessageFadeController.forward();
           break;
         case LongPressType.normal:
           setState(() {
@@ -523,11 +532,12 @@ class _MyVideoScreenState extends State<MyVideoScreen>
             isSlidingBrightnessZone = false;
             isSlidingVolumeZone = false;
           });
-          widget.myVideoStateController.setLongPressPlaybackSpeedByConfiguration();
-          _infoMessageFadeController.forward();  // 显示播放速度提示
+          widget.myVideoStateController
+              .setLongPressPlaybackSpeedByConfiguration();
+          _infoMessageFadeController.forward();
           break;
         default:
-          _infoMessageFadeController.reverse();  // 其他情况淡出提示
+          _infoMessageFadeController.reverse();
           break;
       }
     } else {
@@ -541,7 +551,6 @@ class _MyVideoScreenState extends State<MyVideoScreen>
       });
     }
   }
-
 
   // 快进的消息提示
   Widget _buildInfoMessage() {
@@ -606,82 +615,89 @@ class _MyVideoScreenState extends State<MyVideoScreen>
   }
 
   Widget _buildBrightnessInfoMessage() {
-  return Obx(() {
-    var curBrightness = _configService[ConfigService.BRIGHTNESS_KEY] as double;
-    IconData brightnessIcon;
-    String brightnessText;
+    return Obx(() {
+      var curBrightness =
+          _configService[ConfigService.BRIGHTNESS_KEY] as double;
+      IconData brightnessIcon;
+      String brightnessText;
 
-    if (curBrightness <= 0.0) {
-      brightnessIcon = Icons.brightness_3_rounded;
-      brightnessText = slang.t.videoDetail.brightnessLowest;
-    } else if (curBrightness > 0.0 && curBrightness <= 0.2) {
-      brightnessIcon = Icons.brightness_2_rounded;
-      brightnessText = '${slang.t.videoDetail.brightness}: ${(curBrightness * 100).toInt()}%';
-    } else if (curBrightness > 0.2 && curBrightness <= 0.5) {
-      brightnessIcon = Icons.brightness_5_rounded;
-      brightnessText = '${slang.t.videoDetail.brightness}: ${(curBrightness * 100).toInt()}%';
-    } else if (curBrightness > 0.5 && curBrightness <= 0.8) {
-      brightnessIcon = Icons.brightness_4_rounded;
-      brightnessText = '${slang.t.videoDetail.brightness}: ${(curBrightness * 100).toInt()}%';
-    } else if (curBrightness > 0.8 && curBrightness <= 1.0) {
-      brightnessIcon = Icons.brightness_7_rounded;
-      brightnessText = '${slang.t.videoDetail.brightness}: ${(curBrightness * 100).toInt()}%';
-    } else {
-      // 处理意外情况，例如亮度超过范围
-      brightnessIcon = Icons.brightness_3_rounded;
-      brightnessText = '${slang.t.videoDetail.brightness}: ${(curBrightness * 100).toInt()}%';
-    }
+      if (curBrightness <= 0.0) {
+        brightnessIcon = Icons.brightness_3_rounded;
+        brightnessText = slang.t.videoDetail.brightnessLowest;
+      } else if (curBrightness > 0.0 && curBrightness <= 0.2) {
+        brightnessIcon = Icons.brightness_2_rounded;
+        brightnessText =
+            '${slang.t.videoDetail.brightness}: ${(curBrightness * 100).toInt()}%';
+      } else if (curBrightness > 0.2 && curBrightness <= 0.5) {
+        brightnessIcon = Icons.brightness_5_rounded;
+        brightnessText =
+            '${slang.t.videoDetail.brightness}: ${(curBrightness * 100).toInt()}%';
+      } else if (curBrightness > 0.5 && curBrightness <= 0.8) {
+        brightnessIcon = Icons.brightness_4_rounded;
+        brightnessText =
+            '${slang.t.videoDetail.brightness}: ${(curBrightness * 100).toInt()}%';
+      } else if (curBrightness > 0.8 && curBrightness <= 1.0) {
+        brightnessIcon = Icons.brightness_7_rounded;
+        brightnessText =
+            '${slang.t.videoDetail.brightness}: ${(curBrightness * 100).toInt()}%';
+      } else {
+        // 处理意外情况，例如亮度超过范围
+        brightnessIcon = Icons.brightness_3_rounded;
+        brightnessText =
+            '${slang.t.videoDetail.brightness}: ${(curBrightness * 100).toInt()}%';
+      }
 
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(brightnessIcon, color: Colors.white),
-        const SizedBox(width: 4),
-        Text(
-          brightnessText,
-          style: const TextStyle(color: Colors.white, fontSize: 16),
-        ),
-      ],
-    );
-  });
-}
-
+      return Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(brightnessIcon, color: Colors.white),
+          const SizedBox(width: 4),
+          Text(
+            brightnessText,
+            style: const TextStyle(color: Colors.white, fontSize: 16),
+          ),
+        ],
+      );
+    });
+  }
 
   Widget _buildVolumeInfoMessage() {
-  return Obx(() {
-    var curVolume = _configService[ConfigService.VOLUME_KEY] as double;
-    IconData volumeIcon;
-    String volumeText;
+    return Obx(() {
+      var curVolume = _configService[ConfigService.VOLUME_KEY] as double;
+      IconData volumeIcon;
+      String volumeText;
 
-    if (curVolume == 0.0) {
-      volumeIcon = Icons.volume_off;
-      volumeText = slang.t.videoDetail.volumeMuted;
-    } else if (curVolume > 0.0 && curVolume <= 0.3) {
-      volumeIcon = Icons.volume_down;
-      volumeText = '${slang.t.videoDetail.volume}: ${(curVolume * 100).toInt()}%';
-    } else if (curVolume > 0.3 && curVolume <= 1.0) {
-      volumeIcon = Icons.volume_up;
-      volumeText = '${slang.t.videoDetail.volume}: ${(curVolume * 100).toInt()}%';
-    } else {
-      // 处理意外情况，例如音量超过范围
-      volumeIcon = Icons.volume_off;
-      volumeText = '${slang.t.videoDetail.volume}: ${(curVolume * 100).toInt()}%';
-    }
+      if (curVolume == 0.0) {
+        volumeIcon = Icons.volume_off;
+        volumeText = slang.t.videoDetail.volumeMuted;
+      } else if (curVolume > 0.0 && curVolume <= 0.3) {
+        volumeIcon = Icons.volume_down;
+        volumeText =
+            '${slang.t.videoDetail.volume}: ${(curVolume * 100).toInt()}%';
+      } else if (curVolume > 0.3 && curVolume <= 1.0) {
+        volumeIcon = Icons.volume_up;
+        volumeText =
+            '${slang.t.videoDetail.volume}: ${(curVolume * 100).toInt()}%';
+      } else {
+        // 处理意外情况，例如音量超过范围
+        volumeIcon = Icons.volume_off;
+        volumeText =
+            '${slang.t.videoDetail.volume}: ${(curVolume * 100).toInt()}%';
+      }
 
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(volumeIcon, color: Colors.white),
-        const SizedBox(width: 4),
-        Text(
-          volumeText,
-          style: const TextStyle(color: Colors.white, fontSize: 16),
-        ),
-      ],
-    );
-  });
-}
-
+      return Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(volumeIcon, color: Colors.white),
+          const SizedBox(width: 4),
+          Text(
+            volumeText,
+            style: const TextStyle(color: Colors.white, fontSize: 16),
+          ),
+        ],
+      );
+    });
+  }
 
   Widget _buildSeekPreview() {
     return Obx(() {
@@ -689,9 +705,11 @@ class _MyVideoScreenState extends State<MyVideoScreen>
         return const SizedBox.shrink();
       }
 
-      Duration previewPosition = widget.myVideoStateController.previewPosition.value;
-      Duration totalDuration = widget.myVideoStateController.totalDuration.value;
-      
+      Duration previewPosition =
+          widget.myVideoStateController.previewPosition.value;
+      Duration totalDuration =
+          widget.myVideoStateController.totalDuration.value;
+
       return Positioned(
         top: MediaQuery.of(context).padding.top + 20,
         left: 0,

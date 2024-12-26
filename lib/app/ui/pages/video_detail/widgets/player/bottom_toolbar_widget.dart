@@ -5,6 +5,7 @@ import 'package:i_iwara/app/services/app_service.dart';
 import 'package:i_iwara/app/ui/pages/video_detail/widgets/volume_control_widget.dart';
 import 'package:logger/logger.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:vibration/vibration.dart';
 
 import '../../../../../../utils/common_utils.dart';
 import '../../../../../services/config_service.dart';
@@ -82,7 +83,12 @@ class BottomToolbar extends StatelessWidget {
                                   key: ValueKey('play'),
                                   color: Colors.white,
                                 ),
-                          onPressed: () {
+                          onPressed: () async {
+                            // 添加震动反馈
+                            if (await Vibration.hasVibrator() ?? false) {
+                              await Vibration.vibrate(duration: 50);
+                            }
+                            
                             if (myVideoStateController.videoPlaying.value) {
                               myVideoStateController.videoController.player
                                   .pause();

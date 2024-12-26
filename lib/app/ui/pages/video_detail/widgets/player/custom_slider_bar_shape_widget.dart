@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:vibration/vibration.dart';
 
 import '../../../../../../utils/common_utils.dart';
 import '../../controllers/my_video_state_controller.dart';
@@ -39,7 +40,11 @@ class _CustomVideoProgressbarState extends State<CustomVideoProgressbar> {
         return GestureDetector(
           // 仅在移动端处理长按事件
           onLongPressStart: isMobile
-              ? (details) {
+              ? (details) async {
+                  // 添加震动反馈
+                  if (await Vibration.hasVibrator() ?? false) {
+                    await Vibration.vibrate(duration: 50);
+                  }
                   _handleLongPress(details.globalPosition);
                 }
               : null,
@@ -79,7 +84,7 @@ class _CustomVideoProgressbarState extends State<CustomVideoProgressbar> {
                     _handleMouseHover(event.position);
                   },
             child: Obx(() {
-              // 计算当前播放位置（秒）
+              // 计���当前播放位置（秒）
               double? current = (widget.controller.videoBuffering.value &&
                           !widget.controller.sliderDragLoadFinished.value ||
                       _dragging)

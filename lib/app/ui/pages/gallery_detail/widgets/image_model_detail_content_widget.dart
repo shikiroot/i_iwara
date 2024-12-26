@@ -91,11 +91,11 @@ class ImageModelDetailContent extends StatelessWidget {
         ),
         const SizedBox(width: 8),
         Expanded(
-          child: ExtendedText(
-            controller.imageModelInfo.value?.title ?? '',
-            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            overflow: TextOverflow.ellipsis,
-            maxLines: 1,
+          child: SelectableText.rich(
+            TextSpan(
+              text: controller.imageModelInfo.value?.title ?? '',
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
           ),
         ),
       ],
