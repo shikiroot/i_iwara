@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:i_iwara/app/models/dto/user_dto.dart';
 import 'package:i_iwara/app/models/user.model.dart';
+import 'package:i_iwara/app/routes/app_routes.dart';
 import 'package:i_iwara/app/services/user_preference_service.dart';
 import 'package:i_iwara/app/services/user_service.dart';
 import 'package:i_iwara/app/ui/widgets/MDToastWidget.dart';
@@ -105,6 +106,12 @@ class _FollowButtonWidgetState extends State<FollowButtonWidget> {
                       )
                     : null,
                 onTap: () {
+                  final UserService userService = Get.find();
+                  if (!userService.isLogin) {
+                    showToastWidget(MDToastWidget(message: t.errors.pleaseLoginFirst, type: MDToastType.error));
+                    Get.toNamed(Routes.LOGIN);
+                    return;
+                  }
                   if (likedUser != null) {
                     _userPreferenceService.removeLikedUser(likedUser);
                   } else {
@@ -132,6 +139,12 @@ class _FollowButtonWidgetState extends State<FollowButtonWidget> {
                       )
                     : null,
                 onTap: () async {
+                  final UserService userService = Get.find();
+                  if (!userService.isLogin) {
+                    showToastWidget(MDToastWidget(message: t.errors.pleaseLoginFirst, type: MDToastType.error));
+                    Get.toNamed(Routes.LOGIN);
+                    return;
+                  }
                   isProcessing.value = true;
                   try {
                     final result =

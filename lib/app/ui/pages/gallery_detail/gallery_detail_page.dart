@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:i_iwara/app/routes/app_routes.dart';
+import 'package:i_iwara/app/services/user_service.dart';
 import 'package:i_iwara/app/ui/pages/comment/widgets/comment_input_dialog.dart';
 import 'package:i_iwara/app/ui/pages/gallery_detail/widgets/image_model_detail_content_widget.dart';
 import 'package:i_iwara/app/ui/pages/video_detail/widgets/media_tile_list_loading_widget.dart';
@@ -160,6 +162,12 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                               onSubmit: (text) async {
                                 if (text.trim().isEmpty) {
                                   showToastWidget(MDToastWidget(message: slang.t.errors.commentCanNotBeEmpty, type: MDToastType.error));
+                                  return;
+                                }
+                                final UserService userService = Get.find();
+                                if (!userService.isLogin) {
+                                  showToastWidget(MDToastWidget(message: slang.t.errors.pleaseLoginFirst, type: MDToastType.error));
+                                  Get.toNamed(Routes.LOGIN);
                                   return;
                                 }
                                 await commentController.postComment(text);
@@ -389,6 +397,12 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                                 // 添加发表评论按钮
                                 TextButton.icon(
                                   onPressed: () {
+                                    final UserService userService = Get.find();
+                                    if (!userService.isLogin) {
+                                      showToastWidget(MDToastWidget(message: slang.t.errors.pleaseLoginFirst, type: MDToastType.error));
+                                      Get.toNamed(Routes.LOGIN);
+                                      return;
+                                    }
                                     showCommentModal(context);
                                   },
                                   icon: const Icon(Icons.add_comment),
@@ -516,6 +530,12 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                           // 添加发表评论按钮
                           TextButton.icon(
                             onPressed: () {
+                              final UserService userService = Get.find();
+                              if (!userService.isLogin) {
+                                showToastWidget(MDToastWidget(message: slang.t.errors.pleaseLoginFirst, type: MDToastType.error));
+                                Get.toNamed(Routes.LOGIN);
+                                return;
+                              }
                               showCommentModal(context);
                             },
                             icon: const Icon(Icons.add_comment),

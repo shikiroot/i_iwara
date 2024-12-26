@@ -1,11 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:i_iwara/app/routes/app_routes.dart';
 import 'package:i_iwara/app/services/app_service.dart';
+import 'package:i_iwara/app/services/user_service.dart';
 import 'package:i_iwara/app/services/video_service.dart';
 import 'package:i_iwara/app/ui/pages/video_detail/widgets/detail/video_description_widget.dart';
+import 'package:i_iwara/app/ui/widgets/MDToastWidget.dart';
 import 'package:i_iwara/common/enums/media_enums.dart';
 import 'package:i_iwara/utils/date_time_extension.dart';
+import 'package:oktoast/oktoast.dart';
 import '../../../../../../common/constants.dart';
 import '../../../../widgets/error_widget.dart';
 import '../../controllers/my_video_state_controller.dart';
@@ -190,6 +194,12 @@ class VideoDetailContent extends StatelessWidget {
                                 child: InkWell(
                                   borderRadius: BorderRadius.circular(16),
                                   onTap: () {
+                                    final UserService userService = Get.find();
+                                    if (!userService.isLogin) {
+                                      showToastWidget(MDToastWidget(message: t.errors.pleaseLoginFirst, type: MDToastType.error));
+                                      Get.toNamed(Routes.LOGIN);
+                                      return;
+                                    }
                                     showModalBottomSheet(
                                       backgroundColor: Colors.transparent,
                                       isScrollControlled: true,

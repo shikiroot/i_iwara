@@ -1,8 +1,10 @@
 import 'dart:async';
+
 import 'package:dio/dio.dart' as dio;
 import 'package:dio/io.dart';
 import 'package:get/get.dart';
 import 'package:i_iwara/i18n/strings.g.dart';
+
 import '../../common/constants.dart';
 import '../../utils/logger_utils.dart';
 import '../models/api_result.model.dart';
@@ -39,18 +41,31 @@ class AuthService extends GetxService {
 
   // 初始化
   Future<AuthService> init() async {
-    _authToken = await _storage.readSecureData(KeyConstants.authToken);
-    _accessToken = await _storage.readSecureData(KeyConstants.accessToken);
-    LogUtils.d('初始化完成, token: $_authToken, accessToken: $_accessToken', _tag);
-    
-    _startTokenRefreshTimer();
-    
+    try {
+      _authToken = await _storage.readSecureData(KeyConstants.authToken);
+      _accessToken = await _storage.readSecureData(KeyConstants.accessToken);
+
+      // 如果任一token读取失败，执行清理
+      if (_authToken == null || _accessToken == null) {
+        LogUtils.w('token读取失败，执行清理', _tag);
+        await logout();
+      } else {
+        LogUtils.d(
+            '初始化完成, token: $_authToken, accessToken: $_accessToken', _tag);
+        _startTokenRefreshTimer();
+      }
+    } catch (e) {
+      LogUtils.e('认证服务初始化失败', tag: _tag, error: e);
+      await logout();
+    }
+
     return this;
   }
 
   // 启动定时任务
   void _startTokenRefreshTimer() {
-    _tokenRefreshTimer = Timer.periodic(const Duration(minutes: 15), (timer) async {
+    _tokenRefreshTimer =
+        Timer.periodic(const Duration(minutes: 15), (timer) async {
       if (hasToken) {
         await refreshAccessToken();
       }
@@ -96,12 +111,19 @@ class AuthService extends GetxService {
 
   // 登出
   Future<void> logout() async {
-    _authToken = null;
-    _accessToken = null;
-    await _storage.deleteSecureData(KeyConstants.authToken);
-    await _storage.deleteSecureData(KeyConstants.accessToken);
-    // TODO review
-    LogUtils.d('用户已登出', _tag);
+    try {
+      _authToken = null;
+      _accessToken = null;
+      _tokenRefreshTimer?.cancel();
+      await _storage.deleteSecureData(KeyConstants.authToken);
+      await _storage.deleteSecureData(KeyConstants.accessToken);
+      LogUtils.d('用户已登出', _tag);
+    } catch (e) {
+      LogUtils.e('登出过程中发生错误', tag: _tag, error: e);
+      // 确保即使发生错误，token也被清除
+      _authToken = null;
+      _accessToken = null;
+    }
   }
 
   // 刷新token
@@ -132,7 +154,8 @@ class AuthService extends GetxService {
         _refreshTokenCompleter = null;
         return true;
       } else {
-        throw AuthServiceException(response.data['message'] ?? t.errors.unknownError);
+        throw AuthServiceException(
+            response.data['message'] ?? t.errors.unknownError);
       }
     } on dio.DioException catch (e) {
       LogUtils.e('刷新token失败: ${e.message}', tag: _tag);
@@ -194,7 +217,8 @@ class AuthService extends GetxService {
         LogUtils.d('注册成功，邮件指令已发送', _tag);
         return ApiResult.success();
       } else {
-        return ApiResult.fail(response.data['message'] ?? t.errors.registerFailed);
+        return ApiResult.fail(
+            response.data['message'] ?? t.errors.registerFailed);
       }
     } on dio.DioException catch (e) {
       LogUtils.e('注册失败: ${e.message}', tag: _tag);

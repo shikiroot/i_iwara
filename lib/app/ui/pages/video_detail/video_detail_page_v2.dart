@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:i_iwara/app/routes/app_routes.dart';
 import 'package:i_iwara/app/services/app_service.dart';
+import 'package:i_iwara/app/services/user_service.dart';
 import 'package:i_iwara/app/ui/pages/comment/widgets/comment_input_dialog.dart';
 import 'package:i_iwara/app/ui/pages/home/home_navigation_layout.dart';
 import 'package:i_iwara/app/ui/pages/video_detail/widgets/media_tile_list_loading_widget.dart';
@@ -165,6 +166,12 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> {
                               onSubmit: (text) async {
                                 if (text.trim().isEmpty) {
                                   showToastWidget(MDToastWidget(message: t.errors.commentCanNotBeEmpty, type: MDToastType.error));
+                                  return;
+                                }
+                                final UserService userService = Get.find();
+                                if (!userService.isLogin) {
+                                  showToastWidget(MDToastWidget(message: t.errors.pleaseLoginFirst, type: MDToastType.error));
+                                  Get.toNamed(Routes.LOGIN);
                                   return;
                                 }
                                 await commentController.postComment(text);
@@ -390,6 +397,12 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> {
                                                 showToastWidget(MDToastWidget(message: t.errors.commentCanNotBeEmpty, type: MDToastType.error));
                                                 return;
                                               }
+                                              final UserService userService = Get.find();
+                                              if (!userService.isLogin) {
+                                                showToastWidget(MDToastWidget(message: t.errors.pleaseLoginFirst, type: MDToastType.error));
+                                                Get.toNamed(Routes.LOGIN);
+                                                return;
+                                              }
                                               await commentController.postComment(text);
                                             },
                                           ),
@@ -530,6 +543,12 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> {
                                       onSubmit: (text) async {
                                         if (text.trim().isEmpty) {
                                           showToastWidget(MDToastWidget(message: t.errors.commentCanNotBeEmpty, type: MDToastType.error));
+                                          return;
+                                        }
+                                        final UserService userService = Get.find();
+                                        if (!userService.isLogin) {
+                                          showToastWidget(MDToastWidget(message: t.errors.pleaseLoginFirst, type: MDToastType.error));
+                                          Get.toNamed(Routes.LOGIN);
                                           return;
                                         }
                                         await commentController.postComment(text);

@@ -4,6 +4,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:i_iwara/app/models/dto/user_dto.dart';
+import 'package:i_iwara/app/routes/app_routes.dart';
 import 'package:i_iwara/app/services/app_service.dart';
 import 'package:i_iwara/app/services/user_preference_service.dart';
 import 'package:i_iwara/app/ui/pages/author_profile/widgets/author_profile_skeleton_widget.dart';
@@ -130,6 +131,12 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                               onSubmit: (text) async {
                                 if (text.trim().isEmpty) {
                                   showToastWidget(MDToastWidget(message: t.errors.commentCanNotBeEmpty, type: MDToastType.error));
+                                  return;
+                                }
+                                final UserService userService = Get.find();
+                                if (!userService.isLogin) {
+                                  showToastWidget(MDToastWidget(message: t.errors.pleaseLoginFirst, type: MDToastType.error));
+                                  Get.toNamed(Routes.LOGIN);
                                   return;
                                 }
                                 await profileController.commentController.postComment(text);
@@ -593,6 +600,12 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                                 true) {
                               return ElevatedButton(
                                 onPressed: () {
+                                  final UserService userService = Get.find();
+                                  if (!userService.isLogin) {
+                                    showToastWidget(MDToastWidget(message: t.errors.pleaseLoginFirst, type: MDToastType.error));
+                                    Get.toNamed(Routes.LOGIN);
+                                    return;
+                                  }
                                   // 取消关注
                                   profileController
                                       .unfollowAuthor();
@@ -603,6 +616,12 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                               return ElevatedButton(
                                 onPressed: () {
                                   // 关注
+                                  final UserService userService = Get.find();
+                                  if (!userService.isLogin) {
+                                    showToastWidget(MDToastWidget(message: t.errors.pleaseLoginFirst, type: MDToastType.error));
+                                    Get.toNamed(Routes.LOGIN);
+                                    return;
+                                  }
                                   profileController
                                       .followAuthor();
                                 },

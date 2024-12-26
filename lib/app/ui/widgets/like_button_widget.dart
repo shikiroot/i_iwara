@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:i_iwara/app/routes/app_routes.dart';
+import 'package:i_iwara/app/services/user_service.dart';
 import 'package:i_iwara/app/ui/widgets/MDToastWidget.dart';
 import 'package:i_iwara/i18n/strings.g.dart';
 import 'package:oktoast/oktoast.dart';
+import 'package:vibration/vibration.dart';
 
 class LikeButtonWidget extends StatefulWidget {
   final String mediaId;
@@ -30,6 +33,7 @@ class _LikeButtonWidgetState extends State<LikeButtonWidget> {
   bool _isLoading = false;
   late bool _isLiked;
   late int _likeCount;
+  final UserService _userService = Get.find();
 
   @override
   void initState() {
@@ -40,6 +44,15 @@ class _LikeButtonWidgetState extends State<LikeButtonWidget> {
 
   Future<void> _handleLikeToggle() async {
     if (_isLoading) return;
+    if (!_userService.isLogin) {
+      showToastWidget(MDToastWidget(message: t.errors.pleaseLoginFirst, type: MDToastType.error));
+      Get.toNamed(Routes.LOGIN);
+      return;
+    }
+
+    if (await Vibration.hasVibrator() ?? false) {
+      Vibration.vibrate(pattern: [500]);
+    }
 
     setState(() {
       _isLoading = true;

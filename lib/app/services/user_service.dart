@@ -20,7 +20,7 @@ class UserService extends GetxService {
 
   final String _tag = '[UserService]';
 
-  Rxn<User?> currentUser = Rxn<User>();
+  Rxn<User> currentUser = Rxn<User>();
 
   bool get isLogin => currentUser.value != null;
 

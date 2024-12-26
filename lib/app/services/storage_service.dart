@@ -1,6 +1,9 @@
+import 'package:flutter/services.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:convert';
+
+import 'package:i_iwara/utils/logger_utils.dart';
 
 class StorageService {
   static final StorageService _instance = StorageService._internal();
@@ -41,7 +44,19 @@ class StorageService {
   }
 
   Future<String?> readSecureData(String key) async {
-    return await _secureStorage.read(key: key);
+    try {
+      return await _secureStorage.read(key: key);
+    } on PlatformException catch (e) {
+      // 处理解密错误
+      if (e.message?.contains('BAD_DECRYPT') ?? false) {
+        LogUtils.w('安全存储解密失败，正在清理所有数据');
+        await _secureStorage.deleteAll();
+      }
+      return null;
+    } catch (e) {
+      LogUtils.e('读取安全存储数据失败: $e');
+      return null;
+    }
   }
 
   Future<void> deleteSecureData(String key) async {
@@ -54,8 +69,13 @@ class StorageService {
   }
 
   Future<Map<String, dynamic>?> readSecureObject(String key) async {
-    final string = await readSecureData(key);
-    if (string == null) return null;
-    return json.decode(string) as Map<String, dynamic>;
+    try {
+      final string = await readSecureData(key);
+      if (string == null) return null;
+      return json.decode(string) as Map<String, dynamic>;
+    } catch (e) {
+      LogUtils.e('读取安全存储对象失败: $e');
+      return null;
+    }
   }
 }
