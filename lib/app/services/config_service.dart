@@ -55,7 +55,7 @@ class ConfigService extends GetxService {
     RENDER_VERTICAL_VIDEO_IN_VERTICAL_SCREEN: true.obs,
     ACTIVE_BACKGROUND_PRIVACY_MODE: false.obs,
     DEFAULT_LANGUAGE_KEY: 'zh-CN'.obs,
-    THEME_MODE_KEY: 0.obs, // 添加主题模式配置，默认为0(system)
+    THEME_MODE_KEY: 4.obs, // 添加主题模式配置，默认为0(system)
     // TODO 远程仓库的 pubspec.yaml 地址
     REMOTE_REPO_PUB_SPEC_YAML_URL: ''.obs,
     // TODO 远程仓库的 release 地址
