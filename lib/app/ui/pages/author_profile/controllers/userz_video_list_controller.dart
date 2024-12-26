@@ -1,7 +1,9 @@
 import 'package:get/get.dart';
 import 'package:i_iwara/app/models/page_data.model.dart';
+import 'package:i_iwara/app/ui/widgets/MDToastWidget.dart';
 import 'package:i_iwara/i18n/strings.g.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
+import 'package:oktoast/oktoast.dart';
 
 import '../../../../models/api_result.model.dart';
 import '../../../../models/video.model.dart';
@@ -52,7 +54,7 @@ class UserzVideoListController extends GetxController {
           '[视频搜索controller] 查询参数: userId: ${userId.value}, sort: ${sort.value}, page: $tempPage');
 
       if (!response.isSuccess) {
-        Get.snackbar(t.errors.error, response.message);
+        showToastWidget(MDToastWidget(message: response.message, type: MDToastType.error));
         return;
       }
       final newVideos = response.data!.results;

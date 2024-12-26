@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import 'package:i_iwara/app/repositories/history_repository.dart';
+import 'package:i_iwara/app/ui/widgets/MDToastWidget.dart';
 import 'package:i_iwara/i18n/strings.g.dart';
+import 'package:oktoast/oktoast.dart';
 import 'history_list_repository.dart';
 
 class HistoryListController extends GetxController {
@@ -33,7 +35,7 @@ class HistoryListController extends GetxController {
       await _historyRepository.clearHistoryByType(itemType);
     }
     repository.refresh();
-    Get.snackbar(t.common.success, '');
+    showToastWidget(MDToastWidget(message: t.common.success, type: MDToastType.success));
   }
 
   void toggleMultiSelect() {
@@ -63,7 +65,7 @@ class HistoryListController extends GetxController {
     await _historyRepository.deleteRecords(selectedRecords.toList());
     selectedRecords.clear();
     repository.refresh();
-    Get.snackbar(t.common.success, '');
+    showToastWidget(MDToastWidget(message: t.common.success, type: MDToastType.success));
   }
 
   void search(String keyword) {

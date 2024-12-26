@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:i_iwara/app/ui/widgets/MDToastWidget.dart';
+import 'package:oktoast/oktoast.dart';
 import 'package:super_clipboard/super_clipboard.dart';
 
 import '../../../../../models/tag.model.dart';
@@ -98,12 +100,7 @@ class _ExpandableTagsWidgetState extends State<ExpandableTagsWidget>
     final data = DataWriterItem();
     data.add(Formats.plainText(tag.id));
     SystemClipboard.instance?.write([data]);
-    Get.snackbar(
-      slang.t.common.tips,
-      slang.t.videoDetail.tagCopiedToClipboard(tagId: tag.id),
-      snackPosition: SnackPosition.bottom,
-      duration: const Duration(seconds: 1),
-    );
+    showToastWidget(MDToastWidget(message: slang.t.videoDetail.tagCopiedToClipboard(tagId: tag.id), type: MDToastType.success),position: ToastPosition.bottom, duration: const Duration(seconds: 1));
   }
 
   Widget _buildTagChip(Tag tag) {

@@ -1,7 +1,9 @@
 import 'package:get/get.dart';
 import 'package:i_iwara/app/services/play_list_service.dart';
 import 'package:i_iwara/app/ui/pages/play_list/controllers/play_list_detail_repository.dart';
+import 'package:i_iwara/app/ui/widgets/MDToastWidget.dart';
 import 'package:i_iwara/i18n/strings.g.dart' as slang;
+import 'package:oktoast/oktoast.dart';
 class PlayListDetailController extends GetxController {
   final PlayListService _playListService = Get.find<PlayListService>();
   late PlayListDetailRepository repository;
@@ -39,7 +41,7 @@ class PlayListDetailController extends GetxController {
     if (result.isSuccess) {
       playlistTitle.value = newTitle;
     } else {
-      Get.snackbar(slang.t.errors.error, result.message);
+      showToastWidget(MDToastWidget(message: result.message, type: MDToastType.error));
     }
   }
   
@@ -79,9 +81,9 @@ class PlayListDetailController extends GetxController {
   void deleteCurPlaylist() {
     _playListService.deletePlaylist(playlistId: playlistId).then((result) {
       if (result.isSuccess) {
-        Get.snackbar(slang.t.common.success, '');
+        showToastWidget(MDToastWidget(message: slang.t.common.success, type: MDToastType.success));
       } else {
-        Get.snackbar(slang.t.errors.error, result.message);
+        showToastWidget(MDToastWidget(message: result.message, type: MDToastType.error));
       }
     });
   }

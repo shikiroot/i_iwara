@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:i_iwara/app/ui/pages/sign_in/widgets/sign_in_heatmap_widget.dart';
+import 'package:i_iwara/app/ui/widgets/MDToastWidget.dart';
+import 'package:oktoast/oktoast.dart';
 
 import '../../../routes/app_routes.dart';
 import '../../../services/user_service.dart';
@@ -50,7 +52,7 @@ class _SignInPageState extends State<SignInPage> {
     if (picked != null) {
       // 确保日期范围不超过1年
       if (picked.end.difference(picked.start).inDays > 365) {
-        Get.snackbar(slang.t.common.tips, slang.t.signIn.dateRangeCantBeMoreThanOneYear);
+        showToastWidget(MDToastWidget(message: slang.t.signIn.dateRangeCantBeMoreThanOneYear, type: MDToastType.error));
         return;
       }
       setState(() {

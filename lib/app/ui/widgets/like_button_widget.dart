@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:i_iwara/app/ui/widgets/MDToastWidget.dart';
 import 'package:i_iwara/i18n/strings.g.dart';
+import 'package:oktoast/oktoast.dart';
 
 class LikeButtonWidget extends StatefulWidget {
   final String mediaId;
@@ -56,7 +58,7 @@ class _LikeButtonWidgetState extends State<LikeButtonWidget> {
         widget.onLikeChanged?.call(_isLiked);
       }
     } catch (e) {
-      Get.snackbar(t.errors.error, t.errors.errorOccurred);
+      showToastWidget(MDToastWidget(message: t.errors.errorOccurred, type: MDToastType.error),position: ToastPosition.top);
     } finally {
       setState(() {
         _isLoading = false;

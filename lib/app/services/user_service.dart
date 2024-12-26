@@ -2,7 +2,9 @@ import 'package:dio/dio.dart' as dio;
 import 'package:get/get.dart';
 import 'package:i_iwara/app/models/dto/user_request_dto.dart';
 import 'package:i_iwara/app/models/page_data.model.dart';
+import 'package:i_iwara/app/ui/widgets/MDToastWidget.dart';
 import 'package:i_iwara/i18n/strings.g.dart';
+import 'package:oktoast/oktoast.dart';
 
 import '../../common/constants.dart';
 import '../../utils/logger_utils.dart';
@@ -37,7 +39,7 @@ class UserService extends GetxService {
         Get.offAllNamed(Routes.LOGIN);
       } on AuthServiceException catch (e) {
         LogUtils.e('$_tag 初始化用户失败', error: e);
-        Get.snackbar("错误", e.message);
+        showToastWidget(MDToastWidget(message: e.message, type: MDToastType.error));
         _authService.logout();
         Get.offAllNamed(Routes.LOGIN);
       }

@@ -4,7 +4,9 @@ import 'package:i_iwara/app/models/dto/user_dto.dart';
 import 'package:i_iwara/app/models/user.model.dart';
 import 'package:i_iwara/app/services/user_preference_service.dart';
 import 'package:i_iwara/app/services/user_service.dart';
+import 'package:i_iwara/app/ui/widgets/MDToastWidget.dart';
 import 'package:i_iwara/i18n/strings.g.dart' as slang;
+import 'package:oktoast/oktoast.dart';
 
 class FollowButtonWidget extends StatefulWidget {
   final User user;
@@ -153,10 +155,10 @@ class _FollowButtonWidgetState extends State<FollowButtonWidget> {
                         Get.closeAllBottomSheets();
                       }
                     } else {
-                      Get.snackbar(t.errors.error, result.message);
+                      showToastWidget(MDToastWidget(message: result.message, type: MDToastType.error),position: ToastPosition.top);
                     }
                   } catch (e) {
-                    Get.snackbar(t.errors.error, t.errors.failedToOperate);
+                    showToastWidget(MDToastWidget(message: t.errors.failedToOperate, type: MDToastType.error),position: ToastPosition.top);
                   } finally {
                     isProcessing.value = false;
                   }
@@ -199,10 +201,10 @@ class _FollowButtonWidgetState extends State<FollowButtonWidget> {
               });
               widget.onUserUpdated?.call(updatedUser);
             } else {
-              Get.snackbar(t.errors.error, result.message);
+              showToastWidget(MDToastWidget(message: result.message, type: MDToastType.error),position: ToastPosition.top);
             }
           } catch (e) {
-            Get.snackbar(t.errors.error, t.errors.failedToOperate);
+            showToastWidget(MDToastWidget(message: t.errors.failedToOperate, type: MDToastType.error),position: ToastPosition.top);
           } finally {
             setState(() {
               _isLoading = false;

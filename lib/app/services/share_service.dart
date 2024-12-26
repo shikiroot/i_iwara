@@ -1,7 +1,8 @@
-import 'package:get/get.dart';
+import 'package:i_iwara/app/ui/widgets/MDToastWidget.dart';
 import 'package:i_iwara/common/constants.dart';
 import 'package:i_iwara/i18n/strings.g.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
+import 'package:oktoast/oktoast.dart';
 import 'package:share_plus/share_plus.dart';
 
 class ShareService {
@@ -22,12 +23,12 @@ class ShareService {
       );
     } catch (e) {
       LogUtils.e('分享播放列表详情失败', error: e, tag: 'ShareService');
-      Get.snackbar(t.share.share, t.errors.failedToOperate);
+      showToastWidget(MDToastWidget(message: t.errors.failedToOperate, type: MDToastType.error));
     }
   }
 
-  /// 分享播放列表
+  /// TODO: 分享播放列表
   static sharePlayList(String userId) {
-    Get.snackbar(t.share.share, t.errors.failedToOperate);
+    showToastWidget(MDToastWidget(message: t.common.comingSoon, type: MDToastType.error));
   }
 }

@@ -10,10 +10,12 @@ import 'package:get/get.dart';
 import 'package:i_iwara/app/routes/app_routes.dart';
 import 'package:i_iwara/app/services/api_service.dart';
 import 'package:i_iwara/app/services/gallery_service.dart';
+import 'package:i_iwara/app/ui/widgets/MDToastWidget.dart';
 import 'package:i_iwara/app/ui/widgets/empty_widget.dart';
 import 'package:i_iwara/utils/date_time_extension.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
 import 'package:i_iwara/utils/widget_extensions.dart';
+import 'package:oktoast/oktoast.dart';
 import 'package:super_clipboard/super_clipboard.dart';
 
 import '../../../../../common/constants.dart';
@@ -244,13 +246,13 @@ class ImageModelDetailContent extends StatelessWidget {
     String url =
         item.data.originalUrl.isEmpty ? item.data.url : item.data.originalUrl;
     if (url.isEmpty) {
-      Get.snackbar(slang.t.common.tips, slang.t.common.linkIsEmpty);
+      showToastWidget(MDToastWidget(message: slang.t.common.linkIsEmpty, type: MDToastType.error));
       return;
     }
     final data = DataWriterItem();
     data.add(Formats.plainText(url));
     SystemClipboard.instance?.write([data]);
-    Get.snackbar(slang.t.common.tips, slang.t.common.linkCopiedToClipboard);
+    showToastWidget(MDToastWidget(message: slang.t.common.linkCopiedToClipboard, type: MDToastType.success));
   }
 
   // 复制图片到剪贴板
@@ -258,7 +260,7 @@ class ImageModelDetailContent extends StatelessWidget {
     String url =
         item.data.originalUrl.isEmpty ? item.data.url : item.data.originalUrl;
     if (url.isEmpty) {
-      Get.snackbar(slang.t.common.tips, slang.t.common.linkIsEmpty);
+      showToastWidget(MDToastWidget(message: slang.t.common.linkIsEmpty, type: MDToastType.error));
       return;
     }
 
@@ -271,16 +273,16 @@ class ImageModelDetailContent extends StatelessWidget {
           DataWriterItem(suggestedName: '${item.data.id}.png');
       dataWriterItem.add(Formats.png(bytes));
       SystemClipboard.instance?.write([dataWriterItem]);
-      Get.snackbar(slang.t.common.tips, slang.t.common.imageCopiedToClipboard);
+      showToastWidget(MDToastWidget(message: slang.t.common.imageCopiedToClipboard, type: MDToastType.success));
     } catch (e) {
-      Get.snackbar(slang.t.common.tips, slang.t.common.copyImageFailed);
+      showToastWidget(MDToastWidget(message: slang.t.common.copyImageFailed, type: MDToastType.error));
     }
   }
 
   // 下载图片: 移动端
   void _downloadImageForMobile(ImageItem item) async {
     // TODO: 移动端的保存图片功能还在开发中
-    Get.snackbar(slang.t.common.tips, slang.t.common.mobileSaveImageIsUnderDevelopment);
+    showToastWidget(MDToastWidget(message: slang.t.common.mobileSaveImageIsUnderDevelopment, type: MDToastType.info));
   }
 
   // 下载图片: 桌面
@@ -294,7 +296,7 @@ class ImageModelDetailContent extends StatelessWidget {
       String url =
           item.data.originalUrl.isEmpty ? item.data.url : item.data.originalUrl;
       if (url.isEmpty) {
-        Get.snackbar(slang.t.common.tips, slang.t.common.linkIsEmpty);
+        showToastWidget(MDToastWidget(message: slang.t.common.linkIsEmpty, type: MDToastType.error));
         return;
       }
 
@@ -305,9 +307,9 @@ class ImageModelDetailContent extends StatelessWidget {
             .data;
         final String filePath = '$directoryPath/${item.data.id}.png';
         await File(filePath).writeAsBytes(bytes);
-        Get.snackbar(slang.t.common.tips, '${slang.t.common.imageSavedTo}: $filePath');
+        showToastWidget(MDToastWidget(message: '${slang.t.common.imageSavedTo}: $filePath', type: MDToastType.success));
       } catch (e) {
-        Get.snackbar(slang.t.common.tips, slang.t.common.saveImageFailed);
+        showToastWidget(MDToastWidget(message: slang.t.common.saveImageFailed, type: MDToastType.error));
       }
     }
   }

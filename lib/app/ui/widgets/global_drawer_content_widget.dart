@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:i_iwara/app/services/app_service.dart';
+import 'package:i_iwara/app/ui/widgets/MDToastWidget.dart';
 import 'package:oktoast/oktoast.dart';
 
 import '../../../common/constants.dart';
@@ -39,7 +40,7 @@ class GlobalDrawerColumns extends StatelessWidget {
                   AppService.switchGlobalDrawer();
                 } else {
                   AppService.switchGlobalDrawer();
-                  showToast(t.errors.pleaseLoginFirst);
+                  showToastWidget(MDToastWidget(message: t.errors.pleaseLoginFirst, type: MDToastType.error));
                 }
               }),
               // 好友

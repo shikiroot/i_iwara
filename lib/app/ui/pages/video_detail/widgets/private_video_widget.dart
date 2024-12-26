@@ -5,9 +5,11 @@ import 'package:i_iwara/app/models/user.model.dart';
 import 'package:i_iwara/app/services/api_service.dart';
 import 'package:i_iwara/app/services/app_service.dart';
 import 'package:i_iwara/app/services/user_service.dart';
+import 'package:i_iwara/app/ui/widgets/MDToastWidget.dart';
 import 'package:i_iwara/common/constants.dart';
 import 'package:i_iwara/i18n/strings.g.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
+import 'package:oktoast/oktoast.dart';
 
 class PrivateVideoWidget extends StatefulWidget {
   final User author;
@@ -58,14 +60,14 @@ class _PrivateVideoWidgetState extends State<PrivateVideoWidget> {
         if (result.isSuccess) {
           setState(() => _isFriendRequestPending = false);
         } else {
-          Get.snackbar(t.errors.error, result.message);
+          showToastWidget(MDToastWidget(message: result.message, type: MDToastType.error),position: ToastPosition.top);
         }
       } else {
         final result = await _userService.addFriend(widget.author.id);
         if (result.isSuccess) {
           setState(() => _isFriendRequestPending = true);
         } else {
-          Get.snackbar(t.errors.error, result.message);
+          showToastWidget(MDToastWidget(message: result.message, type: MDToastType.error),position: ToastPosition.top);
         }
       }
     } finally {
@@ -206,7 +208,7 @@ class _PrivateVideoWidgetState extends State<PrivateVideoWidget> {
         onPressed: () async {
           final result = await _userService.removeFriend(widget.author.id);
           if (!result.isSuccess) {
-            Get.snackbar(t.errors.error, result.message);
+            showToastWidget(MDToastWidget(message: result.message, type: MDToastType.error),position: ToastPosition.top);
           }
         },
         child: Text(t.common.removeFriend),

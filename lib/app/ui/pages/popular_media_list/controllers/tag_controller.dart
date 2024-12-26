@@ -1,7 +1,9 @@
 import 'package:get/get.dart';
 import 'package:i_iwara/app/models/tag.model.dart';
 import 'package:i_iwara/app/services/tag_service.dart';
+import 'package:i_iwara/app/ui/widgets/MDToastWidget.dart';
 import 'package:i_iwara/i18n/strings.g.dart';
+import 'package:oktoast/oktoast.dart';
 
 /// 标签控制器
 class TagController extends GetxController {
@@ -34,7 +36,7 @@ class TagController extends GetxController {
       });
       if (result.isFail) {
         isLoading.value = false;
-        Get.snackbar(t.errors.error, result.message);
+        showToastWidget(MDToastWidget(message: result.message, type: MDToastType.error));
         return;
       }
       List<Tag> newTags = result.data!.results;
@@ -52,7 +54,7 @@ class TagController extends GetxController {
       isLoading.value = false;
     } catch (e) {
       isLoading.value = false;
-      Get.snackbar(t.errors.error, t.errors.errorWhileFetching);
+      showToastWidget(MDToastWidget(message: t.errors.errorWhileFetching, type: MDToastType.error));
     }
   }
 

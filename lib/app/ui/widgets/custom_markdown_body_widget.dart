@@ -5,8 +5,10 @@ import 'package:get/get.dart';
 import 'package:i_iwara/app/models/api_result.model.dart';
 import 'package:i_iwara/app/services/app_service.dart';
 import 'package:i_iwara/app/services/light_service.dart';
+import 'package:i_iwara/app/ui/widgets/MDToastWidget.dart';
 import 'package:i_iwara/i18n/strings.g.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
+import 'package:oktoast/oktoast.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -235,12 +237,12 @@ class _CustomMarkdownBodyState extends State<CustomMarkdownBody> {
           await launchUrl(uri);
         } else {
           LogUtils.e('无法打开链接: $href', tag: 'CustomMarkdownBody');
-          Get.snackbar(t.errors.error, t.errors.errorWhileOpeningLink(link: href));
+          showToastWidget(MDToastWidget(message: t.errors.errorWhileOpeningLink(link: href), type: MDToastType.error),position: ToastPosition.top);
         }
       }
     } catch (e) {
       LogUtils.e('处理链接点击时发生错误', tag: 'CustomMarkdownBody', error: e);
-      Get.snackbar(t.errors.error, t.errors.errorWhileOpeningLink(link: href));
+      showToastWidget(MDToastWidget(message: t.errors.errorWhileOpeningLink(link: href), type: MDToastType.error),position: ToastPosition.top);
     }
   }
 

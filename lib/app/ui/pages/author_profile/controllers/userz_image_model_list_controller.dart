@@ -1,8 +1,10 @@
 import 'package:get/get.dart';
 import 'package:i_iwara/app/models/page_data.model.dart';
 import 'package:i_iwara/app/services/gallery_service.dart';
+import 'package:i_iwara/app/ui/widgets/MDToastWidget.dart';
 import 'package:i_iwara/i18n/strings.g.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
+import 'package:oktoast/oktoast.dart';
 
 import '../../../../models/api_result.model.dart';
 import '../../../../models/image.model.dart';
@@ -52,7 +54,7 @@ class UserzImageModelListController extends GetxController {
           '[图片搜索controller] 查询参数: userId: ${userId.value}, sort: ${sort.value}, page: $tempPage');
 
       if (!response.isSuccess) {
-        Get.snackbar(t.errors.error, response.message);
+        showToastWidget(MDToastWidget(message: response.message, type: MDToastType.error));
         return;
       }
       final newImageModels = response.data!.results;

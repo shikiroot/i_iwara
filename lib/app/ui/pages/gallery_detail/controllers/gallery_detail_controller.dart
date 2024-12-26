@@ -6,8 +6,10 @@ import 'package:i_iwara/app/models/image.model.dart';
 import 'package:i_iwara/app/repositories/history_repository.dart';
 import 'package:i_iwara/app/services/gallery_service.dart';
 import 'package:i_iwara/app/services/user_preference_service.dart';
+import 'package:i_iwara/app/ui/widgets/MDToastWidget.dart';
 import 'package:i_iwara/common/constants.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
+import 'package:oktoast/oktoast.dart';
 
 import '../../../../../common/enums/media_enums.dart';
 import '../../../../models/user.model.dart';
@@ -62,7 +64,7 @@ class GalleryDetailController extends GetxController {
           await _galleryService.fetchGalleryDetail(imageModelId);
       if (!res.isSuccess) {
         errorMessage.value = res.message;
-        Get.snackbar(slang.t.errors.error, res.message);
+        showToastWidget(MDToastWidget(message: res.message, type: MDToastType.error));
         return;
       }
 

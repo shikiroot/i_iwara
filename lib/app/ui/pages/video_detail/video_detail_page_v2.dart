@@ -7,7 +7,9 @@ import 'package:i_iwara/app/ui/pages/home/home_navigation_layout.dart';
 import 'package:i_iwara/app/ui/pages/video_detail/widgets/media_tile_list_loading_widget.dart';
 import 'package:i_iwara/app/ui/pages/video_detail/widgets/detail/video_detail_content_widget.dart';
 import 'package:i_iwara/app/ui/pages/video_detail/widgets/video_detail_info_skeleton_widget.dart';
+import 'package:i_iwara/app/ui/widgets/MDToastWidget.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
+import 'package:oktoast/oktoast.dart';
 import '../../../../common/enums/media_enums.dart';
 import '../../widgets/error_widget.dart';
 import '../../widgets/sliding_card_widget.dart';
@@ -162,7 +164,7 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> {
                               submitText: t.common.send,
                               onSubmit: (text) async {
                                 if (text.trim().isEmpty) {
-                                  Get.snackbar(t.errors.error, t.errors.commentCanNotBeEmpty);
+                                  showToastWidget(MDToastWidget(message: t.errors.commentCanNotBeEmpty, type: MDToastType.error));
                                   return;
                                 }
                                 await commentController.postComment(text);
@@ -385,7 +387,7 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> {
                                             submitText: t.common.send,
                                             onSubmit: (text) async {
                                               if (text.trim().isEmpty) {
-                                                Get.snackbar(t.errors.error, t.errors.commentCanNotBeEmpty);
+                                                showToastWidget(MDToastWidget(message: t.errors.commentCanNotBeEmpty, type: MDToastType.error));
                                                 return;
                                               }
                                               await commentController.postComment(text);
@@ -527,7 +529,7 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> {
                                       submitText: t.common.send,
                                       onSubmit: (text) async {
                                         if (text.trim().isEmpty) {
-                                          Get.snackbar(t.errors.error, t.errors.commentCanNotBeEmpty);
+                                          showToastWidget(MDToastWidget(message: t.errors.commentCanNotBeEmpty, type: MDToastType.error));
                                           return;
                                         }
                                         await commentController.postComment(text);

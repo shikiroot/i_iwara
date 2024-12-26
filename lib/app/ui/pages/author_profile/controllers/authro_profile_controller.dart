@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:i_iwara/app/ui/widgets/MDToastWidget.dart';
 import 'package:i_iwara/i18n/strings.g.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
+import 'package:oktoast/oktoast.dart';
 
 import '../../../../../common/constants.dart';
 import '../../../../models/api_result.model.dart';
@@ -144,7 +146,7 @@ class AuthorProfileController extends GetxController {
       isFollowLoading.value = true;
       ApiResult res = await _userService.followUser(userId);
       if (!res.isSuccess) {
-        Get.snackbar(t.errors.error, res.message);
+        showToastWidget(MDToastWidget(message: res.message, type: MDToastType.error));
         return;
       }
       final authorData =
@@ -164,7 +166,7 @@ class AuthorProfileController extends GetxController {
       isFollowLoading.value = true;
       ApiResult res = await _userService.unfollowUser(userId);
       if (!res.isSuccess) {
-        Get.snackbar(t.errors.error, res.message);
+        showToastWidget(MDToastWidget(message: res.message, type: MDToastType.error));
         return;
       }
       // 刷新页面
@@ -185,7 +187,7 @@ class AuthorProfileController extends GetxController {
     ApiResult res = await _userService.addFriend(userId);
     isFriendLoading.value = false;
     if (!res.isSuccess) {
-      Get.snackbar(t.errors.error, res.message);
+      showToastWidget(MDToastWidget(message: res.message, type: MDToastType.error));
       return;
     }
     isFriendRequestPending.value = true;
@@ -198,7 +200,7 @@ class AuthorProfileController extends GetxController {
     ApiResult res = await _userService.removeFriend(userId);
     isFriendRequestPending.value = false;
     if (!res.isSuccess) {
-      Get.snackbar(t.errors.error, res.message);
+      showToastWidget(MDToastWidget(message: res.message, type: MDToastType.error));
       return;
     }
   }

@@ -4,7 +4,9 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:i_iwara/app/services/app_service.dart';
 import 'package:i_iwara/app/ui/pages/gallery_detail/widgets/horizontial_image_list.dart';
+import 'package:i_iwara/app/ui/widgets/MDToastWidget.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
+import 'package:oktoast/oktoast.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
@@ -507,7 +509,7 @@ class _MyGalleryPhotoViewWrapperState extends State<MyGalleryPhotoViewWrapper> {
                                   color: Colors.white),
                               onPressed: () {
                                 // TODO 还未实现
-                                Get.snackbar(slang.t.common.tips, slang.t.common.moreFeaturesToBeDeveloped);
+                                showToastWidget(MDToastWidget(message: slang.t.common.moreFeaturesToBeDeveloped, type: MDToastType.info));
                               },
                             ),
                             const SizedBox(width: 8),

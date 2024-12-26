@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 import 'package:i_iwara/app/models/user.model.dart';
+import 'package:i_iwara/app/ui/widgets/MDToastWidget.dart';
+import 'package:oktoast/oktoast.dart';
 import '../../../../../utils/logger_utils.dart';
 import '../../../../repositories/sign_in_repository.dart';
 import '../../../../services/user_service.dart';
@@ -50,7 +52,7 @@ class SignInController extends GetxController {
       }
     } catch (e) {
       LogUtils.e('检查签到状态时出错', error: e);
-      Get.snackbar(slang.t.errors.error, slang.t.errors.errorOccurred);
+      showToastWidget(MDToastWidget(message: slang.t.errors.errorOccurred, type: MDToastType.error));
     } finally {
       isLoading.value = false;
     }
@@ -60,12 +62,12 @@ class SignInController extends GetxController {
   Future<void> signIn({required bool isSuccess, String? reason}) async {
     final user = _userService.currentUser.value;
     if (user == null) {
-      Get.snackbar(slang.t.errors.error, slang.t.signIn.pleaseLoginFirst);
+      showToastWidget(MDToastWidget(message: slang.t.signIn.pleaseLoginFirst, type: MDToastType.error));
       return;
     }
     if (hasSignedInToday.value) {
       LogUtils.i('用户已签到，无需重复签到');
-      Get.snackbar(slang.t.errors.error, slang.t.signIn.alreadySignedInToday);
+      showToastWidget(MDToastWidget(message: slang.t.signIn.alreadySignedInToday, type: MDToastType.error));
       return;
     }
     isLoading.value = true;
@@ -74,10 +76,10 @@ class SignInController extends GetxController {
       hasSignedInToday.value = true;
       if (isSuccess) {
         totalSignIns.value += 1;
-        Get.snackbar(slang.t.common.success, slang.t.signIn.signInSuccess);
+        showToastWidget(MDToastWidget(message: slang.t.signIn.signInSuccess, type: MDToastType.success));
       } else {
         failureReason.value = reason ?? '';
-        Get.snackbar(slang.t.errors.error, slang.t.signIn.youDidNotStickToTheSignIn);
+        showToastWidget(MDToastWidget(message: slang.t.signIn.youDidNotStickToTheSignIn, type: MDToastType.error));
       }
       // 更新连续签到天数
       consecutiveSignIns.value = await _signInRepository.getConsecutiveSignIns(user.id);
@@ -85,7 +87,7 @@ class SignInController extends GetxController {
       await _fetchSignInHistory(user.id);
     } catch (e) {
       LogUtils.e('签到失败', error: e);
-      Get.snackbar(slang.t.errors.error, slang.t.signIn.signInFailed);
+      showToastWidget(MDToastWidget(message: slang.t.signIn.signInFailed, type: MDToastType.error));
     } finally {
       isLoading.value = false;
     }
@@ -110,7 +112,7 @@ class SignInController extends GetxController {
       consecutiveSignIns.value = await _signInRepository.getConsecutiveSignIns(userId);
     } catch (e) {
       LogUtils.e('获取签到历史时出错', error: e);
-      Get.snackbar(slang.t.errors.error, slang.t.errors.errorWhileFetchingDatas);
+      showToastWidget(MDToastWidget(message: slang.t.errors.errorWhileFetchingDatas, type: MDToastType.error));
     } finally {
       isLoading.value = false;
     }

@@ -4,6 +4,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:i_iwara/app/models/api_result.model.dart';
+import 'package:i_iwara/app/ui/widgets/MDToastWidget.dart';
+import 'package:oktoast/oktoast.dart';
 
 import '../../../models/captcha.model.dart';
 import '../../../routes/app_routes.dart';
@@ -78,7 +80,7 @@ class _LoginPageState extends State<LoginPage>
       if (res.isSuccess) {
         _captcha.value = res.data;
       } else {
-        Get.snackbar(slang.t.errors.error, res.message);
+        showToastWidget(MDToastWidget(message: res.message, type: MDToastType.error));
       }
     } finally {
       setState(() {
@@ -415,14 +417,14 @@ class _LoginPageState extends State<LoginPage>
 
       if (result.isSuccess) {
         await _userService.fetchUserProfile();
-        Get.snackbar(slang.t.common.success, slang.t.auth.loginSuccess);
+        showToastWidget(MDToastWidget(message: slang.t.auth.loginSuccess, type: MDToastType.success));
         if (Get.previousRoute == Routes.LOGIN) {
           Get.offAllNamed(Routes.HOME);
         } else {
           Get.back();
         }
       } else {
-        Get.snackbar(slang.t.errors.error, result.message);
+        showToastWidget(MDToastWidget(message: result.message, type: MDToastType.error));
       }
     } finally {
       setState(() {
@@ -436,11 +438,7 @@ class _LoginPageState extends State<LoginPage>
     final captchaAnswer = _captchaController.text.trim();
 
     if (_captcha.value == null) {
-      Get.snackbar(
-        slang.t.errors.error,
-        slang.t.auth.captchaNotLoaded,
-        snackPosition: SnackPosition.bottom,
-      );
+      showToastWidget(MDToastWidget(message: slang.t.auth.captchaNotLoaded, type: MDToastType.error));
       return;
     }
 
@@ -452,15 +450,11 @@ class _LoginPageState extends State<LoginPage>
       ApiResult result =
           await _authService.register(email, _captcha.value!.id, captchaAnswer);
       if (result.isSuccess) {
-        Get.snackbar(
-          slang.t.common.success,
-          slang.t.auth.emailVerificationSent,
-          snackPosition: SnackPosition.bottom,
-        );
+        showToastWidget(MDToastWidget(message: slang.t.auth.emailVerificationSent, type: MDToastType.success));
         // 切换回登录标签
         _tabController.index = 0;
       } else {
-        Get.snackbar(slang.t.errors.error, result.message);
+        showToastWidget(MDToastWidget(message: result.message, type: MDToastType.error));
         // 发生错误时刷新验证码
         _fetchCaptcha();
       }

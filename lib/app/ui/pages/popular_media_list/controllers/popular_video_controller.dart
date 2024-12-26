@@ -4,10 +4,12 @@ import 'package:i_iwara/app/models/api_result.model.dart';
 import 'package:i_iwara/app/models/page_data.model.dart';
 import 'package:i_iwara/app/models/video.model.dart';
 import 'package:i_iwara/app/services/video_service.dart';
+import 'package:i_iwara/app/ui/widgets/MDToastWidget.dart';
 import 'package:i_iwara/app/ui/widgets/error_widget.dart';
 import 'package:i_iwara/i18n/strings.g.dart';
 import 'package:i_iwara/utils/proxy/proxy_util.dart';
 import 'package:i_iwara/utils/widget_extensions.dart';
+import 'package:oktoast/oktoast.dart';
 
 import '../../../../../utils/logger_utils.dart';
 import '../../../../routes/app_routes.dart';
@@ -77,7 +79,7 @@ class PopularVideoController extends GetxController {
       page++;
     } catch (e) {
       LogUtils.e('获取视频列表失败', tag: 'PopularVideoController', error: e);
-      Get.snackbar(t.errors.error, t.errors.errorWhileFetching);
+      showToastWidget(MDToastWidget(message: t.errors.errorWhileFetching, type: MDToastType.error));
       errorWidget.value = CommonErrorWidget(
         text: t.errors.errorWhileFetching,
         children: [

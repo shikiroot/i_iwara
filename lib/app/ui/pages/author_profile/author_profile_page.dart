@@ -11,8 +11,10 @@ import 'package:i_iwara/app/ui/pages/author_profile/widgets/profile_image_model_
 import 'package:i_iwara/app/ui/pages/author_profile/widgets/profile_video_tab_list_widget.dart';
 import 'package:i_iwara/app/ui/pages/author_profile/widgets/profile_playlist_tab_list_widget.dart';
 import 'package:i_iwara/app/ui/pages/comment/widgets/comment_input_dialog.dart';
+import 'package:i_iwara/app/ui/widgets/MDToastWidget.dart';
 import 'package:i_iwara/app/ui/widgets/top_padding_height_widget.dart';
 import 'package:i_iwara/utils/date_time_extension.dart';
+import 'package:oktoast/oktoast.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../../common/constants.dart';
@@ -127,7 +129,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                               submitText: t.common.send,
                               onSubmit: (text) async {
                                 if (text.trim().isEmpty) {
-                                  Get.snackbar(t.errors.error, t.errors.commentCanNotBeEmpty);
+                                  showToastWidget(MDToastWidget(message: t.errors.commentCanNotBeEmpty, type: MDToastType.error));
                                   return;
                                 }
                                 await profileController.commentController.postComment(text);

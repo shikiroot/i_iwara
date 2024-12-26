@@ -5,11 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:i_iwara/app/services/app_service.dart';
 import 'package:i_iwara/app/ui/pages/video_detail/controllers/related_media_controller.dart';
+import 'package:i_iwara/app/ui/widgets/MDToastWidget.dart';
 import 'package:i_iwara/app/ui/widgets/error_widget.dart';
 import 'package:i_iwara/common/enums/media_enums.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:media_kit_video/media_kit_video.dart';
+import 'package:oktoast/oktoast.dart';
 import 'package:screen_brightness/screen_brightness.dart';
 import 'package:volume_controller/volume_controller.dart';
 
@@ -331,7 +333,7 @@ class MyVideoStateController extends GetxController
     String? url =
         CommonUtils.findUrlByResolutionTag(videoResolutions, resolutionTag);
     if (url == null) {
-      Get.snackbar('错误', '未找到对应的视频源');
+      showToastWidget(MDToastWidget(message: slang.t.videoDetail.noVideoSourceFound, type: MDToastType.error),position: ToastPosition.top);
       return;
     }
 

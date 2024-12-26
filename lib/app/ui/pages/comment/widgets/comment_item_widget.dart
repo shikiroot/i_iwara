@@ -9,6 +9,8 @@ import 'package:i_iwara/app/services/user_service.dart';
 import 'package:i_iwara/app/services/comment_service.dart';
 import 'package:i_iwara/app/ui/pages/comment/controllers/comment_controller.dart';
 import 'package:i_iwara/app/ui/pages/comment/widgets/comment_remove_dialog.dart';
+import 'package:i_iwara/app/ui/widgets/MDToastWidget.dart';
+import 'package:oktoast/oktoast.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../../../common/constants.dart';
@@ -566,7 +568,7 @@ class _CommentItemState extends State<CommentItem> {
 
   void _showDeleteConfirmDialog() {
     if (widget.controller == null) {
-      Get.snackbar(slang.t.errors.error, slang.t.errors.canNotFindCommentController);
+      showToastWidget(MDToastWidget(message: slang.t.errors.canNotFindCommentController, type: MDToastType.error));
       return;
     }
 
@@ -582,7 +584,7 @@ class _CommentItemState extends State<CommentItem> {
 
   void _showEditDialog() {
     if (widget.controller == null) {
-      Get.snackbar(slang.t.errors.error, slang.t.errors.canNotFindCommentController);
+      showToastWidget(MDToastWidget(message: slang.t.errors.canNotFindCommentController, type: MDToastType.error));
       return;
     }
 
@@ -593,7 +595,7 @@ class _CommentItemState extends State<CommentItem> {
         submitText: slang.t.common.save,
         onSubmit: (text) async {
           if (text.trim().isEmpty) {
-            Get.snackbar(slang.t.errors.error, slang.t.errors.commentCanNotBeEmpty);
+            showToastWidget(MDToastWidget(message: slang.t.errors.commentCanNotBeEmpty, type: MDToastType.error));
             return;
           }
 
@@ -614,10 +616,10 @@ class _CommentItemState extends State<CommentItem> {
                   );
                 }
               });
-              Get.snackbar(slang.t.common.success, slang.t.common.commentUpdated);
+              showToastWidget(MDToastWidget(message: slang.t.common.commentUpdated, type: MDToastType.success));
               AppService.tryPop();
             } else {
-              Get.snackbar(slang.t.errors.error, result.message);
+              showToastWidget(MDToastWidget(message: result.message, type: MDToastType.error));
             }
           }
         },
@@ -628,7 +630,7 @@ class _CommentItemState extends State<CommentItem> {
 
   void _showReplyDialog() {
     if (widget.controller == null) {
-      Get.snackbar(slang.t.errors.error, slang.t.errors.canNotFindCommentController);
+      showToastWidget(MDToastWidget(message: slang.t.errors.canNotFindCommentController, type: MDToastType.error));
       return;
     }
 
@@ -638,7 +640,7 @@ class _CommentItemState extends State<CommentItem> {
         submitText: slang.t.common.reply,
         onSubmit: (text) async {
           if (text.trim().isEmpty) {
-            Get.snackbar(slang.t.errors.error, slang.t.errors.commentCanNotBeEmpty);
+            showToastWidget(MDToastWidget(message: slang.t.errors.commentCanNotBeEmpty, type: MDToastType.error));
             return;
           }
           final result = await widget.controller!.postComment(

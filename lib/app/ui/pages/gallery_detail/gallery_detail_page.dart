@@ -5,8 +5,10 @@ import 'package:i_iwara/app/ui/pages/comment/widgets/comment_input_dialog.dart';
 import 'package:i_iwara/app/ui/pages/gallery_detail/widgets/image_model_detail_content_widget.dart';
 import 'package:i_iwara/app/ui/pages/video_detail/widgets/media_tile_list_loading_widget.dart';
 import 'package:i_iwara/app/ui/pages/video_detail/widgets/video_detail_info_skeleton_widget.dart';
+import 'package:i_iwara/app/ui/widgets/MDToastWidget.dart';
 import 'package:i_iwara/app/ui/widgets/empty_widget.dart';
 import 'package:i_iwara/utils/widget_extensions.dart';
+import 'package:oktoast/oktoast.dart';
 
 import '../../../../common/enums/media_enums.dart';
 import '../../../../utils/logger_utils.dart';
@@ -157,7 +159,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                               submitText: slang.t.common.send,
                               onSubmit: (text) async {
                                 if (text.trim().isEmpty) {
-                                  Get.snackbar(slang.t.errors.error, slang.t.errors.commentCanNotBeEmpty);
+                                  showToastWidget(MDToastWidget(message: slang.t.errors.commentCanNotBeEmpty, type: MDToastType.error));
                                   return;
                                 }
                                 await commentController.postComment(text);

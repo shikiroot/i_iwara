@@ -5,6 +5,8 @@ import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
 import 'package:i_iwara/app/services/translation_service.dart';
 import 'package:i_iwara/app/ui/pages/settings/widgets/setting_item_widget.dart';
+import 'package:i_iwara/app/ui/widgets/MDToastWidget.dart';
+import 'package:oktoast/oktoast.dart';
 
 import '../../../../../utils/logger_utils.dart';
 import '../../../../../utils/proxy/proxy_util.dart';
@@ -110,20 +112,14 @@ class _ProxySettingsWidgetState extends State<ProxySettingsWidget> {
         widget.configService[ConfigService.PROXY_URL]?.toString() ?? '';
     LogUtils.i('开始检测代理: $proxyUrl', _tag);
     if (proxyUrl.isEmpty) {
-      Get.snackbar(slang.t.errors.error, slang.t.settings.proxyAddressCannotBeEmpty,
-          snackPosition: SnackPosition.top,
-          backgroundColor: Colors.red.withOpacity(0.7),
-          colorText: Colors.white);
+      showToastWidget(MDToastWidget(message: slang.t.settings.proxyAddressCannotBeEmpty, type: MDToastType.error),position: ToastPosition.top);
       LogUtils.e('检测代理失败: 代理地址为空', tag: _tag);
       return;
     }
 
     if (!_isValidProxyAddress(proxyUrl)) {
       LogUtils.e('检测代理格式失败: $proxyUrl', tag: _tag);
-      Get.snackbar(slang.t.errors.error, slang.t.settings.invalidProxyAddressFormatPleaseUseTheFormatOfIpPortOrDomainNamePort,
-          snackPosition: SnackPosition.top,
-          backgroundColor: Colors.red.withOpacity(0.7),
-          colorText: Colors.white);
+      showToastWidget(MDToastWidget(message: slang.t.settings.invalidProxyAddressFormatPleaseUseTheFormatOfIpPortOrDomainNamePort, type: MDToastType.error),position: ToastPosition.top);
       return;
     }
 
@@ -153,23 +149,14 @@ class _ProxySettingsWidgetState extends State<ProxySettingsWidget> {
             validateStatus: (status) => status! < 500,
           ));
       if (response.statusCode == 200 || response.statusCode == 302) {
-        Get.snackbar(slang.t.common.success, slang.t.settings.proxyNormalWork,
-            snackPosition: SnackPosition.bottom,
-            backgroundColor: Colors.green.withOpacity(0.7),
-            colorText: Colors.white);
+        showToastWidget(MDToastWidget(message: slang.t.settings.proxyNormalWork, type: MDToastType.success),position: ToastPosition.bottom);
         LogUtils.i('代理检测成功，响应状态码: ${response.statusCode}', _tag);
       } else {
-        Get.snackbar(slang.t.errors.error, slang.t.settings.testProxyFailedWithStatusCode(code: response.statusCode.toString()),
-            snackPosition: SnackPosition.bottom,
-            backgroundColor: Colors.red.withOpacity(0.7),
-            colorText: Colors.white);
+        showToastWidget(MDToastWidget(message: slang.t.settings.testProxyFailedWithStatusCode(code: response.statusCode.toString()), type: MDToastType.error),position: ToastPosition.bottom);
         LogUtils.e('代理检测失败，响应状态码: ${response.statusCode}', tag: _tag);
       }
     } catch (e) {
-      Get.snackbar(slang.t.errors.error, slang.t.settings.testProxyFailedWithException(exception: e.toString()),
-          snackPosition: SnackPosition.bottom,
-          backgroundColor: Colors.red.withOpacity(0.7),
-          colorText: Colors.white);
+      showToastWidget(MDToastWidget(message: slang.t.settings.testProxyFailedWithException(exception: e.toString()), type: MDToastType.error),position: ToastPosition.bottom);
       LogUtils.e('代理请求出错: $e', tag: _tag);
     } finally {
       setState(() {
