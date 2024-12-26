@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:i_iwara/app/models/api_result.model.dart';
+import 'package:i_iwara/app/models/light_play_list.model.dart';
 import 'package:i_iwara/app/models/page_data.model.dart';
 import 'package:i_iwara/app/models/play_list.model.dart';
 import 'package:i_iwara/app/models/video.model.dart';
@@ -56,6 +57,18 @@ class PlayListService extends GetxService {
           .toList(),
       );
       return ApiResult.success(data: pageData);
+    } catch (e) {
+      return ApiResult.fail(t.errors.failedToFetchData);
+    }
+  }
+
+  // 获取轻量播放列表
+  // 此接口会一次性返回所有的播放列表
+  // 根据视频id获取播放列表，{@link LightPlaylistModel#added} 为 true 表示已添加到播放列表
+  Future<ApiResult<List<LightPlaylistModel>>> getLightPlaylists({required String videoId}) async {
+    try {
+      final response = await apiService.get('/light/playlists', queryParameters: {'id': videoId});
+      return ApiResult.success(data: (response.data as List).map((playlistModel) => LightPlaylistModel.fromJson(playlistModel)).toList());
     } catch (e) {
       return ApiResult.fail(t.errors.failedToFetchData);
     }

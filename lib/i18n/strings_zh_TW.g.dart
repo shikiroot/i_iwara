@@ -344,6 +344,10 @@ class _TranslationsPlayListZhTw implements TranslationsPlayListEn {
 	@override String get useLikeToCollectContent => '如果您比較注重隱私，建議使用"按讚"功能來收藏內容';
 	@override String get welcomeToDiscussOnGitHub => '如果你有其他建議或想法，歡迎來 GitHub 討論！';
 	@override String get iUnderstand => '明白了';
+	@override String get searchPlaylists => '搜尋播放清單...';
+	@override String get newPlaylistName => '新播放清單名稱';
+	@override String get createNewPlaylist => '創建新播放清單';
+	@override String get videos => '影片';
 }
 
 // Path: search
@@ -779,6 +783,10 @@ extension on TranslationsZhTw {
 			case 'playList.useLikeToCollectContent': return '如果您比較注重隱私，建議使用"按讚"功能來收藏內容';
 			case 'playList.welcomeToDiscussOnGitHub': return '如果你有其他建議或想法，歡迎來 GitHub 討論！';
 			case 'playList.iUnderstand': return '明白了';
+			case 'playList.searchPlaylists': return '搜尋播放清單...';
+			case 'playList.newPlaylistName': return '新播放清單名稱';
+			case 'playList.createNewPlaylist': return '創建新播放清單';
+			case 'playList.videos': return '影片';
 			case 'search.searchTags': return '搜尋標籤...';
 			case 'search.contentRating': return '內容評級';
 			case 'search.removeTag': return '移除標籤';

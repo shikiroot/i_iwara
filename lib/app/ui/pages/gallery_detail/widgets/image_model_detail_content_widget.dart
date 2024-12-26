@@ -452,6 +452,8 @@ class ImageModelDetailContent extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
               Text(
@@ -460,6 +462,8 @@ class ImageModelDetailContent extends StatelessWidget {
                   fontSize: 14,
                   color: Colors.grey[600],
                 ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
             ],
           ),
@@ -479,6 +483,8 @@ class ImageModelDetailContent extends StatelessWidget {
             Text(
               user?.name ?? '',
               style: const TextStyle(fontSize: 16),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
             Text(
               '@${user?.username ?? ''}',
@@ -486,6 +492,8 @@ class ImageModelDetailContent extends StatelessWidget {
                 fontSize: 14,
                 color: Colors.grey[600],
               ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
           ],
         ),

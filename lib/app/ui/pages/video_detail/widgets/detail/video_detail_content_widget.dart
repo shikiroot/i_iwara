@@ -15,6 +15,7 @@ import '../player/my_video_screen.dart';
 import '../../../../widgets/follow_button_widget.dart';
 import '../../../../widgets/like_button_widget.dart';
 import '../../../../../../i18n/strings.g.dart' as slang;
+import 'add_video_to_playlist_dialog.dart';
 
 class VideoDetailContent extends StatelessWidget {
   final MyVideoStateController controller;
@@ -163,9 +164,7 @@ class VideoDetailContent extends StatelessWidget {
                     return Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
+                            spacing: 8,
                             children: [
                               LikeButtonWidget(
                                 mediaId: videoInfo.id,
@@ -186,17 +185,34 @@ class VideoDetailContent extends StatelessWidget {
                                   );
                                 },
                               ),
+                              Material(
+                                color: Colors.transparent,
+                                child: InkWell(
+                                  borderRadius: BorderRadius.circular(16),
+                                  onTap: () {
+                                    showModalBottomSheet(
+                                      backgroundColor: Colors.transparent,
+                                      isScrollControlled: true,
+                                      builder: (context) => AddVideoToPlayListDialog(
+                                        videoId: controller.videoInfo.value?.id ?? '',
+                                      ), context: context,
+                                    );
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        const Icon(Icons.playlist_add),
+                                        const SizedBox(width: 4),
+                                        Text(slang.Translations.of(context).playList.myPlayList),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
-                          Row(
-                            children: [
-                              const Icon(Icons.comment),
-                              const SizedBox(width: 4),
-                              Text('${videoInfo.numComments ?? 0}'),
-                            ],
-                          ),
-                        ],
-                      ),
                     );
                   } else {
                     return const SizedBox.shrink();
@@ -220,7 +236,7 @@ class VideoDetailContent extends StatelessWidget {
         onTap: () {
           final user = controller.videoInfo.value?.user;
           if (user != null) {
-            NaviService.navigateToAuthorProfilePage(user.username ?? '');
+            NaviService.navigateToAuthorProfilePage(user.username);
           }
         },
         behavior: HitTestBehavior.opaque,
@@ -288,6 +304,8 @@ class VideoDetailContent extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
               Text(
@@ -296,6 +314,8 @@ class VideoDetailContent extends StatelessWidget {
                   fontSize: 14,
                   color: Colors.grey[600],
                 ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
             ],
           ),
@@ -315,6 +335,8 @@ class VideoDetailContent extends StatelessWidget {
             Text(
               user?.name ?? '',
               style: const TextStyle(fontSize: 16),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
             Text(
               '@${user?.username ?? ''}',
@@ -322,6 +344,8 @@ class VideoDetailContent extends StatelessWidget {
                 fontSize: 14,
                 color: Colors.grey[600],
               ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
           ],
         ),
@@ -336,8 +360,9 @@ class VideoDetailContent extends StatelessWidget {
         children: [
           _buildAuthorAvatar(),
           const SizedBox(width: 8),
-          _buildAuthorNameButton(),
-          const Spacer(),
+          Expanded(
+            child: _buildAuthorNameButton(),
+          ),
           if (controller.videoInfo.value?.user != null)
             FollowButtonWidget(
               user: controller.videoInfo.value!.user!,

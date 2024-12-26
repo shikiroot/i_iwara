@@ -236,6 +236,10 @@ playList:
   useLikeToCollectContent: If you are more concerned about privacy, it is recommended to use the "like" function to collect content
   welcomeToDiscussOnGitHub: If you have other suggestions or ideas, welcome to discuss on GitHub!
   iUnderstand: I Understand
+  searchPlaylists: Search Playlists...
+  newPlaylistName: New Playlist Name
+  createNewPlaylist: Create New Playlist
+  videos: Videos
 
 search:
   searchTags: Search Tags...

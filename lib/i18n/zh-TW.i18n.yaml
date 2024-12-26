@@ -237,6 +237,10 @@ playList:
   useLikeToCollectContent: 如果您比較注重隱私，建議使用"按讚"功能來收藏內容
   welcomeToDiscussOnGitHub: 如果你有其他建議或想法，歡迎來 GitHub 討論！
   iUnderstand: 明白了
+  searchPlaylists: 搜尋播放清單...
+  newPlaylistName: 新播放清單名稱
+  createNewPlaylist: 創建新播放清單
+  videos: 影片
 
 search:
   searchTags: 搜尋標籤...

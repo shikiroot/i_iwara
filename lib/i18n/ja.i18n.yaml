@@ -238,6 +238,10 @@ playList:
   useLikeToCollectContent: プライバシーを重視する場合は、「いいね」機能を使用してコンテンツを収集することをお勧めします
   welcomeToDiscussOnGitHub: その他の提案やアイデアがある場合は、GitHubでのディスカッションを歓迎します！
   iUnderstand: わかりました
+  searchPlaylists: プレイリストを検索...
+  newPlaylistName: 新しいプレイリスト名
+  createNewPlaylist: 新しいプレイリストを作成
+  videos: 動画
 
 search:
   searchTags: タグを検索...

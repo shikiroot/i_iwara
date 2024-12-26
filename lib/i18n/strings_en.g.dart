@@ -348,6 +348,10 @@ class TranslationsPlayListEn {
 	String get useLikeToCollectContent => 'If you are more concerned about privacy, it is recommended to use the "like" function to collect content';
 	String get welcomeToDiscussOnGitHub => 'If you have other suggestions or ideas, welcome to discuss on GitHub!';
 	String get iUnderstand => 'I Understand';
+	String get searchPlaylists => 'Search Playlists...';
+	String get newPlaylistName => 'New Playlist Name';
+	String get createNewPlaylist => 'Create New Playlist';
+	String get videos => 'Videos';
 }
 
 // Path: search
@@ -783,6 +787,10 @@ extension on Translations {
 			case 'playList.useLikeToCollectContent': return 'If you are more concerned about privacy, it is recommended to use the "like" function to collect content';
 			case 'playList.welcomeToDiscussOnGitHub': return 'If you have other suggestions or ideas, welcome to discuss on GitHub!';
 			case 'playList.iUnderstand': return 'I Understand';
+			case 'playList.searchPlaylists': return 'Search Playlists...';
+			case 'playList.newPlaylistName': return 'New Playlist Name';
+			case 'playList.createNewPlaylist': return 'Create New Playlist';
+			case 'playList.videos': return 'Videos';
 			case 'search.searchTags': return 'Search Tags...';
 			case 'search.contentRating': return 'Content Rating';
 			case 'search.removeTag': return 'Remove Tag';

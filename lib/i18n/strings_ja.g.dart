@@ -344,6 +344,10 @@ class _TranslationsPlayListJa implements TranslationsPlayListEn {
 	@override String get useLikeToCollectContent => 'プライバシーを重視する場合は、「いいね」機能を使用してコンテンツを収集することをお勧めします';
 	@override String get welcomeToDiscussOnGitHub => 'その他の提案やアイデアがある場合は、GitHubでのディスカッションを歓迎します！';
 	@override String get iUnderstand => 'わかりました';
+	@override String get searchPlaylists => 'プレイリストを検索...';
+	@override String get newPlaylistName => '新しいプレイリスト名';
+	@override String get createNewPlaylist => '新しいプレイリストを作成';
+	@override String get videos => '動画';
 }
 
 // Path: search
@@ -779,6 +783,10 @@ extension on TranslationsJa {
 			case 'playList.useLikeToCollectContent': return 'プライバシーを重視する場合は、「いいね」機能を使用してコンテンツを収集することをお勧めします';
 			case 'playList.welcomeToDiscussOnGitHub': return 'その他の提案やアイデアがある場合は、GitHubでのディスカッションを歓迎します！';
 			case 'playList.iUnderstand': return 'わかりました';
+			case 'playList.searchPlaylists': return 'プレイリストを検索...';
+			case 'playList.newPlaylistName': return '新しいプレイリスト名';
+			case 'playList.createNewPlaylist': return '新しいプレイリストを作成';
+			case 'playList.videos': return '動画';
 			case 'search.searchTags': return 'タグを検索...';
 			case 'search.contentRating': return 'コンテンツ評価';
 			case 'search.removeTag': return 'タグを削除';

@@ -240,6 +240,10 @@ playList:
   useLikeToCollectContent: 如果您比较注重隐私，建议使用"点赞"功能来收藏内容
   welcomeToDiscussOnGitHub: 如果你有其他的建议或想法，欢迎来 GitHub 讨论!
   iUnderstand: 明白了
+  searchPlaylists: 搜索播放列表...
+  newPlaylistName: 新播放列表名称
+  createNewPlaylist: 创建新播放列表
+  videos: 视频
 
 search:
   searchTags: 搜索标签...
