@@ -119,7 +119,7 @@ class MyVideoStateController extends GetxController
         text: slang.t.videoDetail.videoIdIsEmpty,
         children: [
           ElevatedButton(
-            onPressed: () => Get.back(),
+            onPressed: () => AppService.tryPop(),
             child: Text(slang.t.common.back),
           ),
         ],
@@ -242,7 +242,7 @@ class MyVideoStateController extends GetxController
           text: slang.t.videoDetail.videoInfoIsEmpty,
           children: [
             ElevatedButton(
-              onPressed: () => Get.back(),
+              onPressed: () => AppService.tryPop(),
               child: Text(slang.t.common.back),
             ),
           ],
@@ -389,7 +389,7 @@ class MyVideoStateController extends GetxController
         text: slang.t.videoDetail.noVideoSourceFound,
         children: [
           ElevatedButton(
-            onPressed: () => Get.back(),
+            onPressed: () => AppService.tryPop(),
             child: Text(slang.t.common.back),
           ),
         ],

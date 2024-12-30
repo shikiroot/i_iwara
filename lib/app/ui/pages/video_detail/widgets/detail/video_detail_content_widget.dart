@@ -53,7 +53,7 @@ class VideoDetailContent extends StatelessWidget {
                     text: controller.videoErrorMessage.value ?? t.videoDetail.errorLoadingVideo,
                     children: [
                       ElevatedButton(
-                        onPressed: () => Get.back(),
+                        onPressed: () => AppService.tryPop(),
                         child: Text(t.common.back),
                       ),
                       ElevatedButton(
