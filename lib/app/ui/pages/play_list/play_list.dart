@@ -171,6 +171,7 @@ class _PlayListPageState extends State<PlayListPage> {
 
   void _showCreateDialog(BuildContext context) {
     final TextEditingController textController = TextEditingController();
+    final RxBool isLoading = false.obs;
 
     Get.dialog(
       AlertDialog(
@@ -179,25 +180,35 @@ class _PlayListPageState extends State<PlayListPage> {
           controller: textController,
           decoration: InputDecoration(
             hintText: slang.t.common.pleaseEnterNewTitle,
-            border: OutlineInputBorder(),
+            border: const OutlineInputBorder(),
           ),
           autofocus: true,
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => AppService.tryPop(),
             child: Text(slang.t.common.cancel),
           ),
-          TextButton(
-            onPressed: () async {
+          Obx(() => TextButton(
+            onPressed: isLoading.value ? null : () async {
+              isLoading.value = true;
               if (textController.text.trim().isNotEmpty) {
-                AppService.tryPop();
-                await controller.createPlaylist(textController.text.trim());
-                listSourceRepository.refresh();
+                final res = await controller.createPlaylist(textController.text.trim());
+                if (res) {
+                  listSourceRepository.refresh();
+                  AppService.tryPop();
+                }
               }
+              isLoading.value = false;
             },
-            child: Text(slang.t.common.create),
-          ),
+            child: isLoading.value 
+                ? const SizedBox(
+                    width: 24,
+                    height: 24,
+                    child: Center(child: CircularProgressIndicator()),
+                  ) 
+                : Text(slang.t.common.create),
+          )),
         ],
       ),
     );
@@ -221,7 +232,7 @@ class _PlayListPageState extends State<PlayListPage> {
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => AppService.tryPop(),
             child: Text(slang.t.playList.iUnderstand, style: TextStyle(fontSize: 16)),
           ),
         ],

@@ -49,7 +49,7 @@ class GalleryDetailController extends GetxController {
         await _historyRepository.addRecord(historyRecord);
       }
     } catch (e) {
-      LogUtils.e('添加历史记录失败: $e', tag: 'GalleryDetailController');
+      LogUtils.e('添加历史记录失败', error: e, tag: 'GalleryDetailController');
     }
   }
 

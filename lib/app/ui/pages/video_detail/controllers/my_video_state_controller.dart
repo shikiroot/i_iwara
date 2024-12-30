@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:i_iwara/app/models/history_record.dart';
+import 'package:i_iwara/app/repositories/history_repository.dart';
 import 'package:i_iwara/app/services/app_service.dart';
 import 'package:i_iwara/app/ui/pages/video_detail/controllers/related_media_controller.dart';
 import 'package:i_iwara/app/ui/widgets/MDToastWidget.dart';
@@ -93,6 +95,9 @@ class MyVideoStateController extends GetxController
   final RxBool isSeekPreviewVisible = false.obs;
   // 预览位置
   final Rx<Duration> previewPosition = Duration.zero.obs;
+
+  // 历史记录
+  final HistoryRepository _historyRepository = HistoryRepository();
 
   MyVideoStateController(this.videoId);
 
@@ -244,6 +249,18 @@ class MyVideoStateController extends GetxController
         );
         return;
       }
+
+      // 添加历史记录
+      try {
+        if (videoInfo.value != null) {
+          final historyRecord = HistoryRecord.fromVideo(videoInfo.value!);
+          LogUtils.d('添加历史记录: ${historyRecord.toJson()}', 'MyVideoStateController');
+          await _historyRepository.addRecord(historyRecord);
+        }
+      } catch (e) {
+        LogUtils.e('添加历史记录失败', error: e, tag: 'MyVideoStateController');
+      }
+
       String? authorId = videoInfo.value!.user?.id;
       if (authorId != null) {
         otherAuthorzVideosController = OtherAuthorzMediasController(

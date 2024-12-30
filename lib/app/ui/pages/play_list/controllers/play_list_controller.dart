@@ -7,11 +7,13 @@ class PlayListsController extends GetxController {
   final PlayListService _playListService = Get.find<PlayListService>();
 
   // 创建播放列表
-  Future<void> createPlaylist(String title) async {
+  Future<bool> createPlaylist(String title) async {
     final result = await _playListService.createPlaylist(title: title);
     if (!result.isSuccess) {
       showToastWidget(MDToastWidget(message: result.message, type: MDToastType.error));
+      return false;
     }
+    return true;
   }
 
 }
