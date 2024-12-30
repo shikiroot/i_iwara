@@ -33,6 +33,7 @@ class AuthorProfileController extends GetxController {
   final RxBool isFollowLoading = false.obs;
   final RxBool isFriendRequestPending = false.obs;
   final RxBool isCommentSheetVisible = false.obs;
+  Worker? worker;
 
   AuthorProfileController({required this.username});
 
@@ -42,7 +43,7 @@ class AuthorProfileController extends GetxController {
 
     initFetch();
 
-    ever(_userService.currentUser, (user) {
+    worker = ever(_userService.currentUser, (user) {
       if (user != null) {
         fetchRelationshipStatus();
       }
@@ -52,6 +53,7 @@ class AuthorProfileController extends GetxController {
   @override
   void onClose() {
     Get.delete<CommentController>(tag: author.value!.id);
+    worker?.dispose();
     super.onClose();
   }
 

@@ -35,6 +35,7 @@ class ConfigService extends GetxService {
   static const String REMOTE_REPO_PUB_SPEC_YAML_URL = 'remote_repo_pub_spec_yaml_url'; // 远程仓库的 pubspec.yaml 地址
   static const String REMOTE_REPO_RELEASE_URL = 'remote_repo_release_url'; // 远程仓库的 release 地址
   static const String REMOTE_REPO_URL = 'remote_repo_url'; // 远程仓库的 url
+  static const String SETTINGS_SELECTED_INDEX_KEY = 'settings_selected_index';
 
   // 所有配置项的 Map
   final settings = <String, dynamic>{
@@ -59,6 +60,7 @@ class ConfigService extends GetxService {
     REMOTE_REPO_PUB_SPEC_YAML_URL: 'https://raw.githubusercontent.com/FoxSensei001/i_iwara/master/pubspec.yaml'.obs,
     REMOTE_REPO_RELEASE_URL: 'https://github.com/FoxSensei001/i_iwara/releases'.obs,
     REMOTE_REPO_URL: 'https://github.com/FoxSensei001/i_iwara'.obs,
+    SETTINGS_SELECTED_INDEX_KEY: 0.obs,
   }.obs;
 
   late final Rx<Sort> _currentTranslationSort;

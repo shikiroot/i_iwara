@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:i_iwara/app/services/config_service.dart';
 
 import '../../../../utils/proxy/proxy_util.dart';
 import '../../../routes/app_routes.dart';
@@ -9,8 +10,21 @@ import 'theme_settings_page.dart';
 import 'package:i_iwara/i18n/strings.g.dart' as slang;
 import 'about_page.dart';
 
-class SettingsPage extends StatelessWidget {
+class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
+
+  @override
+  State<SettingsPage> createState() => _SettingsPageState();
+}
+
+class _SettingsPageState extends State<SettingsPage> {
+  Worker? _selectedIndexWorker;
+
+  @override
+  void dispose() {
+    _selectedIndexWorker?.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,8 +84,17 @@ class SettingsPage extends StatelessWidget {
 
   Widget _buildWideScreenLayout(
       BuildContext context, List<SettingItem> settingItems) {
-    // 使用 GetX 管理当前选中的设置项
-    final selectedIndex = 0.obs;
+    // 使用 GetX 管理当前选中的设置项，并从 ConfigService 中获取保存的值
+    final selectedIndex = (Get.find<ConfigService>()
+            [ConfigService.SETTINGS_SELECTED_INDEX_KEY] as int? ?? 0)
+        .obs;
+
+    // 监听选中索引的变化并保存到 ConfigService
+    _selectedIndexWorker?.dispose(); // 确保之前的监听器被清理
+    _selectedIndexWorker = ever(selectedIndex, (int index) {
+      Get.find<ConfigService>()
+          .setSetting(ConfigService.SETTINGS_SELECTED_INDEX_KEY, index);
+    });
 
     return Row(
       children: [

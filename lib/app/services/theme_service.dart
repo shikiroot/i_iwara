@@ -6,7 +6,7 @@ import '../models/theme_mode.model.dart';
 class ThemeService extends GetxService {
   final _themeMode = AppThemeMode.system.obs;
   final _useDynamicColor = true.obs;
-  
+
   // 预设的主题色
   static const List<Color> presetColors = [
     Colors.blue,      // 蓝色
@@ -94,6 +94,10 @@ class ThemeService extends GetxService {
   void setThemeMode(AppThemeMode mode) {
     _themeMode.value = mode;
     Get.find<ConfigService>().setSetting(ConfigService.THEME_MODE_KEY, mode.index);
+
+    // 使用 changeTheme 而不是 forceAppUpdate
+    final newTheme = getTheme(Get.context!);
+    Get.changeTheme(newTheme);
   }
 
   Future<ThemeService> init() async {
@@ -101,4 +105,4 @@ class ThemeService extends GetxService {
     _themeMode.value = AppThemeMode.values[savedThemeMode];
     return this;
   }
-} 
+}

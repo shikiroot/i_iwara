@@ -22,31 +22,9 @@ class ThemeSettingsPage extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          _buildNeedRestartSection(context, t),
           _buildBasicThemeSection(context, t, themeService),
           const SizedBox(height: 16),
           _buildPresetThemesSection(context, t, themeService),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildNeedRestartSection(BuildContext context, slang.Translations t) {
-    return Card(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Text(
-              t.settings.needRestartToApply,
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Text(t.settings.themeNeedRestartDescription),
-          ),
         ],
       ),
     );

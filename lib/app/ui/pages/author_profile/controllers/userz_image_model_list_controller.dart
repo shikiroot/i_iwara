@@ -22,6 +22,7 @@ class UserzImageModelListController extends GetxController {
   final RxList<ImageModel> imageModels = <ImageModel>[].obs;
   final RxBool isLoading = true.obs;
   var hasMore = true.obs;
+  Worker? worker;
 
   UserzImageModelListController({this.onFetchFinished});
 
@@ -30,10 +31,16 @@ class UserzImageModelListController extends GetxController {
     super.onInit();
     _imageModelService = Get.find<GalleryService>();
 
-    // 当sort变化后，重置分页等参数
-    ever(sort, (_) {
+    worker = ever(sort, (_) {
+      // 当sort变化后，重置分页等参数
       fetchImageModels(refresh: true);
     });
+  }
+
+  @override
+  void onClose() {
+    worker?.dispose();
+    super.onClose();
   }
 
   Future<void> fetchImageModels({bool refresh = false}) async {

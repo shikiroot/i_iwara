@@ -22,7 +22,7 @@ class UserzVideoListController extends GetxController {
   final RxList<Video> videos = <Video>[].obs;
   final RxBool isLoading = true.obs;
   var hasMore = true.obs;
-
+  Worker? worker;
   UserzVideoListController({this.onFetchFinished});
 
   @override
@@ -31,9 +31,15 @@ class UserzVideoListController extends GetxController {
     _videoService = Get.find<VideoService>();
 
     // 当sort变化后，重置分页等参数
-    ever(sort, (_) {
+    worker = ever(sort, (_) {
       fetchVideos(refresh: true);
     });
+  }
+
+  @override
+  void onClose() {
+    worker?.dispose();
+    super.onClose();
   }
 
   Future<void> fetchVideos({bool refresh = false}) async {
