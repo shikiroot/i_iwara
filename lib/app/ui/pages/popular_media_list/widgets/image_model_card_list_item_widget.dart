@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:i_iwara/app/models/image.model.dart';
 import 'package:i_iwara/app/services/app_service.dart';
-import 'package:i_iwara/utils/date_time_extension.dart';
+import 'package:i_iwara/utils/common_utils.dart';
 
 import '../../../../../common/constants.dart';
 
@@ -149,7 +149,7 @@ class ImageModelCardListItemWidget extends StatelessWidget {
             const Icon(Icons.favorite, size: 16, color: Colors.white),
             const SizedBox(width: 4),
             Text(
-              likes.customFormat(),
+              CommonUtils.formatFriendlyNumber(likes),
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 14,
@@ -180,7 +180,7 @@ class ImageModelCardListItemWidget extends StatelessWidget {
             const Icon(Icons.remove_red_eye, size: 16, color: Colors.white),
             const SizedBox(width: 4),
             Text(
-              views.customFormat(),
+              CommonUtils.formatFriendlyNumber(views),
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 14,
@@ -241,7 +241,7 @@ class ImageModelCardListItemWidget extends StatelessWidget {
 
   Widget _buildTimeInfo(TextTheme textTheme) {
     return Text(
-      imageModel.createdAt!.customFormat("SHORT_CHINESE"),
+      CommonUtils.formatFriendlyTimestamp(imageModel.createdAt),
       style: textTheme.bodySmall,
     );
   }

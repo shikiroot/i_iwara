@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:i_iwara/app/services/app_service.dart';
+import 'package:i_iwara/utils/common_utils.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 import '../../../../../common/constants.dart';
 import '../../../../models/video.model.dart';
-import 'package:i_iwara/utils/date_time_extension.dart';
 import 'animated_preview_widget.dart';
 import 'package:i_iwara/i18n/strings.g.dart' as slang;
 class VideoPreviewDetailModal extends StatelessWidget {
@@ -200,7 +200,7 @@ class VideoPreviewDetailModal extends StatelessWidget {
                                       ),
                                       const SizedBox(width: 4),
                                       Text(
-                                        '${video.numViews?.customFormat()}',
+                                        CommonUtils.formatFriendlyNumber(video.numViews),
                                         style: textTheme.bodySmall?.copyWith(
                                           color: colorScheme.onSurfaceVariant,
                                         ),
@@ -213,7 +213,7 @@ class VideoPreviewDetailModal extends StatelessWidget {
                                       ),
                                       const SizedBox(width: 4),
                                       Text(
-                                        '${video.numLikes?.customFormat()}',
+                                        CommonUtils.formatFriendlyNumber(video.numLikes),
                                         style: textTheme.bodySmall?.copyWith(
                                           color: colorScheme.onSurfaceVariant,
                                         ),
@@ -226,7 +226,7 @@ class VideoPreviewDetailModal extends StatelessWidget {
                                       ),
                                       const SizedBox(width: 4),
                                       Text(
-                                        '${video.numComments?.customFormat()}',
+                                        CommonUtils.formatFriendlyNumber(video.numComments),
                                         style: textTheme.bodySmall?.copyWith(
                                           color: colorScheme.onSurfaceVariant,
                                         ),
@@ -236,7 +236,7 @@ class VideoPreviewDetailModal extends StatelessWidget {
                                   ),
                                 ),
                                 Text(
-                                  video.createdAt!.customFormat("SHORT_CHINESE"),
+                                  CommonUtils.formatFriendlyTimestamp(video.createdAt),
                                   style: textTheme.bodySmall,
                                 ),
                               ],

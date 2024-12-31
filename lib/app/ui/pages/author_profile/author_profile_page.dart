@@ -14,7 +14,7 @@ import 'package:i_iwara/app/ui/pages/author_profile/widgets/profile_playlist_tab
 import 'package:i_iwara/app/ui/pages/comment/widgets/comment_input_dialog.dart';
 import 'package:i_iwara/app/ui/widgets/MDToastWidget.dart';
 import 'package:i_iwara/app/ui/widgets/top_padding_height_widget.dart';
-import 'package:i_iwara/utils/date_time_extension.dart';
+import 'package:i_iwara/utils/common_utils.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -455,7 +455,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                           MouseRegion(
                             cursor: SystemMouseCursors.click, // 设置鼠标光标为点击效果
                             child: Obx(() {
-                              final followerCount = profileController.followerCounts.value.customFormat();
+                              final followerCount = CommonUtils.formatFriendlyNumber(profileController.followerCounts.value.toInt());
                               return GestureDetector(
                                 onTap: () {
                                   NaviService.navigateToFollowersListPage(
@@ -478,7 +478,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                           MouseRegion(
                             cursor: SystemMouseCursors.click, // 设置鼠标光标为点击效果
                             child: Obx(() {
-                              final followingCount = profileController.followingCounts.value.customFormat();
+                              final followingCount = CommonUtils.formatFriendlyNumber(profileController.followingCounts.value.toInt());
                               return GestureDetector(
                                 onTap: () {
                                   NaviService.navigateToFollowingListPage(profileController.author.value?.id ?? '', profileController.author.value?.name ?? '', profileController.author.value?.username ?? '');
@@ -496,10 +496,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
 
                           // 视频数
                           Obx(() {
-                            final videoCount = profileController.videoCounts.value?.customFormat();
-                            if (videoCount == null) {
-                              return SizedBox.shrink();
-                            }
+                            final videoCount = CommonUtils.formatFriendlyNumber(profileController.videoCounts.value?.toInt() ?? 0);
                             return Text(
                               '$videoCount ${t.common.video}',
                               style: TextStyle(color: Colors.grey, fontSize: 16),

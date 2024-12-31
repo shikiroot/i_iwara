@@ -10,6 +10,7 @@ import 'package:i_iwara/app/services/comment_service.dart';
 import 'package:i_iwara/app/ui/pages/comment/controllers/comment_controller.dart';
 import 'package:i_iwara/app/ui/pages/comment/widgets/comment_remove_dialog.dart';
 import 'package:i_iwara/app/ui/widgets/MDToastWidget.dart';
+import 'package:i_iwara/utils/common_utils.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -512,26 +513,6 @@ class _CommentItemState extends State<CommentItem> {
     );
   }
 
-  /// 格式化时间为人性化显示
-  String _formatTimestamp(DateTime timestamp, BuildContext context) {
-    final t = slang.Translations.of(context);
-    final now = DateTime.now();
-    final difference = now.difference(timestamp);
-
-    if (difference.inMinutes < 1) {
-      return t.common.justNow;
-    } else if (difference.inHours < 1) {
-      return t.common.minutesAgo(num: difference.inMinutes);
-    } else if (difference.inDays < 1) {
-      return t.common.hoursAgo(num: difference.inHours);
-    } else if (difference.inDays < 7) {
-      return t.common.daysAgo(num: difference.inDays);
-    } else {
-      return "${timestamp.year}-${_twoDigits(timestamp.month)}-${_twoDigits(timestamp.day)} "
-          "${_twoDigits(timestamp.hour)}:${_twoDigits(timestamp.minute)}";
-    }
-  }
-
   /// 构建时间显示区域
   Widget _buildTimeInfo(Comment comment, BuildContext context) {
     final t = slang.Translations.of(context);
@@ -551,11 +532,11 @@ class _CommentItemState extends State<CommentItem> {
       child: Wrap(
         crossAxisAlignment: WrapCrossAlignment.center,
         children: [
-          Text(_formatTimestamp(comment.createdAt!, context)),
+          Text(CommonUtils.formatFriendlyTimestamp(comment.createdAt)),
           if (hasEdit) ...[
             const Text(' · '),
             Text(
-              t.common.editedAt(num: _formatTimestamp(comment.updatedAt!, context)),
+              t.common.editedAt(num: CommonUtils.formatFriendlyTimestamp(comment.updatedAt)),
               style: timeTextStyle.copyWith(),
             ),
           ],
@@ -917,6 +898,4 @@ class _CommentItemState extends State<CommentItem> {
     return avatar;
   }
 
-  /// 辅助方法，将数字补齐为两位
-  String _twoDigits(int n) => n.toString().padLeft(2, '0');
 }

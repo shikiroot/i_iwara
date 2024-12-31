@@ -8,7 +8,7 @@ import 'package:i_iwara/app/services/video_service.dart';
 import 'package:i_iwara/app/ui/pages/video_detail/widgets/detail/video_description_widget.dart';
 import 'package:i_iwara/app/ui/widgets/MDToastWidget.dart';
 import 'package:i_iwara/common/enums/media_enums.dart';
-import 'package:i_iwara/utils/date_time_extension.dart';
+import 'package:i_iwara/utils/common_utils.dart';
 import 'package:oktoast/oktoast.dart';
 import '../../../../../../common/constants.dart';
 import '../../../../widgets/error_widget.dart';
@@ -121,7 +121,7 @@ class VideoDetailContent extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: Obx(() => Text(
-                        '${t.galleryDetail.publishedAt}：${controller.videoInfo.value?.createdAt?.customFormat("SHORT_CHINESE")}    ${t.galleryDetail.viewsCount}：${controller.videoInfo.value?.numViews?.customFormat()}',
+                        '${t.galleryDetail.publishedAt}：${CommonUtils.formatFriendlyTimestamp(controller.videoInfo.value?.createdAt)}    ${t.galleryDetail.viewsCount}：${CommonUtils.formatFriendlyNumber(controller.videoInfo.value?.numViews)}',
                         style: const TextStyle(color: Colors.grey),
                       )),
                 ),

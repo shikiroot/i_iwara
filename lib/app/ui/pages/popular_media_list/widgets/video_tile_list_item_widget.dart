@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:i_iwara/app/services/app_service.dart';
 import 'package:i_iwara/app/ui/pages/popular_media_list/widgets/video_preview_modal.dart';
-import 'package:i_iwara/utils/date_time_extension.dart';
+import 'package:i_iwara/utils/common_utils.dart';
 import 'package:vibration/vibration.dart';
 
 import '../../../../models/video.model.dart';
@@ -139,7 +139,7 @@ class _VideoTileListItemState extends State<VideoTileListItem> {
     // 格式化创建时间
     String formattedDate = '';
     if (widget.video.createdAt != null) {
-      formattedDate = widget.video.createdAt!.customFormat("SHORT_CHINESE");
+      formattedDate = CommonUtils.formatFriendlyTimestamp(widget.video.createdAt);
     }
 
     return Expanded(

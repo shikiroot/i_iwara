@@ -4,7 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:i_iwara/app/services/app_service.dart';
 import 'package:i_iwara/app/ui/pages/popular_media_list/widgets/video_preview_modal.dart';
-import 'package:i_iwara/utils/date_time_extension.dart';
+import 'package:i_iwara/utils/common_utils.dart';
 import 'package:vibration/vibration.dart';
 
 import '../../../../../common/constants.dart';
@@ -260,7 +260,7 @@ class _VideoCardListItemWidgetState extends State<VideoCardListItemWidget> {
 
   Widget _buildTimeInfo(TextTheme textTheme) {
     return Text(
-      widget.video.createdAt!.customFormat("SHORT_CHINESE"),
+      CommonUtils.formatFriendlyTimestamp(widget.video.createdAt),
       style: textTheme.bodySmall,
     );
   }

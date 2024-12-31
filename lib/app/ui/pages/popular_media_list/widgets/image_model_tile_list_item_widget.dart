@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:i_iwara/app/services/app_service.dart';
-import 'package:i_iwara/utils/date_time_extension.dart';
+import 'package:i_iwara/utils/common_utils.dart';
 
 import '../../../../models/image.model.dart';
 import 'package:i_iwara/i18n/strings.g.dart' as slang;
@@ -95,7 +95,7 @@ class ImageModelTileListItem extends StatelessWidget {
       right: 0,
       bottom: 0,
       child: _buildTag(
-        label: views.customFormat(),
+        label: CommonUtils.formatFriendlyNumber(views),
         icon: const Icon(Icons.remove_red_eye, size: 12, color: Colors.white),
         backgroundColor: Colors.black54,
       ),
@@ -146,7 +146,7 @@ class ImageModelTileListItem extends StatelessWidget {
     // 格式化创建时间
     String formattedDate = '';
     if (imageModel.createdAt != null) {
-      formattedDate = imageModel.createdAt!.customFormat("SHORT_CHINESE");
+      formattedDate = CommonUtils.formatFriendlyTimestamp(imageModel.createdAt);
     }
 
     return Expanded(

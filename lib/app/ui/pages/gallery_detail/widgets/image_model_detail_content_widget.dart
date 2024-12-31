@@ -12,7 +12,7 @@ import 'package:i_iwara/app/services/api_service.dart';
 import 'package:i_iwara/app/services/gallery_service.dart';
 import 'package:i_iwara/app/ui/widgets/MDToastWidget.dart';
 import 'package:i_iwara/app/ui/widgets/empty_widget.dart';
-import 'package:i_iwara/utils/date_time_extension.dart';
+import 'package:i_iwara/utils/common_utils.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
 import 'package:i_iwara/utils/widget_extensions.dart';
 import 'package:oktoast/oktoast.dart';
@@ -506,7 +506,7 @@ class ImageModelDetailContent extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Text(
-        '${slang.t.galleryDetail.publishedAt}: ${controller.imageModelInfo.value?.createdAt?.customFormat("SHORT_CHINESE")}    ${slang.t.galleryDetail.viewsCount}: ${controller.imageModelInfo.value?.numViews?.customFormat()}',
+        '${slang.t.galleryDetail.publishedAt}: ${CommonUtils.formatFriendlyTimestamp(controller.imageModelInfo.value?.createdAt)}    ${slang.t.galleryDetail.viewsCount}: ${CommonUtils.formatFriendlyNumber(controller.imageModelInfo.value?.numViews?.toInt() ?? 0)}',
         style: const TextStyle(color: Colors.grey),
       ),
     );

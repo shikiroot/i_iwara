@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:i_iwara/utils/date_time_extension.dart';
+import 'package:i_iwara/utils/common_utils.dart';
 
 class VideoLikeWidget extends StatelessWidget {
   // 视频Id
@@ -37,7 +37,7 @@ class VideoLikeWidget extends StatelessWidget {
               if (showLikeCount) const SizedBox(width: 4),
               if (showLikeCount)
                 Text(
-                  likeCount.customFormat(),
+                  CommonUtils.formatFriendlyNumber(likeCount),
                   style: const TextStyle(fontSize: 14),
                 ),
             ],
