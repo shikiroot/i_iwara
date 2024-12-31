@@ -41,7 +41,7 @@ class PlayerSettingsWidget extends StatelessWidget {
                 children: [
                   Icon(
                     Icons.info_outline,
-                    color: Colors.white,
+                    color: Get.isDarkMode ? Colors.white : null,
                   ),
                   SizedBox(width: 8),
                   Expanded(
@@ -78,7 +78,7 @@ class PlayerSettingsWidget extends StatelessWidget {
                 children: [
                   Icon(
                     iconData,
-                    color: Theme.of(Get.context!).primaryColor,
+                    color: Get.isDarkMode ? Colors.white : null,
                   ),
                   const SizedBox(width: 12),
                   Expanded(
@@ -140,10 +140,10 @@ class PlayerSettingsWidget extends StatelessWidget {
                       ConfigService.FAST_FORWARD_SECONDS_KEY, parsed);
                 },
                 icon: Icon(Icons.fast_forward,
-                    color: Theme.of(context).primaryColor),
+                    color: Get.isDarkMode ? Colors.white : null),
                 inputDecoration: InputDecoration(
                   suffixText: t.common.seconds,
-                  suffixStyle: TextStyle(color: Theme.of(context).primaryColor),
+                  suffixStyle: TextStyle(color: Get.isDarkMode ? Colors.white : null),
                   border: const OutlineInputBorder(),
                 ),
                 keyboardType: TextInputType.number,
@@ -168,10 +168,10 @@ class PlayerSettingsWidget extends StatelessWidget {
                       ConfigService.REWIND_SECONDS_KEY, parsed);
                 },
                 icon: Icon(Icons.fast_rewind,
-                    color: Theme.of(context).primaryColor),
+                    color: Get.isDarkMode ? Colors.white : null),
                 inputDecoration: InputDecoration(
                   suffixText: t.common.seconds,
-                  suffixStyle: TextStyle(color: Theme.of(context).primaryColor),
+                  suffixStyle: TextStyle(color: Get.isDarkMode ? Colors.white : null),
                   border: const OutlineInputBorder(),
                 ),
                 keyboardType: TextInputType.number,
@@ -198,10 +198,10 @@ class PlayerSettingsWidget extends StatelessWidget {
                 },
                 keyboardType:
                     const TextInputType.numberWithOptions(decimal: true),
-                icon: Icon(Icons.speed, color: Theme.of(context).primaryColor),
+                icon: Icon(Icons.speed, color: Get.isDarkMode ? Colors.white : null),
                 inputDecoration: InputDecoration(
                   suffixText: 'x',
-                  suffixStyle: TextStyle(color: Theme.of(context).primaryColor),
+                  suffixStyle: TextStyle(color: Get.isDarkMode ? Colors.white : null),
                   border: const OutlineInputBorder(),
                 ),
               )),

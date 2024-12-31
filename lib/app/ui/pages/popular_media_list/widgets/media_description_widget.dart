@@ -65,7 +65,6 @@ class _MediaDescriptionWidgetState extends State<MediaDescriptionWidget> {
                       t.common.translate,
                       style: TextStyle(
                         fontSize: 12,
-                        color: Theme.of(context).primaryColor,
                       ),
                     ),
                   ],
@@ -88,7 +87,6 @@ class _MediaDescriptionWidgetState extends State<MediaDescriptionWidget> {
               child: Icon(
                 _showTranslationMenu ? Icons.arrow_drop_up : Icons.arrow_drop_down,
                 size: 26,
-                color: Theme.of(context).primaryColor,
               ),
             ),
           ),

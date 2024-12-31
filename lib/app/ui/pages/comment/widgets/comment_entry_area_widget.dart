@@ -99,7 +99,6 @@ class CommentEntryAreaButtonWidget extends StatelessWidget {
                               : t.common.writeYourCommentHere,
                           style: TextStyle(
                             fontSize: 14,
-                            color: commentController.comments.isNotEmpty ? Colors.black : Colors.grey,
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,

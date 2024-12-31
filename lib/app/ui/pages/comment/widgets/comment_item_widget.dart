@@ -382,7 +382,6 @@ class _CommentItemState extends State<CommentItem> {
                     t.common.translate,
                     style: TextStyle(
                       fontSize: 12,
-                      color: Theme.of(context).primaryColor,
                     ),
                   ),
                 ],
@@ -404,7 +403,6 @@ class _CommentItemState extends State<CommentItem> {
               child: Icon(
                 Icons.arrow_drop_down,
                 size: 26,
-                color: Theme.of(context).primaryColor,
               ),
             ),
           ),

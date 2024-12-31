@@ -255,7 +255,7 @@ class GlobalDrawerColumns extends StatelessWidget {
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       child: ListTile(
-        leading: Icon(icon, color: Get.theme.primaryColor),
+        leading: Icon(icon, color: Get.isDarkMode ? Colors.white : null),
         title: Text(title, style: const TextStyle(fontSize: 16)),
         onTap: onTap,
       ),

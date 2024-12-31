@@ -172,7 +172,7 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
         child: Icon(
           item.icon,
-          color: isSelected ? Colors.white : Theme.of(context).primaryColor,
+          color: isSelected ? Colors.white : Get.isDarkMode ? Colors.white : null,
         ),
       ),
       title: Text(

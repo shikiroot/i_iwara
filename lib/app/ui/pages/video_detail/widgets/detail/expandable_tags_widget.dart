@@ -126,9 +126,6 @@ class _ExpandableTagsWidgetState extends State<ExpandableTagsWidget>
           child: Text(
             tag.id,
             style: TextStyle(
-              color: tag.sensitive
-                  ? Colors.red.withOpacity(0.8)
-                  : Colors.black87.withOpacity(0.8),
               fontSize: 13,
               height: 1.2,
             ),

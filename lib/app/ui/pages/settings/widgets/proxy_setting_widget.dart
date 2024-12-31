@@ -220,9 +220,9 @@ class _ProxySettingsWidgetState extends State<ProxySettingsWidget> {
                   padding: const EdgeInsets.all(16.0),
                   child: Row(
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.info_outline,
-                        color: Colors.white,
+                        color: Get.isDarkMode ? Colors.white : null,
                       ),
                       const SizedBox(width: 8),
                       Expanded(
@@ -283,7 +283,7 @@ class _ProxySettingsWidgetState extends State<ProxySettingsWidget> {
                   }
                 },
                 icon:
-                    Icon(Icons.computer, color: Theme.of(context).primaryColor),
+                    Icon(Icons.computer, color: Get.isDarkMode ? Colors.white : null),
                 splitTwoLine: true,
                 inputDecoration: InputDecoration(
                   hintText: t.settings.pleaseEnterTheUrlOfTheProxyServerForExample1270018080,
@@ -297,7 +297,7 @@ class _ProxySettingsWidgetState extends State<ProxySettingsWidget> {
                 validator: (_) => null,
                 onValid: (_) {},
                 icon:
-                    Icon(Icons.vpn_key, color: Theme.of(context).primaryColor),
+                    Icon(Icons.vpn_key, color: Get.isDarkMode ? Colors.white : null),
                 splitTwoLine: false,
                 inputDecoration: InputDecoration(
                   border: InputBorder.none,
@@ -320,7 +320,7 @@ class _ProxySettingsWidgetState extends State<ProxySettingsWidget> {
                             LogUtils.i('代理已禁用', _tag);
                           }
                         },
-                        activeColor: Theme.of(context).primaryColor,
+                        activeColor: Get.isDarkMode ? Colors.white : null,
                       )),
                 ),
               ),
