@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:i_iwara/app/models/user.model.dart';
 import 'package:i_iwara/app/ui/pages/follows/controllers/follows_controller.dart';
 import 'package:i_iwara/app/ui/widgets/my_loading_more_indicator_widget.dart';
@@ -30,7 +31,12 @@ class FollowingList extends StatelessWidget {
               );
             },
             sourceList: controller.followingRepository,
-            padding: const EdgeInsets.all(8.0),
+            padding: EdgeInsets.fromLTRB(
+              5.0,
+              5.0,
+              5.0,
+              Get.context != null ? MediaQuery.of(Get.context!).padding.bottom + 5.0 : 0,
+            ),
             indicatorBuilder: (context, status) => myLoadingMoreIndicator(
               context,
               status,

@@ -735,6 +735,9 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
           ),
         ),
       ),
+      SliverToBoxAdapter(
+        child: SizedBox(height: Get.context != null ? MediaQuery.of(Get.context!).padding.bottom : 0),
+      ),
       // TabBar
     ];
   }
@@ -828,7 +831,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                   : const SizedBox.shrink()),
             ],
           ),
-        )
+        ),
       ],
     );
   }

@@ -44,7 +44,8 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> {
   void _onRouteChange(Route? route, Route? previousRoute) {
     // 当前页面被覆盖时暂停视频
     if (route != null && route.settings.name != Routes.VIDEO_DETAIL(videoId)) {
-      LogUtils.d("[详情页路由监听]跳转到其他页面: ${route.settings.name}", 'video_detail_page_v2');
+      LogUtils.d(
+          "[详情页路由监听]跳转到其他页面: ${route.settings.name}", 'video_detail_page_v2');
       controller.player.pause();
     }
   }
@@ -75,14 +76,16 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> {
     );
 
     // 注册路由变化回调
-    HomeNavigationLayout.homeNavigatorObserver.addRouteChangeCallback(_onRouteChange);
+    HomeNavigationLayout.homeNavigatorObserver
+        .addRouteChangeCallback(_onRouteChange);
   }
 
   @override
   void dispose() {
     // 移除路由变化回调
-    HomeNavigationLayout.homeNavigatorObserver.removeRouteChangeCallback(_onRouteChange);
-    
+    HomeNavigationLayout.homeNavigatorObserver
+        .removeRouteChangeCallback(_onRouteChange);
+
     // 尝试删除controller
     try {
       Get.delete<MyVideoStateController>(tag: uniqueTag);
@@ -107,7 +110,9 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> {
 
   Size _calcVideoColumnWidthAndHeight(double screenWidth, double screenHeight,
       double videoRatio, double sideColumnMinWidth, double paddingTop) {
-    LogUtils.d('[DEBUG] screenWidth: $screenWidth, screenHeight: $screenHeight, videoRatio: $videoRatio, sideColumnMinWidth: $sideColumnMinWidth', 'video_detail_page_v2');
+    LogUtils.d(
+        '[DEBUG] screenWidth: $screenWidth, screenHeight: $screenHeight, videoRatio: $videoRatio, sideColumnMinWidth: $sideColumnMinWidth',
+        'video_detail_page_v2');
     // 使用有效的视频比例，如果比例小于1，则使用1.7
     final effectiveVideoRatio = videoRatio < 1 ? 1.7 : videoRatio;
     // 先获取70%屏幕高度时的视频宽度
@@ -165,12 +170,16 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> {
                               submitText: t.common.send,
                               onSubmit: (text) async {
                                 if (text.trim().isEmpty) {
-                                  showToastWidget(MDToastWidget(message: t.errors.commentCanNotBeEmpty, type: MDToastType.error));
+                                  showToastWidget(MDToastWidget(
+                                      message: t.errors.commentCanNotBeEmpty,
+                                      type: MDToastType.error));
                                   return;
                                 }
                                 final UserService userService = Get.find();
                                 if (!userService.isLogin) {
-                                  showToastWidget(MDToastWidget(message: t.errors.pleaseLoginFirst, type: MDToastType.error));
+                                  showToastWidget(MDToastWidget(
+                                      message: t.errors.pleaseLoginFirst,
+                                      type: MDToastType.error));
                                   Get.toNamed(Routes.LOGIN);
                                   return;
                                 }
@@ -292,7 +301,7 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> {
                           videoHeight: renderVideoSize.height,
                           videoWidth: renderVideoSize.width,
                         ),
-                        if (!isDesktopAppFullScreen)
+                        if (!isDesktopAppFullScreen)...[
                           Container(
                             padding: const EdgeInsets.all(16),
                             child: CommentEntryAreaButtonWidget(
@@ -300,7 +309,9 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> {
                                 onClickButton: () {
                                   showCommentModal(context);
                                 }),
-                          )
+                          ),
+                          const SafeArea(child: SizedBox.shrink()),
+                        ]
                       ],
                     ),
                   ),
@@ -316,39 +327,43 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> {
                             children: [
                               // 相关视频
                               Container(
-                                  height: paddingTop, color: Colors.transparent),
+                                  height: paddingTop,
+                                  color: Colors.transparent),
                               // 作者的其他视频
                               if (controller.otherAuthorzVideosController !=
                                       null &&
                                   controller.otherAuthorzVideosController!
                                       .isLoading.value) ...[
                                 Container(
-                                    padding:
-                                        const EdgeInsets.symmetric(horizontal: 16),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16),
                                     child: Text(t.videoDetail.authorOtherVideos,
                                         style: const TextStyle(fontSize: 18))),
                                 const MediaTileListSkeletonWidget()
-                              ] else if (
-                                controller.otherAuthorzVideosController != null &&
-                                controller.otherAuthorzVideosController!.videos.isEmpty)
+                              ] else if (controller
+                                          .otherAuthorzVideosController !=
+                                      null &&
+                                  controller.otherAuthorzVideosController!
+                                      .videos.isEmpty)
                                 const SizedBox.shrink()
                               else ...[
                                 Container(
-                                    padding:
-                                        const EdgeInsets.symmetric(horizontal: 16),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16),
                                     child: Text(t.videoDetail.authorOtherVideos,
                                         style: const TextStyle(fontSize: 18))),
                                 // 构建作者的其他视频列表
-                                if (controller.otherAuthorzVideosController != null)
-                                for (var video in controller
-                                    .otherAuthorzVideosController!.videos)
-                                  VideoTileListItem(video: video),
+                                if (controller.otherAuthorzVideosController !=
+                                    null)
+                                  for (var video in controller
+                                      .otherAuthorzVideosController!.videos)
+                                    VideoTileListItem(video: video),
                               ],
                               if (relatedVideoController.isLoading.value) ...[
                                 const SizedBox(height: 16),
                                 Container(
-                                    padding:
-                                        const EdgeInsets.symmetric(horizontal: 16),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16),
                                     child: Text(t.videoDetail.relatedVideos,
                                         style: const TextStyle(fontSize: 18))),
                                 const MediaTileListSkeletonWidget()
@@ -357,14 +372,15 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> {
                               else ...[
                                 const SizedBox(height: 16),
                                 Container(
-                                    padding:
-                                        const EdgeInsets.symmetric(horizontal: 16),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16),
                                     child: Text(t.videoDetail.relatedVideos,
                                         style: const TextStyle(fontSize: 18))),
                                 // 构建相关视频列表
                                 for (var video in relatedVideoController.videos)
                                   VideoTileListItem(video: video),
                               ],
+                              const SafeArea(child: SizedBox.shrink()),
                             ],
                           ),
                         ),
@@ -394,16 +410,24 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> {
                                             submitText: t.common.send,
                                             onSubmit: (text) async {
                                               if (text.trim().isEmpty) {
-                                                showToastWidget(MDToastWidget(message: t.errors.commentCanNotBeEmpty, type: MDToastType.error));
+                                                showToastWidget(MDToastWidget(
+                                                    message: t.errors
+                                                        .commentCanNotBeEmpty,
+                                                    type: MDToastType.error));
                                                 return;
                                               }
-                                              final UserService userService = Get.find();
+                                              final UserService userService =
+                                                  Get.find();
                                               if (!userService.isLogin) {
-                                                showToastWidget(MDToastWidget(message: t.errors.pleaseLoginFirst, type: MDToastType.error));
+                                                showToastWidget(MDToastWidget(
+                                                    message: t.errors
+                                                        .pleaseLoginFirst,
+                                                    type: MDToastType.error));
                                                 Get.toNamed(Routes.LOGIN);
                                                 return;
                                               }
-                                              await commentController.postComment(text);
+                                              await commentController
+                                                  .postComment(text);
                                             },
                                           ),
                                           barrierDismissible: true,
@@ -473,45 +497,51 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> {
                             controller.otherAuthorzVideosController!.isLoading
                                 .value) ...[
                           Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 16),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16),
                               child: Text(t.videoDetail.authorOtherVideos,
                                   style: const TextStyle(fontSize: 18))),
                           const MediaTileListSkeletonWidget()
-                        ] else if (
-                          controller.otherAuthorzVideosController != null &&
-                          controller.otherAuthorzVideosController!.videos.isEmpty)
+                        ] else if (controller.otherAuthorzVideosController !=
+                                null &&
+                            controller
+                                .otherAuthorzVideosController!.videos.isEmpty)
                           const SizedBox.shrink()
                         else ...[
                           Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 16),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16),
                               child: Text(t.videoDetail.authorOtherVideos,
                                   style: const TextStyle(fontSize: 18))),
                           // 构建作者的其他视频列表
                           if (controller.otherAuthorzVideosController != null)
-                          for (var video in controller
-                              .otherAuthorzVideosController!.videos)
-                            VideoTileListItem(video: video),
+                            for (var video in controller
+                                .otherAuthorzVideosController!.videos)
+                              VideoTileListItem(video: video),
                         ],
                         // 相关视频
                         if (relatedVideoController.isLoading.value) ...[
                           const SizedBox(height: 16),
                           Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 16),
-                              child:
-                                  Text(t.videoDetail.relatedVideos, style: const TextStyle(fontSize: 18))),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16),
+                              child: Text(t.videoDetail.relatedVideos,
+                                  style: const TextStyle(fontSize: 18))),
                           const MediaTileListSkeletonWidget()
                         ] else if (relatedVideoController.videos.isEmpty)
                           const SizedBox.shrink()
                         else ...[
                           const SizedBox(height: 16),
                           Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 16),
-                              child:
-                                  Text(t.videoDetail.relatedVideos, style: const TextStyle(fontSize: 18))),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16),
+                              child: Text(t.videoDetail.relatedVideos,
+                                  style: const TextStyle(fontSize: 18))),
                           // 构建相关视频列表
                           for (var video in relatedVideoController.videos)
                             VideoTileListItem(video: video),
                         ],
+                        const SafeArea(child: SizedBox.shrink()),
                       ]
                     ],
                   ),
@@ -542,16 +572,24 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> {
                                       submitText: t.common.send,
                                       onSubmit: (text) async {
                                         if (text.trim().isEmpty) {
-                                          showToastWidget(MDToastWidget(message: t.errors.commentCanNotBeEmpty, type: MDToastType.error));
+                                          showToastWidget(MDToastWidget(
+                                              message:
+                                                  t.errors.commentCanNotBeEmpty,
+                                              type: MDToastType.error));
                                           return;
                                         }
-                                        final UserService userService = Get.find();
+                                        final UserService userService =
+                                            Get.find();
                                         if (!userService.isLogin) {
-                                          showToastWidget(MDToastWidget(message: t.errors.pleaseLoginFirst, type: MDToastType.error));
+                                          showToastWidget(MDToastWidget(
+                                              message:
+                                                  t.errors.pleaseLoginFirst,
+                                              type: MDToastType.error));
                                           Get.toNamed(Routes.LOGIN);
                                           return;
                                         }
-                                        await commentController.postComment(text);
+                                        await commentController
+                                            .postComment(text);
                                       },
                                     ),
                                     barrierDismissible: true,

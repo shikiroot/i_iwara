@@ -107,7 +107,12 @@ class _FavoriteImageListState extends State<FavoriteImageList>
               });
             },
             sourceList: controller.imageRepository,
-            padding: const EdgeInsets.all(5.0),
+            padding: EdgeInsets.fromLTRB(
+              5.0,
+              5.0,
+              5.0,
+              Get.context != null ? MediaQuery.of(Get.context!).padding.bottom + 5.0 : 0,
+            ),
             lastChildLayoutType: LastChildLayoutType.foot,
             indicatorBuilder: (context, status) => myLoadingMoreIndicator(
               context,

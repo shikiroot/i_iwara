@@ -8,7 +8,8 @@ import 'package:i_iwara/app/ui/pages/popular_media_list/widgets/video_card_list_
 import 'package:i_iwara/app/ui/widgets/my_loading_more_indicator_widget.dart';
 import 'package:loading_more_list/loading_more_list.dart';
 import 'controllers/history_list_controller.dart';
-import 'package:i_iwara/i18n/strings.g.dart' as slang;  
+import 'package:i_iwara/i18n/strings.g.dart' as slang;
+
 class HistoryListPage extends StatefulWidget {
   const HistoryListPage({super.key});
 
@@ -22,11 +23,11 @@ class _HistoryListPageState extends State<HistoryListPage>
   late HistoryListController allController;
   late HistoryListController videoController;
   late HistoryListController imageController;
-  
+
   final ScrollController _allScrollController = ScrollController();
   final ScrollController _videoScrollController = ScrollController();
   final ScrollController _imageScrollController = ScrollController();
-  
+
   int _lastTappedIndex = 0;
   final RxBool isLoading = false.obs;
 
@@ -34,7 +35,7 @@ class _HistoryListPageState extends State<HistoryListPage>
   void initState() {
     super.initState();
     final historyRepo = HistoryRepository();
-    
+
     allController = Get.put(
       HistoryListController(
         historyRepository: historyRepo,
@@ -42,7 +43,7 @@ class _HistoryListPageState extends State<HistoryListPage>
       ),
       tag: 'all',
     );
-    
+
     videoController = Get.put(
       HistoryListController(
         historyRepository: historyRepo,
@@ -50,7 +51,7 @@ class _HistoryListPageState extends State<HistoryListPage>
       ),
       tag: 'video',
     );
-    
+
     imageController = Get.put(
       HistoryListController(
         historyRepository: historyRepo,
@@ -61,7 +62,7 @@ class _HistoryListPageState extends State<HistoryListPage>
 
     _tabController = TabController(length: 3, vsync: this);
     _tabController.addListener(_handleTabChange);
-    
+
     _setupScrollControllers();
   }
 
@@ -259,7 +260,6 @@ class _HistoryListPageState extends State<HistoryListPage>
   }
 
   Widget _buildTabBar() {
-
     return Container(
       width: 400,
       margin: const EdgeInsets.symmetric(
@@ -317,7 +317,12 @@ class _HistoryListPageState extends State<HistoryListPage>
             itemBuilder: (context, record, index) =>
                 _buildHistoryItem(context, record, controller),
             sourceList: controller.repository,
-            padding: const EdgeInsets.all(5.0),
+            padding: EdgeInsets.fromLTRB(
+              5.0,
+              5.0,
+              5.0,
+              Get.context != null ? MediaQuery.of(Get.context!).padding.bottom + 5.0 : 0,
+            ),
             lastChildLayoutType: LastChildLayoutType.foot,
             indicatorBuilder: (context, status) => myLoadingMoreIndicator(
               context,
@@ -377,38 +382,51 @@ class _HistoryListPageState extends State<HistoryListPage>
   Widget _buildMultiSelectBar(HistoryListController controller) {
     return Obx(() => controller.isMultiSelect.value
         ? BottomAppBar(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    slang.t.common.selectedRecords(num: controller.selectedRecords.length),
-                    style: const TextStyle(fontSize: 16),
-                  ),
-                  Row(
+            child: SafeArea(
+              minimum: const EdgeInsets.only(bottom: 8.0),
+              child: IntrinsicHeight(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      TextButton(
-                        onPressed: controller.selectAll,
-                        child:
-                            Text(controller.isAllSelected ? slang.t.common.cancelSelectAll : slang.t.common.selectAll),
-                      ),
-                      const SizedBox(width: 16),
-                      TextButton(
-                        onPressed: controller.toggleMultiSelect,
-                        child: Text(slang.t.common.exitEditMode),
-                      ),
-                      const SizedBox(width: 16),
-                      ElevatedButton(
-                        onPressed: () => _showDeleteConfirmDialog(controller),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.red,
+                      Padding(
+                        padding: const EdgeInsets.only(left: 16.0),
+                        child: Text(
+                          slang.t.common.selectedRecords(
+                              num: controller.selectedRecords.length),
+                          style: const TextStyle(fontSize: 16),
                         ),
-                        child: Text(slang.t.common.delete),
+                      ),
+                      Row(
+                        children: [
+                          TextButton(
+                            onPressed: controller.selectAll,
+                            child: Text(controller.isAllSelected
+                                ? slang.t.common.cancelSelectAll
+                                : slang.t.common.selectAll),
+                          ),
+                          const SizedBox(width: 16),
+                          TextButton(
+                            onPressed: controller.toggleMultiSelect,
+                            child: Text(slang.t.common.exitEditMode),
+                          ),
+                          const SizedBox(width: 16),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 16.0),
+                            child: ElevatedButton(
+                              onPressed: () => _showDeleteConfirmDialog(controller),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.red,
+                              ),
+                              child: Text(slang.t.common.delete),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                ],
+                ),
               ),
             ),
           )
@@ -419,7 +437,8 @@ class _HistoryListPageState extends State<HistoryListPage>
     Get.dialog(
       AlertDialog(
         title: Text(slang.t.common.confirmDelete),
-        content: Text(slang.t.common.areYouSureYouWantToDeleteSelectedItems(num: controller.selectedRecords.length)),
+        content: Text(slang.t.common.areYouSureYouWantToDeleteSelectedItems(
+            num: controller.selectedRecords.length)),
         actions: [
           TextButton(
             onPressed: () => AppService.tryPop(),
@@ -443,7 +462,7 @@ class _HistoryListPageState extends State<HistoryListPage>
   Widget _buildSearchField(BuildContext context) {
     final controller = _getControllerForIndex(_tabController.index);
     final t = slang.Translations.of(context);
-    
+
     return TextField(
       decoration: InputDecoration(
         hintText: t.common.searchHistoryRecords,
@@ -463,7 +482,7 @@ class _HistoryListPageState extends State<HistoryListPage>
   void _showClearHistoryDialog() {
     final controller = _getControllerForIndex(_tabController.index);
     final itemType = controller.itemType;
-    
+
     Get.dialog(
       AlertDialog(
         title: Text(slang.t.common.clearAllHistory),
@@ -487,4 +506,4 @@ class _HistoryListPageState extends State<HistoryListPage>
       ),
     );
   }
-} 
+}

@@ -310,6 +310,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                               onClickButton: () {
                                 showCommentModal(context);
                               }).paddingVertical(16),
+                          const SafeArea(child: SizedBox.shrink()),
                         ],
                       ),
                     ),
@@ -374,6 +375,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                                     in relatedMediasController.imageModels)
                                   ImageModelTileListItem(
                                       imageModel: imageModel),
+                              const SafeArea(child: SizedBox.shrink()),
                             ],
                           ),
                         ),
@@ -508,6 +510,7 @@ class _GalleryDetailPageState extends State<GalleryDetailPage> {
                               in relatedMediasController.imageModels)
                             ImageModelTileListItem(imageModel: imageModel),
                         ],
+                        const SafeArea(child: SizedBox.shrink()),
                       ],
                     ),
                   ),

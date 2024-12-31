@@ -7,6 +7,7 @@ import 'package:i_iwara/app/services/app_service.dart';
 import 'package:i_iwara/app/ui/pages/play_list/controllers/play_list_controller.dart';
 import 'package:i_iwara/app/ui/pages/play_list/controllers/play_list_repository.dart';
 import 'package:i_iwara/app/ui/widgets/my_loading_more_indicator_widget.dart';
+import 'package:i_iwara/utils/widget_extensions.dart';
 import 'package:loading_more_list/loading_more_list.dart';
 import 'package:i_iwara/i18n/strings.g.dart' as slang;
 
@@ -89,13 +90,18 @@ class _PlayListPageState extends State<PlayListPage> {
               ),
               itemBuilder: buildItem,
               sourceList: listSourceRepository,
-              padding: const EdgeInsets.all(5.0),
+              padding: EdgeInsets.only(
+                left: 5.0,
+                right: 5.0,
+                top: 5.0,
+                bottom: Get.context != null ? MediaQuery.of(Get.context!).padding.bottom : 0, // 添加底部安全区域
+              ),
               lastChildLayoutType: LastChildLayoutType.foot,
               indicatorBuilder: (context, status) => myLoadingMoreIndicator(
                   context, status,
                   isSliver: true, loadingMoreBase: listSourceRepository),
             ),
-          )
+          ),
         ],
       ),
       floatingActionButton: Obx(() => _showBackToTop.value
@@ -108,7 +114,7 @@ class _PlayListPageState extends State<PlayListPage> {
                 );
               },
               child: const Icon(Icons.arrow_upward),
-            )
+            ).paddingBottom(Get.context != null ? MediaQuery.of(Get.context!).padding.bottom : 0)
           : const SizedBox()),
     );
   }
@@ -190,25 +196,28 @@ class _PlayListPageState extends State<PlayListPage> {
             child: Text(slang.t.common.cancel),
           ),
           Obx(() => TextButton(
-            onPressed: isLoading.value ? null : () async {
-              isLoading.value = true;
-              if (textController.text.trim().isNotEmpty) {
-                final res = await controller.createPlaylist(textController.text.trim());
-                if (res) {
-                  listSourceRepository.refresh();
-                  AppService.tryPop();
-                }
-              }
-              isLoading.value = false;
-            },
-            child: isLoading.value 
-                ? const SizedBox(
-                    width: 24,
-                    height: 24,
-                    child: Center(child: CircularProgressIndicator()),
-                  ) 
-                : Text(slang.t.common.create),
-          )),
+                onPressed: isLoading.value
+                    ? null
+                    : () async {
+                        isLoading.value = true;
+                        if (textController.text.trim().isNotEmpty) {
+                          final res = await controller
+                              .createPlaylist(textController.text.trim());
+                          if (res) {
+                            listSourceRepository.refresh();
+                            AppService.tryPop();
+                          }
+                        }
+                        isLoading.value = false;
+                      },
+                child: isLoading.value
+                    ? const SizedBox(
+                        width: 24,
+                        height: 24,
+                        child: Center(child: CircularProgressIndicator()),
+                      )
+                    : Text(slang.t.common.create),
+              )),
         ],
       ),
     );
@@ -233,7 +242,8 @@ class _PlayListPageState extends State<PlayListPage> {
         actions: [
           TextButton(
             onPressed: () => AppService.tryPop(),
-            child: Text(slang.t.playList.iUnderstand, style: TextStyle(fontSize: 16)),
+            child: Text(slang.t.playList.iUnderstand,
+                style: TextStyle(fontSize: 16)),
           ),
         ],
       ),

@@ -42,7 +42,12 @@ class FriendRequestList extends StatelessWidget {
               );
             },
             sourceList: controller.requestRepository,
-            padding: const EdgeInsets.all(8.0),
+            padding: EdgeInsets.fromLTRB(
+              5.0,
+              5.0,
+              5.0,
+              Get.context != null ? MediaQuery.of(Get.context!).padding.bottom + 5.0 : 0,
+            ),
             indicatorBuilder: (context, status) => myLoadingMoreIndicator(
               context,
               status,

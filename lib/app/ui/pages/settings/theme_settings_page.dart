@@ -25,6 +25,7 @@ class ThemeSettingsPage extends StatelessWidget {
           _buildBasicThemeSection(context, t, themeService),
           const SizedBox(height: 16),
           _buildPresetThemesSection(context, t, themeService),
+          SizedBox(height: Get.context != null ? MediaQuery.of(Get.context!).padding.bottom : 0),
         ],
       ),
     );

@@ -206,6 +206,7 @@ class _AboutPageState extends State<AboutPage> {
               ),
             ),
           ),
+          SizedBox(height: Get.context != null ? MediaQuery.of(Get.context!).padding.bottom : 0),
         ],
       ),
     );

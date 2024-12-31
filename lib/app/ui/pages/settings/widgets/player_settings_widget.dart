@@ -333,6 +333,7 @@ class PlayerSettingsWidget extends StatelessWidget {
               ],
             ),
           ),
+          SizedBox(height: Get.context != null ? MediaQuery.of(Get.context!).padding.bottom : 0),
         ],
       ),
     );
