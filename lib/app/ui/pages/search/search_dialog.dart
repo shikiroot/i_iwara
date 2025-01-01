@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:i_iwara/app/services/app_service.dart';
@@ -348,34 +349,18 @@ class _SearchContentState extends State<_SearchContent> {
                   segments: [
                     ButtonSegment(
                       value: SearchSegment.video.name,
-                      label: globalSearchService.selectedSegment
-                              .contains(SearchSegment.video.name)
-                          ? Text(t.common.video)
-                          : null,
                       icon: const Icon(Icons.video_library),
                     ),
                     ButtonSegment(
                       value: SearchSegment.image.name,
-                      label: globalSearchService.selectedSegment
-                              .contains(SearchSegment.image.name)
-                          ? Text(t.common.gallery)
-                          : null,
                       icon: const Icon(Icons.image),
                     ),
                     ButtonSegment(
                       value: SearchSegment.post.name,
-                      label: globalSearchService.selectedSegment
-                              .contains(SearchSegment.post.name)
-                          ? Text(t.common.post)
-                          : null,
                       icon: const Icon(Icons.article),
                     ),
                     ButtonSegment(
                       value: SearchSegment.user.name,
-                      label: globalSearchService.selectedSegment
-                              .contains(SearchSegment.user.name)
-                          ? Text(t.common.user)
-                          : null,
                       icon: const Icon(Icons.person),
                     ),
                   ],

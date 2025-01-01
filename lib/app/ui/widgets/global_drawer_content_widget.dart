@@ -34,7 +34,7 @@ class GlobalDrawerColumns extends StatelessWidget {
                 AppService.switchGlobalDrawer();
               }),
               // 最爱
-              _buildMenuItem(Icons.favorite, t.common.favorites, () {
+              _buildMenuItem(Icons.favorite_border, t.common.favorites, () {
                 if (userService.isLogin) {
                   NaviService.navigateToFavoritePage();
                   AppService.switchGlobalDrawer();

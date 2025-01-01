@@ -429,34 +429,18 @@ class _SearchResultState extends State<SearchResult> {
                       segments: [
                         ButtonSegment(
                           value: 'video',
-                          label: globalSearchService.selectedSegment.value ==
-                                  'video'
-                              ? Text(t.common.video)
-                              : null,
                           icon: const Icon(Icons.video_library),
                         ),
                         ButtonSegment(
                           value: 'image',
-                          label: globalSearchService.selectedSegment.value ==
-                                  'image'
-                              ? Text(t.common.gallery)
-                              : null,
                           icon: const Icon(Icons.image),
                         ),
                         ButtonSegment(
                           value: 'post',
-                          label: globalSearchService.selectedSegment.value ==
-                                  'post'
-                              ? Text(t.common.post)
-                              : null,
                           icon: const Icon(Icons.article),
                         ),
                         ButtonSegment(
                           value: 'user',
-                          label: globalSearchService.selectedSegment.value ==
-                                  'user'
-                              ? Text(t.common.user)
-                              : null,
                           icon: const Icon(Icons.person),
                         ),
                       ],
