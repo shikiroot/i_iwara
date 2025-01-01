@@ -12,6 +12,8 @@ import 'package:i_iwara/i18n/strings.g.dart' as slang;
 import '../../../models/dto/user_dto.dart';
 import '../../../services/app_service.dart';
 import '../../widgets/top_padding_height_widget.dart';
+import 'package:i_iwara/app/ui/pages/subscriptions/controllers/subscription_post_controller.dart';
+import 'package:i_iwara/app/ui/pages/subscriptions/widgets/subscription_post_list.dart';
 
 class SubscriptionsPage extends StatefulWidget {
   const SubscriptionsPage({super.key});
@@ -27,6 +29,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage>
       Get.find<UserPreferenceService>();
   late SubscriptionVideoController videoController;
   late SubscriptionImageController imageController;
+  late SubscriptionPostController postController;
 
   late TabController _tabController;
   String selectedId = '';
@@ -40,7 +43,8 @@ class _SubscriptionsPageState extends State<SubscriptionsPage>
     super.initState();
     videoController = Get.put(SubscriptionVideoController());
     imageController = Get.put(SubscriptionImageController());
-    _tabController = TabController(length: 2, vsync: this);
+    postController = Get.put(SubscriptionPostController());
+    _tabController = TabController(length: 3, vsync: this);
     _scrollController.addListener(_scrollListener);
     _tabController.addListener(() {
       if (_tabController.indexIsChanging) {
@@ -74,8 +78,10 @@ class _SubscriptionsPageState extends State<SubscriptionsPage>
     // 直接触发加载
     if (_tabController.index == 0) {
       videoController.loadVideos();
-    } else {
+    } else if (_tabController.index == 1) {
       imageController.loadImages();
+    } else {
+      postController.loadPosts();
     }
   }
 
@@ -84,6 +90,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage>
     setState(() {});
     videoController.updateSelectedUserId(id);
     imageController.updateSelectedUserId(id);
+    postController.updateSelectedUserId(id);
   }
 
   @override
@@ -92,6 +99,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage>
     _scrollController.dispose();
     Get.delete<SubscriptionVideoController>();
     Get.delete<SubscriptionImageController>();
+    Get.delete<SubscriptionPostController>();
     _refreshIconController.dispose();
     super.dispose();
   }
@@ -172,9 +180,18 @@ class _SubscriptionsPageState extends State<SubscriptionsPage>
                     tabAlignment: TabAlignment.start,
                     dividerColor: Colors.transparent,
                     controller: _tabController,
+                    labelStyle: const TextStyle(
+                      fontSize: 14, // 设置你想要的字体大小
+                      fontWeight: FontWeight.w500, // 设置字重
+                    ),
+                    unselectedLabelStyle: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                    ),
                     tabs: [
                       Tab(text: t.common.video),
                       Tab(text: t.common.gallery),
+                      Tab(text: t.common.post),
                     ],
                   ),
                   const Spacer(),
@@ -191,6 +208,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage>
         children: [
           SubscriptionVideoList(controller: videoController),
           SubscriptionImageList(controller: imageController),
+          SubscriptionPostList(controller: postController),
         ],
       ),
     );
@@ -288,8 +306,15 @@ class _SubscriptionsPageState extends State<SubscriptionsPage>
           _refreshIconController.stop();
           _refreshIconController.reset();
         }
-      } else {
+      } else if (_tabController.index == 1) {
         if (imageController.isLoading.value) {
+          _refreshIconController.repeat();
+        } else {
+          _refreshIconController.stop();
+          _refreshIconController.reset();
+        }
+      } else {
+        if (postController.isLoading.value) {
           _refreshIconController.repeat();
         } else {
           _refreshIconController.stop();
@@ -305,8 +330,10 @@ class _SubscriptionsPageState extends State<SubscriptionsPage>
         onPressed: () {
           if (_tabController.index == 0) {
             videoController.loadVideos(refresh: true);
-          } else {
+          } else if (_tabController.index == 1) {
             imageController.loadImages(refresh: true);
+          } else {
+            postController.loadPosts(refresh: true);
           }
         },
       );
