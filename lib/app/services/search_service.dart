@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:i_iwara/app/models/api_result.model.dart';
 import 'package:i_iwara/app/models/image.model.dart';
 import 'package:i_iwara/app/models/page_data.model.dart';
+import 'package:i_iwara/app/models/post.model.dart';
 import 'package:i_iwara/app/models/user.model.dart';
 import 'package:i_iwara/app/models/video.model.dart';
 import 'package:i_iwara/app/ui/pages/search/search_dialog.dart';
@@ -87,5 +88,18 @@ class SearchService extends GetxController {
     query: query,
     type: SearchSegment.user.name,
     fromJson: User.fromJson,
+  );
+
+  /// 获取帖子
+  Future<ApiResult<PageData<PostModel>>> fetchPostByQuery({
+    int page = 0,
+    int limit = 20,
+    String query = '',
+  }) => fetchDataByType<PostModel>(
+    page: page,
+    limit: limit,
+    query: query,
+    type: SearchSegment.post.name,
+    fromJson: PostModel.fromJson,
   );
 }

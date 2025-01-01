@@ -182,6 +182,12 @@ class ApiConstants {
 
   // 评论
   static String comment(String id) => '/comment/$id';
+
+  // 帖子列表
+  static String posts() => '/posts';
+
+  // 帖子详情
+  static String post(String id) => '/post/$id';
 }
 
 // 视频接口的排序方式

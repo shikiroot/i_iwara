@@ -9,6 +9,7 @@ import 'package:i_iwara/app/services/app_service.dart';
 import 'package:i_iwara/app/services/user_preference_service.dart';
 import 'package:i_iwara/app/ui/pages/author_profile/widgets/author_profile_skeleton_widget.dart';
 import 'package:i_iwara/app/ui/pages/author_profile/widgets/profile_image_model_tab_list_widget.dart';
+import 'package:i_iwara/app/ui/pages/author_profile/widgets/profile_post_tab_list_widget.dart';
 import 'package:i_iwara/app/ui/pages/author_profile/widgets/profile_video_tab_list_widget.dart';
 import 'package:i_iwara/app/ui/pages/author_profile/widgets/profile_playlist_tab_list_widget.dart';
 import 'package:i_iwara/app/ui/pages/comment/widgets/comment_input_dialog.dart';
@@ -60,7 +61,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
     username = widget.username;
     profileController =
         Get.put(AuthorProfileController(username: username), tag: uniqueTag);
-    primaryTC = TabController(length: 3, vsync: this);
+    primaryTC = TabController(length: 4, vsync: this);
     videoSecondaryTC = TabController(length: 5, vsync: this);
     imageSecondaryTC = TabController(length: 5, vsync: this);
     playlistSecondaryTC = TabController(length: 5, vsync: this);
@@ -791,6 +792,15 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                       ],
                     ),
                   ),
+                  Tab(
+                    child: Row(
+                      children: [
+                        Icon(Icons.article),
+                        SizedBox(width: 8),
+                        Text(t.common.post),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -825,6 +835,14 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                       tabKey: t.common.playlist,
                       tc: playlistSecondaryTC,
                       onFetchFinished: ({int? count}) {})
+                  : const SizedBox.shrink()),
+              Obx(() => profileController.author.value?.id != null
+                  ? ProfilePostTabListWidget(
+                    key: const Key('post'),
+                    userId: profileController.author.value!.id,
+                    tabKey: t.common.post,
+                    tc: TabController(length: 1, vsync: this),
+                  )
                   : const SizedBox.shrink()),
             ],
           ),

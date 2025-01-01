@@ -11,6 +11,7 @@ import 'package:i_iwara/app/services/deep_link_service.dart';
 import 'package:i_iwara/app/services/gallery_service.dart';
 import 'package:i_iwara/app/services/light_service.dart';
 import 'package:i_iwara/app/services/play_list_service.dart';
+import 'package:i_iwara/app/services/post_service.dart';
 import 'package:i_iwara/app/services/search_service.dart';
 import 'package:i_iwara/app/services/tag_service.dart';
 import 'package:i_iwara/app/services/video_service.dart';
@@ -105,6 +106,7 @@ void main() {
     Get.lazyPut(() => CommentService());
     Get.lazyPut(() => SearchService());
     Get.lazyPut(() => GalleryService());
+    Get.lazyPut(() => PostService());
     Get.lazyPut(() => TagService());
     Get.lazyPut(() => LightService());
     Get.lazyPut(() => GlobalSearchService());

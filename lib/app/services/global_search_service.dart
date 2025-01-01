@@ -7,6 +7,7 @@ import 'package:i_iwara/app/models/image.model.dart';
 import 'package:i_iwara/app/models/search_record.model.dart';
 import 'package:i_iwara/app/models/user.model.dart';
 import 'package:i_iwara/app/models/video.model.dart';
+import 'package:i_iwara/app/models/post.model.dart';
 import 'package:i_iwara/app/services/search_service.dart';
 import 'package:i_iwara/app/ui/widgets/error_widget.dart';
 import 'package:i_iwara/i18n/strings.g.dart';
@@ -27,6 +28,7 @@ class GlobalSearchService extends GetxService {
   final RxList<Video> searchVideoResult = <Video>[].obs;
   final RxList<ImageModel> searchImageResult = <ImageModel>[].obs;
   final RxList<User> searchUserResult = <User>[].obs;
+  final RxList<PostModel> searchPostResult = <PostModel>[].obs;
   final Rxn<Widget> errorWidget = Rxn<Widget>();
 
   final RxBool isLoading = false.obs;
@@ -39,6 +41,8 @@ class GlobalSearchService extends GetxService {
       return searchImageResult.isEmpty;
     } else if (segment == 'user') {
       return searchUserResult.isEmpty;
+    } else if (segment == 'post') {
+      return searchPostResult.isEmpty;
     }
     return true;
   }
@@ -51,6 +55,8 @@ class GlobalSearchService extends GetxService {
       return imagePageInitialized;
     } else if (segment == 'user') {
       return userPageInitialized;
+    } else if (segment == 'post') {
+      return postPageInitialized;
     }
     return false;
   }
@@ -65,10 +71,13 @@ class GlobalSearchService extends GetxService {
   bool imagePageInitialized = false;
   final _userPage = 0.obs;
   bool userPageInitialized = false;
+  final _postPage = 0.obs;
+  bool postPageInitialized = false;
 
   final _videoHasMore = true.obs;
   final _imageHasMore = true.obs;
   final _userHasMore = true.obs;
+  final _postHasMore = true.obs;
 
   // Helper getters for current segment's state
   int get currentPage {
@@ -79,6 +88,8 @@ class GlobalSearchService extends GetxService {
         return _imagePage.value;
       case 'user':
         return _userPage.value;
+      case 'post':
+        return _postPage.value;
       default:
         return 0;
     }
@@ -87,14 +98,13 @@ class GlobalSearchService extends GetxService {
   bool get hasMore {
     switch (selectedSegment.value) {
       case 'video':
-        print('video has more: ${_videoHasMore.value}');
         return _videoHasMore.value;
       case 'image':
-        print('image has more: ${_imageHasMore.value}');
         return _imageHasMore.value;
       case 'user':
-        print('user has more: ${_userHasMore.value}');
         return _userHasMore.value;
+      case 'post':
+        return _postHasMore.value;
       default:
         return false;
     }
@@ -111,13 +121,17 @@ class GlobalSearchService extends GetxService {
       case 'user':
         _userPage.value = newPage;
         break;
+      case 'post':
+        _postPage.value = newPage;
+        break;
     }
   }
 
   bool get isResultEmpty =>
       searchVideoResult.isEmpty && 
       searchImageResult.isEmpty && 
-      searchUserResult.isEmpty;
+      searchUserResult.isEmpty &&
+      searchPostResult.isEmpty;
 
   void clearOtherSearchResult() {
     String segment = selectedSegment.value;
@@ -125,12 +139,19 @@ class GlobalSearchService extends GetxService {
     if (segment == 'video') {
       searchImageResult.clear();
       searchUserResult.clear();
+      searchPostResult.clear();
     } else if (segment == 'image') {
       searchVideoResult.clear();
       searchUserResult.clear();
+      searchPostResult.clear();
     } else if (segment == 'user') {
       searchVideoResult.clear();
       searchImageResult.clear();
+      searchPostResult.clear();
+    } else if (segment == 'post') {
+      searchVideoResult.clear();
+      searchImageResult.clear();
+      searchUserResult.clear();
     }
   }
 
@@ -155,6 +176,12 @@ class GlobalSearchService extends GetxService {
       } else if (segment == 'user') {
         response = await searchService.fetchUserByQuery(
             page: tmpPage, limit: limit, query: keyword);
+      } else if (segment == 'post') {
+        response = await searchService.fetchPostByQuery(
+          page: tmpPage,
+          limit: limit,
+          query: keyword,
+        );
       } else {
         response = ApiResult.fail(t.search.unsupportedSearchType(searchType: segment));
       }
@@ -182,6 +209,8 @@ class GlobalSearchService extends GetxService {
           searchImageResult.clear();
         } else if (segment == 'user') {
           searchUserResult.clear();
+        } else if (segment == 'post') {
+          searchPostResult.clear();
         }
       }
 
@@ -194,6 +223,9 @@ class GlobalSearchService extends GetxService {
       } else if (segment == 'user') {
         searchUserResult.addAll(results as List<User>);
         _userHasMore.value = response.data!.count > searchUserResult.length;
+      } else if (segment == 'post') {
+        searchPostResult.addAll(results as List<PostModel>);
+        _postHasMore.value = response.data!.count > searchPostResult.length;
       }
 
       _updatePage(tmpPage + 1);
@@ -205,6 +237,8 @@ class GlobalSearchService extends GetxService {
         imagePageInitialized = true;
       } else if (segment == 'user') {
         userPageInitialized = true;
+      } else if (segment == 'post') {
+        postPageInitialized = true;
       }
     }
   }
@@ -256,6 +290,7 @@ class GlobalSearchService extends GetxService {
     searchVideoResult.clear();
     searchImageResult.clear();
     searchUserResult.clear();
+    searchPostResult.clear();
     searchErrorText.value = '';
     searchPlaceholder.value = '';
     currentSearch.value = '';
@@ -266,9 +301,12 @@ class GlobalSearchService extends GetxService {
     imagePageInitialized = false;
     _userPage.value = 0;
     userPageInitialized = false;
+    _postPage.value = 0;
+    postPageInitialized = false;
     _videoHasMore.value = true;
     _imageHasMore.value = true;
     _userHasMore.value = true;
+    _postHasMore.value = true;
     isLoading.value = false;
     errorWidget.value = null;
   }

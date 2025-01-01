@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:i_iwara/app/models/post.model.dart';
 import 'package:i_iwara/app/services/app_service.dart';
 import 'package:i_iwara/app/services/global_search_service.dart';
 import 'package:i_iwara/app/ui/pages/popular_media_list/widgets/image_model_card_list_item_widget.dart';
 import 'package:i_iwara/app/ui/pages/popular_media_list/widgets/video_card_list_item_widget.dart';
 import 'package:i_iwara/app/ui/pages/video_detail/widgets/media_tile_list_loading_widget.dart';
 import 'package:i_iwara/app/ui/widgets/empty_widget.dart';
+import 'package:i_iwara/app/ui/widgets/my_loading_more_indicator_widget.dart';
 import 'package:i_iwara/app/ui/widgets/user_card.dart';
 import 'package:i_iwara/i18n/strings.g.dart' as slang;
+import 'package:loading_more_list/loading_more_list.dart';
 
 import 'search_dialog.dart';
+import 'package:i_iwara/app/ui/pages/popular_media_list/widgets/post_card_list_item_widget.dart';
 
 class SearchResult extends StatefulWidget {
   const SearchResult({super.key});
@@ -77,6 +81,9 @@ class _SearchResultState extends State<SearchResult> {
           break;
         case 'user':
           child = _buildUserResult(); // Add user case
+          break;
+        case 'post':
+          child = _buildPostResult();
           break;
         default:
           child = Text(
@@ -288,6 +295,70 @@ class _SearchResultState extends State<SearchResult> {
         },
       ),
     );
+  }
+
+  Widget _buildPostResult() {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final int columns = _calculateColumns(constraints.maxWidth);
+        final itemCount = (globalSearchService.searchPostResult.length / columns).ceil() + 1;
+
+        return NotificationListener<ScrollNotification>(
+          onNotification: (scrollInfo) {
+            if (!globalSearchService.isLoading.value &&
+                scrollInfo.metrics.pixels >= scrollInfo.metrics.maxScrollExtent - 100 &&
+                globalSearchService.hasMore) {
+              globalSearchService.fetchSearchResult();
+            }
+            return false;
+          },
+          child: ListView.builder(
+            controller: _scrollController,
+            padding: EdgeInsets.zero,
+            physics: const AlwaysScrollableScrollPhysics(),
+            itemCount: itemCount,
+            itemBuilder: (context, index) {
+              if (index < itemCount - 1) {
+                return _buildPostRow(index, columns, constraints.maxWidth);
+              } else {
+                return _buildLoadMoreIndicator(context);
+              }
+            },
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildPostRow(int index, int columns, double maxWidth) {
+    return Obx(() {
+      final startIndex = index * columns;
+      final endIndex = (startIndex + columns)
+          .clamp(0, globalSearchService.searchPostResult.length);
+      final rowItems = globalSearchService.searchPostResult.sublist(startIndex, endIndex);
+      final remainingColumns = columns - rowItems.length;
+
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 4.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            ...rowItems.map((post) => Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                    child: PostCardListItemWidget(
+                      post: post,
+                    ),
+                  ),
+                )),
+            ...List.generate(
+              remainingColumns,
+              (index) => Expanded(child: Container()),
+            ),
+          ],
+        ),
+      );
+    });
   }
 
   @override

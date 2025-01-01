@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:i_iwara/app/models/post.model.dart';
 import 'package:i_iwara/app/ui/pages/favorites/my_favorites.dart';
 import 'package:i_iwara/app/ui/pages/follows/follows_page.dart';
 import 'package:i_iwara/app/ui/pages/friends/friends_page.dart';
@@ -369,5 +370,12 @@ class NaviService {
         );
       },
     ));
+  }
+
+  /// TODO: 跳转到帖子详情页
+  /// @param id 帖子ID
+  /// @param post 帖子模型，当值存在时可以用于初步渲染一些数据，以便用户快速浏览
+  static void navigateToPostDetailPage(String id, PostModel? post) {
+
   }
 }
