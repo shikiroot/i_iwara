@@ -135,6 +135,9 @@ common:
   follows: 关注 
   fans: 粉丝
   followsAndFans: 关注与粉丝
+  numViews: 观看次数
+  updatedAt: 更新时间
+  publishedAt: 发布时间
 
 auth:
   login: 登录
@@ -195,6 +198,9 @@ errors:
   failedToFetchData: 获取数据失败
   invalidParameter: 无效的参数
   pleaseLoginFirst: 请先登录
+  errorWhileLoadingPost: 载入帖子时出错
+  errorWhileLoadingPostDetail: 载入帖子详情时出错
+  invalidPostId: 无效的帖子ID
 friends:
   clickToRestoreFriend: 点击恢复好友
   friendsList: 好友列表

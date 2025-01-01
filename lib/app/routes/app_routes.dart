@@ -40,6 +40,8 @@ abstract class Routes {
   static String FOLLOWERS_LIST(String userId) => _Paths.FOLLOWERS_LIST.replaceAll(':userId', userId);
 
   static const ABOUT_PAGE = '/settings/about';
+
+  static String POST_DETAIL(String id) => '/post/$id';
 }
 
 abstract class _Paths {

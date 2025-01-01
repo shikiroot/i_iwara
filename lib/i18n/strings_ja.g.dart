@@ -189,6 +189,9 @@ class _TranslationsCommonJa implements TranslationsCommonEn {
 	@override String get follows => 'フォロー';
 	@override String get fans => 'フォロワー';
 	@override String get followsAndFans => 'フォローとフォロワー';
+	@override String get numViews => '視聴回数';
+	@override String get updatedAt => '更新時間';
+	@override String get publishedAt => '発表時間';
 }
 
 // Path: auth
@@ -263,6 +266,9 @@ class _TranslationsErrorsJa implements TranslationsErrorsEn {
 	@override String get failedToFetchData => 'データの取得に失敗しました';
 	@override String get invalidParameter => '無効なパラメータです';
 	@override String get pleaseLoginFirst => 'ログインしてください';
+	@override String get errorWhileLoadingPost => '投稿の取得中にエラーが発生しました';
+	@override String get errorWhileLoadingPostDetail => '投稿詳細の取得中にエラーが発生しました';
+	@override String get invalidPostId => '無効な投稿IDです';
 }
 
 // Path: friends
@@ -691,6 +697,9 @@ extension on TranslationsJa {
 			case 'common.follows': return 'フォロー';
 			case 'common.fans': return 'フォロワー';
 			case 'common.followsAndFans': return 'フォローとフォロワー';
+			case 'common.numViews': return '視聴回数';
+			case 'common.updatedAt': return '更新時間';
+			case 'common.publishedAt': return '発表時間';
 			case 'auth.login': return 'ログイン';
 			case 'auth.logout': return 'ログアウト';
 			case 'auth.email': return 'メールアドレス';
@@ -747,6 +756,9 @@ extension on TranslationsJa {
 			case 'errors.failedToFetchData': return 'データの取得に失敗しました';
 			case 'errors.invalidParameter': return '無効なパラメータです';
 			case 'errors.pleaseLoginFirst': return 'ログインしてください';
+			case 'errors.errorWhileLoadingPost': return '投稿の取得中にエラーが発生しました';
+			case 'errors.errorWhileLoadingPostDetail': return '投稿詳細の取得中にエラーが発生しました';
+			case 'errors.invalidPostId': return '無効な投稿IDです';
 			case 'friends.clickToRestoreFriend': return '友達を復元するにはクリックしてください';
 			case 'friends.friendsList': return '友達リスト';
 			case 'friends.friendRequests': return '友達リクエスト';

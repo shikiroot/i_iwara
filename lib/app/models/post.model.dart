@@ -44,4 +44,22 @@ class PostModel {
       'user': user.toJson(),
     };
   }
+
+  PostModel copyWith({
+    String? id,
+    String? title,
+    String? body,
+    int? numViews,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    User? user,
+  }) => PostModel(
+    id: id ?? this.id,
+    title: title ?? this.title,
+    body: body ?? this.body,
+    numViews: numViews ?? this.numViews,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    user: user ?? this.user,
+  );
 }

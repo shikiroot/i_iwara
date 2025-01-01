@@ -133,6 +133,9 @@ common:
   follows: フォロー
   fans: フォロワー
   followsAndFans: フォローとフォロワー
+  numViews: 視聴回数
+  updatedAt: 更新時間
+  publishedAt: 発表時間
 
 auth:
   login: ログイン
@@ -193,6 +196,9 @@ errors:
   failedToFetchData: データの取得に失敗しました
   invalidParameter: 無効なパラメータです
   pleaseLoginFirst: ログインしてください
+  errorWhileLoadingPost: 投稿の取得中にエラーが発生しました
+  errorWhileLoadingPostDetail: 投稿詳細の取得中にエラーが発生しました
+  invalidPostId: 無効な投稿IDです
 friends:
   clickToRestoreFriend: 友達を復元するにはクリックしてください
   friendsList: 友達リスト

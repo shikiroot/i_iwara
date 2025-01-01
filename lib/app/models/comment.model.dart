@@ -11,6 +11,7 @@ class Comment {
   final String? videoId;
   final String? profileId;
   final String? imageId;
+  final String? postId;
   final bool approved;
 
   Comment({
@@ -24,6 +25,7 @@ class Comment {
     this.videoId,
     this.profileId,
     this.imageId,
+    this.postId,
     this.approved = false,
   });
 
@@ -47,6 +49,7 @@ class Comment {
       videoId: json['videoId'] as String?,
       profileId: json['profileId'] as String?,
       imageId: json['imageId'] as String?,
+      postId: json['postId'] as String?,
       approved: json['approved'] as bool? ?? false,
     );
   }
@@ -63,6 +66,7 @@ class Comment {
       'videoId': videoId,
       'profileId': profileId,
       'imageId': imageId,
+      'postId': postId,
       'approved': approved,
     };
   }
@@ -78,6 +82,7 @@ class Comment {
     String? videoId,
     String? profileId,
     String? imageId,
+    String? postId,
     bool? approved,
   }) {
     return Comment(
@@ -91,6 +96,7 @@ class Comment {
       videoId: videoId ?? this.videoId,
       profileId: profileId ?? this.profileId,
       imageId: imageId ?? this.imageId,
+      postId: postId ?? this.postId,
       approved: approved ?? this.approved,
     );
   }

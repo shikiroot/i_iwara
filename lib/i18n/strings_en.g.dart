@@ -193,6 +193,9 @@ class TranslationsCommonEn {
 	String get follows => 'Follows';
 	String get fans => 'Fans';
 	String get followsAndFans => 'Follows and Fans';
+	String get numViews => 'Views';
+	String get updatedAt => 'Updated At';
+	String get publishedAt => 'Published At';
 }
 
 // Path: auth
@@ -267,6 +270,9 @@ class TranslationsErrorsEn {
 	String get failedToFetchData => 'Failed to fetch data';
 	String get invalidParameter => 'Invalid parameter';
 	String get pleaseLoginFirst => 'Please login first';
+	String get errorWhileLoadingPost => 'Error while loading post';
+	String get errorWhileLoadingPostDetail => 'Error while loading post detail';
+	String get invalidPostId => 'Invalid post ID';
 }
 
 // Path: friends
@@ -695,6 +701,9 @@ extension on Translations {
 			case 'common.follows': return 'Follows';
 			case 'common.fans': return 'Fans';
 			case 'common.followsAndFans': return 'Follows and Fans';
+			case 'common.numViews': return 'Views';
+			case 'common.updatedAt': return 'Updated At';
+			case 'common.publishedAt': return 'Published At';
 			case 'auth.login': return 'Login';
 			case 'auth.logout': return 'Logout';
 			case 'auth.email': return 'Email';
@@ -751,6 +760,9 @@ extension on Translations {
 			case 'errors.failedToFetchData': return 'Failed to fetch data';
 			case 'errors.invalidParameter': return 'Invalid parameter';
 			case 'errors.pleaseLoginFirst': return 'Please login first';
+			case 'errors.errorWhileLoadingPost': return 'Error while loading post';
+			case 'errors.errorWhileLoadingPostDetail': return 'Error while loading post detail';
+			case 'errors.invalidPostId': return 'Invalid post ID';
 			case 'friends.clickToRestoreFriend': return 'Click to restore friend';
 			case 'friends.friendsList': return 'Friends List';
 			case 'friends.friendRequests': return 'Friend Requests';

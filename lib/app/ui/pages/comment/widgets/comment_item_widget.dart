@@ -11,6 +11,7 @@ import 'package:i_iwara/app/ui/pages/comment/controllers/comment_controller.dart
 import 'package:i_iwara/app/ui/pages/comment/widgets/comment_remove_dialog.dart';
 import 'package:i_iwara/app/ui/widgets/MDToastWidget.dart';
 import 'package:i_iwara/utils/common_utils.dart';
+import 'package:i_iwara/utils/logger_utils.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -93,6 +94,9 @@ class _CommentItemState extends State<CommentItem> {
       } else if (widget.comment.imageId != null) {
         type = CommentType.image.name;
         id = widget.comment.imageId!;
+      } else if (widget.comment.postId != null) {
+        type = CommentType.post.name;
+        id = widget.comment.postId!;
       } else {
         throw Exception('未知的评论类型');
       }
@@ -122,6 +126,7 @@ class _CommentItemState extends State<CommentItem> {
         });
       }
     } catch (e) {
+      LogUtils.e('获取评论回复失败', error: e, tag: 'CommentItem');
       setState(() {
         _errorMessage = slang.t.errors.errorWhileFetchingReplies;
         _hasMoreReplies = false;

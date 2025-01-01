@@ -190,6 +190,9 @@ class _TranslationsCommonZhCn implements TranslationsCommonEn {
 	@override String get follows => '关注';
 	@override String get fans => '粉丝';
 	@override String get followsAndFans => '关注与粉丝';
+	@override String get numViews => '观看次数';
+	@override String get updatedAt => '更新时间';
+	@override String get publishedAt => '发布时间';
 }
 
 // Path: auth
@@ -264,6 +267,9 @@ class _TranslationsErrorsZhCn implements TranslationsErrorsEn {
 	@override String get failedToFetchData => '获取数据失败';
 	@override String get invalidParameter => '无效的参数';
 	@override String get pleaseLoginFirst => '请先登录';
+	@override String get errorWhileLoadingPost => '载入帖子时出错';
+	@override String get errorWhileLoadingPostDetail => '载入帖子详情时出错';
+	@override String get invalidPostId => '无效的帖子ID';
 }
 
 // Path: friends
@@ -693,6 +699,9 @@ extension on TranslationsZhCn {
 			case 'common.follows': return '关注';
 			case 'common.fans': return '粉丝';
 			case 'common.followsAndFans': return '关注与粉丝';
+			case 'common.numViews': return '观看次数';
+			case 'common.updatedAt': return '更新时间';
+			case 'common.publishedAt': return '发布时间';
 			case 'auth.login': return '登录';
 			case 'auth.logout': return '退出登录';
 			case 'auth.email': return '邮箱';
@@ -749,6 +758,9 @@ extension on TranslationsZhCn {
 			case 'errors.failedToFetchData': return '获取数据失败';
 			case 'errors.invalidParameter': return '无效的参数';
 			case 'errors.pleaseLoginFirst': return '请先登录';
+			case 'errors.errorWhileLoadingPost': return '载入帖子时出错';
+			case 'errors.errorWhileLoadingPostDetail': return '载入帖子详情时出错';
+			case 'errors.invalidPostId': return '无效的帖子ID';
 			case 'friends.clickToRestoreFriend': return '点击恢复好友';
 			case 'friends.friendsList': return '好友列表';
 			case 'friends.friendRequests': return '好友请求';

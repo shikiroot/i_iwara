@@ -132,6 +132,9 @@ common:
   follows: Follows
   fans: Fans
   followsAndFans: Follows and Fans
+  numViews: Views
+  updatedAt: Updated At
+  publishedAt: Published At
 auth:
   login: Login
   logout: Logout
@@ -191,6 +194,9 @@ errors:
   failedToFetchData: Failed to fetch data
   invalidParameter: Invalid parameter
   pleaseLoginFirst: Please login first
+  errorWhileLoadingPost: Error while loading post
+  errorWhileLoadingPostDetail: Error while loading post detail
+  invalidPostId: Invalid post ID
 friends:
   clickToRestoreFriend: Click to restore friend
   friendsList: Friends List

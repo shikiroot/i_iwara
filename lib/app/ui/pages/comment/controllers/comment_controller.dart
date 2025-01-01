@@ -11,6 +11,7 @@ import '../../../../models/comment.model.dart';
 import '../../../../services/comment_service.dart';
 
 enum CommentType {
+  post,
   video,
   profile,
   image,

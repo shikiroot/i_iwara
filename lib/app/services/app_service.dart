@@ -17,6 +17,7 @@ import '../routes/app_routes.dart';
 import '../ui/pages/author_profile/author_profile_page.dart';
 import '../ui/pages/gallery_detail/gallery_detail_page.dart';
 import '../ui/pages/search/search_result.dart';
+import '../ui/pages/post_detail/post_detail_page.dart';
 
 class AppService extends GetxService {
   // 默认标题栏高度
@@ -372,10 +373,25 @@ class NaviService {
     ));
   }
 
-  /// TODO: 跳转到帖子详情页
+  /// 跳转到帖子详情页
   /// @param id 帖子ID
   /// @param post 帖子模型，当值存在时可以用于初步渲染一些数据，以便用户快速浏览
   static void navigateToPostDetailPage(String id, PostModel? post) {
-
+    AppService.homeNavigatorKey.currentState?.push(PageRouteBuilder(
+      settings: RouteSettings(name: Routes.POST_DETAIL(id)),
+      pageBuilder: (context, animation, secondaryAnimation) {
+        return PostDetailPage(postId: id);
+      },
+      transitionDuration: const Duration(milliseconds: 200),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        return SlideTransition(
+          position: Tween<Offset>(
+            begin: const Offset(1, 0),
+            end: Offset.zero,
+          ).animate(animation),
+          child: child,
+        );
+      },
+    ));
   }
 }
