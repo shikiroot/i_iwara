@@ -5,6 +5,9 @@ import 'package:i_iwara/app/models/user.model.dart';
 import 'package:i_iwara/app/services/app_service.dart';
 import 'package:i_iwara/common/constants.dart';
 import 'package:i_iwara/utils/common_utils.dart';
+import 'package:i_iwara/app/models/history_record.dart';
+import 'package:i_iwara/app/repositories/history_repository.dart';
+import 'package:get/get.dart';
 
 class PostCardListItemWidget extends StatelessWidget {
   final PostModel post;
@@ -19,7 +22,14 @@ class PostCardListItemWidget extends StatelessWidget {
     return Card(
       clipBehavior: Clip.antiAlias,
       child: InkWell(
-        onTap: () => NaviService.navigateToPostDetailPage(post.id, post),
+        onTap: () {
+          // 添加历史记录
+          final historyRepo = Get.find<HistoryRepository>();
+          historyRepo.addRecord(HistoryRecord.fromPost(post));
+          
+          // 导航到帖子详情页
+          NaviService.navigateToPostDetailPage(post.id, post);
+        },
         child: SizedBox(
           height: 220,
           child: Column(
@@ -72,20 +82,54 @@ class PostCardListItemWidget extends StatelessWidget {
                         ),
                       ),
                       // 底部信息
-                      Row(
-                        children: [
-                          const Icon(Icons.remove_red_eye, size: 16),
-                          const SizedBox(width: 4),
-                          Text(
-                            CommonUtils.formatFriendlyNumber(post.numViews),
-                            style: Theme.of(context).textTheme.bodySmall,
-                          ),
-                          const Spacer(),
-                          Text(
+                      LayoutBuilder(
+                        builder: (context, constraints) {
+                          final viewsWidget = Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Icon(Icons.remove_red_eye, size: 16),
+                              const SizedBox(width: 4),
+                              Text(
+                                CommonUtils.formatFriendlyNumber(post.numViews),
+                                style: Theme.of(context).textTheme.bodySmall,
+                              ),
+                            ],
+                          );
+
+                          final timeWidget = Text(
                             CommonUtils.formatFriendlyTimestamp(post.createdAt),
                             style: Theme.of(context).textTheme.bodySmall,
-                          ),
-                        ],
+                          );
+
+                          // 计算所需的总宽度
+                          final textSize = (Theme.of(context).textTheme.bodySmall?.fontSize ?? 12);
+                          final viewsWidth = 16 + 4 + // 图标和间距
+                              (CommonUtils.formatFriendlyNumber(post.numViews).length * textSize);
+                          final timeWidth = CommonUtils.formatFriendlyTimestamp(post.createdAt).length * 
+                              textSize;
+                          final totalWidth = viewsWidth + timeWidth + 20; // 额外留出一些边距
+
+                          // 如果总宽度超过可用宽度，使用双行布局
+                          if (totalWidth > constraints.maxWidth) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                viewsWidget,
+                                const SizedBox(height: 4),
+                                timeWidget,
+                              ],
+                            );
+                          }
+
+                          // 否则使用单行布局
+                          return Row(
+                            children: [
+                              viewsWidget,
+                              const Spacer(),
+                              timeWidget,
+                            ],
+                          );
+                        },
                       ),
                     ],
                   ),

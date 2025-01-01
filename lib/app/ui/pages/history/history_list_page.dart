@@ -9,6 +9,7 @@ import 'package:i_iwara/app/ui/widgets/my_loading_more_indicator_widget.dart';
 import 'package:loading_more_list/loading_more_list.dart';
 import 'controllers/history_list_controller.dart';
 import 'package:i_iwara/i18n/strings.g.dart' as slang;
+import 'package:i_iwara/app/ui/pages/popular_media_list/widgets/post_card_list_item_widget.dart';
 
 class HistoryListPage extends StatefulWidget {
   const HistoryListPage({super.key});
@@ -23,10 +24,12 @@ class _HistoryListPageState extends State<HistoryListPage>
   late HistoryListController allController;
   late HistoryListController videoController;
   late HistoryListController imageController;
+  late HistoryListController postController;
 
   final ScrollController _allScrollController = ScrollController();
   final ScrollController _videoScrollController = ScrollController();
   final ScrollController _imageScrollController = ScrollController();
+  final ScrollController _postScrollController = ScrollController();
 
   int _lastTappedIndex = 0;
   final RxBool isLoading = false.obs;
@@ -60,7 +63,15 @@ class _HistoryListPageState extends State<HistoryListPage>
       tag: 'image',
     );
 
-    _tabController = TabController(length: 3, vsync: this);
+    postController = Get.put(
+      HistoryListController(
+        historyRepository: historyRepo,
+        itemType: 'post',
+      ),
+      tag: 'post',
+    );
+
+    _tabController = TabController(length: 4, vsync: this);
     _tabController.addListener(_handleTabChange);
 
     _setupScrollControllers();
@@ -70,7 +81,8 @@ class _HistoryListPageState extends State<HistoryListPage>
     for (final controller in [
       _allScrollController,
       _videoScrollController,
-      _imageScrollController
+      _imageScrollController,
+      _postScrollController,
     ]) {
       controller.addListener(() {
         if (controller.offset >= 1000) {
@@ -90,6 +102,7 @@ class _HistoryListPageState extends State<HistoryListPage>
     Get.delete<HistoryListController>(tag: 'all');
     Get.delete<HistoryListController>(tag: 'video');
     Get.delete<HistoryListController>(tag: 'image');
+    Get.delete<HistoryListController>(tag: 'post');
     super.dispose();
   }
 
@@ -97,6 +110,7 @@ class _HistoryListPageState extends State<HistoryListPage>
     _allScrollController.dispose();
     _videoScrollController.dispose();
     _imageScrollController.dispose();
+    _postScrollController.dispose();
   }
 
   void _handleTabChange() {
@@ -126,6 +140,8 @@ class _HistoryListPageState extends State<HistoryListPage>
         return videoController;
       case 2:
         return imageController;
+      case 3:
+        return postController;
       default:
         return allController;
     }
@@ -139,6 +155,8 @@ class _HistoryListPageState extends State<HistoryListPage>
         return _videoScrollController;
       case 2:
         return _imageScrollController;
+      case 3:
+        return _postScrollController;
       default:
         return _allScrollController;
     }
@@ -217,6 +235,7 @@ class _HistoryListPageState extends State<HistoryListPage>
               _buildHistoryList(allController, _allScrollController),
               _buildHistoryList(videoController, _videoScrollController),
               _buildHistoryList(imageController, _imageScrollController),
+              _buildHistoryList(postController, _postScrollController),
             ],
           ),
           // 第一个tab的底部多选栏
@@ -239,6 +258,12 @@ class _HistoryListPageState extends State<HistoryListPage>
             right: 0,
             bottom: 0,
             child: _buildMultiSelectBar(imageController),
+          ),
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: _buildMultiSelectBar(postController),
           ),
         ],
       ),
@@ -294,6 +319,7 @@ class _HistoryListPageState extends State<HistoryListPage>
           Tab(text: slang.t.common.all),
           Tab(text: slang.t.common.video),
           Tab(text: slang.t.common.gallery),
+          Tab(text: slang.t.common.post),
         ],
       ),
     );
@@ -353,10 +379,14 @@ class _HistoryListPageState extends State<HistoryListPage>
               video: originalData,
               width: 200,
             )
-          else
+          else if (record.itemType == 'image')
             ImageModelCardListItemWidget(
               imageModel: originalData,
               width: 200,
+            )
+          else if (record.itemType == 'post')
+            PostCardListItemWidget(
+              post: originalData,
             ),
           if (isMultiSelect)
             Positioned.fill(

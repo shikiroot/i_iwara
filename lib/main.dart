@@ -33,6 +33,7 @@ import 'app/services/translation_service.dart';
 import 'i18n/strings.g.dart';
 import 'app/services/theme_service.dart';
 import 'app/services/version_service.dart';
+import 'app/repositories/history_repository.dart';
 
 void main() {
 
@@ -115,6 +116,9 @@ void main() {
 
     // 初始化 MediaKit
     MediaKit.ensureInitialized();
+
+    // 注册 HistoryRepository 为单例
+    Get.put(HistoryRepository());
 
     // 运行应用
     runApp(TranslationProvider(child: const MyApp()));

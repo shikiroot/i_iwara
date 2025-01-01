@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import 'package:i_iwara/app/models/api_result.model.dart';
+import 'package:i_iwara/app/models/history_record.dart';
 import 'package:i_iwara/app/models/post.model.dart';
+import 'package:i_iwara/app/repositories/history_repository.dart';
 import 'package:i_iwara/app/services/post_service.dart';
 import 'package:i_iwara/app/services/translation_service.dart';
 import 'package:i_iwara/app/ui/widgets/MDToastWidget.dart';
@@ -48,6 +50,13 @@ class PostDetailController extends GetxController {
       }
 
       postInfo.value = res.data;
+
+      try {
+          final HistoryRepository historyRepository = HistoryRepository();
+          await historyRepository.addRecord(HistoryRecord.fromPost(postInfo.value!));
+      } catch (e) {
+        LogUtils.e('添加历史记录失败', error: e, tag: 'PostDetailController');
+      }
     } finally {
       LogUtils.d('帖子详情信息加载完成', 'PostDetailController');
       isPostInfoLoading.value = false;

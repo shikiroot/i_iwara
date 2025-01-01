@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:i_iwara/app/models/image.model.dart';
 import 'package:i_iwara/app/models/video.model.dart';
+import 'package:i_iwara/app/models/post.model.dart';
 
 class HistoryRecord {
   final int id;
@@ -60,6 +61,22 @@ class HistoryRecord {
     );
   }
 
+  // 添加从PostModel创建历史记录的工厂方法
+  factory HistoryRecord.fromPost(PostModel post) {
+    return HistoryRecord(
+      id: 0,
+      itemId: post.id,
+      itemType: 'post',
+      title: post.title,
+      thumbnailUrl: null, // 帖子可能没有缩略图
+      author: post.user.name,
+      authorId: post.user.id,
+      data: jsonEncode(post.toJson()),
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
+    );
+  }
+
   // 获取原始数据对象
   dynamic getOriginalData() {
     final Map<String, dynamic> jsonData = jsonDecode(data);
@@ -68,6 +85,8 @@ class HistoryRecord {
         return Video.fromJson(jsonData);
       case 'image':
         return ImageModel.fromJson(jsonData);
+      case 'post':
+        return PostModel.fromJson(jsonData);
       default:
         throw Exception('未知的记录类型: $itemType');
     }
