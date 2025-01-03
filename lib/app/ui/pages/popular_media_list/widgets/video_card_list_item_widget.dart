@@ -121,7 +121,10 @@ class _VideoCardListItemWidgetState extends State<VideoCardListItemWidget> {
                           fit: BoxFit.cover,
                         );
                       } else {
-                        return const Center(child: Icon(Icons.error, size: 50));
+                        return Container(
+                          color: Colors.grey[200],
+                          child: Icon(Icons.image_not_supported, size: 40, color: Colors.grey[600])
+                        );
                       }
                     },
                   )
@@ -129,9 +132,11 @@ class _VideoCardListItemWidgetState extends State<VideoCardListItemWidget> {
                     imageUrl: widget.video.thumbnailUrl,
                     fit: BoxFit.cover,
                     placeholder: (context, url) => _buildPlaceholder(),
-                    errorWidget: (context, url, error) =>
-                        const Center(child: Icon(Icons.error, size: 50)),
+                    errorWidget: (context, url, error) => Container(
+                    color: Colors.grey[200],
+                    child: Icon(Icons.image_not_supported, size: 40, color: Colors.grey[600])
                   ),
+                ),
             ),
             if (widget.video.rating == 'ecchi')
               Positioned(

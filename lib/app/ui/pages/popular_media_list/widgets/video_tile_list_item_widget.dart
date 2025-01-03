@@ -96,21 +96,10 @@ class _VideoTileListItemState extends State<VideoTileListItem> {
                     fit: BoxFit.cover,
                     placeholder: (context, url) =>
                         Container(width: 120, height: 90, color: Colors.grey[300]),
-                    errorWidget: (context, url, error) {
-                      if (widget.video.file?.numThumbnails != null &&
-                          widget.video.file!.numThumbnails! > 0) {
-                        return AnimatedPreview(
-                          videoId: widget.video.file!.id,
-                          numThumbnails: widget.video.file!.numThumbnails!,
-                          width: 120,
-                          height: 90,
-                          fit: BoxFit.cover,
-                        );
-                      } else {
-                        return const SizedBox(
-                            width: 120, height: 90, child: Icon(Icons.error));
-                      }
-                    },
+                    errorWidget: (context, url, error) => Container(
+                      color: Colors.grey[200],
+                      child: Icon(Icons.image_not_supported, size: 40, color: Colors.grey[600])
+                    ),
                   )
                 : CachedNetworkImage(
                     imageUrl: widget.video.thumbnailUrl,
@@ -119,8 +108,10 @@ class _VideoTileListItemState extends State<VideoTileListItem> {
                     fit: BoxFit.cover,
                     placeholder: (context, url) =>
                         Container(width: 120, height: 90, color: Colors.grey[300]),
-                    errorWidget: (context, url, error) => const SizedBox(
-                        width: 120, height: 90, child: Icon(Icons.error)),
+                    errorWidget: (context, url, error) => Container(
+                      color: Colors.grey[200],
+                      child: Icon(Icons.image_not_supported, size: 40, color: Colors.grey[600])
+                    ),
                   ),
             ),
           ),

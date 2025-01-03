@@ -73,20 +73,10 @@ class VideoPreviewDetailModal extends StatelessWidget {
                                                       color: Colors.grey[300],
                                                     ),
                                                   ),
-                                              errorWidget: (context, url, error) {
-                                                if (video.file?.numThumbnails != null &&
-                                                    video.file!.numThumbnails! > 0) {
-                                                  return AnimatedPreview(
-                                                    videoId: video.file!.id,
-                                                    numThumbnails: video.file!.numThumbnails!,
-                                                    width: double.infinity,
-                                                    height: double.infinity,
-                                                    fit: BoxFit.cover,
-                                                  );
-                                                } else {
-                                                  return const Icon(Icons.error, size: 50);
-                                                }
-                                              },
+                                              errorWidget: (context, url, error) => Container(
+                                                color: Colors.grey[200],
+                                                child: Icon(Icons.image_not_supported, size: 40, color: Colors.grey[600])
+                                              ),
                                             ),
                                           ),
                                         ),
