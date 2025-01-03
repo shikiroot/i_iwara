@@ -542,6 +542,8 @@ class _TranslationsVideoDetailZhTw implements TranslationsVideoDetailEn {
 	@override String get authorOtherVideos => '作者的其他影片';
 	@override String get relatedVideos => '相關影片';
 	@override String get privateVideo => '這是一個私密影片';
+	@override String get externalVideo => '這是一個外站影片';
+	@override String get openInBrowser => '在瀏覽器中打開';
 }
 
 // Path: share
@@ -933,6 +935,8 @@ extension on TranslationsZhTw {
 			case 'videoDetail.authorOtherVideos': return '作者的其他影片';
 			case 'videoDetail.relatedVideos': return '相關影片';
 			case 'videoDetail.privateVideo': return '這是一個私密影片';
+			case 'videoDetail.externalVideo': return '這是一個外站影片';
+			case 'videoDetail.openInBrowser': return '在瀏覽器中打開';
 			case 'share.sharePlayList': return '分享播放列表';
 			case 'share.wowDidYouSeeThis': return '哇哦，你看过这个吗？';
 			case 'share.nameIs': return '名字叫做';

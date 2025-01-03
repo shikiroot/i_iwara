@@ -11,6 +11,7 @@ import 'package:i_iwara/app/ui/widgets/avatar_widget.dart';
 import 'package:i_iwara/common/enums/media_enums.dart';
 import 'package:i_iwara/utils/common_utils.dart';
 import 'package:oktoast/oktoast.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../../../../../common/constants.dart';
 import '../../../../widgets/error_widget.dart';
 import '../../controllers/my_video_state_controller.dart';
@@ -63,6 +64,47 @@ class VideoDetailContent extends StatelessWidget {
                         child: Text(t.common.retry),
                       ),
                     ],
+                  );
+                }
+                // 如果是外站视频，显示外站视频提示
+                else if (controller.videoInfo.value?.isExternalVideo == true) {
+                  return SizedBox(
+                    width: videoWidth,
+                    height: (videoHeight ?? (MediaQuery.sizeOf(context).width / 1.7)) + paddingTop,
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(Icons.link, size: 48),
+                          const SizedBox(height: 16),
+                          Text(
+                            '${t.videoDetail.externalVideo}: ${controller.videoInfo.value?.externalVideoDomain}',
+                            style: const TextStyle(fontSize: 18),
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 16),
+                          Row(
+                            spacing: 16,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ElevatedButton(
+                                onPressed: () => AppService.tryPop(),
+                                child: Text(t.common.back),
+                              ),
+                              ElevatedButton.icon(
+                                onPressed: () {
+                                  if (controller.videoInfo.value?.embedUrl != null) {
+                                    launchUrl(Uri.parse(controller.videoInfo.value!.embedUrl!));
+                                  }
+                                },
+                                icon: const Icon(Icons.open_in_new),
+                                label: Text(t.videoDetail.openInBrowser),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
                   );
                 }
                 // 如果不是全屏模式，显示视频播放器

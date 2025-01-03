@@ -391,6 +391,8 @@ videoDetail:
   authorOtherVideos: Author's Other Videos
   relatedVideos: Related Videos
   privateVideo: This is a private video
+  externalVideo: This is an external video
+  openInBrowser: Open in Browser
 
 share:
   sharePlayList: Share Play List

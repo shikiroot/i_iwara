@@ -16,7 +16,7 @@ class Video {
   final bool? private;
   final bool? unlisted;
   final int? thumbnail;
-  final String? embedUrl;
+  final String? embedUrl; // 外链嵌入视频
   final bool? liked;
   final int? numLikes;
   final int? numViews;
@@ -28,6 +28,20 @@ class Video {
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final String? fileUrl;
+
+  bool get isPrivate => private ?? false;
+  bool get isExternalVideo => embedUrl != null && embedUrl!.isNotEmpty;
+  String get externalVideoDomain {
+    if (!isExternalVideo) return '';
+    
+    try {
+      final uri = Uri.parse(embedUrl!);
+      return uri.host;
+    } catch (e) {
+      return '';
+    }
+  }
+
 
   final List<VideoSource>? videoSources;
 

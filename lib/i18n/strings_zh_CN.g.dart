@@ -543,6 +543,8 @@ class _TranslationsVideoDetailZhCn implements TranslationsVideoDetailEn {
 	@override String get authorOtherVideos => '作者的其他视频';
 	@override String get relatedVideos => '相关视频';
 	@override String get privateVideo => '这是一个私密视频';
+	@override String get externalVideo => '这是一个外站视频';
+	@override String get openInBrowser => '在浏览器中打开';
 }
 
 // Path: share
@@ -935,6 +937,8 @@ extension on TranslationsZhCn {
 			case 'videoDetail.authorOtherVideos': return '作者的其他视频';
 			case 'videoDetail.relatedVideos': return '相关视频';
 			case 'videoDetail.privateVideo': return '这是一个私密视频';
+			case 'videoDetail.externalVideo': return '这是一个外站视频';
+			case 'videoDetail.openInBrowser': return '在浏览器中打开';
 			case 'share.sharePlayList': return '分享播放列表';
 			case 'share.wowDidYouSeeThis': return '哇哦，你看过这个吗？';
 			case 'share.nameIs': return '名字叫做';

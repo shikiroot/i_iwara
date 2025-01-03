@@ -396,6 +396,8 @@ videoDetail:
   authorOtherVideos: 作者的其他视频
   relatedVideos: 相关视频
   privateVideo: 这是一个私密视频
+  externalVideo: 这是一个外站视频
+  openInBrowser: 在浏览器中打开
 
 share:
   sharePlayList: 分享播放列表

@@ -393,6 +393,8 @@ videoDetail:
   authorOtherVideos: 作者の他のビデオ
   relatedVideos: 関連ビデオ
   privateVideo: これはプライベートビデオです
+  externalVideo: これは外站ビデオです
+  openInBrowser: ブラウザで開く
 
 share:
   sharePlayList: プレイリストを共有
