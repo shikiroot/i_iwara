@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:i_iwara/app/models/image.model.dart';
 import 'package:i_iwara/app/services/app_service.dart';
+import 'package:i_iwara/app/ui/widgets/avatar_widget.dart';
 import 'package:i_iwara/utils/common_utils.dart';
 
 import '../../../../../common/constants.dart';
@@ -253,7 +254,6 @@ class ImageModelCardListItemWidget extends StatelessWidget {
       child: Row(
         children: [
           _buildAvatar(),
-          const SizedBox(width: 8),
           Expanded(
             child: imageModel.user?.premium == true
               ? ShaderMask(
@@ -288,45 +288,14 @@ class ImageModelCardListItemWidget extends StatelessWidget {
   }
 
   Widget _buildAvatar() {
-    Widget avatar = SizedBox(
-      width: 24,
-      height: 24,
-      child: ClipOval(
-        child: CachedNetworkImage(
-          imageUrl: imageModel.user?.avatar?.avatarUrl ?? '',
-          httpHeaders: const {'referer': CommonConstants.iwaraBaseUrl},
-          fit: BoxFit.cover,
-          placeholder: (context, url) => _buildPlaceholder(),
-          errorWidget: (context, url, error) =>
-              const Icon(Icons.person, size: 24),
-        ),
-      ),
+    return AvatarWidget(
+      avatarUrl: imageModel.user?.avatar?.avatarUrl,
+      defaultAvatarUrl: CommonConstants.defaultAvatarUrl,
+      headers: const {'referer': CommonConstants.iwaraBaseUrl},
+      radius: 14,
+      isPremium: imageModel.user?.premium ?? false,
+      isAdmin: imageModel.user?.isAdmin ?? false,
     );
-
-    if (imageModel.user?.premium == true) {
-      return Container(
-        width: 32,
-        height: 32,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          gradient: LinearGradient(
-            colors: [
-              Colors.purple.shade200,
-              Colors.blue.shade200,
-              Colors.pink.shade200,
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(4.0),
-          child: avatar,
-        ),
-      );
-    }
-
-    return avatar;
   }
 
   void _navigateToDetailPage() {

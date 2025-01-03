@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:i_iwara/app/services/app_service.dart';
+import 'package:i_iwara/app/ui/widgets/avatar_widget.dart';
 import 'package:i_iwara/app/ui/widgets/follow_button_widget.dart';
 import 'package:i_iwara/common/constants.dart';
 import 'package:i_iwara/utils/common_utils.dart';
@@ -75,11 +76,13 @@ class PostDetailContent extends StatelessWidget {
           }
         },
         behavior: HitTestBehavior.opaque,
-        child: CircleAvatar(
-          backgroundImage: CachedNetworkImageProvider(
-            user?.avatar?.avatarUrl ?? CommonConstants.defaultAvatarUrl,
-            headers: const {'referer': CommonConstants.iwaraBaseUrl},
-          ),
+        child: AvatarWidget(
+          avatarUrl: user?.avatar?.avatarUrl,
+          defaultAvatarUrl: CommonConstants.defaultAvatarUrl,
+          headers: const {'referer': CommonConstants.iwaraBaseUrl},
+          radius: 20,
+          isPremium: user?.premium ?? false,
+          isAdmin: user?.isAdmin ?? false,
         ),
       ),
     );

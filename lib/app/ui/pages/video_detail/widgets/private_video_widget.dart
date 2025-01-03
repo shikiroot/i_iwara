@@ -6,6 +6,7 @@ import 'package:i_iwara/app/services/api_service.dart';
 import 'package:i_iwara/app/services/app_service.dart';
 import 'package:i_iwara/app/services/user_service.dart';
 import 'package:i_iwara/app/ui/widgets/MDToastWidget.dart';
+import 'package:i_iwara/app/ui/widgets/avatar_widget.dart';
 import 'package:i_iwara/common/constants.dart';
 import 'package:i_iwara/i18n/strings.g.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
@@ -103,15 +104,13 @@ class _PrivateVideoWidgetState extends State<PrivateVideoWidget> {
                 padding: widget.author.premium
                     ? const EdgeInsets.all(4.0)
                     : EdgeInsets.zero,
-                child: CircleAvatar(
+                child: AvatarWidget(
+                  avatarUrl: widget.author.avatar?.avatarUrl,
+                  defaultAvatarUrl: CommonConstants.defaultAvatarUrl,
+                  headers: const {'referer': CommonConstants.iwaraBaseUrl},
                   radius: 40,
-                  backgroundImage: CachedNetworkImageProvider(
-                    widget.author.avatar?.avatarUrl ??
-                        CommonConstants.defaultAvatarUrl,
-                    headers: const {
-                      'referer': CommonConstants.iwaraBaseUrl,
-                    },
-                  ),
+                  isPremium: widget.author.premium,
+                  isAdmin: widget.author.isAdmin,
                 ),
               ),
             ),

@@ -10,6 +10,7 @@ import 'package:i_iwara/app/routes/app_routes.dart';
 import 'package:i_iwara/app/services/api_service.dart';
 import 'package:i_iwara/app/services/gallery_service.dart';
 import 'package:i_iwara/app/ui/widgets/MDToastWidget.dart';
+import 'package:i_iwara/app/ui/widgets/avatar_widget.dart';
 import 'package:i_iwara/app/ui/widgets/empty_widget.dart';
 import 'package:i_iwara/utils/common_utils.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
@@ -386,12 +387,13 @@ class ImageModelDetailContent extends StatelessWidget {
           }
         },
         behavior: HitTestBehavior.opaque,
-        child: CircleAvatar(
-          backgroundImage: CachedNetworkImageProvider(
-            controller.imageModelInfo.value?.user?.avatar?.avatarUrl ??
-                CommonConstants.defaultAvatarUrl,
-            headers: const {'referer': CommonConstants.iwaraBaseUrl},
-          ),
+        child: AvatarWidget(
+          avatarUrl: controller.imageModelInfo.value?.user?.avatar?.avatarUrl,
+          defaultAvatarUrl: CommonConstants.defaultAvatarUrl,
+          headers: const {'referer': CommonConstants.iwaraBaseUrl},
+          radius: 20,
+          isPremium: controller.imageModelInfo.value?.user?.premium ?? false,
+          isAdmin: controller.imageModelInfo.value?.user?.isAdmin ?? false,
         ),
       ),
     );

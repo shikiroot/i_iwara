@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:i_iwara/app/services/app_service.dart';
+import 'package:i_iwara/app/ui/widgets/avatar_widget.dart';
 import 'package:i_iwara/utils/common_utils.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -150,32 +151,13 @@ class VideoPreviewDetailModal extends StatelessWidget {
                               highlightColor: Colors.transparent,
                               child: Row(
                                 children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(24),
-                                    child: CachedNetworkImage(
-                                      imageUrl: video.user?.avatar?.avatarUrl ?? '',
-                                      httpHeaders: const {
-                                        'referer': CommonConstants.iwaraBaseUrl
-                                      },
-                                      fit: BoxFit.cover,
-                                      width: 48,
-                                      height: 48,
-                                      placeholder: (context, url) =>
-                                          Shimmer.fromColors(
-                                            baseColor: colorScheme.onSurface,
-                                            highlightColor: colorScheme.onSurfaceVariant,
-                                            child: Container(
-                                              width: 24,
-                                              height: 24,
-                                              decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                color: colorScheme.onSurface,
-                                              ),
-                                            ),
-                                          ),
-                                      errorWidget: (context, url, error) =>
-                                      const Icon(Icons.error, size: 24),
-                                    ),
+                                  AvatarWidget(
+                                    avatarUrl: video.user?.avatar?.avatarUrl,
+                                    defaultAvatarUrl: CommonConstants.defaultAvatarUrl,
+                                    headers: const {'referer': CommonConstants.iwaraBaseUrl},
+                                    radius: 14,
+                                    isPremium: video.user?.premium ?? false,
+                                    isAdmin: video.user?.isAdmin ?? false,
                                   ),
                                   const SizedBox(width: 8),
                                   Flexible(

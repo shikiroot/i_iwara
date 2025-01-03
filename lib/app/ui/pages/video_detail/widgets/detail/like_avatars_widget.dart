@@ -135,21 +135,15 @@ class _LikeAvatarsWidgetState extends State<LikeAvatarsWidget> {
           imageUrl: user.avatar?.avatarUrl ?? CommonConstants.defaultAvatarUrl,
           httpHeaders: const {'referer': CommonConstants.iwaraBaseUrl},
           fit: BoxFit.cover,
+          errorWidget: (context, url, error) => const CircleAvatar(
+            backgroundImage: NetworkImage(CommonConstants.defaultAvatarUrl),
+          ),
           placeholder: (context, url) => Shimmer.fromColors(
             baseColor: Colors.grey[300]!,
             highlightColor: Colors.grey[100]!,
-            child: Container(
-              width: 40,
-              height: 40,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.grey,
-              ),
+            child: const CircleAvatar(
+              backgroundColor: Colors.white,
             ),
-          ),
-          errorWidget: (context, url, error) => const Icon(
-            Icons.error,
-            color: Colors.red,
           ),
         ),
       ),

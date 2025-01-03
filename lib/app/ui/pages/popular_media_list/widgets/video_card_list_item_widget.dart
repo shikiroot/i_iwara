@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:i_iwara/app/services/app_service.dart';
 import 'package:i_iwara/app/ui/pages/popular_media_list/widgets/video_preview_modal.dart';
+import 'package:i_iwara/app/ui/widgets/avatar_widget.dart';
 import 'package:i_iwara/utils/common_utils.dart';
 import 'package:vibration/vibration.dart';
 
@@ -307,45 +308,14 @@ class _VideoCardListItemWidgetState extends State<VideoCardListItemWidget> {
   }
 
   Widget _buildAvatar() {
-    Widget avatar = SizedBox(
-      width: 24,
-      height: 24,
-      child: ClipOval(
-        child: CachedNetworkImage(
-          imageUrl: widget.video.user?.avatar?.avatarUrl ?? '',
-          httpHeaders: const {'referer': CommonConstants.iwaraBaseUrl},
-          fit: BoxFit.cover,
-          placeholder: (context, url) => _buildPlaceholder(),
-          errorWidget: (context, url, error) =>
-              const Icon(Icons.person, size: 24),
-        ),
-      ),
+    return AvatarWidget(
+      avatarUrl: widget.video.user?.avatar?.avatarUrl,
+      defaultAvatarUrl: CommonConstants.defaultAvatarUrl,
+      headers: const {'referer': CommonConstants.iwaraBaseUrl},
+      radius: 14,
+      isPremium: widget.video.user?.premium ?? false,
+      isAdmin: widget.video.user?.isAdmin ?? false,
     );
-
-    if (widget.video.user?.premium == true) {
-      return Container(
-        width: 32,
-        height: 32,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          gradient: LinearGradient(
-            colors: [
-              Colors.purple.shade200,
-              Colors.blue.shade200,
-              Colors.pink.shade200,
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(4.0),
-          child: avatar,
-        ),
-      );
-    }
-
-    return avatar;
   }
 
   void _navigateToDetailPage(BuildContext context) {

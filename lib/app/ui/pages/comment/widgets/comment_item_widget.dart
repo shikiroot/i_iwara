@@ -10,6 +10,7 @@ import 'package:i_iwara/app/services/comment_service.dart';
 import 'package:i_iwara/app/ui/pages/comment/controllers/comment_controller.dart';
 import 'package:i_iwara/app/ui/pages/comment/widgets/comment_remove_dialog.dart';
 import 'package:i_iwara/app/ui/widgets/MDToastWidget.dart';
+import 'package:i_iwara/app/ui/widgets/avatar_widget.dart';
 import 'package:i_iwara/utils/common_utils.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
 import 'package:oktoast/oktoast.dart';
@@ -871,36 +872,14 @@ class _CommentItemState extends State<CommentItem> {
 
   // 构建用户头像
   Widget _buildUserAvatar(Comment comment) {
-    Widget avatar = CircleAvatar(
+    return AvatarWidget(
+      avatarUrl: comment.user?.avatar?.avatarUrl, 
+      defaultAvatarUrl: CommonConstants.defaultAvatarUrl,
+      headers: const {'referer': CommonConstants.iwaraBaseUrl},
       radius: 20,
-      backgroundImage: CachedNetworkImageProvider(
-        comment.user?.avatar?.avatarUrl ?? CommonConstants.defaultAvatarUrl,
-        headers: const {'referer': CommonConstants.iwaraBaseUrl},
-      ),
+      isPremium: comment.user?.premium ?? false,
+      isAdmin: comment.user?.isAdmin ?? false,
     );
-
-    if (comment.user?.premium == true) {
-      return Container(
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          gradient: LinearGradient(
-            colors: [
-              Colors.purple.shade200,
-              Colors.blue.shade200,
-              Colors.pink.shade200,
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(2.0),
-          child: avatar,
-        ),
-      );
-    }
-
-    return avatar;
   }
 
 }

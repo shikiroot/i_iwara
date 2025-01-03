@@ -14,6 +14,7 @@ import 'package:i_iwara/app/ui/pages/author_profile/widgets/profile_video_tab_li
 import 'package:i_iwara/app/ui/pages/author_profile/widgets/profile_playlist_tab_list_widget.dart';
 import 'package:i_iwara/app/ui/pages/comment/widgets/comment_input_dialog.dart';
 import 'package:i_iwara/app/ui/widgets/MDToastWidget.dart';
+import 'package:i_iwara/app/ui/widgets/avatar_widget.dart';
 import 'package:i_iwara/app/ui/widgets/top_padding_height_widget.dart';
 import 'package:i_iwara/utils/common_utils.dart';
 import 'package:oktoast/oktoast.dart';
@@ -85,7 +86,8 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
       if (newOffset < 0) {
         _tabBarScrollController.jumpTo(0);
       } else if (newOffset > _tabBarScrollController.position.maxScrollExtent) {
-        _tabBarScrollController.jumpTo(_tabBarScrollController.position.maxScrollExtent);
+        _tabBarScrollController
+            .jumpTo(_tabBarScrollController.position.maxScrollExtent);
       } else {
         _tabBarScrollController.jumpTo(newOffset);
       }
@@ -131,16 +133,21 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                               submitText: t.common.send,
                               onSubmit: (text) async {
                                 if (text.trim().isEmpty) {
-                                  showToastWidget(MDToastWidget(message: t.errors.commentCanNotBeEmpty, type: MDToastType.error));
+                                  showToastWidget(MDToastWidget(
+                                      message: t.errors.commentCanNotBeEmpty,
+                                      type: MDToastType.error));
                                   return;
                                 }
                                 final UserService userService = Get.find();
                                 if (!userService.isLogin) {
-                                  showToastWidget(MDToastWidget(message: t.errors.pleaseLoginFirst, type: MDToastType.error));
+                                  showToastWidget(MDToastWidget(
+                                      message: t.errors.pleaseLoginFirst,
+                                      type: MDToastType.error));
                                   Get.toNamed(Routes.LOGIN);
                                   return;
                                 }
-                                await profileController.commentController.postComment(text);
+                                await profileController.commentController
+                                    .postComment(text);
                               },
                             ),
                             barrierDismissible: true,
@@ -187,7 +194,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
           profileController.author.value == null) {
         return Center(child: Text(t.errors.errorWhileFetching));
       }
-      
+
       return _buildMainContent();
     });
   }
@@ -203,10 +210,12 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
             floatingActionButton: _buildScrollToTopButton(),
             body: ExtendedNestedScrollView(
               key: _key,
-              headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) => 
-                  _buildHeaderSliver(context, innerBoxIsScrolled),
+              headerSliverBuilder:
+                  (BuildContext context, bool innerBoxIsScrolled) =>
+                      _buildHeaderSliver(context, innerBoxIsScrolled),
               onlyOneScrollInBody: true,
-              pinnedHeaderSliverHeightBuilder: () => _calculatePinnedHeaderHeight(),
+              pinnedHeaderSliverHeightBuilder: () =>
+                  _calculatePinnedHeaderHeight(),
               body: _buildTabBarView(context),
             ),
           ),
@@ -277,14 +286,14 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
     );
   }
 
-  List<Widget> _buildHeaderSliver(BuildContext context, bool innerBoxIsScrolled) {
+  List<Widget> _buildHeaderSliver(
+      BuildContext context, bool innerBoxIsScrolled) {
     final t = slang.Translations.of(context);
     return <Widget>[
       // header背景图
       SliverAppBar(
-        expandedHeight: context.width * 43 / 150 > 300
-            ? 300
-            : context.width * 43 / 150,
+        expandedHeight:
+            context.width * 43 / 150 > 300 ? 300 : context.width * 43 / 150,
         pinned: true,
         flexibleSpace: FlexibleSpaceBar(
             background: CachedNetworkImage(
@@ -299,44 +308,14 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
             padding: const EdgeInsets.all(16.0),
             child: Row(
               children: [
-                Obx(() {
-                  bool isPremium =
-                      profileController.author.value?.premium ?? false;
-                  // 头像
-                  Widget avatar = CircleAvatar(
-                    radius: 40,
-                    backgroundImage: CachedNetworkImageProvider(
-                      profileController.author.value?.avatar?.avatarUrl ??
-                          CommonConstants.defaultAvatarUrl,
-                      headers: const {
-                        'referer': CommonConstants.iwaraBaseUrl,
-                      },
-                    ),
-                  );
-
-                  if (isPremium) {
-                    return Container(
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        gradient: LinearGradient(
-                          colors: [
-                            Colors.purple.shade200,
-                            Colors.blue.shade200,
-                            Colors.pink.shade200,
-                          ],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: avatar,
-                      ),
-                    );
-                  }
-
-                  return avatar;
-                }),
+                AvatarWidget(
+                  avatarUrl: profileController.author.value?.avatar?.avatarUrl,
+                  defaultAvatarUrl: CommonConstants.defaultAvatarUrl,
+                  headers: const {'referer': CommonConstants.iwaraBaseUrl},
+                  radius: 40,
+                  isPremium: profileController.author.value?.premium ?? false,
+                  isAdmin: profileController.author.value?.isAdmin ?? false,
+                ),
                 const SizedBox(width: 16),
                 // 用户名、粉丝数、关注数
                 Expanded(
@@ -348,7 +327,8 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                         children: [
                           // 修改名称样式，使用主题色并加粗
                           Obx(() {
-                            bool isPremium = profileController.author.value?.premium == true;
+                            bool isPremium =
+                                profileController.author.value?.premium == true;
                             if (!isPremium) {
                               return SelectableText(
                                 profileController.author.value?.name ?? '',
@@ -380,8 +360,8 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                           }),
                           SizedBox(width: 8),
                           Obx(() {
-                            bool isPremium = profileController
-                                    .author.value?.premium == true;
+                            bool isPremium =
+                                profileController.author.value?.premium == true;
                             return isPremium
                                 ? Tooltip(
                                     triggerMode: TooltipTriggerMode.tap,
@@ -389,17 +369,17 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                                     preferBelow: false,
                                     child: Icon(
                                       Icons.verified,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .primary,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
                                     ),
                                   )
                                 : SizedBox.shrink();
                           }),
                           Obx(() {
                             // 是粉丝
-                            bool isFollower = profileController
-                                    .author.value?.followedBy ?? false;
+                            bool isFollower =
+                                profileController.author.value?.followedBy ??
+                                    false;
                             return isFollower
                                 ? Tooltip(
                                     triggerMode: TooltipTriggerMode.tap,
@@ -407,17 +387,16 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                                     preferBelow: false,
                                     child: Icon(
                                       Icons.favorite,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .primary,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
                                     ),
                                   )
                                 : SizedBox.shrink();
                           }),
                           Obx(() {
                             // 是朋友
-                            bool isFriend = profileController
-                                    .author.value?.friend ?? false;
+                            bool isFriend =
+                                profileController.author.value?.friend ?? false;
                             return isFriend
                                 ? Tooltip(
                                     triggerMode: TooltipTriggerMode.tap,
@@ -425,9 +404,8 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                                     preferBelow: false,
                                     child: Icon(
                                       Icons.people,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .primary,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
                                     ),
                                   )
                                 : SizedBox.shrink();
@@ -441,13 +419,13 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                         children: [
                           // 用户名
                           Obx(() {
-                            final username = profileController
-                                .author.value?.username;
+                            final username =
+                                profileController.author.value?.username;
                             if (username != null && username.isNotEmpty) {
                               return SelectableText(
                                 '@$username',
-                                style: TextStyle(
-                                    color: Colors.grey, fontSize: 16),
+                                style:
+                                    TextStyle(color: Colors.grey, fontSize: 16),
                               );
                             } else {
                               return SizedBox.shrink();
@@ -456,13 +434,17 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                           MouseRegion(
                             cursor: SystemMouseCursors.click, // 设置鼠标光标为点击效果
                             child: Obx(() {
-                              final followerCount = CommonUtils.formatFriendlyNumber(profileController.followerCounts.value.toInt());
+                              final followerCount =
+                                  CommonUtils.formatFriendlyNumber(
+                                      profileController.followerCounts.value
+                                          .toInt());
                               return GestureDetector(
                                 onTap: () {
                                   NaviService.navigateToFollowersListPage(
                                     profileController.author.value?.id ?? '',
                                     profileController.author.value?.name ?? '',
-                                    profileController.author.value?.username ?? '',
+                                    profileController.author.value?.username ??
+                                        '',
                                   );
                                 },
                                 child: Text(
@@ -479,10 +461,19 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                           MouseRegion(
                             cursor: SystemMouseCursors.click, // 设置鼠标光标为点击效果
                             child: Obx(() {
-                              final followingCount = CommonUtils.formatFriendlyNumber(profileController.followingCounts.value.toInt());
+                              final followingCount =
+                                  CommonUtils.formatFriendlyNumber(
+                                      profileController.followingCounts.value
+                                          .toInt());
                               return GestureDetector(
                                 onTap: () {
-                                  NaviService.navigateToFollowingListPage(profileController.author.value?.id ?? '', profileController.author.value?.name ?? '', profileController.author.value?.username ?? '');
+                                  NaviService.navigateToFollowingListPage(
+                                      profileController.author.value?.id ?? '',
+                                      profileController.author.value?.name ??
+                                          '',
+                                      profileController
+                                              .author.value?.username ??
+                                          '');
                                 },
                                 child: Text(
                                   '$followingCount ${t.common.following}',
@@ -497,10 +488,13 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
 
                           // 视频数
                           Obx(() {
-                            final videoCount = CommonUtils.formatFriendlyNumber(profileController.videoCounts.value?.toInt() ?? 0);
+                            final videoCount = CommonUtils.formatFriendlyNumber(
+                                profileController.videoCounts.value?.toInt() ??
+                                    0);
                             return Text(
                               '$videoCount ${t.common.video}',
-                              style: TextStyle(color: Colors.grey, fontSize: 16),
+                              style:
+                                  TextStyle(color: Colors.grey, fontSize: 16),
                             );
                           }),
                         ],
@@ -513,10 +507,8 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                           // 朋友
                           Obx(() {
                             // 如果是本人，则不显示按钮
-                            if (userService
-                                    .currentUser.value?.id ==
-                                profileController
-                                    .author.value?.id) {
+                            if (userService.currentUser.value?.id ==
+                                profileController.author.value?.id) {
                               return SizedBox.shrink();
                             }
 
@@ -526,8 +518,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                               return ElevatedButton(
                                 onPressed: () {
                                   // 取消朋友申请
-                                  profileController
-                                      .cancelFriendRequest();
+                                  profileController.cancelFriendRequest();
                                 },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.orange,
@@ -546,18 +537,14 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                                 ),
                               );
                               // 是朋友
-                            } else if (profileController
-                                        .author.value?.friend ==
+                            } else if (profileController.author.value?.friend ==
                                     true &&
-                                userService
-                                        .currentUser.value?.id !=
-                                    profileController
-                                        .author.value?.id) {
+                                userService.currentUser.value?.id !=
+                                    profileController.author.value?.id) {
                               return ElevatedButton(
                                 onPressed: () {
                                   // 取消朋友
-                                  profileController
-                                      .cancelFriendRequest();
+                                  profileController.cancelFriendRequest();
                                 },
                                 child: Text(t.common.removeFriend),
                               );
@@ -565,8 +552,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                               return ElevatedButton(
                                 onPressed: () {
                                   // 发送朋友申请
-                                  profileController
-                                      .sendFriendRequest();
+                                  profileController.sendFriendRequest();
                                 },
                                 child: Text(t.common.addFriend),
                               );
@@ -575,16 +561,13 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                           // 关注
                           Obx(() {
                             // 如果是本人，则不显示按钮
-                            if (userService
-                                    .currentUser.value?.id ==
-                                profileController
-                                    .author.value?.id) {
+                            if (userService.currentUser.value?.id ==
+                                profileController.author.value?.id) {
                               return const SizedBox.shrink();
                             }
 
                             // 处于代办状态
-                            if (profileController
-                                .isFollowLoading.value) {
+                            if (profileController.isFollowLoading.value) {
                               return Shimmer.fromColors(
                                 baseColor: Colors.grey[300]!,
                                 highlightColor: Colors.grey[100]!,
@@ -600,13 +583,14 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                                 onPressed: () {
                                   final UserService userService = Get.find();
                                   if (!userService.isLogin) {
-                                    showToastWidget(MDToastWidget(message: t.errors.pleaseLoginFirst, type: MDToastType.error));
+                                    showToastWidget(MDToastWidget(
+                                        message: t.errors.pleaseLoginFirst,
+                                        type: MDToastType.error));
                                     Get.toNamed(Routes.LOGIN);
                                     return;
                                   }
                                   // 取消关注
-                                  profileController
-                                      .unfollowAuthor();
+                                  profileController.unfollowAuthor();
                                 },
                                 child: Text(t.common.followed),
                               );
@@ -616,12 +600,13 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                                   // 关注
                                   final UserService userService = Get.find();
                                   if (!userService.isLogin) {
-                                    showToastWidget(MDToastWidget(message: t.errors.pleaseLoginFirst, type: MDToastType.error));
+                                    showToastWidget(MDToastWidget(
+                                        message: t.errors.pleaseLoginFirst,
+                                        type: MDToastType.error));
                                     Get.toNamed(Routes.LOGIN);
                                     return;
                                   }
-                                  profileController
-                                      .followAuthor();
+                                  profileController.followAuthor();
                                 },
                                 child: Text(t.common.follow),
                               );
@@ -630,10 +615,8 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                           // 特别关注
                           Obx(() {
                             // 如果是本人，则不显示按钮
-                            if (userService
-                                    .currentUser.value?.id ==
-                                profileController
-                                    .author.value?.id) {
+                            if (userService.currentUser.value?.id ==
+                                profileController.author.value?.id) {
                               return const SizedBox.shrink();
                             }
 
@@ -643,33 +626,24 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                             }
 
                             UserDTO? likedUser =
-                                userPreferenceService
-                                    .getLikedUser(
-                                        profileController.author
-                                                .value?.id ?? '');
+                                userPreferenceService.getLikedUser(
+                                    profileController.author.value?.id ?? '');
 
                             if (likedUser != null) {
                               return ElevatedButton(
                                 onPressed: () {
                                   // 取消特别关注
-                                  userPreferenceService
-                                      .removeLikedUser(UserDTO(
-                                    id: profileController
-                                            .author.value?.id ??
+                                  userPreferenceService.removeLikedUser(UserDTO(
+                                    id: profileController.author.value?.id ??
                                         '',
-                                    name: profileController
-                                            .author.value?.name ??
-                                        '',
+                                    name:
+                                        profileController.author.value?.name ??
+                                            '',
                                     username: profileController
-                                            .author
-                                            .value
-                                            ?.username ??
+                                            .author.value?.username ??
                                         '',
                                     avatarUrl: profileController
-                                            .author
-                                            .value
-                                            ?.avatar
-                                            ?.avatarUrl ??
+                                            .author.value?.avatar?.avatarUrl ??
                                         '',
                                   ));
                                 },
@@ -679,24 +653,17 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                               return ElevatedButton(
                                 onPressed: () {
                                   // 特别关注
-                                  userPreferenceService
-                                      .addLikedUser(UserDTO(
-                                    id: profileController
-                                            .author.value?.id ??
+                                  userPreferenceService.addLikedUser(UserDTO(
+                                    id: profileController.author.value?.id ??
                                         '',
-                                    name: profileController
-                                            .author.value?.name ??
-                                        '',
+                                    name:
+                                        profileController.author.value?.name ??
+                                            '',
                                     username: profileController
-                                            .author
-                                            .value
-                                            ?.username ??
+                                            .author.value?.username ??
                                         '',
                                     avatarUrl: profileController
-                                            .author
-                                            .value
-                                            ?.avatar
-                                            ?.avatarUrl ??
+                                            .author.value?.avatar?.avatarUrl ??
                                         '',
                                   ));
                                 },
@@ -734,7 +701,10 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
         ),
       ),
       SliverToBoxAdapter(
-        child: SizedBox(height: Get.context != null ? MediaQuery.of(Get.context!).padding.bottom : 0),
+        child: SizedBox(
+            height: Get.context != null
+                ? MediaQuery.of(Get.context!).padding.bottom
+                : 0),
       ),
       // TabBar
     ];
@@ -787,7 +757,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                     child: Row(
                       children: [
                         Icon(Icons.playlist_play),
-                        SizedBox(width: 8), 
+                        SizedBox(width: 8),
                         Text(t.common.playlist),
                       ],
                     ),
@@ -838,11 +808,11 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                   : const SizedBox.shrink()),
               Obx(() => profileController.author.value?.id != null
                   ? ProfilePostTabListWidget(
-                    key: const Key('post'),
-                    userId: profileController.author.value!.id,
-                    tabKey: t.common.post,
-                    tc: TabController(length: 1, vsync: this),
-                  )
+                      key: const Key('post'),
+                      userId: profileController.author.value!.id,
+                      tabKey: t.common.post,
+                      tc: TabController(length: 1, vsync: this),
+                    )
                   : const SizedBox.shrink()),
             ],
           ),
