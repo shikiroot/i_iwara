@@ -51,59 +51,106 @@ class VideoDetailContent extends StatelessWidget {
               Obx(() {
                 // 如果视频加载出错，显示错误组件
                 if (controller.videoErrorMessage.value != null) {
-                  return CommonErrorWidget(
-                    text: controller.videoErrorMessage.value ?? t.videoDetail.errorLoadingVideo,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () => AppService.tryPop(),
-                        child: Text(t.common.back),
-                      ),
-                      ElevatedButton(
-                        onPressed: () => controller
-                            .fetchVideoDetail(controller.videoId ?? ''),
-                        child: Text(t.common.retry),
-                      ),
-                    ],
+                  return SizedBox(
+                    width: videoWidth,
+                    height: (videoHeight ?? (MediaQuery.sizeOf(context).width / 1.7)) + paddingTop,
+                    child: Stack(
+                      children: [
+                        // 添加背景图片
+                        if (controller.videoInfo.value?.previewUrl != null)
+                          Positioned.fill(
+                            child: CachedNetworkImage(
+                              imageUrl: controller.videoInfo.value!.previewUrl,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        // 添加半透明遮罩
+                        Positioned.fill(
+                          child: Container(
+                            color: Colors.black.withOpacity(0.7),
+                          ),
+                        ),
+                        // 错误提示内容
+                        Center(
+                          child: CommonErrorWidget(
+                            text: controller.videoErrorMessage.value ?? t.videoDetail.errorLoadingVideo,
+                            children: [
+                              ElevatedButton.icon(
+                                onPressed: () => AppService.tryPop(),
+                                icon: const Icon(Icons.arrow_back),
+                                label: Text(t.common.back),
+                              ),
+                              const SizedBox(width: 8),
+                              ElevatedButton.icon(
+                                onPressed: () => controller.fetchVideoDetail(controller.videoId ?? ''),
+                                icon: const Icon(Icons.refresh),
+                                label: Text(t.common.retry),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   );
                 }
-                // 如果是外站视频，显示外站视频提示
+                // 如果是站外视频，显示站外视频提示
                 else if (controller.videoInfo.value?.isExternalVideo == true) {
                   return SizedBox(
                     width: videoWidth,
                     height: (videoHeight ?? (MediaQuery.sizeOf(context).width / 1.7)) + paddingTop,
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Icon(Icons.link, size: 48),
-                          const SizedBox(height: 16),
-                          Text(
-                            '${t.videoDetail.externalVideo}: ${controller.videoInfo.value?.externalVideoDomain}',
-                            style: const TextStyle(fontSize: 18),
-                            textAlign: TextAlign.center,
+                    child: Stack(
+                      children: [
+                        // 添加背景图片
+                        if (controller.videoInfo.value?.previewUrl != null)
+                          Positioned.fill(
+                            child: CachedNetworkImage(
+                              imageUrl: controller.videoInfo.value!.previewUrl,
+                              fit: BoxFit.cover,
+                            ),
                           ),
-                          const SizedBox(height: 16),
-                          Row(
-                            spacing: 16,
+                        // 添加半透明遮罩
+                        Positioned.fill(
+                          child: Container(
+                            color: Colors.black.withOpacity(0.7),
+                          ),
+                        ),
+                        // 原有的提示内容
+                        Center(
+                          child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              ElevatedButton(
-                                onPressed: () => AppService.tryPop(),
-                                child: Text(t.common.back),
+                              const Icon(Icons.link, size: 48, color: Colors.white),
+                              const SizedBox(height: 16),
+                              Text(
+                                '${t.videoDetail.externalVideo}: ${controller.videoInfo.value?.externalVideoDomain}',
+                                style: const TextStyle(fontSize: 18, color: Colors.white),
+                                textAlign: TextAlign.center,
                               ),
-                              ElevatedButton.icon(
-                                onPressed: () {
-                                  if (controller.videoInfo.value?.embedUrl != null) {
-                                    launchUrl(Uri.parse(controller.videoInfo.value!.embedUrl!));
-                                  }
-                                },
-                                icon: const Icon(Icons.open_in_new),
-                                label: Text(t.videoDetail.openInBrowser),
+                              const SizedBox(height: 16),
+                              Row(
+                                spacing: 16,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  ElevatedButton.icon(
+                                    onPressed: () => AppService.tryPop(),
+                                    icon: const Icon(Icons.arrow_back),
+                                    label: Text(t.common.back),
+                                  ),
+                                  ElevatedButton.icon(
+                                    onPressed: () {
+                                      if (controller.videoInfo.value?.embedUrl != null) {
+                                        launchUrl(Uri.parse(controller.videoInfo.value!.embedUrl!));
+                                      }
+                                    },
+                                    icon: const Icon(Icons.open_in_new),
+                                    label: Text(t.videoDetail.openInBrowser),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   );
                 }

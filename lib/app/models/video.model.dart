@@ -1,8 +1,8 @@
-
 import 'package:i_iwara/app/models/tag.model.dart';
 import 'package:i_iwara/app/models/user.model.dart';
 import 'package:i_iwara/app/models/media_file.model.dart';
 import 'package:i_iwara/app/models/video_source.model.dart';
+import 'package:i_iwara/common/constants.dart';
 
 import 'custom_thumbnail.model.dart';
 
@@ -31,9 +31,11 @@ class Video {
 
   bool get isPrivate => private ?? false;
   bool get isExternalVideo => embedUrl != null && embedUrl!.isNotEmpty;
+
+  // 获取外链视频的域名
   String get externalVideoDomain {
     if (!isExternalVideo) return '';
-    
+
     try {
       final uri = Uri.parse(embedUrl!);
       return uri.host;
@@ -42,6 +44,32 @@ class Video {
     }
   }
 
+  // 获取外链视频的thumbnail
+  String get externalVideoThumbnail {
+    if (!isExternalVideo) return '';
+
+    /// 目前假设只有youtube形式的外联
+    try {
+      final uri = Uri.parse(embedUrl!);
+      // 如果是youtube短链，则取id
+      if (uri.host == 'youtu.be') {
+        final id = uri.pathSegments.last;
+        final res =
+            '${CommonConstants.iwaraImageBaseUrl}/image/embed/thumbnail/youtube/$id';
+        return res;
+      } else if (uri.host == 'www.youtube.com') {
+        // 普通有关链接，获取v的参数值 https://www.youtube.com/watch?v=xEwSkjWWyGk
+        final v = uri.queryParameters['v'];
+        final res =
+            '${CommonConstants.iwaraImageBaseUrl}/image/embed/thumbnail/youtube/$v';
+        return res;
+      } else {
+        return '';
+      }
+    } catch (e) {
+      return '';
+    }
+  }
 
   final List<VideoSource>? videoSources;
 
@@ -133,6 +161,9 @@ class Video {
 
   // 头图
   String get thumbnailUrl {
+    if (isExternalVideo) {
+      return externalVideoThumbnail;
+    }
     if (customThumbnail != null) {
       return 'https://i.iwara.tv/image/thumbnail/${customThumbnail!.id}/${customThumbnail!.name}';
     } else {
@@ -142,6 +173,9 @@ class Video {
 
   // 预览图
   String get previewUrl {
+    if (isExternalVideo) {
+      return externalVideoThumbnail;
+    }
     return 'https://i.iwara.tv/image/original/${file?.id}/preview.webp';
   }
 

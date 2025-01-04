@@ -114,6 +114,17 @@ class VideoPreviewDetailModal extends StatelessWidget {
                                               theme: theme,
                                             ),
                                           ),
+                                        if (video.isExternalVideo)
+                                          Positioned(
+                                            right: 0,
+                                            bottom: 0,
+                                            child: _buildExternalVideoTag(
+                                              label: t.common.externalVideo,
+                                              backgroundColor: Colors.black54,
+                                              textColor: Colors.white,
+                                              theme: theme,
+                                            ),
+                                          ),
                                       ],
                                     ),
                                   ),
@@ -319,4 +330,43 @@ class VideoPreviewDetailModal extends StatelessWidget {
       ),
     );
   }
+
+  /// 构建外部视频标签
+Widget _buildExternalVideoTag({
+  required String label,
+  required Color backgroundColor,
+  required Color textColor,
+  required ThemeData theme,
+}) {
+  return Container(
+    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+    decoration: BoxDecoration(
+      color: backgroundColor,
+      borderRadius: const BorderRadius.only(
+        topLeft: Radius.circular(12),
+        bottomRight: Radius.circular(12),
+      ),
+    ),
+    child: Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const Icon(
+          Icons.link,
+          size: 16,
+          color: Colors.white,
+        ),
+        const SizedBox(width: 4),
+        Text(
+          label,
+          style: TextStyle(
+            color: textColor,
+            fontWeight: FontWeight.bold,
+            fontSize: theme.textTheme.bodySmall?.fontSize,
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
 }

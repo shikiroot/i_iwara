@@ -193,6 +193,7 @@ class _TranslationsCommonZhCn implements TranslationsCommonEn {
 	@override String get numViews => '观看次数';
 	@override String get updatedAt => '更新时间';
 	@override String get publishedAt => '发布时间';
+	@override String get externalVideo => '站外视频';
 }
 
 // Path: auth
@@ -543,7 +544,7 @@ class _TranslationsVideoDetailZhCn implements TranslationsVideoDetailEn {
 	@override String get authorOtherVideos => '作者的其他视频';
 	@override String get relatedVideos => '相关视频';
 	@override String get privateVideo => '这是一个私密视频';
-	@override String get externalVideo => '这是一个外站视频';
+	@override String get externalVideo => '这是一个站外视频';
 	@override String get openInBrowser => '在浏览器中打开';
 }
 
@@ -704,6 +705,7 @@ extension on TranslationsZhCn {
 			case 'common.numViews': return '观看次数';
 			case 'common.updatedAt': return '更新时间';
 			case 'common.publishedAt': return '发布时间';
+			case 'common.externalVideo': return '站外视频';
 			case 'auth.login': return '登录';
 			case 'auth.logout': return '退出登录';
 			case 'auth.email': return '邮箱';
@@ -937,7 +939,7 @@ extension on TranslationsZhCn {
 			case 'videoDetail.authorOtherVideos': return '作者的其他视频';
 			case 'videoDetail.relatedVideos': return '相关视频';
 			case 'videoDetail.privateVideo': return '这是一个私密视频';
-			case 'videoDetail.externalVideo': return '这是一个外站视频';
+			case 'videoDetail.externalVideo': return '这是一个站外视频';
 			case 'videoDetail.openInBrowser': return '在浏览器中打开';
 			case 'share.sharePlayList': return '分享播放列表';
 			case 'share.wowDidYouSeeThis': return '哇哦，你看过这个吗？';

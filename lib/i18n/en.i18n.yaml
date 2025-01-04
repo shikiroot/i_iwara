@@ -135,6 +135,7 @@ common:
   numViews: Views
   updatedAt: Updated At
   publishedAt: Published At
+  externalVideo: External Video
 auth:
   login: Login
   logout: Logout

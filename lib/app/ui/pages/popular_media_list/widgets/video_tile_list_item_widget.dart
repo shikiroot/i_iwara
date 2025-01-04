@@ -10,7 +10,6 @@ import 'package:i_iwara/utils/common_utils.dart';
 import 'package:vibration/vibration.dart';
 
 import '../../../../models/video.model.dart';
-import 'animated_preview_widget.dart';
 import 'package:i_iwara/i18n/strings.g.dart' as slang;
 
 class VideoTileListItem extends StatefulWidget {
@@ -88,7 +87,7 @@ class _VideoTileListItemState extends State<VideoTileListItem> {
             },
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8),
-              child: _showAnimatedPreview
+              child: (_showAnimatedPreview && !widget.video.isExternalVideo)
                 ? CachedNetworkImage(
                     imageUrl: widget.video.previewUrl,
                     width: 120,
@@ -102,7 +101,7 @@ class _VideoTileListItemState extends State<VideoTileListItem> {
                     ),
                   )
                 : CachedNetworkImage(
-                    imageUrl: widget.video.thumbnailUrl,
+                    imageUrl: widget.video.isExternalVideo ? widget.video.externalVideoThumbnail : widget.video.thumbnailUrl,
                     width: 120,
                     height: 90,
                     fit: BoxFit.cover,
@@ -120,6 +119,7 @@ class _VideoTileListItemState extends State<VideoTileListItem> {
         if (widget.video.rating == 'ecchi') _buildRatingTag(context),
         if (widget.video.private == true) _buildPrivateTag(context),
         if (widget.video.minutesDuration != null) _buildDurationTag(context),
+        if (widget.video.isExternalVideo) _buildExternalVideoTag(context),
       ],
     );
   }
@@ -190,7 +190,18 @@ class _VideoTileListItemState extends State<VideoTileListItem> {
       child: _buildTag(
         label: t.common.private,
         backgroundColor: Colors.black54,
+        icon: Icons.lock,
       ),
+    );
+  }
+
+  /// 构建站外视频标签
+  Widget _buildExternalVideoTag(BuildContext context) {
+    final t = slang.Translations.of(context);
+    return Positioned(
+      right: 0,
+      bottom: 0,
+      child: _buildTag(label: t.common.externalVideo, backgroundColor: Colors.black54, icon: Icons.link),
     );
   }
 
@@ -220,16 +231,22 @@ class _VideoTileListItemState extends State<VideoTileListItem> {
   }
 
   /// 通用标签构建方法
-  Widget _buildTag({required String label, required Color backgroundColor}) {
+  Widget _buildTag({required String label, required Color backgroundColor, IconData? icon}) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
       decoration: BoxDecoration(
         color: backgroundColor,
         borderRadius: BorderRadius.circular(4),
       ),
-      child: Text(
-        label,
-        style: const TextStyle(color: Colors.white, fontSize: 12),
+      child: Row(
+        children: [
+          if (icon != null) Icon(icon, size: 12, color: Colors.white),
+          const SizedBox(width: 2),
+          Text(
+            label,
+            style: const TextStyle(color: Colors.white, fontSize: 12),
+          ),
+        ],
       ),
     );
   }

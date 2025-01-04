@@ -136,6 +136,7 @@ common:
   numViews: 視聴回数
   updatedAt: 更新時間
   publishedAt: 発表時間
+  externalVideo: 站外動画
 
 auth:
   login: ログイン
@@ -393,7 +394,7 @@ videoDetail:
   authorOtherVideos: 作者の他のビデオ
   relatedVideos: 関連ビデオ
   privateVideo: これはプライベートビデオです
-  externalVideo: これは外站ビデオです
+  externalVideo: これは站外ビデオです
   openInBrowser: ブラウザで開く
 
 share:

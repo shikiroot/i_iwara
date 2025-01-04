@@ -135,6 +135,7 @@ common:
   numViews: 觀看次數
   updatedAt: 更新時間
   publishedAt: 發布時間
+  externalVideo: 站外影片
 
 auth:
   login: 登入
@@ -394,7 +395,7 @@ videoDetail:
   authorOtherVideos: 作者的其他影片
   relatedVideos: 相關影片
   privateVideo: 這是一個私密影片
-  externalVideo: 這是一個外站影片
+  externalVideo: 這是一個站外影片
   openInBrowser: 在瀏覽器中打開
 
 share:

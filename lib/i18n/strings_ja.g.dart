@@ -192,6 +192,7 @@ class _TranslationsCommonJa implements TranslationsCommonEn {
 	@override String get numViews => '視聴回数';
 	@override String get updatedAt => '更新時間';
 	@override String get publishedAt => '発表時間';
+	@override String get externalVideo => '站外動画';
 }
 
 // Path: auth
@@ -542,7 +543,7 @@ class _TranslationsVideoDetailJa implements TranslationsVideoDetailEn {
 	@override String get authorOtherVideos => '作者の他のビデオ';
 	@override String get relatedVideos => '関連ビデオ';
 	@override String get privateVideo => 'これはプライベートビデオです';
-	@override String get externalVideo => 'これは外站ビデオです';
+	@override String get externalVideo => 'これは站外ビデオです';
 	@override String get openInBrowser => 'ブラウザで開く';
 }
 
@@ -702,6 +703,7 @@ extension on TranslationsJa {
 			case 'common.numViews': return '視聴回数';
 			case 'common.updatedAt': return '更新時間';
 			case 'common.publishedAt': return '発表時間';
+			case 'common.externalVideo': return '站外動画';
 			case 'auth.login': return 'ログイン';
 			case 'auth.logout': return 'ログアウト';
 			case 'auth.email': return 'メールアドレス';
@@ -935,7 +937,7 @@ extension on TranslationsJa {
 			case 'videoDetail.authorOtherVideos': return '作者の他のビデオ';
 			case 'videoDetail.relatedVideos': return '関連ビデオ';
 			case 'videoDetail.privateVideo': return 'これはプライベートビデオです';
-			case 'videoDetail.externalVideo': return 'これは外站ビデオです';
+			case 'videoDetail.externalVideo': return 'これは站外ビデオです';
 			case 'videoDetail.openInBrowser': return 'ブラウザで開く';
 			case 'share.sharePlayList': return 'プレイリストを共有';
 			case 'share.wowDidYouSeeThis': return 'ああ、見たの？';

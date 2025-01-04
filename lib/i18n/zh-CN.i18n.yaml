@@ -138,6 +138,7 @@ common:
   numViews: 观看次数
   updatedAt: 更新时间
   publishedAt: 发布时间
+  externalVideo: 站外视频
 
 auth:
   login: 登录
@@ -396,7 +397,7 @@ videoDetail:
   authorOtherVideos: 作者的其他视频
   relatedVideos: 相关视频
   privateVideo: 这是一个私密视频
-  externalVideo: 这是一个外站视频
+  externalVideo: 这是一个站外视频
   openInBrowser: 在浏览器中打开
 
 share:
