@@ -51,7 +51,7 @@ common:
   minutesAgo: '${num} 分前'
   hoursAgo: '${num} 時間前'
   daysAgo: '${num} 日前'
-  editedAt: '${num} 前に編集'
+  editedAt: '${num} 編集'
   editComment: コメントを編集
   commentUpdated: コメントが更新されました
   replyComment: コメントに返信
@@ -160,6 +160,8 @@ auth:
   logoutConfirmation: 本当にログアウトしますか？
   logoutSuccess: ログアウトに成功しました
   logoutFailed: ログアウトに失敗しました
+  usernameOrEmail: ユーザー名またはメールアドレス
+  pleaseEnterUsernameOrEmail: ユーザー名またはメールアドレスを入力してください
 
 errors:
   error: エラー
@@ -202,6 +204,9 @@ errors:
   errorWhileLoadingPostDetail: 投稿詳細の取得中にエラーが発生しました
   invalidPostId: 無効な投稿IDです
   forceUpdateNotPermittedToGoBack: 現在強制更新状態です。戻ることはできません
+  pleaseLoginAgain: ログインしてください
+  invalidLogin: ログインに失敗しました。メールアドレスとパスワードを確認してください
+  tooManyRequests: リクエストが多すぎます。後でもう一度お試しください
 friends:
   clickToRestoreFriend: 友達を復元するにはクリックしてください
   friendsList: 友達リスト

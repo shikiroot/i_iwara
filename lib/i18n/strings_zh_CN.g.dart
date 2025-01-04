@@ -107,7 +107,7 @@ class _TranslationsCommonZhCn implements TranslationsCommonEn {
 	@override String minutesAgo({required Object num}) => '${num}分钟前';
 	@override String hoursAgo({required Object num}) => '${num}小时前';
 	@override String daysAgo({required Object num}) => '${num}天前';
-	@override String editedAt({required Object num}) => '编辑于${num}前';
+	@override String editedAt({required Object num}) => '${num}编辑';
 	@override String get editComment => '编辑评论';
 	@override String get commentUpdated => '评论已更新';
 	@override String get replyComment => '回复评论';
@@ -224,6 +224,10 @@ class _TranslationsAuthZhCn implements TranslationsAuthEn {
 	@override String get logoutConfirmation => '你确定要退出登录吗？';
 	@override String get logoutSuccess => '退出登录成功';
 	@override String get logoutFailed => '退出登录失败';
+	@override String get usernameOrEmail => '用户名或邮箱';
+	@override String get pleaseEnterUsernameOrEmail => '请输入用户名或邮箱';
+	@override String get username => '用户名或邮箱';
+	@override String get pleaseEnterUsername => '请输入用户名或邮箱';
 }
 
 // Path: errors
@@ -273,6 +277,9 @@ class _TranslationsErrorsZhCn implements TranslationsErrorsEn {
 	@override String get errorWhileLoadingPostDetail => '载入帖子详情时出错';
 	@override String get invalidPostId => '无效的帖子ID';
 	@override String get forceUpdateNotPermittedToGoBack => '目前处于强制更新状态，无法返回';
+	@override String get pleaseLoginAgain => '请重新登录';
+	@override String get invalidLogin => '登录失败，请检查邮箱和密码';
+	@override String get tooManyRequests => '请求过多，请稍后再试';
 }
 
 // Path: friends
@@ -629,7 +636,7 @@ extension on TranslationsZhCn {
 			case 'common.minutesAgo': return ({required Object num}) => '${num}分钟前';
 			case 'common.hoursAgo': return ({required Object num}) => '${num}小时前';
 			case 'common.daysAgo': return ({required Object num}) => '${num}天前';
-			case 'common.editedAt': return ({required Object num}) => '编辑于${num}前';
+			case 'common.editedAt': return ({required Object num}) => '${num}编辑';
 			case 'common.editComment': return '编辑评论';
 			case 'common.commentUpdated': return '评论已更新';
 			case 'common.replyComment': return '回复评论';
@@ -737,6 +744,10 @@ extension on TranslationsZhCn {
 			case 'auth.logoutConfirmation': return '你确定要退出登录吗？';
 			case 'auth.logoutSuccess': return '退出登录成功';
 			case 'auth.logoutFailed': return '退出登录失败';
+			case 'auth.usernameOrEmail': return '用户名或邮箱';
+			case 'auth.pleaseEnterUsernameOrEmail': return '请输入用户名或邮箱';
+			case 'auth.username': return '用户名或邮箱';
+			case 'auth.pleaseEnterUsername': return '请输入用户名或邮箱';
 			case 'errors.error': return '错误';
 			case 'errors.required': return '此项必填';
 			case 'errors.invalidEmail': return '邮箱格式不正确';
@@ -777,6 +788,9 @@ extension on TranslationsZhCn {
 			case 'errors.errorWhileLoadingPostDetail': return '载入帖子详情时出错';
 			case 'errors.invalidPostId': return '无效的帖子ID';
 			case 'errors.forceUpdateNotPermittedToGoBack': return '目前处于强制更新状态，无法返回';
+			case 'errors.pleaseLoginAgain': return '请重新登录';
+			case 'errors.invalidLogin': return '登录失败，请检查邮箱和密码';
+			case 'errors.tooManyRequests': return '请求过多，请稍后再试';
 			case 'friends.clickToRestoreFriend': return '点击恢复好友';
 			case 'friends.friendsList': return '好友列表';
 			case 'friends.friendRequests': return '好友请求';

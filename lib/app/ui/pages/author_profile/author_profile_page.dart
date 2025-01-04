@@ -121,7 +121,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                       Text(
                         t.common.commentList,
                         style: TextStyle(
-                          fontSize: 18,
+                          fontSize: Theme.of(context).textTheme.titleLarge?.fontSize,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -383,7 +383,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                               return SelectableText(
                                 profileController.author.value?.name ?? '',
                                 style: TextStyle(
-                                  fontSize: 32,
+                                  fontSize: Theme.of(context).textTheme.headlineMedium?.fontSize,
                                   fontWeight: FontWeight.bold,
                                   color: Theme.of(context).colorScheme.primary,
                                 ),
@@ -474,8 +474,10 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                             if (username != null && username.isNotEmpty) {
                               return SelectableText(
                                 '@$username',
-                                style:
-                                    TextStyle(color: Colors.grey, fontSize: 16),
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: Theme.of(context).textTheme.bodyMedium?.fontSize,
+                                ),
                               );
                             } else {
                               return SizedBox.shrink();
@@ -499,9 +501,9 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                                 },
                                 child: Text(
                                   '$followerCount ${t.common.follower}',
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     color: Colors.grey,
-                                    fontSize: 16,
+                                    fontSize: Theme.of(context).textTheme.bodyMedium?.fontSize,
                                   ),
                                 ),
                               );
@@ -527,9 +529,9 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                                 },
                                 child: Text(
                                   '$followingCount ${t.common.following}',
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     color: Colors.grey,
-                                    fontSize: 16,
+                                    fontSize: Theme.of(context).textTheme.bodyMedium?.fontSize,
                                   ),
                                 ),
                               );
@@ -543,8 +545,10 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                                     0);
                             return Text(
                               '$videoCount ${t.common.video}',
-                              style:
-                                  TextStyle(color: Colors.grey, fontSize: 16),
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: Theme.of(context).textTheme.bodyMedium?.fontSize,
+                              ),
                             );
                           }),
                         ],

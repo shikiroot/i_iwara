@@ -107,7 +107,7 @@ class _TranslationsCommonJa implements TranslationsCommonEn {
 	@override String minutesAgo({required Object num}) => '${num} 分前';
 	@override String hoursAgo({required Object num}) => '${num} 時間前';
 	@override String daysAgo({required Object num}) => '${num} 日前';
-	@override String editedAt({required Object num}) => '${num} 前に編集';
+	@override String editedAt({required Object num}) => '${num} 編集';
 	@override String get editComment => 'コメントを編集';
 	@override String get commentUpdated => 'コメントが更新されました';
 	@override String get replyComment => 'コメントに返信';
@@ -223,6 +223,8 @@ class _TranslationsAuthJa implements TranslationsAuthEn {
 	@override String get logoutConfirmation => '本当にログアウトしますか？';
 	@override String get logoutSuccess => 'ログアウトに成功しました';
 	@override String get logoutFailed => 'ログアウトに失敗しました';
+	@override String get usernameOrEmail => 'ユーザー名またはメールアドレス';
+	@override String get pleaseEnterUsernameOrEmail => 'ユーザー名またはメールアドレスを入力してください';
 }
 
 // Path: errors
@@ -272,6 +274,9 @@ class _TranslationsErrorsJa implements TranslationsErrorsEn {
 	@override String get errorWhileLoadingPostDetail => '投稿詳細の取得中にエラーが発生しました';
 	@override String get invalidPostId => '無効な投稿IDです';
 	@override String get forceUpdateNotPermittedToGoBack => '現在強制更新状態です。戻ることはできません';
+	@override String get pleaseLoginAgain => 'ログインしてください';
+	@override String get invalidLogin => 'ログインに失敗しました。メールアドレスとパスワードを確認してください';
+	@override String get tooManyRequests => 'リクエストが多すぎます。後でもう一度お試しください';
 }
 
 // Path: friends
@@ -628,7 +633,7 @@ extension on TranslationsJa {
 			case 'common.minutesAgo': return ({required Object num}) => '${num} 分前';
 			case 'common.hoursAgo': return ({required Object num}) => '${num} 時間前';
 			case 'common.daysAgo': return ({required Object num}) => '${num} 日前';
-			case 'common.editedAt': return ({required Object num}) => '${num} 前に編集';
+			case 'common.editedAt': return ({required Object num}) => '${num} 編集';
 			case 'common.editComment': return 'コメントを編集';
 			case 'common.commentUpdated': return 'コメントが更新されました';
 			case 'common.replyComment': return 'コメントに返信';
@@ -735,6 +740,8 @@ extension on TranslationsJa {
 			case 'auth.logoutConfirmation': return '本当にログアウトしますか？';
 			case 'auth.logoutSuccess': return 'ログアウトに成功しました';
 			case 'auth.logoutFailed': return 'ログアウトに失敗しました';
+			case 'auth.usernameOrEmail': return 'ユーザー名またはメールアドレス';
+			case 'auth.pleaseEnterUsernameOrEmail': return 'ユーザー名またはメールアドレスを入力してください';
 			case 'errors.error': return 'エラー';
 			case 'errors.required': return 'この項目は必須です';
 			case 'errors.invalidEmail': return 'メールアドレスの形式が正しくありません';
@@ -775,6 +782,9 @@ extension on TranslationsJa {
 			case 'errors.errorWhileLoadingPostDetail': return '投稿詳細の取得中にエラーが発生しました';
 			case 'errors.invalidPostId': return '無効な投稿IDです';
 			case 'errors.forceUpdateNotPermittedToGoBack': return '現在強制更新状態です。戻ることはできません';
+			case 'errors.pleaseLoginAgain': return 'ログインしてください';
+			case 'errors.invalidLogin': return 'ログインに失敗しました。メールアドレスとパスワードを確認してください';
+			case 'errors.tooManyRequests': return 'リクエストが多すぎます。後でもう一度お試しください';
 			case 'friends.clickToRestoreFriend': return '友達を復元するにはクリックしてください';
 			case 'friends.friendsList': return '友達リスト';
 			case 'friends.friendRequests': return '友達リクエスト';

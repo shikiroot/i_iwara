@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:i_iwara/i18n/strings.g.dart' as slang;
+import 'package:shimmer/shimmer.dart';
 import '../../../../../common/constants.dart';
 
 /// 订阅列表选择框
@@ -208,10 +209,22 @@ class _SubscriptionSelectListState extends State<SubscriptionSelectList> {
                     borderRadius: BorderRadius.circular(20),
                     child: CachedNetworkImage(
                       imageUrl: selectItem.avatarUrl,
-                      placeholder: (context, url) =>
-                          const CircularProgressIndicator(),
-                      errorWidget: (context, url, error) =>
-                          const Icon(Icons.error),
+                      placeholder: (context, url) => Shimmer.fromColors(
+                        baseColor: Colors.grey[300]!,
+                        highlightColor: Colors.grey[100]!,
+                        child: const CircleAvatar(
+                          radius: 20,
+                          backgroundColor: Colors.white,
+                        ),
+                      ),
+                      errorWidget: (context, url, error) => CircleAvatar(
+                        radius: 20,
+                        backgroundImage: const NetworkImage(CommonConstants.defaultAvatarUrl),
+                        onBackgroundImageError: (exception, stackTrace) => const Icon(
+                          Icons.person,
+                          size: 20,
+                        ),
+                      ),
                       httpHeaders: const {
                         'referer': CommonConstants.iwaraBaseUrl
                       },

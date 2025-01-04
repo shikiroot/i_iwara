@@ -50,7 +50,7 @@ common:
   minutesAgo: '${num} 分鐘前'
   hoursAgo: '${num} 小時前'
   daysAgo: '${num} 天前'
-  editedAt: '編輯於 ${num} 前'
+  editedAt: '${num} 編輯'
   editComment: 編輯評論
   commentUpdated: 評論已更新
   replyComment: 回覆評論
@@ -159,6 +159,8 @@ auth:
   logoutConfirmation: 你確定要登出嗎？
   logoutSuccess: 登出成功
   logoutFailed: 登出失敗
+  usernameOrEmail: 用戶名或電子郵件
+  pleaseEnterUsernameOrEmail: 請輸入用戶名或電子郵件
 
 errors:
   error: 錯誤
@@ -201,6 +203,9 @@ errors:
   errorWhileLoadingPostDetail: 載入帖子詳情時出錯
   invalidPostId: 無效的帖子ID
   forceUpdateNotPermittedToGoBack: 目前處於強制更新狀態，無法返回
+  pleaseLoginAgain: 請重新登入
+  invalidLogin: 登入失敗，請檢查電子郵件和密碼
+  tooManyRequests: 請求過多，請稍後再試
 friends:
   clickToRestoreFriend: 點擊恢復朋友
   friendsList: 朋友列表

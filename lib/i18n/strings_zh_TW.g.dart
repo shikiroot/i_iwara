@@ -107,7 +107,7 @@ class _TranslationsCommonZhTw implements TranslationsCommonEn {
 	@override String minutesAgo({required Object num}) => '${num} 分鐘前';
 	@override String hoursAgo({required Object num}) => '${num} 小時前';
 	@override String daysAgo({required Object num}) => '${num} 天前';
-	@override String editedAt({required Object num}) => '編輯於 ${num} 前';
+	@override String editedAt({required Object num}) => '${num} 編輯';
 	@override String get editComment => '編輯評論';
 	@override String get commentUpdated => '評論已更新';
 	@override String get replyComment => '回覆評論';
@@ -223,6 +223,8 @@ class _TranslationsAuthZhTw implements TranslationsAuthEn {
 	@override String get logoutConfirmation => '你確定要登出嗎？';
 	@override String get logoutSuccess => '登出成功';
 	@override String get logoutFailed => '登出失敗';
+	@override String get usernameOrEmail => '用戶名或電子郵件';
+	@override String get pleaseEnterUsernameOrEmail => '請輸入用戶名或電子郵件';
 }
 
 // Path: errors
@@ -272,6 +274,9 @@ class _TranslationsErrorsZhTw implements TranslationsErrorsEn {
 	@override String get errorWhileLoadingPostDetail => '載入帖子詳情時出錯';
 	@override String get invalidPostId => '無效的帖子ID';
 	@override String get forceUpdateNotPermittedToGoBack => '目前處於強制更新狀態，無法返回';
+	@override String get pleaseLoginAgain => '請重新登入';
+	@override String get invalidLogin => '登入失敗，請檢查電子郵件和密碼';
+	@override String get tooManyRequests => '請求過多，請稍後再試';
 }
 
 // Path: friends
@@ -628,7 +633,7 @@ extension on TranslationsZhTw {
 			case 'common.minutesAgo': return ({required Object num}) => '${num} 分鐘前';
 			case 'common.hoursAgo': return ({required Object num}) => '${num} 小時前';
 			case 'common.daysAgo': return ({required Object num}) => '${num} 天前';
-			case 'common.editedAt': return ({required Object num}) => '編輯於 ${num} 前';
+			case 'common.editedAt': return ({required Object num}) => '${num} 編輯';
 			case 'common.editComment': return '編輯評論';
 			case 'common.commentUpdated': return '評論已更新';
 			case 'common.replyComment': return '回覆評論';
@@ -735,6 +740,8 @@ extension on TranslationsZhTw {
 			case 'auth.logoutConfirmation': return '你確定要登出嗎？';
 			case 'auth.logoutSuccess': return '登出成功';
 			case 'auth.logoutFailed': return '登出失敗';
+			case 'auth.usernameOrEmail': return '用戶名或電子郵件';
+			case 'auth.pleaseEnterUsernameOrEmail': return '請輸入用戶名或電子郵件';
 			case 'errors.error': return '錯誤';
 			case 'errors.required': return '此項為必填';
 			case 'errors.invalidEmail': return '電子郵件格式錯誤';
@@ -775,6 +782,9 @@ extension on TranslationsZhTw {
 			case 'errors.errorWhileLoadingPostDetail': return '載入帖子詳情時出錯';
 			case 'errors.invalidPostId': return '無效的帖子ID';
 			case 'errors.forceUpdateNotPermittedToGoBack': return '目前處於強制更新狀態，無法返回';
+			case 'errors.pleaseLoginAgain': return '請重新登入';
+			case 'errors.invalidLogin': return '登入失敗，請檢查電子郵件和密碼';
+			case 'errors.tooManyRequests': return '請求過多，請稍後再試';
 			case 'friends.clickToRestoreFriend': return '點擊恢復朋友';
 			case 'friends.friendsList': return '朋友列表';
 			case 'friends.friendRequests': return '朋友請求';

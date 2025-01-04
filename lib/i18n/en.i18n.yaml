@@ -50,7 +50,7 @@ common:
   minutesAgo: '${num} minutes ago'
   hoursAgo: '${num} hours ago'
   daysAgo: '${num} days ago'
-  editedAt: 'Edited at ${num} ago'
+  editedAt: '${num} edited'
   editComment: Edit Comment
   commentUpdated: Comment Updated
   replyComment: Reply Comment
@@ -158,6 +158,8 @@ auth:
   logoutConfirmation: Are you sure you want to logout?
   logoutSuccess: Logout Success
   logoutFailed: Logout Failed
+  usernameOrEmail: Username or Email
+  pleaseEnterUsernameOrEmail: Please enter username or email
 
 errors:
   error: Error
@@ -200,6 +202,9 @@ errors:
   errorWhileLoadingPostDetail: Error while loading post detail
   invalidPostId: Invalid post ID
   forceUpdateNotPermittedToGoBack: Currently in force update state, cannot go back
+  pleaseLoginAgain: Please login again
+  invalidLogin: Invalid login, Please check your email and password
+  tooManyRequests: Too many requests, please try again later
 friends:
   clickToRestoreFriend: Click to restore friend
   friendsList: Friends List

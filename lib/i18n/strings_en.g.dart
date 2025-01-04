@@ -111,7 +111,7 @@ class TranslationsCommonEn {
 	String minutesAgo({required Object num}) => '${num} minutes ago';
 	String hoursAgo({required Object num}) => '${num} hours ago';
 	String daysAgo({required Object num}) => '${num} days ago';
-	String editedAt({required Object num}) => 'Edited at ${num} ago';
+	String editedAt({required Object num}) => '${num} edited';
 	String get editComment => 'Edit Comment';
 	String get commentUpdated => 'Comment Updated';
 	String get replyComment => 'Reply Comment';
@@ -227,6 +227,8 @@ class TranslationsAuthEn {
 	String get logoutConfirmation => 'Are you sure you want to logout?';
 	String get logoutSuccess => 'Logout Success';
 	String get logoutFailed => 'Logout Failed';
+	String get usernameOrEmail => 'Username or Email';
+	String get pleaseEnterUsernameOrEmail => 'Please enter username or email';
 }
 
 // Path: errors
@@ -276,6 +278,9 @@ class TranslationsErrorsEn {
 	String get errorWhileLoadingPostDetail => 'Error while loading post detail';
 	String get invalidPostId => 'Invalid post ID';
 	String get forceUpdateNotPermittedToGoBack => 'Currently in force update state, cannot go back';
+	String get pleaseLoginAgain => 'Please login again';
+	String get invalidLogin => 'Invalid login, Please check your email and password';
+	String get tooManyRequests => 'Too many requests, please try again later';
 }
 
 // Path: friends
@@ -632,7 +637,7 @@ extension on Translations {
 			case 'common.minutesAgo': return ({required Object num}) => '${num} minutes ago';
 			case 'common.hoursAgo': return ({required Object num}) => '${num} hours ago';
 			case 'common.daysAgo': return ({required Object num}) => '${num} days ago';
-			case 'common.editedAt': return ({required Object num}) => 'Edited at ${num} ago';
+			case 'common.editedAt': return ({required Object num}) => '${num} edited';
 			case 'common.editComment': return 'Edit Comment';
 			case 'common.commentUpdated': return 'Comment Updated';
 			case 'common.replyComment': return 'Reply Comment';
@@ -739,6 +744,8 @@ extension on Translations {
 			case 'auth.logoutConfirmation': return 'Are you sure you want to logout?';
 			case 'auth.logoutSuccess': return 'Logout Success';
 			case 'auth.logoutFailed': return 'Logout Failed';
+			case 'auth.usernameOrEmail': return 'Username or Email';
+			case 'auth.pleaseEnterUsernameOrEmail': return 'Please enter username or email';
 			case 'errors.error': return 'Error';
 			case 'errors.required': return 'This field is required';
 			case 'errors.invalidEmail': return 'Invalid email address';
@@ -779,6 +786,9 @@ extension on Translations {
 			case 'errors.errorWhileLoadingPostDetail': return 'Error while loading post detail';
 			case 'errors.invalidPostId': return 'Invalid post ID';
 			case 'errors.forceUpdateNotPermittedToGoBack': return 'Currently in force update state, cannot go back';
+			case 'errors.pleaseLoginAgain': return 'Please login again';
+			case 'errors.invalidLogin': return 'Invalid login, Please check your email and password';
+			case 'errors.tooManyRequests': return 'Too many requests, please try again later';
 			case 'friends.clickToRestoreFriend': return 'Click to restore friend';
 			case 'friends.friendsList': return 'Friends List';
 			case 'friends.friendRequests': return 'Friend Requests';

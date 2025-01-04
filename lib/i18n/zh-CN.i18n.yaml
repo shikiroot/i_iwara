@@ -52,7 +52,7 @@ common:
   minutesAgo: '${num}分钟前'
   hoursAgo: '${num}小时前'
   daysAgo: '${num}天前'
-  editedAt: '编辑于${num}前'
+  editedAt: '${num}编辑'
   editComment: 编辑评论
   commentUpdated: 评论已更新
   replyComment: 回复评论
@@ -162,6 +162,10 @@ auth:
   logoutConfirmation: 你确定要退出登录吗？
   logoutSuccess: 退出登录成功
   logoutFailed: 退出登录失败
+  usernameOrEmail: 用户名或邮箱
+  pleaseEnterUsernameOrEmail: 请输入用户名或邮箱
+  username: 用户名或邮箱
+  pleaseEnterUsername: 请输入用户名或邮箱
 
 errors:
   error: 错误
@@ -204,6 +208,9 @@ errors:
   errorWhileLoadingPostDetail: 载入帖子详情时出错
   invalidPostId: 无效的帖子ID
   forceUpdateNotPermittedToGoBack: 目前处于强制更新状态，无法返回
+  pleaseLoginAgain: 请重新登录
+  invalidLogin: 登录失败，请检查邮箱和密码
+  tooManyRequests: 请求过多，请稍后再试
 friends:
   clickToRestoreFriend: 点击恢复好友
   friendsList: 好友列表
