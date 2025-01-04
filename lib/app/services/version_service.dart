@@ -68,9 +68,9 @@ class VersionService extends GetxService {
             latestVersion.value,
           );
 
-          if (hasUpdate.value) {
-            await _fetchUpdateInfo(remoteVersion);
+          await _fetchUpdateInfo(remoteVersion);
 
+          if (hasUpdate.value) {
             if (updateInfo.value != null) {
               isForceUpdate.value = updateInfo.value!.forceUpdate;
               if (showDialog) {

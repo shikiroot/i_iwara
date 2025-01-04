@@ -6,7 +6,7 @@ class CommonConstants {
   CommonConstants._internal();
 
   // 应用版本
-  static const String VERSION = '0.0.1';
+  static const String VERSION = '0.1.0';
 
   // 应用图标路径
   static String launcherIconPath = 'assets/icon/launcher_icon_v2.png';

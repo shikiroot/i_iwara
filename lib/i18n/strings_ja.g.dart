@@ -462,6 +462,7 @@ class _TranslationsSettingsJa implements TranslationsSettingsEn {
 	@override String get minVersionUpdateRequired => '現在のバージョンが低すぎます。すぐに更新してください';
 	@override String get forceUpdateTip => 'これは必須アップデートです。できるだけ早く最新バージョンにアップデートしてください';
 	@override String get viewChangelog => '更新内容を表示';
+	@override String get alreadyLatestVersion => 'すでに最新バージョンです';
 }
 
 // Path: signIn
@@ -892,6 +893,7 @@ extension on TranslationsJa {
 			case 'settings.minVersionUpdateRequired': return '現在のバージョンが低すぎます。すぐに更新してください';
 			case 'settings.forceUpdateTip': return 'これは必須アップデートです。できるだけ早く最新バージョンにアップデートしてください';
 			case 'settings.viewChangelog': return '更新内容を表示';
+			case 'settings.alreadyLatestVersion': return 'すでに最新バージョンです';
 			case 'signIn.pleaseLoginFirst': return 'サインインする前にログインしてください';
 			case 'signIn.alreadySignedInToday': return '今日は既にサインインしています！';
 			case 'signIn.youDidNotStickToTheSignIn': return 'サインインを続けることができませんでした。';

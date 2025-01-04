@@ -256,6 +256,19 @@ class _AboutPageState extends State<AboutPage> {
                 ),
               ],
             );
+          } else if (_versionService.latestVersion.value.isNotEmpty) {
+            return ListTile(
+              contentPadding: EdgeInsets.zero,
+              leading: Icon(
+                Icons.check_circle,
+                color: theme.colorScheme.primary,
+              ),
+              title: Text(t.settings.alreadyLatestVersion),
+              trailing: IconButton(
+                icon: const Icon(Icons.refresh),
+                onPressed: _checkUpdate,
+              ),
+            );
           }
 
           return ListTile(

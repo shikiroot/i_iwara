@@ -213,7 +213,7 @@ class NaviService {
     AppService.homeNavigatorKey.currentState?.push(PageRouteBuilder(
       settings: const RouteSettings(name: Routes.SEARCH_RESULT),
       pageBuilder: (context, animation, secondaryAnimation) {
-        return SearchResult();
+        return const SearchResult();
       },
       transitionDuration: const Duration(milliseconds: 200),
       // 从右到左的原生动画

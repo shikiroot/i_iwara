@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:screen_brightness/screen_brightness.dart';
+import 'package:vibration/vibration.dart';
 import 'package:volume_controller/volume_controller.dart';
 
 import '../../../../../services/config_service.dart';
@@ -129,7 +130,11 @@ class _GestureAreaState extends State<GestureArea>
     });
   }
 
-  void _onLongPressStart(LongPressStartDetails details) {
+  void _onLongPressStart(LongPressStartDetails details) async {
+    // 添加震动反馈
+    if (await Vibration.hasVibrator() ?? false) {
+      await Vibration.vibrate(duration: 50);
+    }
     // 如果视频在暂停或buffering状态，不处理
     if (!widget.myVideoStateController.videoPlaying.value ||
         widget.myVideoStateController.videoBuffering.value) {
@@ -219,10 +224,6 @@ class _GestureAreaState extends State<GestureArea>
     }
   }
 
-  void _onHorizontalDragUpdate(DragUpdateDetails details) {
-    // TODO 水平方向拖动调整进度
-  }
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -246,9 +247,6 @@ class _GestureAreaState extends State<GestureArea>
               widget.region == GestureRegion.right
           ? _onVerticalDragUpdate
           : null,
-      // onHorizontalDragUpdate: widget.region == GestureRegion.center
-      //     ? _onHorizontalDragUpdate
-      //     : null,
       onHorizontalDragStart: widget.region == GestureRegion.center ? (details) {
         _horizontalDragStartX = details.localPosition.dx;
         _horizontalDragStartPosition = widget.myVideoStateController.currentPosition.value;

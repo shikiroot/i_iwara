@@ -230,17 +230,8 @@ class _TranslationDialogState extends State<TranslationDialog> {
               padding: const EdgeInsets.all(16),
               child: Row(
                 children: [
-                  const Icon(Icons.translate, size: 20),
-                  const SizedBox(width: 8),
                   _buildLanguageSelector(),
                   const Spacer(),
-                  if (_isTranslating)
-                    const SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    ),
-                  const SizedBox(width: 8),
                   IconButton(
                     icon: const Icon(Icons.close),
                     onPressed: () => Navigator.of(context).pop(),

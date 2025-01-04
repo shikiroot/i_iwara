@@ -50,8 +50,7 @@ class ApiService extends GetxService {
     _dio.interceptors.add(d_dio.InterceptorsWrapper(
       onRequest: (options, handler) {
         if (CommonConstants.enableR18) {
-          // 移除rating参数
-          options.queryParameters.remove('rating');
+          // do nothing
         } else {
           options.queryParameters = {
             ...options.queryParameters,

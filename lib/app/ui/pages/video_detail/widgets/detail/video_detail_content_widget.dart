@@ -365,7 +365,7 @@ class VideoDetailContent extends StatelessWidget {
           avatarUrl: controller.videoInfo.value?.user?.avatar?.avatarUrl,
           defaultAvatarUrl: CommonConstants.defaultAvatarUrl,
           headers: const {'referer': CommonConstants.iwaraBaseUrl},
-          radius: 40,
+          radius: 20,
           isPremium: controller.videoInfo.value?.user?.premium ?? false,
           isAdmin: controller.videoInfo.value?.user?.isAdmin ?? false,
         ),

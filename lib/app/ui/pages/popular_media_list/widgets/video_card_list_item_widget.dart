@@ -6,7 +6,6 @@ import 'package:i_iwara/app/services/app_service.dart';
 import 'package:i_iwara/app/ui/pages/popular_media_list/widgets/video_preview_modal.dart';
 import 'package:i_iwara/app/ui/widgets/avatar_widget.dart';
 import 'package:i_iwara/utils/common_utils.dart';
-import 'package:vibration/vibration.dart';
 
 import '../../../../../common/constants.dart';
 import '../../../../models/video.model.dart';
@@ -44,8 +43,8 @@ class _VideoCardListItemWidgetState extends State<VideoCardListItemWidget> {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         child: InkWell(
           onTap: () => _navigateToDetailPage(context),
-          onSecondaryTap: () => _showDetailsModalWithVibration(context),
-          onLongPress: () => _showDetailsModalWithVibration(context),
+          onSecondaryTap: () => _showDetailsModal(context),
+          onLongPress: () => _showDetailsModal(context),
           hoverColor: Theme.of(context).hoverColor.withOpacity(0.1),
           splashColor: Theme.of(context).splashColor.withOpacity(0.2),
           highlightColor: Theme.of(context).highlightColor.withOpacity(0.1),
@@ -371,10 +370,7 @@ class _VideoCardListItemWidgetState extends State<VideoCardListItemWidget> {
     NaviService.navigateToVideoDetailPage(widget.video.id);
   }
 
-  void _showDetailsModalWithVibration(BuildContext context) async {
-    if (await Vibration.hasVibrator() ?? false) {
-      await Vibration.vibrate(pattern: [500]);
-    }
+  void _showDetailsModal(BuildContext context) async {
 
     if (context.mounted) {
       // 显示预览模态框
