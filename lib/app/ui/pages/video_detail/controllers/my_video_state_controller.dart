@@ -331,6 +331,7 @@ class MyVideoStateController extends GetxController
       );
     } catch (e) {
       // 处理错误
+      LogUtils.e('获取视频源失败: $e', tag: 'MyVideoStateController', error: e);
       videoErrorMessage.value = slang.t.videoDetail.getVideoInfoFailed;
     } finally {
       // 无论成功还是失败，都将加载状态设置为 false

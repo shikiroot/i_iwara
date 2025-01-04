@@ -14,6 +14,8 @@ import '../../../services/app_service.dart';
 import '../../widgets/top_padding_height_widget.dart';
 import 'package:i_iwara/app/ui/pages/subscriptions/controllers/subscription_post_controller.dart';
 import 'package:i_iwara/app/ui/pages/subscriptions/widgets/subscription_post_list.dart';
+import 'package:i_iwara/app/ui/widgets/avatar_widget.dart';
+import 'package:i_iwara/common/constants.dart';
 
 class SubscriptionsPage extends StatefulWidget {
   const SubscriptionsPage({super.key});
@@ -134,27 +136,41 @@ class _SubscriptionsPageState extends State<SubscriptionsPage>
           child: Column(
             children: [
               TopPaddingHeightWidget(),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Row(
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.account_circle),
-                      onPressed: () {
-                        AppService.switchGlobalDrawer();
-                      },
-                    ),
-                    Expanded(
-                      child: Text(
-                        t.common.subscriptions,
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
+              Row(
+                children: [
+                  Obx(() {
+                    if (userService.isLogin) {
+                      return IconButton(
+                        icon: AvatarWidget(
+                          avatarUrl: userService.userAvatar,
+                          radius: 14,
+                          defaultAvatarUrl: CommonConstants.defaultAvatarUrl,
+                          isPremium: userService.currentUser.value?.premium ?? false,
+                          isAdmin: userService.currentUser.value?.isAdmin ?? false,
                         ),
+                        onPressed: () {
+                          AppService.switchGlobalDrawer();
+                        },
+                      );
+                    } else {
+                      return IconButton(
+                        icon: const Icon(Icons.account_circle),
+                        onPressed: () {
+                          AppService.switchGlobalDrawer();
+                        },
+                      );
+                    }
+                  }),
+                  Expanded(
+                    child: Text(
+                      t.common.subscriptions,
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
               Obx(() {
                 RxSet<UserDTO> likedUsers = userPreferenceService.likedUsers;

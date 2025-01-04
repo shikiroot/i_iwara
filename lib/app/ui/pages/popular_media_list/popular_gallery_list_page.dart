@@ -2,7 +2,9 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:i_iwara/app/services/app_service.dart';
+import 'package:i_iwara/app/services/user_service.dart';
 import 'package:i_iwara/app/ui/pages/popular_media_list/widgets/image_model_card_list_item_widget.dart';
+import 'package:i_iwara/app/ui/widgets/avatar_widget.dart';
 import 'package:i_iwara/common/constants.dart';
 
 import '../../../models/sort.model.dart';
@@ -27,6 +29,7 @@ class _PopularGalleryListPageState extends State<PopularGalleryListPage>
   late TabController _tabController;
   late ScrollController _tabBarScrollController;
   final List<GlobalKey> _tabKeys = [];
+  final UserService userService = Get.find<UserService>();
 
   // 查询参数
   List<Tag> tags = [];
@@ -169,12 +172,29 @@ class _PopularGalleryListPageState extends State<PopularGalleryListPage>
           Row(
             children: [
               // 用户头像
-              IconButton(
-                icon: const Icon(Icons.account_circle),
-                onPressed: () {
-                  AppService.switchGlobalDrawer();
-                },
-              ),
+              Obx(() {
+                    if (userService.isLogin) {
+                      return IconButton(
+                        icon: AvatarWidget(
+                          avatarUrl: userService.userAvatar,
+                          radius: 14,
+                          defaultAvatarUrl: CommonConstants.defaultAvatarUrl,
+                          isPremium: userService.currentUser.value?.premium ?? false,
+                          isAdmin: userService.currentUser.value?.isAdmin ?? false,
+                        ),
+                        onPressed: () {
+                          AppService.switchGlobalDrawer();
+                        },
+                      );
+                    } else {
+                      return IconButton(
+                        icon: const Icon(Icons.account_circle),
+                        onPressed: () {
+                          AppService.switchGlobalDrawer();
+                        },
+                      );
+                    }
+                  }),
               // 搜索框
               Expanded(
                 child: TextField(

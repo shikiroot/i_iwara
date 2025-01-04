@@ -126,7 +126,7 @@ class _SubscriptionSelectListState extends State<SubscriptionSelectList> {
   List<Widget> _buildScrollButtons() {
     return [
       Positioned(
-        left: 0,
+        left: -10,
         top: 0,
         bottom: 0,
         child: Center(
@@ -134,7 +134,7 @@ class _SubscriptionSelectListState extends State<SubscriptionSelectList> {
         ),
       ),
       Positioned(
-        right: 0,
+        right: 10,
         top: 0,
         bottom: 0,
         child: Center(
@@ -148,23 +148,18 @@ class _SubscriptionSelectListState extends State<SubscriptionSelectList> {
     return AnimatedOpacity(
       opacity: _showButtons ? 1.0 : 0.0,
       duration: const Duration(milliseconds: 200),
-      child: Material(
-        elevation: 4,
-        borderRadius: BorderRadius.circular(15),
-        child: InkWell(
-          borderRadius: BorderRadius.circular(15),
-          onTap: () => _scrollToPage(isLeft),
-          child: Container(
-            padding: EdgeInsets.all(4),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(15),
-            ),
-            child: Icon(
-              isLeft ? Icons.arrow_back_ios : Icons.arrow_forward_ios,
-              size: 16,
-            ),
-          ),
+      child: FilledButton.tonal(
+        style: FilledButton.styleFrom(
+          shape: const CircleBorder(),
+          padding: const EdgeInsets.all(12),
+          elevation: 0,
+          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+          foregroundColor: Theme.of(context).colorScheme.onSecondaryContainer,
+        ),
+        onPressed: () => _scrollToPage(isLeft),
+        child: Icon(
+          isLeft ? Icons.chevron_left : Icons.chevron_right,
+          size: 24,
         ),
       ),
     );
