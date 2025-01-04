@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:i_iwara/app/models/video_source.model.dart';
 import 'package:i_iwara/i18n/strings.g.dart' as slang;
 import 'package:i_iwara/utils/logger_utils.dart';
@@ -178,5 +179,17 @@ class CommonUtils {
       LogUtils.e('获取文件扩展名失败', tag: 'CommonUtils', error: e);
       return 'unknown';
     }
+  }
+
+  static String getDeviceLocale() {
+    final locale = Get.deviceLocale?.languageCode ?? 'en';
+    switch (locale) {
+      case 'zh':
+        return 'zh-CN';
+      case 'zh-HK':
+      case 'zh-TW':
+        return 'zh-TW';
+    }
+    return locale;
   }
 }

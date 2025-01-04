@@ -67,15 +67,6 @@ class _SettingsPageState extends State<SettingsPage> {
         page: AboutPage(isWideScreen: isWideScreen),
         route: Routes.ABOUT_PAGE,
       ),
-      // ListTile(
-      //   title: Text(t.settings.autoCheckUpdate),
-      //   trailing: Obx(() => Switch(
-      //     value: _configService[ConfigService.AUTO_CHECK_UPDATE],
-      //     onChanged: (value) {
-      //       _configService[ConfigService.AUTO_CHECK_UPDATE] = value;
-      //     },
-      //   )),
-      // ),
     ];
 
     return Scaffold(
@@ -83,7 +74,7 @@ class _SettingsPageState extends State<SettingsPage> {
         title: Text(t.settings.settings, style: const TextStyle(fontWeight: FontWeight.bold)),
         elevation: 2,
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
+        iconTheme: IconThemeData(color: Get.isDarkMode ? Colors.white : null),
       ),
       body: isWideScreen
           ? _buildWideScreenLayout(context, settingItems)
@@ -217,7 +208,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   color: Theme.of(context).primaryColor.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: Icon(item.icon, color: Theme.of(context).primaryColor),
+                child: Icon(item.icon, color: Get.isDarkMode ? Colors.white : null),
               ),
               const SizedBox(width: 16),
               Expanded(

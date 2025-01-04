@@ -332,6 +332,8 @@ settings:
   releaseDate: リリース日
   ignoreThisVersion: このバージョンを無視
   minVersionUpdateRequired: 現在のバージョンが低すぎます。すぐに更新してください
+  forceUpdateTip: "これは必須アップデートです。できるだけ早く最新バージョンにアップデートしてください"
+  viewChangelog: 更新内容を表示
 
 signIn:
   pleaseLoginFirst: サインインする前にログインしてください

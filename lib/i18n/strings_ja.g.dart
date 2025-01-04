@@ -460,6 +460,8 @@ class _TranslationsSettingsJa implements TranslationsSettingsEn {
 	@override String get releaseDate => 'リリース日';
 	@override String get ignoreThisVersion => 'このバージョンを無視';
 	@override String get minVersionUpdateRequired => '現在のバージョンが低すぎます。すぐに更新してください';
+	@override String get forceUpdateTip => 'これは必須アップデートです。できるだけ早く最新バージョンにアップデートしてください';
+	@override String get viewChangelog => '更新内容を表示';
 }
 
 // Path: signIn
@@ -888,6 +890,8 @@ extension on TranslationsJa {
 			case 'settings.releaseDate': return 'リリース日';
 			case 'settings.ignoreThisVersion': return 'このバージョンを無視';
 			case 'settings.minVersionUpdateRequired': return '現在のバージョンが低すぎます。すぐに更新してください';
+			case 'settings.forceUpdateTip': return 'これは必須アップデートです。できるだけ早く最新バージョンにアップデートしてください';
+			case 'settings.viewChangelog': return '更新内容を表示';
 			case 'signIn.pleaseLoginFirst': return 'サインインする前にログインしてください';
 			case 'signIn.alreadySignedInToday': return '今日は既にサインインしています！';
 			case 'signIn.youDidNotStickToTheSignIn': return 'サインインを続けることができませんでした。';

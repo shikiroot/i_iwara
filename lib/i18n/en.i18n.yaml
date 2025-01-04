@@ -330,6 +330,8 @@ settings:
   releaseDate: Release Date
   ignoreThisVersion: Ignore This Version
   minVersionUpdateRequired: Current version is too low, please update as soon as possible
+  forceUpdateTip: "This is a mandatory update. Please update to the latest version as soon as possible"
+  viewChangelog: View Changelog
 
 signIn:
   pleaseLoginFirst: Please login first

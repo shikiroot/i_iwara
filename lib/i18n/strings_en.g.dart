@@ -464,6 +464,8 @@ class TranslationsSettingsEn {
 	String get releaseDate => 'Release Date';
 	String get ignoreThisVersion => 'Ignore This Version';
 	String get minVersionUpdateRequired => 'Current version is too low, please update as soon as possible';
+	String get forceUpdateTip => 'This is a mandatory update. Please update to the latest version as soon as possible';
+	String get viewChangelog => 'View Changelog';
 }
 
 // Path: signIn
@@ -892,6 +894,8 @@ extension on Translations {
 			case 'settings.releaseDate': return 'Release Date';
 			case 'settings.ignoreThisVersion': return 'Ignore This Version';
 			case 'settings.minVersionUpdateRequired': return 'Current version is too low, please update as soon as possible';
+			case 'settings.forceUpdateTip': return 'This is a mandatory update. Please update to the latest version as soon as possible';
+			case 'settings.viewChangelog': return 'View Changelog';
 			case 'signIn.pleaseLoginFirst': return 'Please login first';
 			case 'signIn.alreadySignedInToday': return 'You have already signed in today!';
 			case 'signIn.youDidNotStickToTheSignIn': return 'You did not stick to the sign in.';

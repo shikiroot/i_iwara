@@ -63,9 +63,7 @@ class ConfigService extends GetxService {
     REMOTE_REPO_RELEASE_URL: 'https://github.com/FoxSensei001/i_iwara/releases'.obs,
     REMOTE_REPO_URL: 'https://github.com/FoxSensei001/i_iwara'.obs,
     SETTINGS_SELECTED_INDEX_KEY: 0.obs,
-    // REMOTE_REPO_UPDATE_LOGS_YAML_URL: 'https://raw.githubusercontent.com/FoxSensei001/i_iwara/master/update_logs.yaml'.obs,
-    // TODO http://localhost:3000/static/update_logs.yaml  临时
-    REMOTE_REPO_UPDATE_LOGS_YAML_URL: 'http://localhost:3000/static/update_logs.yaml'.obs,
+    REMOTE_REPO_UPDATE_LOGS_YAML_URL: 'https://raw.githubusercontent.com/FoxSensei001/i_iwara/master/update_logs.yaml'.obs,
     IGNORED_VERSION: ''.obs,
     LAST_CHECK_UPDATE_TIME: 0.obs,
     AUTO_CHECK_UPDATE: true.obs,

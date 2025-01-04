@@ -220,7 +220,6 @@ class _CustomMarkdownBodyState extends State<CustomMarkdownBody> {
   }
 
   void _onTapLink(String text, String? href, String title) async {
-    print('senko 点击的链接是：$href');
     if (href == null) return;
 
     try {

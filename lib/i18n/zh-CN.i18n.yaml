@@ -335,6 +335,8 @@ settings:
   releaseDate: "发布日期"
   ignoreThisVersion: "忽略此版本"
   minVersionUpdateRequired: "当前版本过低，请尽快更新"
+  forceUpdateTip: "此版本为强制更新，请尽快更新到最新版本"
+  viewChangelog: 查看更新日志
 
 signIn:
   pleaseLoginFirst: 请先登录后再签到

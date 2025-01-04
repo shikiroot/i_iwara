@@ -332,6 +332,8 @@ settings:
   releaseDate: 發布日期
   ignoreThisVersion: 忽略此版本
   minVersionUpdateRequired: 當前版本過低，請盡快更新
+  forceUpdateTip: "此版本為強制更新，請盡快更新到最新版本"
+  viewChangelog: 查看更新日誌
 
 
 signIn:

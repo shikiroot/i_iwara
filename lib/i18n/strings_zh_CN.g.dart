@@ -461,6 +461,8 @@ class _TranslationsSettingsZhCn implements TranslationsSettingsEn {
 	@override String get releaseDate => '发布日期';
 	@override String get ignoreThisVersion => '忽略此版本';
 	@override String get minVersionUpdateRequired => '当前版本过低，请尽快更新';
+	@override String get forceUpdateTip => '此版本为强制更新，请尽快更新到最新版本';
+	@override String get viewChangelog => '查看更新日志';
 }
 
 // Path: signIn
@@ -890,6 +892,8 @@ extension on TranslationsZhCn {
 			case 'settings.releaseDate': return '发布日期';
 			case 'settings.ignoreThisVersion': return '忽略此版本';
 			case 'settings.minVersionUpdateRequired': return '当前版本过低，请尽快更新';
+			case 'settings.forceUpdateTip': return '此版本为强制更新，请尽快更新到最新版本';
+			case 'settings.viewChangelog': return '查看更新日志';
 			case 'signIn.pleaseLoginFirst': return '请先登录后再签到';
 			case 'signIn.alreadySignedInToday': return '您今天已经签到过了！';
 			case 'signIn.youDidNotStickToTheSignIn': return '您未能坚持签到。';
