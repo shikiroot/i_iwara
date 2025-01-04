@@ -193,6 +193,7 @@ class _TranslationsCommonJa implements TranslationsCommonEn {
 	@override String get updatedAt => '更新時間';
 	@override String get publishedAt => '発表時間';
 	@override String get externalVideo => '站外動画';
+	@override String get originalText => '原文';
 }
 
 // Path: auth
@@ -704,6 +705,7 @@ extension on TranslationsJa {
 			case 'common.updatedAt': return '更新時間';
 			case 'common.publishedAt': return '発表時間';
 			case 'common.externalVideo': return '站外動画';
+			case 'common.originalText': return '原文';
 			case 'auth.login': return 'ログイン';
 			case 'auth.logout': return 'ログアウト';
 			case 'auth.email': return 'メールアドレス';

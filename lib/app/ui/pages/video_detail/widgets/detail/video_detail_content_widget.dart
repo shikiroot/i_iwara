@@ -8,6 +8,7 @@ import 'package:i_iwara/app/services/video_service.dart';
 import 'package:i_iwara/app/ui/pages/video_detail/widgets/detail/video_description_widget.dart';
 import 'package:i_iwara/app/ui/widgets/MDToastWidget.dart';
 import 'package:i_iwara/app/ui/widgets/avatar_widget.dart';
+import 'package:i_iwara/app/ui/widgets/translation_dialog_widget.dart';
 import 'package:i_iwara/common/enums/media_enums.dart';
 import 'package:i_iwara/utils/common_utils.dart';
 import 'package:oktoast/oktoast.dart';
@@ -195,12 +196,30 @@ class VideoDetailContent extends StatelessWidget {
                 // 视频标题
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: SelectableText.rich(
-                    TextSpan(
-                      text: controller.videoInfo.value?.title ?? '',
-                      style: const TextStyle(
-                          fontSize: 24, fontWeight: FontWeight.bold),
-                    ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // 标题文本
+                      Expanded(
+                        child: SelectableText(
+                          controller.videoInfo.value?.title ?? '',
+                          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      // 翻译按钮
+                      if (controller.videoInfo.value?.title?.isNotEmpty == true)
+                        IconButton(
+                          icon: const Icon(Icons.translate),
+                          onPressed: () {
+                            Get.dialog(
+                              TranslationDialog(
+                                text: controller.videoInfo.value?.title ?? '',
+                              ),
+                            );
+                          },
+                        ),
+                    ],
                   ),
                 ),
                 const SizedBox(height: 8),

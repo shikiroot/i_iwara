@@ -139,6 +139,7 @@ common:
   updatedAt: 更新时间
   publishedAt: 发布时间
   externalVideo: 站外视频
+  originalText: 原文
 
 auth:
   login: 登录

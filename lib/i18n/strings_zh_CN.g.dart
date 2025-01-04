@@ -194,6 +194,7 @@ class _TranslationsCommonZhCn implements TranslationsCommonEn {
 	@override String get updatedAt => '更新时间';
 	@override String get publishedAt => '发布时间';
 	@override String get externalVideo => '站外视频';
+	@override String get originalText => '原文';
 }
 
 // Path: auth
@@ -706,6 +707,7 @@ extension on TranslationsZhCn {
 			case 'common.updatedAt': return '更新时间';
 			case 'common.publishedAt': return '发布时间';
 			case 'common.externalVideo': return '站外视频';
+			case 'common.originalText': return '原文';
 			case 'auth.login': return '登录';
 			case 'auth.logout': return '退出登录';
 			case 'auth.email': return '邮箱';

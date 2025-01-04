@@ -1,8 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:i_iwara/app/services/app_service.dart';
 import 'package:i_iwara/app/ui/widgets/avatar_widget.dart';
 import 'package:i_iwara/app/ui/widgets/follow_button_widget.dart';
+import 'package:i_iwara/app/ui/widgets/translation_dialog_widget.dart';
 import 'package:i_iwara/common/constants.dart';
 import 'package:i_iwara/utils/common_utils.dart';
 import 'package:i_iwara/i18n/strings.g.dart' as slang;
@@ -29,16 +29,36 @@ class PostDetailContent extends StatelessWidget {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        const SizedBox(width: 8),
-        Expanded(
-          child: Text(
-            controller.postInfo.value?.title ?? '',
-            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
       ],
+    );
+  }
+
+  Widget _buildTitle() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: SelectableText(
+              controller.postInfo.value?.title ?? '',
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+          ),
+          if (controller.postInfo.value?.title.isNotEmpty == true)
+            IconButton(
+              icon: const Icon(Icons.translate),
+              onPressed: () {
+                Get.dialog(
+                  TranslationDialog(
+                    text: controller.postInfo.value!.title,
+                  ),
+                );
+              },
+            ),
+        ],
+      ),
     );
   }
 
@@ -405,6 +425,7 @@ class PostDetailContent extends StatelessWidget {
       children: [
         Container(height: paddingTop),
         _buildHeader(context),
+        _buildTitle(),
         const SizedBox(height: 16),
         _buildAuthorInfo(),
         const SizedBox(height: 8),

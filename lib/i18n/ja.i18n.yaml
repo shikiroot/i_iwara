@@ -137,6 +137,7 @@ common:
   updatedAt: 更新時間
   publishedAt: 発表時間
   externalVideo: 站外動画
+  originalText: 原文
 
 auth:
   login: ログイン

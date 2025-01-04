@@ -41,6 +41,8 @@ abstract class Routes {
 
   static const ABOUT_PAGE = '/settings/about';
 
+  static const PHOTO_VIEW_WRAPPER = '/photo_view_wrapper';
+
   static String POST_DETAIL(String id) => '/post/$id';
 }
 

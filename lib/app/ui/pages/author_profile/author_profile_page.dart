@@ -13,10 +13,12 @@ import 'package:i_iwara/app/ui/pages/author_profile/widgets/profile_post_tab_lis
 import 'package:i_iwara/app/ui/pages/author_profile/widgets/profile_video_tab_list_widget.dart';
 import 'package:i_iwara/app/ui/pages/author_profile/widgets/profile_playlist_tab_list_widget.dart';
 import 'package:i_iwara/app/ui/pages/comment/widgets/comment_input_dialog.dart';
+import 'package:i_iwara/app/ui/pages/gallery_detail/widgets/horizontial_image_list.dart';
 import 'package:i_iwara/app/ui/widgets/MDToastWidget.dart';
 import 'package:i_iwara/app/ui/widgets/avatar_widget.dart';
 import 'package:i_iwara/app/ui/widgets/top_padding_height_widget.dart';
 import 'package:i_iwara/utils/common_utils.dart';
+import 'package:i_iwara/utils/image_utils.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -296,11 +298,59 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
             context.width * 43 / 150 > 300 ? 300 : context.width * 43 / 150,
         pinned: true,
         flexibleSpace: FlexibleSpaceBar(
-            background: CachedNetworkImage(
-          imageUrl: profileController.headerBackgroundUrl.value ??
-              CommonConstants.defaultProfileHeaderUrl,
-          fit: BoxFit.cover,
-        )),
+          background: GestureDetector(
+            onTap: () {
+              // 进入图片详情页
+              ImageItem item = ImageItem(
+                  url: profileController.headerBackgroundUrl.value ??
+                      CommonConstants.defaultProfileHeaderUrl,
+                  data: ImageItemData(
+                      id: profileController.author.value?.id ?? '',
+                      url: profileController.headerBackgroundUrl.value ??
+                          CommonConstants.defaultProfileHeaderUrl,
+                      originalUrl:
+                          profileController.headerBackgroundUrl.value ??
+                              CommonConstants.defaultProfileHeaderUrl));
+              final t = slang.Translations.of(context);
+              final menuItems = [
+                MenuItem(
+                  title: t.galleryDetail.copyLink,
+                  icon: Icons.copy,
+                  onTap: () => ImageUtils.copyLink(item),
+                ),
+                MenuItem(
+                  title: t.galleryDetail.copyImage,
+                  icon: Icons.copy,
+                  onTap: () => ImageUtils.copyImage(item),
+                ),
+                if (GetPlatform.isDesktop && !GetPlatform.isWeb)
+                  MenuItem(
+                    title: t.galleryDetail.saveAs,
+                    icon: Icons.download,
+                    onTap: () => ImageUtils.downloadImageForDesktop(item),
+                  ),
+                if (GetPlatform.isIOS || GetPlatform.isAndroid)
+                  MenuItem(
+                    title: t.galleryDetail.saveToAlbum,
+                    icon: Icons.save,
+                    onTap: () => ImageUtils.downloadImageForMobile(item),
+                  ),
+              ];
+              NaviService.navigateToPhotoViewWrapper(
+                  imageItems: [item],
+                  initialIndex: 0,
+                  menuItemsBuilder: (context, item) => menuItems);
+            },
+            child: MouseRegion(
+              cursor: SystemMouseCursors.click, // 添加鼠标悬浮效果
+              child: CachedNetworkImage(
+                imageUrl: profileController.headerBackgroundUrl.value ??
+                    CommonConstants.defaultProfileHeaderUrl,
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+        ),
       ),
       // 用户信息
       SliverToBoxAdapter(

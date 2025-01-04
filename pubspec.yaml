@@ -41,6 +41,7 @@ dependencies:
   sqlite3_flutter_libs: ^0.5.26
   table_calendar: ^3.1.2
   path_provider: ^2.1.5
+  path: ^1.9.0
   loading_more_list: ^7.1.0
   waterfall_flow: ^3.1.0
   share_plus: ^10.1.2

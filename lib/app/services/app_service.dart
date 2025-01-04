@@ -5,6 +5,8 @@ import 'package:i_iwara/app/models/post.model.dart';
 import 'package:i_iwara/app/ui/pages/favorites/my_favorites.dart';
 import 'package:i_iwara/app/ui/pages/follows/follows_page.dart';
 import 'package:i_iwara/app/ui/pages/friends/friends_page.dart';
+import 'package:i_iwara/app/ui/pages/gallery_detail/widgets/horizontial_image_list.dart';
+import 'package:i_iwara/app/ui/pages/gallery_detail/widgets/my_gallery_photo_view_wrapper.dart';
 import 'package:i_iwara/app/ui/pages/history/history_list_page.dart';
 import 'package:i_iwara/app/ui/pages/play_list/play_list.dart';
 import 'package:i_iwara/app/ui/pages/play_list/play_list_detail.dart';
@@ -390,6 +392,20 @@ class NaviService {
             end: Offset.zero,
           ).animate(animation),
           child: child,
+        );
+      },
+    ));
+  }
+
+  /// 跳转到图片详情页
+  static void navigateToPhotoViewWrapper({required List<ImageItem> imageItems, required int initialIndex, required List<MenuItem> Function(dynamic context, dynamic item) menuItemsBuilder}) {
+    AppService.homeNavigatorKey.currentState?.push(PageRouteBuilder(
+      settings: const RouteSettings(name: Routes.PHOTO_VIEW_WRAPPER),
+      pageBuilder: (context, animation, secondaryAnimation) {
+        return MyGalleryPhotoViewWrapper(
+          galleryItems: imageItems,
+          initialIndex: initialIndex,
+          menuItemsBuilder: menuItemsBuilder,
         );
       },
     ));

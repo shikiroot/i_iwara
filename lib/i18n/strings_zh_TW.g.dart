@@ -193,6 +193,7 @@ class _TranslationsCommonZhTw implements TranslationsCommonEn {
 	@override String get updatedAt => '更新時間';
 	@override String get publishedAt => '發布時間';
 	@override String get externalVideo => '站外影片';
+	@override String get originalText => '原文';
 }
 
 // Path: auth
@@ -704,6 +705,7 @@ extension on TranslationsZhTw {
 			case 'common.updatedAt': return '更新時間';
 			case 'common.publishedAt': return '發布時間';
 			case 'common.externalVideo': return '站外影片';
+			case 'common.originalText': return '原文';
 			case 'auth.login': return '登入';
 			case 'auth.logout': return '登出';
 			case 'auth.email': return '電子郵件';
