@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:i_iwara/app/models/video_source.model.dart';
 import 'package:i_iwara/i18n/strings.g.dart' as slang;
+import 'package:i_iwara/utils/logger_utils.dart';
 import '../app/ui/pages/video_detail/controllers/my_video_state_controller.dart';
 
 class CommonUtils {
@@ -164,6 +165,18 @@ class CommonUtils {
         double result = num / 1000000000;
         return '${formatNumber(result)}B';
       }
+    }
+  }
+
+  /// 获取文件扩展名
+  static String getFileExtension(String url) {
+    try {
+      final uri = Uri.parse(url);
+      final path = uri.path;
+      return path.substring(path.lastIndexOf('.') + 1).toLowerCase();
+    } catch (e) {
+      LogUtils.e('获取文件扩展名失败', tag: 'CommonUtils', error: e);
+      return 'unknown';
     }
   }
 }

@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:i_iwara/app/services/app_service.dart';
 import 'package:i_iwara/app/ui/pages/gallery_detail/widgets/horizontial_image_list.dart';
 import 'package:i_iwara/app/ui/widgets/MDToastWidget.dart';
+import 'package:i_iwara/utils/common_utils.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:photo_view/photo_view.dart';
@@ -231,16 +232,6 @@ class _MyGalleryPhotoViewWrapperState extends State<MyGalleryPhotoViewWrapper> {
     _overlayEntry = null;
   }
 
-  String _getFileExtension(String url) {
-    try {
-      final uri = Uri.parse(url);
-      final path = uri.path;
-      return path.substring(path.lastIndexOf('.') + 1).toLowerCase();
-    } catch (e) {
-      return 'unknown';
-    }
-  }
-
   void _showImageMenu(BuildContext context, ImageItem item, Offset position) {
     _hideMenu();
     // 计算菜单显示位置
@@ -396,7 +387,7 @@ class _MyGalleryPhotoViewWrapperState extends State<MyGalleryPhotoViewWrapper> {
                           errorBuilder: (context, error, stackTrace) {
                             // 如果是Invalid image data错误，说明图片格式不支持
                             // 获取文件扩展名
-                            final fileExtension = _getFileExtension(imageUrl);
+                            final fileExtension = CommonUtils.getFileExtension(imageUrl);
 
                             if (error is Exception &&
                                 error
