@@ -420,18 +420,16 @@ class PostDetailContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      spacing: 8,
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
         Container(height: paddingTop),
         _buildHeader(context),
-        _buildTitle(),
-        const SizedBox(height: 16),
         _buildAuthorInfo(),
-        const SizedBox(height: 8),
-        _buildTimeInfo(context),
-        const SizedBox(height: 16),
+        _buildTitle(),
         _buildContent(context),
+        _buildTimeInfo(context),
       ],
     );
   }
