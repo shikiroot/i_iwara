@@ -271,6 +271,7 @@ class _TranslationsErrorsJa implements TranslationsErrorsEn {
 	@override String get errorWhileLoadingPost => '投稿の取得中にエラーが発生しました';
 	@override String get errorWhileLoadingPostDetail => '投稿詳細の取得中にエラーが発生しました';
 	@override String get invalidPostId => '無効な投稿IDです';
+	@override String get forceUpdateNotPermittedToGoBack => '現在強制更新状態です。戻ることはできません';
 }
 
 // Path: friends
@@ -454,6 +455,11 @@ class _TranslationsSettingsJa implements TranslationsSettingsEn {
 	@override String get issueReport => '問題報告';
 	@override String get openSourceLicense => 'オープンソースライセンス';
 	@override String get checkForUpdatesFailed => '更新のチェックに失敗しました。後でもう一度お試しください';
+	@override String get autoCheckUpdate => '自動更新';
+	@override String get updateContent => '更新内容';
+	@override String get releaseDate => 'リリース日';
+	@override String get ignoreThisVersion => 'このバージョンを無視';
+	@override String get minVersionUpdateRequired => '現在のバージョンが低すぎます。すぐに更新してください';
 }
 
 // Path: signIn
@@ -765,6 +771,7 @@ extension on TranslationsJa {
 			case 'errors.errorWhileLoadingPost': return '投稿の取得中にエラーが発生しました';
 			case 'errors.errorWhileLoadingPostDetail': return '投稿詳細の取得中にエラーが発生しました';
 			case 'errors.invalidPostId': return '無効な投稿IDです';
+			case 'errors.forceUpdateNotPermittedToGoBack': return '現在強制更新状態です。戻ることはできません';
 			case 'friends.clickToRestoreFriend': return '友達を復元するにはクリックしてください';
 			case 'friends.friendsList': return '友達リスト';
 			case 'friends.friendRequests': return '友達リクエスト';
@@ -876,6 +883,11 @@ extension on TranslationsJa {
 			case 'settings.issueReport': return '問題報告';
 			case 'settings.openSourceLicense': return 'オープンソースライセンス';
 			case 'settings.checkForUpdatesFailed': return '更新のチェックに失敗しました。後でもう一度お試しください';
+			case 'settings.autoCheckUpdate': return '自動更新';
+			case 'settings.updateContent': return '更新内容';
+			case 'settings.releaseDate': return 'リリース日';
+			case 'settings.ignoreThisVersion': return 'このバージョンを無視';
+			case 'settings.minVersionUpdateRequired': return '現在のバージョンが低すぎます。すぐに更新してください';
 			case 'signIn.pleaseLoginFirst': return 'サインインする前にログインしてください';
 			case 'signIn.alreadySignedInToday': return '今日は既にサインインしています！';
 			case 'signIn.youDidNotStickToTheSignIn': return 'サインインを続けることができませんでした。';

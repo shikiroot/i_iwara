@@ -200,6 +200,7 @@ errors:
   errorWhileLoadingPost: 載入帖子時出錯
   errorWhileLoadingPostDetail: 載入帖子詳情時出錯
   invalidPostId: 無效的帖子ID
+  forceUpdateNotPermittedToGoBack: 目前處於強制更新狀態，無法返回
 friends:
   clickToRestoreFriend: 點擊恢復朋友
   friendsList: 朋友列表
@@ -326,6 +327,11 @@ settings:
   issueReport: 問題回報
   openSourceLicense: 開源許可
   checkForUpdatesFailed: 檢查更新失敗，請稍後重試
+  autoCheckUpdate: 自動檢查更新
+  updateContent: 更新內容
+  releaseDate: 發布日期
+  ignoreThisVersion: 忽略此版本
+  minVersionUpdateRequired: 當前版本過低，請盡快更新
 
 
 signIn:

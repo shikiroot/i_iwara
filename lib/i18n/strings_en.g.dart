@@ -275,6 +275,7 @@ class TranslationsErrorsEn {
 	String get errorWhileLoadingPost => 'Error while loading post';
 	String get errorWhileLoadingPostDetail => 'Error while loading post detail';
 	String get invalidPostId => 'Invalid post ID';
+	String get forceUpdateNotPermittedToGoBack => 'Currently in force update state, cannot go back';
 }
 
 // Path: friends
@@ -458,6 +459,11 @@ class TranslationsSettingsEn {
 	String get issueReport => 'Issue Report';
 	String get openSourceLicense => 'Open Source License';
 	String get checkForUpdatesFailed => 'Check for updates failed, please try again later';
+	String get autoCheckUpdate => 'Auto Check Update';
+	String get updateContent => 'Update Content';
+	String get releaseDate => 'Release Date';
+	String get ignoreThisVersion => 'Ignore This Version';
+	String get minVersionUpdateRequired => 'Current version is too low, please update as soon as possible';
 }
 
 // Path: signIn
@@ -769,6 +775,7 @@ extension on Translations {
 			case 'errors.errorWhileLoadingPost': return 'Error while loading post';
 			case 'errors.errorWhileLoadingPostDetail': return 'Error while loading post detail';
 			case 'errors.invalidPostId': return 'Invalid post ID';
+			case 'errors.forceUpdateNotPermittedToGoBack': return 'Currently in force update state, cannot go back';
 			case 'friends.clickToRestoreFriend': return 'Click to restore friend';
 			case 'friends.friendsList': return 'Friends List';
 			case 'friends.friendRequests': return 'Friend Requests';
@@ -880,6 +887,11 @@ extension on Translations {
 			case 'settings.issueReport': return 'Issue Report';
 			case 'settings.openSourceLicense': return 'Open Source License';
 			case 'settings.checkForUpdatesFailed': return 'Check for updates failed, please try again later';
+			case 'settings.autoCheckUpdate': return 'Auto Check Update';
+			case 'settings.updateContent': return 'Update Content';
+			case 'settings.releaseDate': return 'Release Date';
+			case 'settings.ignoreThisVersion': return 'Ignore This Version';
+			case 'settings.minVersionUpdateRequired': return 'Current version is too low, please update as soon as possible';
 			case 'signIn.pleaseLoginFirst': return 'Please login first';
 			case 'signIn.alreadySignedInToday': return 'You have already signed in today!';
 			case 'signIn.youDidNotStickToTheSignIn': return 'You did not stick to the sign in.';

@@ -8,6 +8,12 @@ class CommonConstants {
   // 应用版本
   static const String VERSION = '0.0.1';
 
+  // 应用图标路径
+  static String launcherIconPath = 'assets/icon/launcher_icon_v2.png';
+
+  // 是否强制更新
+  static bool isForceUpdate = false;
+
   // 网站基础URL
   static const String iwaraBaseUrl = 'https://www.iwara.tv';
 

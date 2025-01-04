@@ -201,6 +201,7 @@ errors:
   errorWhileLoadingPost: 投稿の取得中にエラーが発生しました
   errorWhileLoadingPostDetail: 投稿詳細の取得中にエラーが発生しました
   invalidPostId: 無効な投稿IDです
+  forceUpdateNotPermittedToGoBack: 現在強制更新状態です。戻ることはできません
 friends:
   clickToRestoreFriend: 友達を復元するにはクリックしてください
   friendsList: 友達リスト
@@ -326,6 +327,11 @@ settings:
   issueReport: 問題報告
   openSourceLicense: オープンソースライセンス
   checkForUpdatesFailed: 更新のチェックに失敗しました。後でもう一度お試しください
+  autoCheckUpdate: 自動更新
+  updateContent: 更新内容
+  releaseDate: リリース日
+  ignoreThisVersion: このバージョンを無視
+  minVersionUpdateRequired: 現在のバージョンが低すぎます。すぐに更新してください
 
 signIn:
   pleaseLoginFirst: サインインする前にログインしてください

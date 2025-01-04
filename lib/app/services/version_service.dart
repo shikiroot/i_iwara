@@ -1,10 +1,14 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:i_iwara/app/services/app_service.dart';
 import 'package:i_iwara/app/services/config_service.dart';
 import 'package:i_iwara/common/constants.dart';
 import 'package:i_iwara/i18n/strings.g.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
 import 'package:yaml/yaml.dart';
+import 'package:i_iwara/app/models/update_info.model.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class VersionService extends GetxService {
   final ConfigService _configService = Get.find();
@@ -15,26 +19,46 @@ class VersionService extends GetxService {
   final hasUpdate = false.obs;
   final isChecking = false.obs;
   final errorMessage = ''.obs;
+  final updateInfo = Rxn<UpdateInfo>();
   
+  final isForceUpdate = false.obs;
+  final needMinVersionUpdate = false.obs;
+
   Future<VersionService> init() async {
     // 从 pubspec.yaml 读取当前版本
-    currentVersion.value = const String.fromEnvironment('VERSION', 
-      defaultValue: CommonConstants.VERSION);
+    currentVersion.value = CommonConstants.VERSION;
     return this;
   }
 
-  Future<void> checkUpdate() async {
+  /// 自动检查更新
+  void doAutoCheckUpdate() async {
+    if (_configService[ConfigService.AUTO_CHECK_UPDATE]) {
+      final lastCheckTime = _configService[ConfigService.LAST_CHECK_UPDATE_TIME];
+      final now = DateTime.now().millisecondsSinceEpoch;
+      
+      LogUtils.d('自动检查更新 lastCheckTime: $lastCheckTime, now: $now, '
+          'diff: ${(now - lastCheckTime) > 24 * 60 * 60 * 1000}', 'VersionService');
+      if (now - lastCheckTime > 24 * 60 * 60 * 1000) {
+        checkUpdate(showDialog: true);
+      }
+    }
+  }
+
+  /// 检查更新
+  Future<void> checkUpdate({bool showDialog = false}) async {
     try {
       isChecking.value = true;
       errorMessage.value = '';
       
       final response = await _dio.get(
-        _configService[ConfigService.REMOTE_REPO_PUB_SPEC_YAML_URL],
+        _configService[ConfigService.REMOTE_REPO_UPDATE_LOGS_YAML_URL],
       );
       
       if (response.statusCode == 200) {
         final yaml = loadYaml(response.data);
-        final remoteVersion = yaml['version']?.toString().split('+')[0];
+        final remoteVersion = yaml['currentVersion']?.toString().split('+')[0];
+
+        LogUtils.d('远程版本: $remoteVersion', 'VersionService');
         
         if (remoteVersion != null) {
           latestVersion.value = remoteVersion;
@@ -42,8 +66,30 @@ class VersionService extends GetxService {
             currentVersion.value,
             latestVersion.value,
           );
+          
+          if (hasUpdate.value) {
+            await _fetchUpdateInfo(remoteVersion);
+            
+            if (updateInfo.value != null) {
+              isForceUpdate.value = updateInfo.value!.forceUpdate;
+              CommonConstants.isForceUpdate = isForceUpdate.value;
+              needMinVersionUpdate.value = _compareVersions(
+                currentVersion.value,
+                updateInfo.value!.minVersion,
+              );
+            }
+            
+            if (showDialog && 
+                latestVersion.value != _configService[ConfigService.IGNORED_VERSION]) {
+              _showUpdateDialog();
+            }
+          }
         }
       }
+      
+      _configService[ConfigService.LAST_CHECK_UPDATE_TIME] = 
+          DateTime.now().millisecondsSinceEpoch;
+          
     } catch (e) {
       LogUtils.e('检查更新失败', error: e, tag: 'VersionService');
       errorMessage.value = t.settings.checkForUpdatesFailed;
@@ -51,6 +97,93 @@ class VersionService extends GetxService {
     } finally {
       isChecking.value = false;
     }
+  }
+
+  /// 获取更新日志
+  Future<void> _fetchUpdateInfo(String version) async {
+    try {
+      final response = await _dio.get(
+        _configService[ConfigService.REMOTE_REPO_UPDATE_LOGS_YAML_URL],
+      );
+      
+      if (response.statusCode == 200) {
+        final yaml = loadYaml(response.data);
+        final updates = yaml['updates'] as YamlList;
+        
+        for (var update in updates) {
+          if (update['version'] == version) {
+            updateInfo.value = UpdateInfo.fromYaml(update);
+            break;
+          }
+        }
+      }
+    } catch (e) {
+      LogUtils.e('获取更新日志失败', error: e, tag: 'VersionService');
+    }
+  }
+
+  /// 显示更新对话框
+  void _showUpdateDialog() {
+    Get.dialog(
+      PopScope(
+        canPop: !isForceUpdate.value,
+        onPopInvokedWithResult: (didPop, result) {
+          if (didPop) {
+            AppService.tryPop();
+          }
+        },
+        child: AlertDialog(
+          title: Text(t.settings.newVersionAvailable),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('${t.settings.latestVersion}: ${latestVersion.value}'),
+              if (updateInfo.value != null) ...[
+                const SizedBox(height: 8),
+                Text('${t.settings.releaseDate}: ${updateInfo.value!.date}'),
+                const SizedBox(height: 8),
+                Text(t.settings.updateContent),
+                ...updateInfo.value!.changes.map((change) => 
+                  Padding(
+                    padding: const EdgeInsets.only(left: 16, top: 4),
+                    child: Text('• $change'),
+                  )
+                ),
+              ],
+              if (needMinVersionUpdate.value)
+                Padding(
+                  padding: const EdgeInsets.only(top: 16),
+                  child: Text(
+                    t.settings.minVersionUpdateRequired,
+                    style: TextStyle(color: Get.theme.colorScheme.error),
+                  ),
+                ),
+            ],
+          ),
+          actions: [
+            if (!isForceUpdate.value) ...[
+              TextButton(
+                onPressed: () {
+                  _configService[ConfigService.IGNORED_VERSION] = latestVersion.value;
+                  AppService.tryPop();
+                },
+                child: Text(t.settings.ignoreThisVersion),
+              ),
+              TextButton(
+                onPressed: () => AppService.tryPop(),
+                child: Text(t.common.cancel),
+              ),
+            ],
+            ElevatedButton(
+              onPressed: () => _openReleaseUrl(),
+              child: Text(t.settings.update),
+            ),
+          ],
+        ),
+      ),
+      barrierDismissible: !isForceUpdate.value,
+    );
   }
 
   bool _compareVersions(String current, String latest) {
@@ -68,5 +201,14 @@ class VersionService extends GetxService {
     }
     
     return false;
+  }
+
+  Future<void> _openReleaseUrl() async {
+    final url = Uri.parse(_configService[ConfigService.REMOTE_REPO_RELEASE_URL]);
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    } else {
+      LogUtils.e('无法打开更新链接', tag: 'VersionService');
+    }
   }
 } 

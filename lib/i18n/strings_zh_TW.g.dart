@@ -271,6 +271,7 @@ class _TranslationsErrorsZhTw implements TranslationsErrorsEn {
 	@override String get errorWhileLoadingPost => '載入帖子時出錯';
 	@override String get errorWhileLoadingPostDetail => '載入帖子詳情時出錯';
 	@override String get invalidPostId => '無效的帖子ID';
+	@override String get forceUpdateNotPermittedToGoBack => '目前處於強制更新狀態，無法返回';
 }
 
 // Path: friends
@@ -454,6 +455,11 @@ class _TranslationsSettingsZhTw implements TranslationsSettingsEn {
 	@override String get issueReport => '問題回報';
 	@override String get openSourceLicense => '開源許可';
 	@override String get checkForUpdatesFailed => '檢查更新失敗，請稍後重試';
+	@override String get autoCheckUpdate => '自動檢查更新';
+	@override String get updateContent => '更新內容';
+	@override String get releaseDate => '發布日期';
+	@override String get ignoreThisVersion => '忽略此版本';
+	@override String get minVersionUpdateRequired => '當前版本過低，請盡快更新';
 }
 
 // Path: signIn
@@ -765,6 +771,7 @@ extension on TranslationsZhTw {
 			case 'errors.errorWhileLoadingPost': return '載入帖子時出錯';
 			case 'errors.errorWhileLoadingPostDetail': return '載入帖子詳情時出錯';
 			case 'errors.invalidPostId': return '無效的帖子ID';
+			case 'errors.forceUpdateNotPermittedToGoBack': return '目前處於強制更新狀態，無法返回';
 			case 'friends.clickToRestoreFriend': return '點擊恢復朋友';
 			case 'friends.friendsList': return '朋友列表';
 			case 'friends.friendRequests': return '朋友請求';
@@ -876,6 +883,11 @@ extension on TranslationsZhTw {
 			case 'settings.issueReport': return '問題回報';
 			case 'settings.openSourceLicense': return '開源許可';
 			case 'settings.checkForUpdatesFailed': return '檢查更新失敗，請稍後重試';
+			case 'settings.autoCheckUpdate': return '自動檢查更新';
+			case 'settings.updateContent': return '更新內容';
+			case 'settings.releaseDate': return '發布日期';
+			case 'settings.ignoreThisVersion': return '忽略此版本';
+			case 'settings.minVersionUpdateRequired': return '當前版本過低，請盡快更新';
 			case 'signIn.pleaseLoginFirst': return '請先登入後再簽到';
 			case 'signIn.alreadySignedInToday': return '您今天已經簽到過了！';
 			case 'signIn.youDidNotStickToTheSignIn': return '您未能持續簽到。';

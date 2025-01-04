@@ -67,6 +67,15 @@ class _SettingsPageState extends State<SettingsPage> {
         page: AboutPage(isWideScreen: isWideScreen),
         route: Routes.ABOUT_PAGE,
       ),
+      // ListTile(
+      //   title: Text(t.settings.autoCheckUpdate),
+      //   trailing: Obx(() => Switch(
+      //     value: _configService[ConfigService.AUTO_CHECK_UPDATE],
+      //     onChanged: (value) {
+      //       _configService[ConfigService.AUTO_CHECK_UPDATE] = value;
+      //     },
+      //   )),
+      // ),
     ];
 
     return Scaffold(

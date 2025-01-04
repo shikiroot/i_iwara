@@ -203,6 +203,7 @@ errors:
   errorWhileLoadingPost: 载入帖子时出错
   errorWhileLoadingPostDetail: 载入帖子详情时出错
   invalidPostId: 无效的帖子ID
+  forceUpdateNotPermittedToGoBack: 目前处于强制更新状态，无法返回
 friends:
   clickToRestoreFriend: 点击恢复好友
   friendsList: 好友列表
@@ -329,6 +330,11 @@ settings:
   issueReport: 问题反馈
   openSourceLicense: 开源许可
   checkForUpdatesFailed: 检查更新失败，请稍后重试
+  autoCheckUpdate: "自动检查更新"
+  updateContent: "更新内容："
+  releaseDate: "发布日期"
+  ignoreThisVersion: "忽略此版本"
+  minVersionUpdateRequired: "当前版本过低，请尽快更新"
 
 signIn:
   pleaseLoginFirst: 请先登录后再签到

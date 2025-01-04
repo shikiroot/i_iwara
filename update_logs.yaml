@@ -1,0 +1,26 @@
+# # 当前版本
+currentVersion: "0.1.0"
+# # 更新日志
+# # 格式介绍
+# # 1. version: 版本号
+# # 2. date: 更新日期
+# # 3. changes: 更新内容
+# # 4. forceUpdate: 是否强制更新
+# # 5. minVersion: 最小版本号
+updates:
+  - version: "0.1.0"
+    date: "2025-01-04"
+    changes:
+      - "新增自动更新检查功能"
+      - "新增帖子和相关功能"
+      - "提高软件稳定性"
+      - "优化软件流畅度"
+    forceUpdate: true
+    minVersion: "0.1.0"
+    
+  - version: "0.0.1"
+    date: "2025-01-01" 
+    changes:
+      - "初始版本发布"
+    forceUpdate: false
+    minVersion: "0.0.1" 

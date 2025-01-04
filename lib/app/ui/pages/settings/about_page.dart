@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:i_iwara/app/services/config_service.dart';
 import 'package:i_iwara/app/services/version_service.dart';
 import 'package:i_iwara/app/ui/pages/settings/widgets/settings_app_bar.dart';
+import 'package:i_iwara/common/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:i_iwara/i18n/strings.g.dart' as slang;
 
@@ -43,7 +44,7 @@ class _AboutPageState extends State<AboutPage> {
       applicationIcon: ClipRRect(
         borderRadius: BorderRadius.circular(12),
         child: Image.asset(
-          'assets/icon/launcher_icon_v2.png',
+          CommonConstants.launcherIconPath,
           width: 48,
           height: 48,
         ),
@@ -74,7 +75,7 @@ class _AboutPageState extends State<AboutPage> {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(16),
                     child: Image.asset(
-                      'assets/icon/launcher_icon_v2.png',
+                      CommonConstants.launcherIconPath,
                       width: 80,
                       height: 80,
                     )

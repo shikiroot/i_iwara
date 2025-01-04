@@ -13,14 +13,17 @@ import 'package:i_iwara/app/ui/pages/play_list/play_list_detail.dart';
 import 'package:i_iwara/app/ui/pages/video_detail/controllers/my_video_state_controller.dart';
 import 'package:i_iwara/app/ui/pages/video_detail/video_detail_page_v2.dart';
 import 'package:i_iwara/app/ui/pages/video_detail/widgets/player/my_video_screen.dart';
+import 'package:i_iwara/app/ui/widgets/MDToastWidget.dart';
+import 'package:i_iwara/common/constants.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
+import 'package:oktoast/oktoast.dart';
 
 import '../routes/app_routes.dart';
 import '../ui/pages/author_profile/author_profile_page.dart';
 import '../ui/pages/gallery_detail/gallery_detail_page.dart';
 import '../ui/pages/search/search_result.dart';
 import '../ui/pages/post_detail/post_detail_page.dart';
-
+import 'package:i_iwara/i18n/strings.g.dart' as slang;
 class AppService extends GetxService {
   // 默认标题栏高度
   static const double titleBarHeight = 26.0;
@@ -82,6 +85,10 @@ class AppService extends GetxService {
 
   static void tryPop() {
     LogUtils.d('tryPop', 'AppService');
+    if (CommonConstants.isForceUpdate) {
+      showToastWidget(MDToastWidget(message: slang.t.errors.forceUpdateNotPermittedToGoBack, type: MDToastType.error));
+      return;
+    }
     if (AppService.globalDrawerKey.currentState!.isDrawerOpen) {
       AppService.globalDrawerKey.currentState!.openEndDrawer();
       LogUtils.d('关闭Drawer', 'AppService');

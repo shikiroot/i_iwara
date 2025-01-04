@@ -199,6 +199,7 @@ errors:
   errorWhileLoadingPost: Error while loading post
   errorWhileLoadingPostDetail: Error while loading post detail
   invalidPostId: Invalid post ID
+  forceUpdateNotPermittedToGoBack: Currently in force update state, cannot go back
 friends:
   clickToRestoreFriend: Click to restore friend
   friendsList: Friends List
@@ -324,6 +325,11 @@ settings:
   issueReport: Issue Report
   openSourceLicense: Open Source License
   checkForUpdatesFailed: Check for updates failed, please try again later
+  autoCheckUpdate: Auto Check Update
+  updateContent: Update Content
+  releaseDate: Release Date
+  ignoreThisVersion: Ignore This Version
+  minVersionUpdateRequired: Current version is too low, please update as soon as possible
 
 signIn:
   pleaseLoginFirst: Please login first
