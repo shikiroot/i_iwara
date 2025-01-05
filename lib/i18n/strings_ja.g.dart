@@ -194,6 +194,8 @@ class _TranslationsCommonJa implements TranslationsCommonEn {
 	@override String get publishedAt => '発表時間';
 	@override String get externalVideo => '站外動画';
 	@override String get originalText => '原文';
+	@override String get showOriginalText => '原文を表示';
+	@override String get showProcessedText => '処理後の原文を表示';
 }
 
 // Path: auth
@@ -720,6 +722,8 @@ extension on TranslationsJa {
 			case 'common.publishedAt': return '発表時間';
 			case 'common.externalVideo': return '站外動画';
 			case 'common.originalText': return '原文';
+			case 'common.showOriginalText': return '原文を表示';
+			case 'common.showProcessedText': return '処理後の原文を表示';
 			case 'auth.login': return 'ログイン';
 			case 'auth.logout': return 'ログアウト';
 			case 'auth.email': return 'メールアドレス';

@@ -137,6 +137,8 @@ common:
   publishedAt: Published At
   externalVideo: External Video
   originalText: Original Text
+  showOriginalText: Show Original Text
+  showProcessedText: Show Processed Text
 auth:
   login: Login
   logout: Logout

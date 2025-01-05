@@ -137,6 +137,8 @@ common:
   publishedAt: 發布時間
   externalVideo: 站外影片
   originalText: 原文
+  showOriginalText: 顯示原始文本
+  showProcessedText: 顯示處理後文本
 
 auth:
   login: 登入

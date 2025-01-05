@@ -140,6 +140,8 @@ common:
   publishedAt: 发布时间
   externalVideo: 站外视频
   originalText: 原文
+  showOriginalText: 显示原始文本
+  showProcessedText: 显示处理后文本
 
 auth:
   login: 登录

@@ -198,6 +198,8 @@ class TranslationsCommonEn {
 	String get publishedAt => 'Published At';
 	String get externalVideo => 'External Video';
 	String get originalText => 'Original Text';
+	String get showOriginalText => 'Show Original Text';
+	String get showProcessedText => 'Show Processed Text';
 }
 
 // Path: auth
@@ -724,6 +726,8 @@ extension on Translations {
 			case 'common.publishedAt': return 'Published At';
 			case 'common.externalVideo': return 'External Video';
 			case 'common.originalText': return 'Original Text';
+			case 'common.showOriginalText': return 'Show Original Text';
+			case 'common.showProcessedText': return 'Show Processed Text';
 			case 'auth.login': return 'Login';
 			case 'auth.logout': return 'Logout';
 			case 'auth.email': return 'Email';

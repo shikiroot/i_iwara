@@ -138,6 +138,8 @@ common:
   publishedAt: 発表時間
   externalVideo: 站外動画
   originalText: 原文
+  showOriginalText: 原文を表示
+  showProcessedText: 処理後の原文を表示
 
 auth:
   login: ログイン

@@ -194,6 +194,8 @@ class _TranslationsCommonZhTw implements TranslationsCommonEn {
 	@override String get publishedAt => '發布時間';
 	@override String get externalVideo => '站外影片';
 	@override String get originalText => '原文';
+	@override String get showOriginalText => '顯示原始文本';
+	@override String get showProcessedText => '顯示處理後文本';
 }
 
 // Path: auth
@@ -720,6 +722,8 @@ extension on TranslationsZhTw {
 			case 'common.publishedAt': return '發布時間';
 			case 'common.externalVideo': return '站外影片';
 			case 'common.originalText': return '原文';
+			case 'common.showOriginalText': return '顯示原始文本';
+			case 'common.showProcessedText': return '顯示處理後文本';
 			case 'auth.login': return '登入';
 			case 'auth.logout': return '登出';
 			case 'auth.email': return '電子郵件';
