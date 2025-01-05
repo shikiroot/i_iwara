@@ -177,26 +177,27 @@ class BottomToolbar extends StatelessWidget {
                         },
                       ),
                     // 全屏按钮
-                    _buildIconButton(
-                      tooltip: currentScreenIsFullScreen
-                          ? t.videoDetail.exitSystemFullscreen
-                          : t.videoDetail.enterSystemFullscreen,
-                      icon: Icon(
-                        currentScreenIsFullScreen
-                            ? Icons.fullscreen_exit
-                            : Icons.fullscreen,
-                        color: Colors.white,
+                    if (!myVideoStateController.isDesktopAppFullScreen.value)
+                      _buildIconButton(
+                        tooltip: currentScreenIsFullScreen
+                            ? t.videoDetail.exitSystemFullscreen
+                            : t.videoDetail.enterSystemFullscreen,
+                        icon: Icon(
+                          currentScreenIsFullScreen
+                              ? Icons.fullscreen_exit
+                              : Icons.fullscreen,
+                          color: Colors.white,
+                        ),
+                        onPressed: () {
+                          if (currentScreenIsFullScreen) {
+                            // 退出系统全屏
+                            myVideoStateController.exitFullscreen();
+                          } else {
+                            // 进入系统全屏
+                            myVideoStateController.enterFullscreen();
+                          }
+                        },
                       ),
-                      onPressed: () {
-                        if (currentScreenIsFullScreen) {
-                          // 退出系统全屏
-                          myVideoStateController.exitFullscreen();
-                        } else {
-                          // 进入系统全屏
-                          myVideoStateController.enterFullscreen();
-                        }
-                      },
-                    ),
                   ],
                 ),
               ],

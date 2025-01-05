@@ -40,16 +40,6 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> {
   late CommentController commentController;
   late RelatedMediasController relatedVideoController;
 
-  // 添加路由变化回调
-  void _onRouteChange(Route? route, Route? previousRoute) {
-    // 当前页面被覆盖时暂停视频
-    if (route != null && route.settings.name != Routes.VIDEO_DETAIL(videoId)) {
-      LogUtils.d(
-          "[详情页路由监听]跳转到其他页面: ${route.settings.name}", 'video_detail_page_v2');
-      controller.player.pause();
-    }
-  }
-
   @override
   void initState() {
     super.initState();
@@ -78,6 +68,29 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> {
     // 注册路由变化回调
     HomeNavigationLayout.homeNavigatorObserver
         .addRouteChangeCallback(_onRouteChange);
+  }
+
+  /// 添加路由变化回调
+  /// @params
+  /// - `route`: 当前路由
+  /// - `previousRoute`: 上一个路由
+  void _onRouteChange(Route? route, Route? previousRoute) {
+    LogUtils.d(
+        "[详情页路由监听]route: ${route?.settings.name}, previousRoute: ${previousRoute?.settings.name}",
+        'video_detail_page_v2');
+    // 当前页面被覆盖时暂停视频
+    if (route != null && route.settings.name != Routes.VIDEO_DETAIL(videoId)) {
+      LogUtils.d(
+          "[详情页路由监听]跳转到其他页面: ${route.settings.name}", 'video_detail_page_v2');
+      controller.player.pause();
+    }
+
+    // 如果上一个页面不是 详情页，则显示ui
+    if (previousRoute != null &&
+        previousRoute.settings.name?.startsWith(Routes.VIDEO_DETAIL_PREFIX) ==
+            false) {
+      appService.showSystemUI();
+    }
   }
 
   @override

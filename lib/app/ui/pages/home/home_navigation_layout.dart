@@ -216,6 +216,7 @@ class HomeNavigationLayout extends StatelessWidget {
   }
 }
 
+/// [TODO_PLACEHOLDER] HOME 页面路由观察器
 class HomeNavigatorObserver extends NavigatorObserver {
   final AppService appService = Get.find();
   var routes = Queue<Route>();
