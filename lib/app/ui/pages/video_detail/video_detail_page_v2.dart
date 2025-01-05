@@ -84,11 +84,11 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> {
           "[详情页路由监听]跳转到其他页面: ${route.settings.name}", 'video_detail_page_v2');
       controller.player.pause();
     }
-
-    // 如果上一个页面不是 详情页，则显示ui
+    // 如果是从detail到其他页面，且当前为 应用全屏状态，则恢复UI
     if (previousRoute != null &&
         previousRoute.settings.name?.startsWith(Routes.VIDEO_DETAIL_PREFIX) ==
-            false) {
+            false &&
+        controller.isDesktopAppFullScreen.value) {
       appService.showSystemUI();
     }
   }
