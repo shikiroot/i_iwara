@@ -233,7 +233,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // 左侧区域 - 基本信息
-              Container(
+              SizedBox(
                 width: 400, // 固定宽度
                 child: CustomScrollView(
                   slivers: _buildHeaderSliver(context, false),
@@ -408,7 +408,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                               ),
                             );
                           }),
-                          SizedBox(width: 8),
+                          const SizedBox(width: 8),
                           Obx(() {
                             bool isPremium =
                                 profileController.author.value?.premium == true;
@@ -423,7 +423,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                                           Theme.of(context).colorScheme.primary,
                                     ),
                                   )
-                                : SizedBox.shrink();
+                                : const SizedBox.shrink();
                           }),
                           Obx(() {
                             // 是粉丝
@@ -441,7 +441,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                                           Theme.of(context).colorScheme.primary,
                                     ),
                                   )
-                                : SizedBox.shrink();
+                                : const SizedBox.shrink();
                           }),
                           Obx(() {
                             // 是朋友
@@ -458,7 +458,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                                           Theme.of(context).colorScheme.primary,
                                     ),
                                   )
-                                : SizedBox.shrink();
+                                : const SizedBox.shrink();
                           })
                         ],
                       ),
@@ -480,7 +480,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                                 ),
                               );
                             } else {
-                              return SizedBox.shrink();
+                              return const SizedBox.shrink();
                             }
                           }),
                           MouseRegion(
@@ -553,7 +553,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                           }),
                         ],
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       Wrap(
                         spacing: 16.0,
                         runSpacing: 8.0,
@@ -563,7 +563,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                             // 如果是本人，则不显示按钮
                             if (userService.currentUser.value?.id ==
                                 profileController.author.value?.id) {
-                              return SizedBox.shrink();
+                              return const SizedBox.shrink();
                             }
 
                             // 处于代办状态
@@ -792,8 +792,8 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                   Tab(
                     child: Row(
                       children: [
-                        Icon(Icons.video_collection),
-                        SizedBox(width: 8),
+                        const Icon(Icons.video_collection),
+                        const SizedBox(width: 8),
                         Text(t.common.video),
                       ],
                     ),
@@ -801,8 +801,8 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                   Tab(
                     child: Row(
                       children: [
-                        Icon(Icons.image),
-                        SizedBox(width: 8),
+                        const Icon(Icons.image),
+                        const SizedBox(width: 8),
                         Text(t.common.gallery),
                       ],
                     ),
@@ -810,8 +810,8 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                   Tab(
                     child: Row(
                       children: [
-                        Icon(Icons.playlist_play),
-                        SizedBox(width: 8),
+                        const Icon(Icons.playlist_play),
+                        const SizedBox(width: 8),
                         Text(t.common.playlist),
                       ],
                     ),
@@ -819,8 +819,8 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                   Tab(
                     child: Row(
                       children: [
-                        Icon(Icons.article),
-                        SizedBox(width: 8),
+                        const Icon(Icons.article),
+                        const SizedBox(width: 8),
                         Text(t.common.post),
                       ],
                     ),

@@ -1,10 +1,7 @@
-import 'package:dio/dio.dart' as dio;
 import 'package:get/get.dart';
 import 'package:i_iwara/app/models/dto/user_request_dto.dart';
 import 'package:i_iwara/app/models/page_data.model.dart';
-import 'package:i_iwara/app/ui/widgets/MDToastWidget.dart';
 import 'package:i_iwara/i18n/strings.g.dart';
-import 'package:oktoast/oktoast.dart';
 
 import '../../common/constants.dart';
 import '../../utils/logger_utils.dart';

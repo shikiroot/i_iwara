@@ -152,63 +152,63 @@ class _MyGalleryPhotoViewWrapperState extends State<MyGalleryPhotoViewWrapper> {
               // 右键保存单张图片
               Row(
                 children: [
-                  Icon(Icons.save),
-                  SizedBox(width: 8),
+                  const Icon(Icons.save),
+                  const SizedBox(width: 8),
                   Expanded(child: Text(slang.t.galleryDetail.rightClickToSaveSingleImage)),
                 ],
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               // 批量保存
               Row(
                 children: [
-                  Icon(Icons.save_alt),
-                  SizedBox(width: 8),
+                  const Icon(Icons.save_alt),
+                  const SizedBox(width: 8),
                   // TODO 批量保存功能还未实现
                   Expanded(child: Text(slang.t.galleryDetail.batchSave)),
                 ],
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               // 键盘的左右控制切换
               Row(
                 children: [
-                  Icon(Icons.keyboard_arrow_left),
-                  SizedBox(width: 8),
+                  const Icon(Icons.keyboard_arrow_left),
+                  const SizedBox(width: 8),
                   Expanded(child: Text(slang.t.galleryDetail.keyboardLeftAndRightToSwitch)),
                 ],
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               // 键盘的上下控制缩放
               Row(
                 children: [
-                  Icon(Icons.keyboard_arrow_up),
-                  SizedBox(width: 8),
+                  const Icon(Icons.keyboard_arrow_up),
+                  const SizedBox(width: 8),
                   Expanded(child: Text(slang.t.galleryDetail.keyboardUpAndDownToZoom)),
                 ],
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               // 鼠标的滚轮滑动控制切换
               Row(
                 children: [
-                  Icon(Icons.swap_vert),
-                  SizedBox(width: 8),
+                  const Icon(Icons.swap_vert),
+                  const SizedBox(width: 8),
                   Expanded(child: Text(slang.t.galleryDetail.mouseWheelToSwitch)),
                 ],
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               // CTRL + 鼠标滚轮控制缩放
               Row(
                 children: [
-                  Icon(Icons.zoom_in),
-                  SizedBox(width: 8),
+                  const Icon(Icons.zoom_in),
+                  const SizedBox(width: 8),
                   Expanded(child: Text(slang.t.galleryDetail.ctrlAndMouseWheelToZoom)),
                 ],
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               // 更多功能待发现
               Row(
                 children: [
-                  Icon(Icons.thumb_up),
-                  SizedBox(width: 8),
+                  const Icon(Icons.thumb_up),
+                  const SizedBox(width: 8),
                   Expanded(child: Text(slang.t.galleryDetail.moreFeaturesToBeDiscovered)),
                 ],
               ),
@@ -248,7 +248,7 @@ class _MyGalleryPhotoViewWrapperState extends State<MyGalleryPhotoViewWrapper> {
       item: item,
       onDismiss: _hideMenu,
       customBuilder: widget.menuBuilder,
-      constraints: BoxConstraints(
+      constraints: const BoxConstraints(
         maxWidth: 300,
         maxHeight: 400,
       ),

@@ -99,7 +99,7 @@ class SubscriptionPostList extends StatelessWidget {
             child: Center(
               child: Text(
                 slang.t.common.noMoreDatas,
-                style: TextStyle(color: Colors.grey),
+                style: const TextStyle(color: Colors.grey),
               ),
             ),
           );

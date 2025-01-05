@@ -116,7 +116,7 @@ class PrivacyOverlay extends StatelessWidget {
         child: Center(
           child: Text(
             t.common.privacyHint,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
             ),

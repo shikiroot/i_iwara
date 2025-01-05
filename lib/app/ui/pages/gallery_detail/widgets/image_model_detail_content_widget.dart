@@ -20,7 +20,6 @@ import '../../video_detail/widgets/detail/expandable_tags_widget.dart';
 import '../../video_detail/widgets/detail/like_avatars_widget.dart';
 import '../controllers/gallery_detail_controller.dart';
 import 'horizontial_image_list.dart';
-import 'my_gallery_photo_view_wrapper.dart';
 import '../../../widgets/follow_button_widget.dart';
 import '../../../widgets/like_button_widget.dart';
 import 'package:i_iwara/i18n/strings.g.dart' as slang;
@@ -438,7 +437,7 @@ class ImageModelDetailContent extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Text(
-        '${slang.t.galleryDetail.publishedAt}: ${CommonUtils.formatFriendlyTimestamp(controller.imageModelInfo.value?.createdAt)}    ${slang.t.galleryDetail.viewsCount}: ${CommonUtils.formatFriendlyNumber(controller.imageModelInfo.value?.numViews?.toInt() ?? 0)}',
+        '${slang.t.galleryDetail.publishedAt}: ${CommonUtils.formatFriendlyTimestamp(controller.imageModelInfo.value?.createdAt)}    ${slang.t.galleryDetail.viewsCount}: ${CommonUtils.formatFriendlyNumber(controller.imageModelInfo.value?.numViews.toInt() ?? 0)}',
         style: const TextStyle(color: Colors.grey),
       ),
     );

@@ -63,7 +63,7 @@ class _MediaDescriptionWidgetState extends State<MediaDescriptionWidget> {
                     const SizedBox(width: 4),
                     Text(
                       t.common.translate,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 12,
                       ),
                     ),

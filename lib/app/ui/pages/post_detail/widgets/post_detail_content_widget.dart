@@ -333,7 +333,7 @@ class PostDetailContent extends StatelessWidget {
     final t = slang.Translations.of(context);
     return Container(
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.3),
+        color: Theme.of(context).colorScheme.surfaceContainerHighest.withOpacity(0.3),
         borderRadius: BorderRadius.circular(8),
       ),
       padding: const EdgeInsets.all(12),

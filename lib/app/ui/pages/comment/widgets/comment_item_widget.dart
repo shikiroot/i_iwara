@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:i_iwara/app/models/api_result.model.dart';
@@ -315,10 +314,10 @@ class _CommentItemState extends State<CommentItem> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 child: Text(
                   slang.t.common.selectTranslationLanguage,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
@@ -387,7 +386,7 @@ class _CommentItemState extends State<CommentItem> {
                   const SizedBox(width: 4),
                   Text(
                     t.common.translate,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 12,
                     ),
                   ),
@@ -405,8 +404,8 @@ class _CommentItemState extends State<CommentItem> {
           InkWell(
             borderRadius: const BorderRadius.horizontal(right: Radius.circular(20)),
             onTap: _showTranslationMenuDialog,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8),
               child: Icon(
                 Icons.arrow_drop_down,
                 size: 26,
@@ -657,9 +656,9 @@ class _CommentItemState extends State<CommentItem> {
             value: 'reply',
             child: Row(
               children: [
-                Icon(Icons.reply, size: 16),
-                SizedBox(width: 8),
-                Text(t.common.reply, style: TextStyle(fontSize: 14)),
+                const Icon(Icons.reply, size: 16),
+                const SizedBox(width: 8),
+                Text(t.common.reply, style: const TextStyle(fontSize: 14)),
               ],
             ),
           ),
@@ -668,9 +667,9 @@ class _CommentItemState extends State<CommentItem> {
             value: 'edit',
             child: Row(
               children: [
-                Icon(Icons.edit, size: 16),
-                SizedBox(width: 8),
-                Text(t.common.edit, style: TextStyle(fontSize: 14)),
+                const Icon(Icons.edit, size: 16),
+                const SizedBox(width: 8),
+                Text(t.common.edit, style: const TextStyle(fontSize: 14)),
               ],
             ),
           ),
@@ -678,9 +677,9 @@ class _CommentItemState extends State<CommentItem> {
             value: 'delete',
             child: Row(
               children: [
-                Icon(Icons.delete, size: 16),
-                SizedBox(width: 8),
-                Text(t.common.delete, style: TextStyle(fontSize: 14)),
+                const Icon(Icons.delete, size: 16),
+                const SizedBox(width: 8),
+                Text(t.common.delete, style: const TextStyle(fontSize: 14)),
               ],
             ),
           ),

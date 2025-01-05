@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:i_iwara/app/ui/widgets/avatar_widget.dart';
@@ -45,7 +44,7 @@ class CommentEntryAreaButtonWidget extends StatelessWidget {
                   // 第一行：评论数量
                   Text(
                     t.common.totalComments(count: commentController.totalComments.value),
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),

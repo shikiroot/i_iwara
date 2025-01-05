@@ -172,7 +172,7 @@ class _TranslationDialogState extends State<TranslationDialog> {
 
   Widget _buildShimmerLoading(ThemeData theme) {
     return Shimmer.fromColors(
-      baseColor: theme.colorScheme.surfaceVariant,
+      baseColor: theme.colorScheme.surfaceContainerHighest,
       highlightColor: theme.colorScheme.surface,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

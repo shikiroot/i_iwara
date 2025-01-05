@@ -32,11 +32,11 @@ class CommonConstants {
       '$iwaraBaseUrl/images/default-background.jpg';
 
   static List<Sort> mediaSorts = [
-    Sort(id: SortId.trending, label: t.common.trending, icon: Icon(Icons.trending_up)),
-    Sort(id: SortId.date, label: t.common.latest, icon: Icon(Icons.new_releases)),
-    Sort(id: SortId.popularity, label: t.common.popular, icon: Icon(Icons.star)),
-    Sort(id: SortId.likes, label: t.common.likesCount, icon: Icon(Icons.thumb_up)),
-    Sort(id: SortId.views, label: t.common.viewsCount, icon: Icon(Icons.remove_red_eye)),
+    Sort(id: SortId.trending, label: t.common.trending, icon: const Icon(Icons.trending_up)),
+    Sort(id: SortId.date, label: t.common.latest, icon: const Icon(Icons.new_releases)),
+    Sort(id: SortId.popularity, label: t.common.popular, icon: const Icon(Icons.star)),
+    Sort(id: SortId.likes, label: t.common.likesCount, icon: const Icon(Icons.thumb_up)),
+    Sort(id: SortId.views, label: t.common.viewsCount, icon: const Icon(Icons.remove_red_eye)),
   ];
 
   static const List<Sort> translationSorts = [

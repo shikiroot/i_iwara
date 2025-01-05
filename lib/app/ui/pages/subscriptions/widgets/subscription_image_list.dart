@@ -101,11 +101,11 @@ class SubscriptionImageList extends StatelessWidget {
             ),
           )
         : Padding(
-            padding: EdgeInsets.symmetric(vertical: 16.0),
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
             child: Center(
               child: Text(
                 slang.t.common.noMoreDatas,
-                style: TextStyle(color: Colors.grey),
+                style: const TextStyle(color: Colors.grey),
               ),
             ),
           );

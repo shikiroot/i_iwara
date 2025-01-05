@@ -7,7 +7,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 
 import '../../../../../common/constants.dart';
 import '../../../../models/video.model.dart';
-import 'animated_preview_widget.dart';
 import 'package:i_iwara/i18n/strings.g.dart' as slang;
 class VideoPreviewDetailModal extends StatelessWidget {
   final Video video;

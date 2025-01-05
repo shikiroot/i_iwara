@@ -51,6 +51,9 @@ dependencies:
   oktoast: ^3.4.0
   app_links: ^6.3.3
 
+  yaml: any
+  screen_brightness: any
+  volume_controller: any
 dev_dependencies:
   flutter_test:
     sdk: flutter

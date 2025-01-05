@@ -56,7 +56,7 @@ class _SubscriptionSelectListState extends State<SubscriptionSelectList> {
 
     _scrollController.animateTo(
       targetOffset,
-      duration: Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
     );
   }
