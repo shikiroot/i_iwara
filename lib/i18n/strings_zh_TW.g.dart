@@ -166,7 +166,7 @@ class _TranslationsCommonZhTw implements TranslationsCommonEn {
 	@override String get paused => '已暫停';
 	@override String get clear => '清除';
 	@override String get user => '使用者';
-	@override String get post => '帖子';
+	@override String get post => '投稿';
 	@override String get seconds => '秒';
 	@override String get comingSoon => '敬請期待';
 	@override String get confirm => '確認';
@@ -270,9 +270,9 @@ class _TranslationsErrorsZhTw implements TranslationsErrorsEn {
 	@override String get failedToFetchData => '獲取資料失敗';
 	@override String get invalidParameter => '無效的參數';
 	@override String get pleaseLoginFirst => '請先登入';
-	@override String get errorWhileLoadingPost => '載入帖子時出錯';
-	@override String get errorWhileLoadingPostDetail => '載入帖子詳情時出錯';
-	@override String get invalidPostId => '無效的帖子ID';
+	@override String get errorWhileLoadingPost => '載入投稿內容時出錯';
+	@override String get errorWhileLoadingPostDetail => '載入投稿詳情時出錯';
+	@override String get invalidPostId => '無效的投稿ID';
 	@override String get forceUpdateNotPermittedToGoBack => '目前處於強制更新狀態，無法返回';
 	@override String get pleaseLoginAgain => '請重新登入';
 	@override String get invalidLogin => '登入失敗，請檢查電子郵件和密碼';
@@ -692,7 +692,7 @@ extension on TranslationsZhTw {
 			case 'common.paused': return '已暫停';
 			case 'common.clear': return '清除';
 			case 'common.user': return '使用者';
-			case 'common.post': return '帖子';
+			case 'common.post': return '投稿';
 			case 'common.seconds': return '秒';
 			case 'common.comingSoon': return '敬請期待';
 			case 'common.confirm': return '確認';
@@ -778,9 +778,9 @@ extension on TranslationsZhTw {
 			case 'errors.failedToFetchData': return '獲取資料失敗';
 			case 'errors.invalidParameter': return '無效的參數';
 			case 'errors.pleaseLoginFirst': return '請先登入';
-			case 'errors.errorWhileLoadingPost': return '載入帖子時出錯';
-			case 'errors.errorWhileLoadingPostDetail': return '載入帖子詳情時出錯';
-			case 'errors.invalidPostId': return '無效的帖子ID';
+			case 'errors.errorWhileLoadingPost': return '載入投稿內容時出錯';
+			case 'errors.errorWhileLoadingPostDetail': return '載入投稿詳情時出錯';
+			case 'errors.invalidPostId': return '無效的投稿ID';
 			case 'errors.forceUpdateNotPermittedToGoBack': return '目前處於強制更新狀態，無法返回';
 			case 'errors.pleaseLoginAgain': return '請重新登入';
 			case 'errors.invalidLogin': return '登入失敗，請檢查電子郵件和密碼';

@@ -109,7 +109,7 @@ common:
   paused: 已暫停
   clear: 清除
   user: 使用者
-  post: 帖子
+  post: 投稿
   seconds: 秒
   comingSoon: 敬請期待
   confirm: 確認
@@ -199,9 +199,9 @@ errors:
   failedToFetchData: 獲取資料失敗
   invalidParameter: 無效的參數
   pleaseLoginFirst: 請先登入
-  errorWhileLoadingPost: 載入帖子時出錯
-  errorWhileLoadingPostDetail: 載入帖子詳情時出錯
-  invalidPostId: 無效的帖子ID
+  errorWhileLoadingPost: 載入投稿內容時出錯
+  errorWhileLoadingPostDetail: 載入投稿詳情時出錯
+  invalidPostId: 無效的投稿ID
   forceUpdateNotPermittedToGoBack: 目前處於強制更新狀態，無法返回
   pleaseLoginAgain: 請重新登入
   invalidLogin: 登入失敗，請檢查電子郵件和密碼

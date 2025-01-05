@@ -166,7 +166,7 @@ class _TranslationsCommonZhCn implements TranslationsCommonEn {
 	@override String get paused => '已暂停';
 	@override String get clear => '清除';
 	@override String get user => '用户';
-	@override String get post => '帖子';
+	@override String get post => '投稿';
 	@override String get seconds => '秒';
 	@override String get comingSoon => '敬请期待';
 	@override String get confirm => '确认';
@@ -273,9 +273,9 @@ class _TranslationsErrorsZhCn implements TranslationsErrorsEn {
 	@override String get failedToFetchData => '获取数据失败';
 	@override String get invalidParameter => '无效的参数';
 	@override String get pleaseLoginFirst => '请先登录';
-	@override String get errorWhileLoadingPost => '载入帖子时出错';
-	@override String get errorWhileLoadingPostDetail => '载入帖子详情时出错';
-	@override String get invalidPostId => '无效的帖子ID';
+	@override String get errorWhileLoadingPost => '载入投稿内容时出错';
+	@override String get errorWhileLoadingPostDetail => '载入投稿详情时出错';
+	@override String get invalidPostId => '无效的投稿ID';
 	@override String get forceUpdateNotPermittedToGoBack => '目前处于强制更新状态，无法返回';
 	@override String get pleaseLoginAgain => '请重新登录';
 	@override String get invalidLogin => '登录失败，请检查邮箱和密码';
@@ -695,7 +695,7 @@ extension on TranslationsZhCn {
 			case 'common.paused': return '已暂停';
 			case 'common.clear': return '清除';
 			case 'common.user': return '用户';
-			case 'common.post': return '帖子';
+			case 'common.post': return '投稿';
 			case 'common.seconds': return '秒';
 			case 'common.comingSoon': return '敬请期待';
 			case 'common.confirm': return '确认';
@@ -784,9 +784,9 @@ extension on TranslationsZhCn {
 			case 'errors.failedToFetchData': return '获取数据失败';
 			case 'errors.invalidParameter': return '无效的参数';
 			case 'errors.pleaseLoginFirst': return '请先登录';
-			case 'errors.errorWhileLoadingPost': return '载入帖子时出错';
-			case 'errors.errorWhileLoadingPostDetail': return '载入帖子详情时出错';
-			case 'errors.invalidPostId': return '无效的帖子ID';
+			case 'errors.errorWhileLoadingPost': return '载入投稿内容时出错';
+			case 'errors.errorWhileLoadingPostDetail': return '载入投稿详情时出错';
+			case 'errors.invalidPostId': return '无效的投稿ID';
 			case 'errors.forceUpdateNotPermittedToGoBack': return '目前处于强制更新状态，无法返回';
 			case 'errors.pleaseLoginAgain': return '请重新登录';
 			case 'errors.invalidLogin': return '登录失败，请检查邮箱和密码';

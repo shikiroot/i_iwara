@@ -111,7 +111,7 @@ common:
   paused: 已暂停
   clear: 清除
   user: 用户
-  post: 帖子
+  post: 投稿
   seconds: 秒
   comingSoon: 敬请期待
   confirm: 确认
@@ -204,9 +204,9 @@ errors:
   failedToFetchData: 获取数据失败
   invalidParameter: 无效的参数
   pleaseLoginFirst: 请先登录
-  errorWhileLoadingPost: 载入帖子时出错
-  errorWhileLoadingPostDetail: 载入帖子详情时出错
-  invalidPostId: 无效的帖子ID
+  errorWhileLoadingPost: 载入投稿内容时出错
+  errorWhileLoadingPostDetail: 载入投稿详情时出错
+  invalidPostId: 无效的投稿ID
   forceUpdateNotPermittedToGoBack: 目前处于强制更新状态，无法返回
   pleaseLoginAgain: 请重新登录
   invalidLogin: 登录失败，请检查邮箱和密码
