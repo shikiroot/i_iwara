@@ -21,6 +21,7 @@ import '../popular_media_list/widgets/video_tile_list_item_widget.dart';
 import 'controllers/my_video_state_controller.dart';
 import 'controllers/related_media_controller.dart';
 import '../../../../i18n/strings.g.dart' as slang;
+import 'package:volume_controller/volume_controller.dart';
 
 class MyVideoDetailPage extends StatefulWidget {
   final String videoId;
@@ -39,6 +40,7 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> {
   late MyVideoStateController controller;
   late CommentController commentController;
   late RelatedMediasController relatedVideoController;
+  VolumeController? _volumeController;
 
   @override
   void initState() {
@@ -68,6 +70,10 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> {
     // 注册路由变化回调
     HomeNavigationLayout.homeNavigatorObserver
         .addRouteChangeCallback(_onRouteChange);
+
+    if (GetPlatform.isAndroid || GetPlatform.isIOS) {
+      _initVolumeListener();
+    }
   }
 
   /// 添加路由变化回调
@@ -93,6 +99,18 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> {
     }
   }
 
+  void _initVolumeListener() {
+    _volumeController = VolumeController();
+    _volumeController?.listener((volume) {
+      // 如果是通过手势设置音量，则跳过
+      if (controller.isSettingVolume) return;
+      
+      controller.setVolume(volume);
+    });
+    // 初始化并关闭系统音量UI
+    _volumeController?.showSystemUI = false;
+  }
+
   @override
   void dispose() {
     // 移除路由变化回调
@@ -106,6 +124,10 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> {
       Get.delete<RelatedMediasController>(tag: uniqueTag);
     } catch (e) {
       LogUtils.e('删除控制器失败', error: e, tag: 'video_detail_page_v2');
+    }
+
+    if (_volumeController != null) {
+      _volumeController?.removeListener();
     }
     super.dispose();
   }
@@ -433,8 +455,8 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> {
                                                   Get.find();
                                               if (!userService.isLogin) {
                                                 showToastWidget(MDToastWidget(
-                                                    message: t.errors
-                                                        .pleaseLoginFirst,
+                                                    message:
+                                                        t.errors.pleaseLoginFirst,
                                                     type: MDToastType.error));
                                                 Get.toNamed(Routes.LOGIN);
                                                 return;

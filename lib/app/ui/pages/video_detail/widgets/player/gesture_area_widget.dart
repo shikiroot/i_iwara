@@ -22,6 +22,7 @@ class GestureArea extends StatefulWidget {
   final VoidCallback? onDoubleTapRight;
   final VoidCallback? onTap;
   final Function(LongPressType?, bool)? setLongPressing;
+  final Function(double)? onVolumeChange;
 
   const GestureArea({
     super.key,
@@ -32,6 +33,7 @@ class GestureArea extends StatefulWidget {
     this.onTap,
     required this.screenSize,
     this.setLongPressing,
+    this.onVolumeChange,
   });
 
   @override
@@ -41,7 +43,6 @@ class GestureArea extends StatefulWidget {
 class _GestureAreaState extends State<GestureArea>
     with SingleTickerProviderStateMixin {
   final ConfigService _configService = Get.find();
-  VolumeController? _volumeController;
   ScreenBrightness? _screenBrightness;
 
   // 提示信息
@@ -59,9 +60,6 @@ class _GestureAreaState extends State<GestureArea>
   void initState() {
     super.initState();
     _initializeInfoMessageController();
-    if (GetPlatform.isAndroid || GetPlatform.isIOS) {
-      _volumeController = VolumeController();
-    }
 
     if (!GetPlatform.isLinux && !GetPlatform.isWeb) {
       _screenBrightness = ScreenBrightness();
@@ -213,13 +211,7 @@ class _GestureAreaState extends State<GestureArea>
       double rx = _configService[ConfigService.VOLUME_KEY] -
           details.primaryDelta! / max;
       rx = rx.clamp(0.0, 1.0);
-      if (GetPlatform.isAndroid || GetPlatform.isIOS) {
-        _volumeController?.setVolume(rx);
-      } else {
-        widget.myVideoStateController.player.setVolume(rx * 100); // 调整播放器音量
-      }
-      _configService[ConfigService.VOLUME_KEY] = rx;
-
+      widget.onVolumeChange?.call(rx);
       widget.setLongPressing?.call(LongPressType.volume, true); // 显示音量提示
     }
   }

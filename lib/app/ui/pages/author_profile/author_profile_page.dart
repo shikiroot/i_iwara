@@ -29,6 +29,7 @@ import '../comment/widgets/comment_section_widget.dart';
 import '../popular_media_list/widgets/media_description_widget.dart';
 import 'controllers/authro_profile_controller.dart';
 import 'package:i_iwara/i18n/strings.g.dart' as slang;
+import 'package:i_iwara/app/ui/widgets/follow_button_widget.dart';
 
 class AuthorProfilePage extends StatefulWidget {
   final String username;
@@ -218,7 +219,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
               onlyOneScrollInBody: true,
               pinnedHeaderSliverHeightBuilder: () =>
                   _calculatePinnedHeaderHeight(),
-              body: _buildTabBarView(context),
+              body: _buildTabBarView(context, isWideScreen: false),
             ),
           ),
         ],
@@ -243,7 +244,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
               const VerticalDivider(width: 1),
               // 右侧区域 - Tab内容
               Expanded(
-                child: _buildTabBarView(context),
+                child: _buildTabBarView(context, isWideScreen: true),
               ),
             ],
           ),
@@ -418,7 +419,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                                     message: t.common.premium,
                                     preferBelow: false,
                                     child: Icon(
-                                      Icons.verified,
+                                      Icons.stars,
                                       color:
                                           Theme.of(context).colorScheme.primary,
                                     ),
@@ -436,7 +437,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                                     message: t.common.follower,
                                     preferBelow: false,
                                     child: Icon(
-                                      Icons.favorite,
+                                      Icons.person_add,
                                       color:
                                           Theme.of(context).colorScheme.primary,
                                     ),
@@ -453,7 +454,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                                     message: t.common.friend,
                                     preferBelow: false,
                                     child: Icon(
-                                      Icons.people,
+                                      Icons.favorite,
                                       color:
                                           Theme.of(context).colorScheme.primary,
                                     ),
@@ -620,111 +621,17 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                               return const SizedBox.shrink();
                             }
 
-                            // 处于代办状态
-                            if (profileController.isFollowLoading.value) {
-                              return Shimmer.fromColors(
-                                baseColor: Colors.grey[300]!,
-                                highlightColor: Colors.grey[100]!,
-                                child: ElevatedButton(
-                                  onPressed: () {},
-                                  child: Text(t.common.loading),
-                                ),
-                              );
-                            } else if (profileController
-                                    .author.value?.following ==
-                                true) {
-                              return ElevatedButton(
-                                onPressed: () {
-                                  final UserService userService = Get.find();
-                                  if (!userService.isLogin) {
-                                    showToastWidget(MDToastWidget(
-                                        message: t.errors.pleaseLoginFirst,
-                                        type: MDToastType.error));
-                                    Get.toNamed(Routes.LOGIN);
-                                    return;
-                                  }
-                                  // 取消关注
-                                  profileController.unfollowAuthor();
-                                },
-                                child: Text(t.common.followed),
-                              );
-                            } else {
-                              return ElevatedButton(
-                                onPressed: () {
-                                  // 关注
-                                  final UserService userService = Get.find();
-                                  if (!userService.isLogin) {
-                                    showToastWidget(MDToastWidget(
-                                        message: t.errors.pleaseLoginFirst,
-                                        type: MDToastType.error));
-                                    Get.toNamed(Routes.LOGIN);
-                                    return;
-                                  }
-                                  profileController.followAuthor();
-                                },
-                                child: Text(t.common.follow),
-                              );
-                            }
-                          }),
-                          // 特别关注
-                          Obx(() {
-                            // 如果是本人，则不显示按钮
-                            if (userService.currentUser.value?.id ==
-                                profileController.author.value?.id) {
-                              return const SizedBox.shrink();
-                            }
-
-                            // 判断author是否存在
                             if (profileController.author.value == null) {
                               return const SizedBox.shrink();
                             }
 
-                            UserDTO? likedUser =
-                                userPreferenceService.getLikedUser(
-                                    profileController.author.value?.id ?? '');
-
-                            if (likedUser != null) {
-                              return ElevatedButton(
-                                onPressed: () {
-                                  // 取消特别关注
-                                  userPreferenceService.removeLikedUser(UserDTO(
-                                    id: profileController.author.value?.id ??
-                                        '',
-                                    name:
-                                        profileController.author.value?.name ??
-                                            '',
-                                    username: profileController
-                                            .author.value?.username ??
-                                        '',
-                                    avatarUrl: profileController
-                                            .author.value?.avatar?.avatarUrl ??
-                                        '',
-                                  ));
-                                },
-                                child: Text(t.common.specialFollowed),
-                              );
-                            } else {
-                              return ElevatedButton(
-                                onPressed: () {
-                                  // 特别关注
-                                  userPreferenceService.addLikedUser(UserDTO(
-                                    id: profileController.author.value?.id ??
-                                        '',
-                                    name:
-                                        profileController.author.value?.name ??
-                                            '',
-                                    username: profileController
-                                            .author.value?.username ??
-                                        '',
-                                    avatarUrl: profileController
-                                            .author.value?.avatar?.avatarUrl ??
-                                        '',
-                                  ));
-                                },
-                                child: Text(t.common.specialFollow),
-                              );
-                            }
-                          })
+                            return FollowButtonWidget(
+                              user: profileController.author.value!,
+                              onUserUpdated: (updatedUser) {
+                                profileController.author.value = updatedUser;
+                              },
+                            );
+                          }),
                         ],
                       )
                     ],
@@ -764,12 +671,12 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
     ];
   }
 
-  Widget _buildTabBarView(BuildContext context) {
+  Widget _buildTabBarView(BuildContext context, {bool isWideScreen = true}) {
     final t = slang.Translations.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        TopPaddingHeightWidget(),
+        isWideScreen ? TopPaddingHeightWidget() : const SizedBox.shrink(),
         MouseRegion(
           child: Listener(
             onPointerSignal: (pointerSignal) {

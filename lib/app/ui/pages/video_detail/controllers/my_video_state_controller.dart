@@ -53,6 +53,7 @@ class MyVideoStateController extends GetxController
   final RxBool sliderDragLoadFinished = true.obs; // 拖动进度条加载完成
   final RxDouble playerPlaybackSpeed = 1.0.obs; // 播放速度
   final RxBool isDesktopAppFullScreen = false.obs; // 是否是应用全屏
+  bool _isSettingVolume = false; // 是否正在通过手势设置音量
 
   // 工具栏可见性
   final RxBool areToolbarsVisible = true.obs;
@@ -102,8 +103,29 @@ class MyVideoStateController extends GetxController
   MyVideoStateController(this.videoId);
 
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
+    // 动画
+    animationController = AnimationController(
+      duration: const Duration(milliseconds: 300),
+      vsync: this,
+    );
+
+    topBarAnimation = Tween<Offset>(
+      begin: const Offset(0, -1),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(
+      parent: animationController,
+      curve: Curves.easeOut,
+    ));
+
+    bottomBarAnimation = Tween<Offset>(
+      begin: const Offset(0, 1),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(
+      parent: animationController,
+      curve: Curves.easeOut,
+    ));
     // 初始化 VideoController
     player = Player();
     videoController = VideoController(player);
@@ -140,7 +162,13 @@ class MyVideoStateController extends GetxController
       if (GetPlatform.isAndroid || GetPlatform.isIOS) {
         volumeController?.setVolume(lastVolume);
       } else {
-        player.setVolume(lastVolume * 100);
+        setVolume(lastVolume);
+      }
+    } else {
+      if (GetPlatform.isAndroid || GetPlatform.isIOS) {
+        // 更新配置为当前的系统音量
+        double currentVolume = await volumeController?.getVolume() ?? 0.0;
+        _configService[ConfigService.VOLUME_KEY] = currentVolume;
       }
     }
 
@@ -157,28 +185,6 @@ class MyVideoStateController extends GetxController
         }
       }
     }
-
-    // 动画
-    animationController = AnimationController(
-      duration: const Duration(milliseconds: 300),
-      vsync: this,
-    );
-
-    topBarAnimation = Tween<Offset>(
-      begin: const Offset(0, -1),
-      end: Offset.zero,
-    ).animate(CurvedAnimation(
-      parent: animationController,
-      curve: Curves.easeOut,
-    ));
-
-    bottomBarAnimation = Tween<Offset>(
-      begin: const Offset(0, 1),
-      end: Offset.zero,
-    ).animate(CurvedAnimation(
-      parent: animationController,
-      curve: Curves.easeOut,
-    ));
 
     // 想办法让native player默认走系统代理
     if (player.platform is NativePlayer &&
@@ -555,28 +561,22 @@ class MyVideoStateController extends GetxController
     player.setRate(speed);
   }
 
-  void addVolume(double d) {
-    double configVolume = _configService[ConfigService.VOLUME_KEY];
-    double newVolume = (configVolume + d).clamp(0.0, 1.0);
+  /// 设置音量
+  /// volume: 0.0-1.0
+  void setVolume(double volume) {
+    _isSettingVolume = true;
     if (GetPlatform.isAndroid || GetPlatform.isIOS) {
-      volumeController?.setVolume(newVolume);
-      LogUtils.d('[音量] $newVolume, $d, $configVolume', 'MyVideoStateController');
+      volumeController?.setVolume(volume);
     } else {
-      player.setVolume(newVolume * 100);
-      LogUtils.d('[音量] ${newVolume * 100}, $d, $configVolume', 'MyVideoStateController');
+      player.setVolume(volume * 100);
     }
-    _configService[ConfigService.VOLUME_KEY] = newVolume;
+    _configService[ConfigService.VOLUME_KEY] = volume;
+    Future.delayed(const Duration(milliseconds: 50), () {
+      _isSettingVolume = false;
+    });
   }
 
-  void setVolume(double d) {
-    d = d.clamp(0.0, 1.0);
-    if (GetPlatform.isAndroid || GetPlatform.isIOS) {
-      volumeController?.setVolume(d);
-    } else {
-      player.setVolume(d * 100);
-    }
-    _configService[ConfigService.VOLUME_KEY] = d;
-  }
+  bool get isSettingVolume => _isSettingVolume;
 
 // TODO 合并缓冲区的代码暂时不用，以后看看怎么改合适
 // void _addBufferRange(Duration bufferDuration) {
