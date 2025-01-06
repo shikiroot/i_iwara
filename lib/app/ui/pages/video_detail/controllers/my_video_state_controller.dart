@@ -101,6 +101,9 @@ class MyVideoStateController extends GetxController
   // 历史记录
   final HistoryRepository _historyRepository = HistoryRepository();
 
+  // 添加一个新的变量来跟踪是否正在等待seek完成
+  final RxBool isWaitingForSeek = false.obs;
+
   MyVideoStateController(this.videoId);
 
   @override
@@ -422,19 +425,24 @@ class MyVideoStateController extends GetxController
     positionSubscription = player.stream.position.listen((position) async {
       if (!videoIsReady.value) return;
 
-      if (videoIsReady.value &&
-          totalDuration.value.inMilliseconds > 0 &&
-          position.inMilliseconds > 0 &&
-          position >= totalDuration.value) {
-        bool repeat = _configService[ConfigService.REPEAT_KEY];
-        if (repeat) {
-          LogUtils.d('[视频播放完成]，尝试重播', 'MyVideoStateController');
-          await player.seek(Duration.zero);
-          await player.play();
+      // 只有在不是等待seek完成的状态下才更新位置
+      if (!isWaitingForSeek.value) {
+        if (videoIsReady.value &&
+            totalDuration.value.inMilliseconds > 0 &&
+            position.inMilliseconds > 0 &&
+            (position.inMilliseconds >= totalDuration.value.inMilliseconds - 100)) {
+          bool repeat = _configService[ConfigService.REPEAT_KEY];
+          if (repeat) {
+            LogUtils.d('[视频播放完成]，尝试重播', 'MyVideoStateController');
+            // 清空缓冲区
+            _clearBuffers();
+            await player.seek(Duration.zero);
+            await player.play();
+          }
         }
-      }
 
-      currentPosition.value = position;
+        currentPosition.value = position;
+      }
       sliderDragLoadFinished.value = true;
     });
 
@@ -637,7 +645,10 @@ class MyVideoStateController extends GetxController
     buffers.value = updatedBuffers;
   }
 
-  void _handleSeek(Duration newPosition) {
+  void _handleSeek(Duration newPosition) async {
+    // 标记正在等待seek完成
+    isWaitingForSeek.value = true;
+    
     // 如果是回退进度，则清空缓冲区
     if (newPosition < currentPosition.value) {
       _clearBuffers();
@@ -650,7 +661,14 @@ class MyVideoStateController extends GetxController
       buffers.value = updatedBuffers;
     }
     
+    // 先更新UI位置
     currentPosition.value = newPosition;
+    
+    // 执行实际的seek操作
+    await player.seek(newPosition);
+    
+    // seek完成后标记状态
+    isWaitingForSeek.value = false;
   }
 
   void _clearBuffers() {

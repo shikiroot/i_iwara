@@ -125,10 +125,7 @@ class _CustomVideoProgressbarState extends State<CustomVideoProgressbar> {
                           await HapticFeedback.lightImpact();
                         }
                         widget.controller.sliderDragLoadFinished.value = false;
-                        widget.controller.player.play();
                         widget.controller.handleSeek(Duration(seconds: value.toInt()));
-                        widget.controller.player
-                            .seek(Duration(seconds: value.toInt()));
                         widget.controller.setInteracting(false);
                       },
                       // 计算总时长和当前播放位置的百分比
