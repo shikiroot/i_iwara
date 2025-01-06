@@ -342,6 +342,7 @@ class _TranslationsGalleryDetailZhCn implements TranslationsGalleryDetailEn {
 	@override String get moreFeaturesToBeDiscovered => '更多功能待发现...';
 	@override String get authorOtherGalleries => '作者的其他图库';
 	@override String get relatedGalleries => '相关图库';
+	@override String get clickLeftAndRightEdgeToSwitchImage => '点击左右边缘以切换图片';
 }
 
 // Path: playList
@@ -819,6 +820,7 @@ extension on TranslationsZhCn {
 			case 'galleryDetail.moreFeaturesToBeDiscovered': return '更多功能待发现...';
 			case 'galleryDetail.authorOtherGalleries': return '作者的其他图库';
 			case 'galleryDetail.relatedGalleries': return '相关图库';
+			case 'galleryDetail.clickLeftAndRightEdgeToSwitchImage': return '点击左右边缘以切换图片';
 			case 'playList.myPlayList': return '我的播放列表';
 			case 'playList.friendlyTips': return '友情提示';
 			case 'playList.dearUser': return '亲爱的用户';

@@ -339,6 +339,7 @@ class _TranslationsGalleryDetailJa implements TranslationsGalleryDetailEn {
 	@override String get moreFeaturesToBeDiscovered => 'さらに機能が発見されます...';
 	@override String get authorOtherGalleries => '作者の他のギャラリー';
 	@override String get relatedGalleries => '関連ギャラリー';
+	@override String get clickLeftAndRightEdgeToSwitchImage => '左端と右端をクリックして切り替え';
 }
 
 // Path: playList
@@ -813,6 +814,7 @@ extension on TranslationsJa {
 			case 'galleryDetail.moreFeaturesToBeDiscovered': return 'さらに機能が発見されます...';
 			case 'galleryDetail.authorOtherGalleries': return '作者の他のギャラリー';
 			case 'galleryDetail.relatedGalleries': return '関連ギャラリー';
+			case 'galleryDetail.clickLeftAndRightEdgeToSwitchImage': return '左端と右端をクリックして切り替え';
 			case 'playList.myPlayList': return '私のプレイリスト';
 			case 'playList.friendlyTips': return 'フレンドリーティップス';
 			case 'playList.dearUser': return '親愛なるユーザー';

@@ -343,6 +343,7 @@ class TranslationsGalleryDetailEn {
 	String get moreFeaturesToBeDiscovered => 'More Features to Be Discovered...';
 	String get authorOtherGalleries => 'Author\'s Other Galleries';
 	String get relatedGalleries => 'Related Galleries';
+	String get clickLeftAndRightEdgeToSwitchImage => 'Click Left and Right Edge to Switch Image';
 }
 
 // Path: playList
@@ -817,6 +818,7 @@ extension on Translations {
 			case 'galleryDetail.moreFeaturesToBeDiscovered': return 'More Features to Be Discovered...';
 			case 'galleryDetail.authorOtherGalleries': return 'Author\'s Other Galleries';
 			case 'galleryDetail.relatedGalleries': return 'Related Galleries';
+			case 'galleryDetail.clickLeftAndRightEdgeToSwitchImage': return 'Click Left and Right Edge to Switch Image';
 			case 'playList.myPlayList': return 'My Play List';
 			case 'playList.friendlyTips': return 'Friendly Tips';
 			case 'playList.dearUser': return 'Dear User';

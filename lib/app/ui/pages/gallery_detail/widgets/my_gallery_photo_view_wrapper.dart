@@ -181,6 +181,15 @@ class _MyGalleryPhotoViewWrapperState extends State<MyGalleryPhotoViewWrapper> {
         content: SingleChildScrollView(
           child: ListBody(
             children: [
+              // 点击左右边缘以切换图片
+              Row(
+                children: [
+                  const Icon(Icons.arrow_right_alt),
+                  const SizedBox(width: 8),
+                  Expanded(child: Text(slang.t.galleryDetail.clickLeftAndRightEdgeToSwitchImage)),
+                ],
+              ),
+              const SizedBox(height: 8),
               // 右键保存单张图片
               Row(
                 children: [

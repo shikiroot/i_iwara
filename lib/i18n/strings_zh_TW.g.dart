@@ -339,6 +339,7 @@ class _TranslationsGalleryDetailZhTw implements TranslationsGalleryDetailEn {
 	@override String get moreFeaturesToBeDiscovered => '更多功能待發掘...';
 	@override String get authorOtherGalleries => '作者的其他圖庫';
 	@override String get relatedGalleries => '相關圖庫';
+	@override String get clickLeftAndRightEdgeToSwitchImage => '點擊左右邊緣以切換圖片';
 }
 
 // Path: playList
@@ -813,6 +814,7 @@ extension on TranslationsZhTw {
 			case 'galleryDetail.moreFeaturesToBeDiscovered': return '更多功能待發掘...';
 			case 'galleryDetail.authorOtherGalleries': return '作者的其他圖庫';
 			case 'galleryDetail.relatedGalleries': return '相關圖庫';
+			case 'galleryDetail.clickLeftAndRightEdgeToSwitchImage': return '點擊左右邊緣以切換圖片';
 			case 'playList.myPlayList': return '我的播放清單';
 			case 'playList.friendlyTips': return '友情提示';
 			case 'playList.dearUser': return '親愛的使用者';
