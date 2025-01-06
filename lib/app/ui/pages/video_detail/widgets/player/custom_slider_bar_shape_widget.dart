@@ -126,6 +126,7 @@ class _CustomVideoProgressbarState extends State<CustomVideoProgressbar> {
                         }
                         widget.controller.sliderDragLoadFinished.value = false;
                         widget.controller.player.play();
+                        widget.controller.handleSeek(Duration(seconds: value.toInt()));
                         widget.controller.player
                             .seek(Duration(seconds: value.toInt()));
                         widget.controller.setInteracting(false);

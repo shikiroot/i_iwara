@@ -95,7 +95,9 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> {
         previousRoute.settings.name?.startsWith(Routes.VIDEO_DETAIL_PREFIX) ==
             false &&
         controller.isDesktopAppFullScreen.value) {
-      appService.showSystemUI();
+      if (route?.settings.name != null) {
+        appService.showSystemUI();
+      }
     }
   }
 

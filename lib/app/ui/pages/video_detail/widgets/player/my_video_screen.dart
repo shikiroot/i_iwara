@@ -149,12 +149,13 @@ class _MyVideoScreenState extends State<MyVideoScreen>
         LogUtils.d('[键盘事件] 右键', 'MyVideoScreen');
         // 右键
         _triggerRightRipple();
-      } else if (event.logicalKey.keyLabel ==
-              LogicalKeyboardKey.enter.keyLabel &&
-          !widget.isFullScreen) {
-        // 应用全屏切换
-        widget.myVideoStateController.isDesktopAppFullScreen.toggle();
       }
+      // } else if (event.logicalKey.keyLabel ==
+      //         LogicalKeyboardKey.enter.keyLabel &&
+      //     !widget.isFullScreen) {
+      //   // 应用全屏切换
+      //   widget.myVideoStateController.isDesktopAppFullScreen.toggle();
+      // }
     }
   }
 
