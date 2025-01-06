@@ -804,9 +804,14 @@ class _CommentItemState extends State<CommentItem> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // 评论内容 - 添加点击回复功能
-                InkWell(
-                  onTap: widget.comment.parent == null ? _showReplyDialog : null,
-                  child: CustomMarkdownBody(data: comment.body),
+                Material(
+                  color: Colors.transparent,
+                  borderRadius: BorderRadius.circular(8),
+                  clipBehavior: Clip.antiAlias,
+                  child: InkWell(
+                    onTap: widget.comment.parent == null ? _showReplyDialog : null,
+                    child: CustomMarkdownBody(data: comment.body),
+                  ),
                 ),
                 if (_translatedText != null) ...[
                   const SizedBox(height: 8),

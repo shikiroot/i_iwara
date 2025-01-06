@@ -321,40 +321,43 @@ class _CustomMarkdownBodyState extends State<CustomMarkdownBody> {
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: MarkdownBody(
-            data: _showOriginal ? widget.data : _displayData,
-            styleSheet: markdownStyleSheet,
-            onTapLink: _onTapLink,
-            selectable: true,
-            imageBuilder: (uri, title, alt) {
-              try {
-                final imageUrl = uri.toString();
-                final parsedUri = Uri.tryParse(imageUrl);
-                if (parsedUri == null || !parsedUri.hasAbsolutePath) {
-                  throw FormatException(t.errors.invalidUrl);
-                }
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: CachedNetworkImage(
-                    imageUrl: imageUrl,
-                    placeholder: (context, url) => Shimmer.fromColors(
-                      baseColor: Colors.grey[300]!,
-                      highlightColor: Colors.grey[100]!,
-                      child: Container(
-                        width: double.infinity,
-                        height: 200.0,
-                        color: Colors.white,
+          child: SizedBox(
+            width: double.infinity,
+            child: MarkdownBody(
+              data: _showOriginal ? widget.data : _displayData,
+              styleSheet: markdownStyleSheet,
+              onTapLink: _onTapLink,
+              selectable: true,
+              imageBuilder: (uri, title, alt) {
+                try {
+                  final imageUrl = uri.toString();
+                  final parsedUri = Uri.tryParse(imageUrl);
+                  if (parsedUri == null || !parsedUri.hasAbsolutePath) {
+                    throw FormatException(t.errors.invalidUrl);
+                  }
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: CachedNetworkImage(
+                      imageUrl: imageUrl,
+                      placeholder: (context, url) => Shimmer.fromColors(
+                        baseColor: Colors.grey[300]!,
+                        highlightColor: Colors.grey[100]!,
+                        child: Container(
+                          width: double.infinity,
+                          height: 200.0,
+                          color: Colors.white,
+                        ),
                       ),
+                      errorWidget: (context, url, error) => const Icon(Icons.error),
+                      fit: BoxFit.cover,
                     ),
-                    errorWidget: (context, url, error) => const Icon(Icons.error),
-                    fit: BoxFit.cover,
-                  ),
-                );
-              } catch (e) {
-                LogUtils.e('图片加载失败', tag: 'CustomMarkdownBody', error: e);
-                return const Icon(Icons.error);
-              }
-            },
+                  );
+                } catch (e) {
+                  LogUtils.e('图片加载失败', tag: 'CustomMarkdownBody', error: e);
+                  return const Icon(Icons.error);
+                }
+              },
+            ),
           ),
         ),
       ],
