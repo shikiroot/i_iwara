@@ -21,6 +21,8 @@ common:
   friend: 朋友
   video: 影片
   following: 追蹤中
+  expand: 展開
+  collapse: 收起
   cancelFriendRequest: 取消申請
   cancelSpecialFollow: 取消特別關注
   addFriend: 加為朋友

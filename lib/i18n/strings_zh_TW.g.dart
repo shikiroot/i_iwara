@@ -78,6 +78,8 @@ class _TranslationsCommonZhTw implements TranslationsCommonEn {
 	@override String get friend => '朋友';
 	@override String get video => '影片';
 	@override String get following => '追蹤中';
+	@override String get expand => '展開';
+	@override String get collapse => '收起';
 	@override String get cancelFriendRequest => '取消申請';
 	@override String get cancelSpecialFollow => '取消特別關注';
 	@override String get addFriend => '加為朋友';
@@ -607,6 +609,8 @@ extension on TranslationsZhTw {
 			case 'common.friend': return '朋友';
 			case 'common.video': return '影片';
 			case 'common.following': return '追蹤中';
+			case 'common.expand': return '展開';
+			case 'common.collapse': return '收起';
 			case 'common.cancelFriendRequest': return '取消申請';
 			case 'common.cancelSpecialFollow': return '取消特別關注';
 			case 'common.addFriend': return '加為朋友';

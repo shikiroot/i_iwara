@@ -21,6 +21,8 @@ common:
   friend: Friend
   video: Video
   following: Following
+  expand: Expand
+  collapse: Collapse
   cancelFriendRequest: Cancel Request
   cancelSpecialFollow: Cancel Special Follow
   addFriend: Add Friend

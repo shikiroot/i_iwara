@@ -82,6 +82,8 @@ class TranslationsCommonEn {
 	String get friend => 'Friend';
 	String get video => 'Video';
 	String get following => 'Following';
+	String get expand => 'Expand';
+	String get collapse => 'Collapse';
 	String get cancelFriendRequest => 'Cancel Request';
 	String get cancelSpecialFollow => 'Cancel Special Follow';
 	String get addFriend => 'Add Friend';
@@ -611,6 +613,8 @@ extension on Translations {
 			case 'common.friend': return 'Friend';
 			case 'common.video': return 'Video';
 			case 'common.following': return 'Following';
+			case 'common.expand': return 'Expand';
+			case 'common.collapse': return 'Collapse';
 			case 'common.cancelFriendRequest': return 'Cancel Request';
 			case 'common.cancelSpecialFollow': return 'Cancel Special Follow';
 			case 'common.addFriend': return 'Add Friend';

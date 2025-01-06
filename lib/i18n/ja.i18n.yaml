@@ -22,6 +22,8 @@ common:
   friend: 友達
   video: ビデオ
   following: フォロー中
+  expand: 展開
+  collapse: 收起
   cancelFriendRequest: 友達申請を取り消す
   cancelSpecialFollow: 特別フォローを解除
   addFriend: 友達を追加

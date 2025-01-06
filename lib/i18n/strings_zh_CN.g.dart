@@ -78,6 +78,8 @@ class _TranslationsCommonZhCn implements TranslationsCommonEn {
 	@override String get friend => '朋友';
 	@override String get video => '视频';
 	@override String get following => '关注';
+	@override String get expand => '展开';
+	@override String get collapse => '收起';
 	@override String get cancelFriendRequest => '取消申请';
 	@override String get cancelSpecialFollow => '取消特别关注';
 	@override String get addFriend => '添加朋友';
@@ -610,6 +612,8 @@ extension on TranslationsZhCn {
 			case 'common.friend': return '朋友';
 			case 'common.video': return '视频';
 			case 'common.following': return '关注';
+			case 'common.expand': return '展开';
+			case 'common.collapse': return '收起';
 			case 'common.cancelFriendRequest': return '取消申请';
 			case 'common.cancelSpecialFollow': return '取消特别关注';
 			case 'common.addFriend': return '添加朋友';

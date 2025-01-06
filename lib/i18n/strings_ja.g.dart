@@ -78,6 +78,8 @@ class _TranslationsCommonJa implements TranslationsCommonEn {
 	@override String get friend => '友達';
 	@override String get video => 'ビデオ';
 	@override String get following => 'フォロー中';
+	@override String get expand => '展開';
+	@override String get collapse => '收起';
 	@override String get cancelFriendRequest => '友達申請を取り消す';
 	@override String get cancelSpecialFollow => '特別フォローを解除';
 	@override String get addFriend => '友達を追加';
@@ -607,6 +609,8 @@ extension on TranslationsJa {
 			case 'common.friend': return '友達';
 			case 'common.video': return 'ビデオ';
 			case 'common.following': return 'フォロー中';
+			case 'common.expand': return '展開';
+			case 'common.collapse': return '收起';
 			case 'common.cancelFriendRequest': return '友達申請を取り消す';
 			case 'common.cancelSpecialFollow': return '特別フォローを解除';
 			case 'common.addFriend': return '友達を追加';

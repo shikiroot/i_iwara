@@ -23,6 +23,8 @@ common:
   friend: 朋友
   video: 视频
   following: 关注
+  expand: 展开
+  collapse: 收起
   cancelFriendRequest: 取消申请
   cancelSpecialFollow: 取消特别关注
   addFriend: 添加朋友
