@@ -171,57 +171,58 @@ class VideoPreviewDetailModal extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(height: 8),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Row(
+                            Container(
+                              decoration: BoxDecoration(
+                                color: theme.colorScheme.surfaceVariant.withOpacity(0.3),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              padding: const EdgeInsets.all(12),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                                     children: [
-                                      const Icon(
-                                        Icons.remove_red_eye,
-                                        size: 16,
+                                      _buildStatItem(
+                                        icon: Icons.remove_red_eye,
+                                        value: CommonUtils.formatFriendlyNumber(video.numViews),
+                                        colorScheme: colorScheme,
+                                        textTheme: textTheme,
                                       ),
-                                      const SizedBox(width: 4),
-                                      Text(
-                                        CommonUtils.formatFriendlyNumber(video.numViews),
-                                        style: textTheme.bodySmall?.copyWith(
-                                          color: colorScheme.onSurfaceVariant,
-                                        ),
-                                        overflow: TextOverflow.ellipsis,
+                                      _buildStatItem(
+                                        icon: Icons.thumb_up,
+                                        value: CommonUtils.formatFriendlyNumber(video.numLikes),
+                                        colorScheme: colorScheme,
+                                        textTheme: textTheme,
                                       ),
-                                      const SizedBox(width: 16),
-                                      const Icon(
-                                        Icons.thumb_up,
-                                        size: 16,
-                                      ),
-                                      const SizedBox(width: 4),
-                                      Text(
-                                        CommonUtils.formatFriendlyNumber(video.numLikes),
-                                        style: textTheme.bodySmall?.copyWith(
-                                          color: colorScheme.onSurfaceVariant,
-                                        ),
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                      const SizedBox(width: 16),
-                                      const Icon(
-                                        Icons.comment,
-                                        size: 16,
-                                      ),
-                                      const SizedBox(width: 4),
-                                      Text(
-                                        CommonUtils.formatFriendlyNumber(video.numComments),
-                                        style: textTheme.bodySmall?.copyWith(
-                                          color: colorScheme.onSurfaceVariant,
-                                        ),
-                                        overflow: TextOverflow.ellipsis,
+                                      _buildStatItem(
+                                        icon: Icons.comment,
+                                        value: CommonUtils.formatFriendlyNumber(video.numComments),
+                                        colorScheme: colorScheme,
+                                        textTheme: textTheme,
                                       ),
                                     ],
                                   ),
-                                ),
-                                Text(
-                                  CommonUtils.formatFriendlyTimestamp(video.createdAt),
-                                  style: textTheme.bodySmall,
-                                ),
-                              ],
+                                  const SizedBox(height: 8),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Icon(
+                                        Icons.access_time,
+                                        size: 14,
+                                        color: colorScheme.onSurfaceVariant.withOpacity(0.8),
+                                      ),
+                                      const SizedBox(width: 4),
+                                      Text(
+                                        CommonUtils.formatFriendlyTimestamp(video.createdAt),
+                                        style: textTheme.bodySmall?.copyWith(
+                                          color: colorScheme.onSurfaceVariant.withOpacity(0.8),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),
@@ -367,5 +368,31 @@ Widget _buildExternalVideoTag({
     ),
   );
 }
+
+  /// 构建统计项
+  Widget _buildStatItem({
+    required IconData icon,
+    required String value,
+    required ColorScheme colorScheme,
+    required TextTheme textTheme,
+  }) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(
+          icon,
+          size: 16,
+          color: colorScheme.onSurfaceVariant,
+        ),
+        const SizedBox(width: 4),
+        Text(
+          value,
+          style: textTheme.bodySmall?.copyWith(
+            color: colorScheme.onSurfaceVariant,
+          ),
+        ),
+      ],
+    );
+  }
 
 }
