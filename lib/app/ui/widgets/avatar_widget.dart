@@ -11,7 +11,7 @@ class AvatarWidget extends StatelessWidget {
   final bool isPremium;
   final bool isAdmin;
   final double borderWidth;
-  
+  final Function()? onTap;
   const AvatarWidget({
     super.key,
     this.avatarUrl,
@@ -21,6 +21,7 @@ class AvatarWidget extends StatelessWidget {
     this.isPremium = false,
     this.isAdmin = false,
     this.borderWidth = 2.0,
+    this.onTap,
   });
 
   @override
@@ -28,7 +29,7 @@ class AvatarWidget extends StatelessWidget {
     final avatar = CachedNetworkImage(
       imageUrl: avatarUrl ?? defaultAvatarUrl,
       imageBuilder: (context, imageProvider) => CircleAvatar(
-        radius: radius - borderWidth,  // 减去边框宽度
+        radius: radius - borderWidth, // 减去边框宽度
         backgroundImage: imageProvider,
       ),
       httpHeaders: headers,
@@ -51,33 +52,36 @@ class AvatarWidget extends StatelessWidget {
     );
 
     if (isPremium || isAdmin) {
-      return Container(
-        width: radius * 2,
-        height: radius * 2,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          gradient: isPremium
-              ? LinearGradient(
-                  colors: [
-                    Colors.purple.shade200,
-                    Colors.blue.shade200,
-                    Colors.pink.shade200,
-                  ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                )
-              : LinearGradient(
-                  colors: [
-                    Colors.red.shade400,
-                    Colors.orange.shade400,
-                  ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-        ),
-        child: Padding(
-          padding: EdgeInsets.all(borderWidth),
-          child: avatar,
+      return GestureDetector(
+        onTap: onTap,
+        child: Container(
+          width: radius * 2,
+          height: radius * 2,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: isPremium
+                ? LinearGradient(
+                    colors: [
+                      Colors.purple.shade200,
+                      Colors.blue.shade200,
+                      Colors.pink.shade200,
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  )
+                : LinearGradient(
+                    colors: [
+                      Colors.red.shade400,
+                      Colors.orange.shade400,
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+          ),
+          child: Padding(
+            padding: EdgeInsets.all(borderWidth),
+            child: avatar,
+          ),
         ),
       );
     } else {

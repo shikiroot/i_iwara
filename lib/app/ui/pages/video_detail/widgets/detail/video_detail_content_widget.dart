@@ -204,13 +204,19 @@ class VideoDetailContent extends StatelessWidget {
                       Expanded(
                         child: SelectableText(
                           controller.videoInfo.value?.title ?? '',
-                          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                          style: const TextStyle(
+                            fontSize: 20, 
+                            fontWeight: FontWeight.w600,
+                            height: 1.3,
+                          ),
                         ),
                       ),
                       // 翻译按钮
                       if (controller.videoInfo.value?.title?.isNotEmpty == true)
                         IconButton(
-                          icon: const Icon(Icons.translate),
+                          icon: const Icon(Icons.translate, size: 20),
+                          padding: EdgeInsets.zero,
+                          constraints: const BoxConstraints(),
                           onPressed: () {
                             Get.dialog(
                               TranslationDialog(
@@ -222,16 +228,19 @@ class VideoDetailContent extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 12),
                 // 作者信息区域，包括头像和用户名
                 _buildAuthorInfo(),
-                const SizedBox(height: 8),
+                const SizedBox(height: 12),
                 // 视频发布时间和观看次数
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: Obx(() => Text(
                         '${t.galleryDetail.publishedAt}：${CommonUtils.formatFriendlyTimestamp(controller.videoInfo.value?.createdAt)}    ${t.galleryDetail.viewsCount}：${CommonUtils.formatFriendlyNumber(controller.videoInfo.value?.numViews)}',
-                        style: const TextStyle(color: Colors.grey),
+                        style: TextStyle(
+                          color: Colors.grey.shade600,
+                          fontSize: 13,
+                        ),
                       )),
                 ),
                 const SizedBox(height: 16),
@@ -276,64 +285,77 @@ class VideoDetailContent extends StatelessWidget {
                 Obx(() {
                   final videoInfo = controller.videoInfo.value;
                   if (videoInfo != null) {
-                    return Padding(
+                    return Container(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: Row(
-                            spacing: 8,
-                            children: [
-                              LikeButtonWidget(
-                                mediaId: videoInfo.id,
-                                liked: videoInfo.liked ?? false,
-                                likeCount: videoInfo.numLikes ?? 0,
-                                onLike: (id) async {
-                                  final result = await Get.find<VideoService>().likeVideo(id);
-                                  return result.isSuccess;
-                                },
-                                onUnlike: (id) async {
-                                  final result = await Get.find<VideoService>().unlikeVideo(id);
-                                  return result.isSuccess;
-                                },
-                                onLikeChanged: (liked) {
-                                  controller.videoInfo.value = controller.videoInfo.value?.copyWith(
-                                    liked: liked,
-                                    numLikes: (controller.videoInfo.value?.numLikes ?? 0) + (liked ? 1 : -1),
-                                  );
-                                },
-                              ),
-                              Material(
-                                color: Colors.transparent,
-                                child: InkWell(
-                                  borderRadius: BorderRadius.circular(16),
-                                  onTap: () {
-                                    final UserService userService = Get.find();
-                                    if (!userService.isLogin) {
-                                      showToastWidget(MDToastWidget(message: t.errors.pleaseLoginFirst, type: MDToastType.error));
-                                      Get.toNamed(Routes.LOGIN);
-                                      return;
-                                    }
-                                    showModalBottomSheet(
-                                      backgroundColor: Colors.transparent,
-                                      isScrollControlled: true,
-                                      builder: (context) => AddVideoToPlayListDialog(
-                                        videoId: controller.videoInfo.value?.id ?? '',
-                                      ), context: context,
-                                    );
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        const Icon(Icons.playlist_add),
-                                        const SizedBox(width: 4),
-                                        Text(slang.Translations.of(context).playList.myPlayList),
-                                      ],
+                        spacing: 12,
+                        children: [
+                          LikeButtonWidget(
+                            mediaId: videoInfo.id,
+                            liked: videoInfo.liked ?? false,
+                            likeCount: videoInfo.numLikes ?? 0,
+                            onLike: (id) async {
+                              final result = await Get.find<VideoService>().likeVideo(id);
+                              return result.isSuccess;
+                            },
+                            onUnlike: (id) async {
+                              final result = await Get.find<VideoService>().unlikeVideo(id);
+                              return result.isSuccess;
+                            },
+                            onLikeChanged: (liked) {
+                              controller.videoInfo.value = controller.videoInfo.value?.copyWith(
+                                liked: liked,
+                                numLikes: (controller.videoInfo.value?.numLikes ?? 0) + (liked ? 1 : -1),
+                              );
+                            },
+                          ),
+                          Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              borderRadius: BorderRadius.circular(20),
+                              onTap: () {
+                                final UserService userService = Get.find();
+                                if (!userService.isLogin) {
+                                  showToastWidget(MDToastWidget(message: t.errors.pleaseLoginFirst, type: MDToastType.error));
+                                  Get.toNamed(Routes.LOGIN);
+                                  return;
+                                }
+                                showModalBottomSheet(
+                                  backgroundColor: Colors.transparent,
+                                  isScrollControlled: true,
+                                  builder: (context) => AddVideoToPlayListDialog(
+                                    videoId: controller.videoInfo.value?.id ?? '',
+                                  ), context: context,
+                                );
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  border: Border.all(color: Theme.of(context).dividerColor),
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(Icons.playlist_add, 
+                                      size: 20,
+                                      color: Theme.of(context).iconTheme.color
                                     ),
-                                  ),
+                                    const SizedBox(width: 4),
+                                    Text(
+                                      slang.Translations.of(context).playList.myPlayList,
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: Theme.of(context).textTheme.bodyMedium?.color
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                            ],
+                            ),
                           ),
+                        ],
+                      ),
                     );
                   } else {
                     return const SizedBox.shrink();
@@ -422,8 +444,8 @@ class VideoDetailContent extends StatelessWidget {
                 child: Text(
                   user?.name ?? '',
                   style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
                     color: Colors.white,
                   ),
                   maxLines: 1,
@@ -433,8 +455,9 @@ class VideoDetailContent extends StatelessWidget {
               Text(
                 '@${user?.username ?? ''}',
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 13,
                   color: Colors.grey[600],
+                  height: 1.2,
                 ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
@@ -456,15 +479,19 @@ class VideoDetailContent extends StatelessWidget {
           children: [
             Text(
               user?.name ?? '',
-              style: const TextStyle(fontSize: 16),
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+              ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
             Text(
               '@${user?.username ?? ''}',
               style: TextStyle(
-                fontSize: 14,
+                fontSize: 13,
                 color: Colors.grey[600],
+                height: 1.2,
               ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
@@ -476,23 +503,26 @@ class VideoDetailContent extends StatelessWidget {
   }
 
   Widget _buildAuthorInfo() {
-    return Padding(
+    return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Row(
         children: [
           _buildAuthorAvatar(),
-          const SizedBox(width: 8),
+          const SizedBox(width: 12),
           Expanded(
             child: _buildAuthorNameButton(),
           ),
           if (controller.videoInfo.value?.user != null)
-            FollowButtonWidget(
-              user: controller.videoInfo.value!.user!,
-              onUserUpdated: (updatedUser) {
-                controller.videoInfo.value = controller.videoInfo.value?.copyWith(
-                  user: updatedUser,
-                );
-              },
+            Container(
+              height: 32,
+              child: FollowButtonWidget(
+                user: controller.videoInfo.value!.user!,
+                onUserUpdated: (updatedUser) {
+                  controller.videoInfo.value = controller.videoInfo.value?.copyWith(
+                    user: updatedUser,
+                  );
+                },
+              ),
             ),
         ],
       ),

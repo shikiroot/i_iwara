@@ -6,6 +6,9 @@ import 'package:i_iwara/app/ui/pages/video_detail/widgets/volume_control_widget.
 import 'package:logger/logger.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:vibration/vibration.dart';
+import 'package:i_iwara/app/ui/widgets/like_button_widget.dart';
+import 'package:i_iwara/app/services/video_service.dart';
+import 'package:i_iwara/app/services/user_service.dart';
 
 import '../../../../../../utils/common_utils.dart';
 import '../../../../../services/config_service.dart';
@@ -129,6 +132,37 @@ class BottomToolbar extends StatelessWidget {
                   // 右侧：播放速度切换、分辨率切换和全屏按钮
                   Row(
                     children: [
+                      // 点赞按钮
+                      Obx(() {
+                        final userService = Get.find<UserService>();
+                        final videoInfo = myVideoStateController.videoInfo.value;
+                        // 只在用户登录且全屏时显示点赞按钮
+                        if (userService.isLogin && currentScreenIsFullScreen && videoInfo != null) {
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 8.0),
+                            child: LikeButtonWidget(
+                              mediaId: videoInfo.id,
+                              liked: videoInfo.liked ?? false,
+                              likeCount: videoInfo.numLikes ?? 0,
+                              onLike: (id) async {
+                                final result = await Get.find<VideoService>().likeVideo(id);
+                                return result.isSuccess;
+                              },
+                              onUnlike: (id) async {
+                                final result = await Get.find<VideoService>().unlikeVideo(id);
+                                return result.isSuccess;
+                              },
+                              onLikeChanged: (liked) {
+                                myVideoStateController.videoInfo.value = myVideoStateController.videoInfo.value?.copyWith(
+                                  liked: liked,
+                                  numLikes: (myVideoStateController.videoInfo.value?.numLikes ?? 0) + (liked ? 1 : -1),
+                                );
+                              },
+                            ),
+                          );
+                        }
+                        return const SizedBox.shrink();
+                      }),
                       // 播放速度切换按钮
                       _buildPlaybackSpeedSwitcher(context),
                       // 分辨率切换按钮

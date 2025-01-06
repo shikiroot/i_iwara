@@ -262,13 +262,19 @@ class ImageModelDetailContent extends StatelessWidget {
           Expanded(
             child: SelectableText(
               controller.imageModelInfo.value?.title ?? '',
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+                height: 1.3,
+              ),
             ),
           ),
           // 翻译按钮
           if (controller.imageModelInfo.value?.title.isNotEmpty == true)
             IconButton(
-              icon: const Icon(Icons.translate),
+              icon: const Icon(Icons.translate, size: 20),
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(),
               onPressed: () {
                 Get.dialog(
                   TranslationDialog(
@@ -284,22 +290,26 @@ class ImageModelDetailContent extends StatelessWidget {
 
   // 构建作者信息区域
   Widget _buildAuthorInfo() {
-    return Padding(
+    return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Row(
         children: [
           _buildAuthorAvatar(),
-          const SizedBox(width: 8),
-          _buildAuthorNameButton(),
-          const Spacer(),
+          const SizedBox(width: 12),
+          Expanded(
+            child: _buildAuthorNameButton(),
+          ),
           if (controller.imageModelInfo.value?.user != null)
-            FollowButtonWidget(
-              user: controller.imageModelInfo.value!.user!,
-              onUserUpdated: (updatedUser) {
-                controller.imageModelInfo.value = controller.imageModelInfo.value?.copyWith(
-                  user: updatedUser,
-                );
-              },
+            Container(
+              height: 32,
+              child: FollowButtonWidget(
+                user: controller.imageModelInfo.value!.user!,
+                onUserUpdated: (updatedUser) {
+                  controller.imageModelInfo.value = controller.imageModelInfo.value?.copyWith(
+                    user: updatedUser,
+                  );
+                },
+              ),
             ),
         ],
       ),
@@ -379,8 +389,8 @@ class ImageModelDetailContent extends StatelessWidget {
                 child: Text(
                   user?.name ?? '',
                   style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
                     color: Colors.white,
                   ),
                   maxLines: 1,
@@ -390,8 +400,9 @@ class ImageModelDetailContent extends StatelessWidget {
               Text(
                 '@${user?.username ?? ''}',
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 13,
                   color: Colors.grey[600],
+                  height: 1.2,
                 ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
@@ -413,15 +424,19 @@ class ImageModelDetailContent extends StatelessWidget {
           children: [
             Text(
               user?.name ?? '',
-              style: const TextStyle(fontSize: 16),
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+              ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
             Text(
               '@${user?.username ?? ''}',
               style: TextStyle(
-                fontSize: 14,
+                fontSize: 13,
                 color: Colors.grey[600],
+                height: 1.2,
               ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
@@ -438,7 +453,10 @@ class ImageModelDetailContent extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Text(
         '${slang.t.galleryDetail.publishedAt}: ${CommonUtils.formatFriendlyTimestamp(controller.imageModelInfo.value?.createdAt)}    ${slang.t.galleryDetail.viewsCount}: ${CommonUtils.formatFriendlyNumber(controller.imageModelInfo.value?.numViews.toInt() ?? 0)}',
-        style: const TextStyle(color: Colors.grey),
+        style: TextStyle(
+          color: Colors.grey.shade600,
+          fontSize: 13,
+        ),
       ),
     );
   }
@@ -483,42 +501,56 @@ class ImageModelDetailContent extends StatelessWidget {
   Widget _buildLikeAndCommentButtons() {
     final imageModelInfo = controller.imageModelInfo.value;
     if (imageModelInfo != null) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              children: [
-                LikeButtonWidget(
-                  mediaId: imageModelInfo.id,
-                  liked: imageModelInfo.liked ?? false,
-                  likeCount: imageModelInfo.numLikes ?? 0,
-                  onLike: (id) async {
-                    final result = await Get.find<GalleryService>().likeImage(id);
-                    return result.isSuccess;
-                  },
-                  onUnlike: (id) async {
-                    final result = await Get.find<GalleryService>().unlikeImage(id);
-                    return result.isSuccess;
-                  },
-                  onLikeChanged: (liked) {
-                    controller.imageModelInfo.value = controller.imageModelInfo.value?.copyWith(
-                      liked: liked,
-                      numLikes: (controller.imageModelInfo.value?.numLikes ?? 0) + (liked ? 1 : -1),
-                    );
-                  },
+      return Builder(
+        builder: (context) => Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              LikeButtonWidget(
+                mediaId: imageModelInfo.id,
+                liked: imageModelInfo.liked ?? false,
+                likeCount: imageModelInfo.numLikes ?? 0,
+                onLike: (id) async {
+                  final result = await Get.find<GalleryService>().likeImage(id);
+                  return result.isSuccess;
+                },
+                onUnlike: (id) async {
+                  final result = await Get.find<GalleryService>().unlikeImage(id);
+                  return result.isSuccess;
+                },
+                onLikeChanged: (liked) {
+                  controller.imageModelInfo.value = controller.imageModelInfo.value?.copyWith(
+                    liked: liked,
+                    numLikes: (controller.imageModelInfo.value?.numLikes ?? 0) + (liked ? 1 : -1),
+                  );
+                },
+              ),
+              Material(
+                color: Colors.transparent,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.comment, 
+                        size: 20,
+                        color: Theme.of(context).iconTheme.color
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        '${imageModelInfo.numComments}',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Theme.of(context).textTheme.bodyMedium?.color
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ],
-            ),
-            Row(
-              children: [
-                const Icon(Icons.comment),
-                const SizedBox(width: 4),
-                Text('${imageModelInfo.numComments}'),
-              ],
-            ),
-          ],
+              ),
+            ],
+          ),
         ),
       );
     }

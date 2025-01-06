@@ -128,9 +128,7 @@ class _MyVideoDetailPageState extends State<MyVideoDetailPage> {
       LogUtils.e('删除控制器失败', error: e, tag: 'video_detail_page_v2');
     }
 
-    if (_volumeController != null) {
-      _volumeController?.removeListener();
-    }
+    _volumeController?.removeListener();
     super.dispose();
   }
 
