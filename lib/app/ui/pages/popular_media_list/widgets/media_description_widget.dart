@@ -54,7 +54,7 @@ class _MediaDescriptionWidgetState extends State<MediaDescriptionWidget> {
   Widget _buildTranslationButton(BuildContext context) {
     final t = slang.Translations.of(context);
     return Card(
-      elevation: 2,
+      elevation: 1,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
       ),
