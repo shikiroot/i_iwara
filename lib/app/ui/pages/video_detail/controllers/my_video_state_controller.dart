@@ -130,6 +130,10 @@ class MyVideoStateController extends GetxController
       parent: animationController,
       curve: Curves.easeOut,
     ));
+
+    // 初始状态显示工具栏
+    animationController.forward();
+
     // 初始化 VideoController
     player = Player();
     videoController = VideoController(player);

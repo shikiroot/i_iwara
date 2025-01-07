@@ -174,7 +174,11 @@ class _SubscriptionsPageState extends State<SubscriptionsPage>
               ),
               Obx(() {
                 RxSet<UserDTO> likedUsers = userPreferenceService.likedUsers;
-                List<SubscriptionSelectItem> selectionList = likedUsers
+                List<UserDTO> sortedUsers = likedUsers.toList()
+                  ..sort((a, b) => 
+                    (b.likedTime ?? DateTime.fromMillisecondsSinceEpoch(0))
+                    .compareTo(a.likedTime ?? DateTime.fromMillisecondsSinceEpoch(0)));
+                List<SubscriptionSelectItem> selectionList = sortedUsers
                     .map((userDto) => SubscriptionSelectItem(
                           id: userDto.id,
                           label: userDto.name,

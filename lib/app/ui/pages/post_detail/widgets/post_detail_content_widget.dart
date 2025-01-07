@@ -214,22 +214,40 @@ class PostDetailContent extends StatelessWidget {
     final t = slang.Translations.of(context);
     final post = controller.postInfo.value;
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      padding: const EdgeInsets.symmetric(horizontal: 23.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            '${t.common.publishedAt}: ${CommonUtils.formatFriendlyTimestamp(post?.createdAt)}',
-            style: const TextStyle(color: Colors.grey),
+          Row(
+            children: [
+              const Icon(Icons.calendar_today, size: 16, color: Colors.grey),
+              const SizedBox(width: 4),
+              Text(
+                '${t.common.publishedAt}: ${CommonUtils.formatFriendlyTimestamp(post?.createdAt)}',
+                style: const TextStyle(color: Colors.grey),
+              ),
+            ],
           ),
           if (post?.updatedAt != null && post!.updatedAt != post.createdAt)
-            Text(
-              '${t.common.updatedAt}: ${CommonUtils.formatFriendlyTimestamp(post.updatedAt)}',
-              style: const TextStyle(color: Colors.grey),
+            Row(
+              children: [
+                const Icon(Icons.update, size: 16, color: Colors.grey),
+                const SizedBox(width: 4),
+                Text(
+                  '${t.common.updatedAt}: ${CommonUtils.formatFriendlyTimestamp(post.updatedAt)}',
+                  style: const TextStyle(color: Colors.grey),
+                ),
+              ],
             ),
-          Text(
-            '${t.common.numViews}: ${CommonUtils.formatFriendlyNumber(post?.numViews ?? 0)}',
-            style: const TextStyle(color: Colors.grey),
+          Row(
+            children: [
+              const Icon(Icons.remove_red_eye, size: 16, color: Colors.grey),
+              const SizedBox(width: 4),
+              Text(
+                '${t.common.numViews}: ${CommonUtils.formatFriendlyNumber(post?.numViews ?? 0)}',
+                style: const TextStyle(color: Colors.grey),
+              ),
+            ],
           ),
         ],
       ),
@@ -251,9 +269,9 @@ class PostDetailContent extends StatelessWidget {
               borderRadius: const BorderRadius.horizontal(
                 left: Radius.circular(20),
               ),
-              onTap: controller.isTranslating.value 
-                ? null 
-                : () => controller.handleTranslation(),
+              onTap: controller.isTranslating.value
+                  ? null
+                  : () => controller.handleTranslation(),
               child: Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 12,
@@ -293,11 +311,11 @@ class PostDetailContent extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Obx(() => Icon(
-                controller.showTranslationMenu.value 
-                  ? Icons.arrow_drop_up 
-                  : Icons.arrow_drop_down,
-                size: 26,
-              )),
+                    controller.showTranslationMenu.value
+                        ? Icons.arrow_drop_up
+                        : Icons.arrow_drop_down,
+                    size: 26,
+                  )),
             ),
           ),
         ],
@@ -333,7 +351,10 @@ class PostDetailContent extends StatelessWidget {
     final t = slang.Translations.of(context);
     return Container(
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceContainerHighest.withOpacity(0.3),
+        color: Theme.of(context)
+            .colorScheme
+            .surfaceContainerHighest
+            .withOpacity(0.3),
         borderRadius: BorderRadius.circular(8),
       ),
       padding: const EdgeInsets.all(12),
@@ -365,7 +386,7 @@ class PostDetailContent extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 8),
-          if (controller.translatedText.value == 
+          if (controller.translatedText.value ==
               t.errors.translationFailedPleaseTryAgainLater)
             Text(
               controller.translatedText.value!,
@@ -433,4 +454,4 @@ class PostDetailContent extends StatelessWidget {
       ],
     );
   }
-} 
+}
