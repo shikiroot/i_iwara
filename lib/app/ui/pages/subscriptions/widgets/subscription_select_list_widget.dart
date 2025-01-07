@@ -186,49 +186,69 @@ class _SubscriptionSelectListState extends State<SubscriptionSelectList> {
             mainAxisSize: MainAxisSize.min,
             children: [
               if (selectItem.avatarUrl.isEmpty)
-                CircleAvatar(
-                  radius: 20,
-                  backgroundColor: isSelected
-                      ? theme.colorScheme.primary
-                      : Colors.transparent,
-                  child: Icon(
-                    Icons.cloud,
-                    color: isSelected
-                        ? theme.colorScheme.onPrimary
-                        : theme.colorScheme.onSurface,
-                    size: 20,
+                Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: Colors.transparent,
+                      width: 2,
+                    ),
+                  ),
+                  child: CircleAvatar(
+                    radius: 20,
+                    backgroundColor: isSelected
+                        ? theme.colorScheme.primary
+                        : theme.colorScheme.surfaceVariant,
+                    child: Icon(
+                      Icons.cloud,
+                      color: isSelected
+                          ? theme.colorScheme.onPrimary
+                          : theme.colorScheme.onSurfaceVariant,
+                      size: 24,
+                    ),
                   ),
                 )
               else
-                CircleAvatar(
-                  radius: 20,
-                  backgroundColor: isSelected
-                      ? theme.colorScheme.primary
-                      : Colors.transparent,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: CachedNetworkImage(
-                      imageUrl: selectItem.avatarUrl,
-                      placeholder: (context, url) => Shimmer.fromColors(
-                        baseColor: Colors.grey[300]!,
-                        highlightColor: Colors.grey[100]!,
-                        child: const CircleAvatar(
+                Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: isSelected
+                          ? theme.colorScheme.primary
+                          : Colors.transparent,
+                      width: 2,
+                    ),
+                  ),
+                  child: CircleAvatar(
+                    radius: 20,
+                    backgroundColor: isSelected
+                        ? theme.colorScheme.primary
+                        : Colors.transparent,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: CachedNetworkImage(
+                        imageUrl: selectItem.avatarUrl,
+                        placeholder: (context, url) => Shimmer.fromColors(
+                          baseColor: Colors.grey[300]!,
+                          highlightColor: Colors.grey[100]!,
+                          child: const CircleAvatar(
+                            radius: 20,
+                            backgroundColor: Colors.white,
+                          ),
+                        ),
+                        errorWidget: (context, url, error) => CircleAvatar(
                           radius: 20,
-                          backgroundColor: Colors.white,
+                          backgroundImage: const NetworkImage(CommonConstants.defaultAvatarUrl),
+                          onBackgroundImageError: (exception, stackTrace) => const Icon(
+                            Icons.person,
+                            size: 20,
+                          ),
                         ),
+                        httpHeaders: const {
+                          'referer': CommonConstants.iwaraBaseUrl
+                        },
+                        fit: BoxFit.cover,
                       ),
-                      errorWidget: (context, url, error) => CircleAvatar(
-                        radius: 20,
-                        backgroundImage: const NetworkImage(CommonConstants.defaultAvatarUrl),
-                        onBackgroundImageError: (exception, stackTrace) => const Icon(
-                          Icons.person,
-                          size: 20,
-                        ),
-                      ),
-                      httpHeaders: const {
-                        'referer': CommonConstants.iwaraBaseUrl
-                      },
-                      fit: BoxFit.cover,
                     ),
                   ),
                 ),
