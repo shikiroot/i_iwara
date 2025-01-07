@@ -304,21 +304,6 @@ class _CustomMarkdownBodyState extends State<CustomMarkdownBody> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        TextButton.icon(
-          style: TextButton.styleFrom(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          ),
-          icon: Icon(
-            _showOriginal ? Icons.format_paint : Icons.format_paint_outlined,
-            size: 20,
-          ),
-          label: Text(_showOriginal ? t.common.showProcessedText : t.common.showOriginalText),
-          onPressed: () {
-            setState(() {
-              _showOriginal = !_showOriginal;
-            });
-          },
-        ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: SizedBox(
@@ -358,6 +343,26 @@ class _CustomMarkdownBodyState extends State<CustomMarkdownBody> {
                 }
               },
             ),
+          ),
+        ),
+        const SizedBox(height: 8),
+        Align(
+          alignment: Alignment.centerRight,
+          child: TextButton.icon(
+            style: TextButton.styleFrom(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            ),
+            icon: Icon(
+              _showOriginal ? Icons.format_paint : Icons.format_paint_outlined,
+              size: 14,
+            ),
+            iconAlignment: IconAlignment.end,
+            label: Text(_showOriginal ? t.common.showProcessedText : t.common.showOriginalText, style: const TextStyle(fontSize: 12)),
+            onPressed: () {
+              setState(() {
+                _showOriginal = !_showOriginal;
+              });
+            },
           ),
         ),
       ],

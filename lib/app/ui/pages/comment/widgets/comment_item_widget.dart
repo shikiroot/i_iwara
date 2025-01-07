@@ -513,41 +513,59 @@ class _CommentItemState extends State<CommentItem> {
 
   // 添加这个方法来构建标签
   Widget _buildCommentTag(String text, Color color, IconData icon) {
-    return Container(
-      margin: const EdgeInsets.only(right: 4),
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            color.withOpacity(0.15),
-            color.withOpacity(0.05),
-          ],
-        ),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: color.withOpacity(0.2),
-          width: 0.5,
-        ),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            icon,
-            size: 10,
-            color: color.withOpacity(0.8),
-          ),
-          const SizedBox(width: 4),
-          Text(
-            text,
-            style: TextStyle(
-              color: color.withOpacity(0.8),
-              fontSize: 10,
-              fontWeight: FontWeight.w500,
+    return Builder(
+      builder: (context) {
+        final colorScheme = Theme.of(context).colorScheme;
+        Color tagColor;
+        switch (text) {
+          case String t when t == slang.t.common.me:
+            tagColor = colorScheme.primary;
+            break;
+          case String t when t == slang.t.common.premium:
+            tagColor = colorScheme.tertiary;
+            break;
+          case String t when t == slang.t.common.author:
+            tagColor = colorScheme.secondary;
+            break;
+          case String t when t == slang.t.common.admin:
+            tagColor = colorScheme.error;
+            break;
+          default:
+            tagColor = colorScheme.primary;
+        }
+
+        return Container(
+          margin: const EdgeInsets.only(right: 4),
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+          decoration: BoxDecoration(
+            color: tagColor.withOpacity(0.08),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: tagColor.withOpacity(0.12),
+              width: 0.5,
             ),
           ),
-        ],
-      ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                icon,
+                size: 10,
+                color: tagColor.withOpacity(0.8),
+              ),
+              const SizedBox(width: 4),
+              Text(
+                text,
+                style: TextStyle(
+                  color: tagColor.withOpacity(0.8),
+                  fontSize: 10,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 
