@@ -18,7 +18,7 @@ class SubscriptionImageList extends StatefulWidget {
   SubscriptionImageListState createState() => SubscriptionImageListState();
 }
 
-class SubscriptionImageListState extends State<SubscriptionImageList> {
+class SubscriptionImageListState extends State<SubscriptionImageList> with AutomaticKeepAliveClientMixin {
   late SubscriptionImageRepository listSourceRepository;
 
   @override
@@ -38,23 +38,27 @@ class SubscriptionImageListState extends State<SubscriptionImageList> {
   }
 
   @override
+  bool get wantKeepAlive => true;
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     return LoadingMoreCustomScrollView(
       slivers: <Widget>[
         LoadingMoreSliverList(
           SliverListConfig<ImageModel>(
             extendedListDelegate:
                 const SliverWaterfallFlowDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: 300,
+              maxCrossAxisExtent: 200,
               crossAxisSpacing: 5,
               mainAxisSpacing: 5,
             ),
             itemBuilder: (BuildContext context, ImageModel image, int index) {
               return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                padding: const EdgeInsets.symmetric(horizontal: 0),
                 child: ImageModelCardListItemWidget(
                   imageModel: image,
-                  width: 300,
+                  width: 200,
                 ),
               );
             },

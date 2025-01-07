@@ -19,7 +19,6 @@ class ImageModelCardListItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double imageHeight = (width * 160) / 220;
     final TextTheme textTheme = Theme.of(context).textTheme;
 
     return SizedBox(
@@ -32,18 +31,20 @@ class ImageModelCardListItemWidget extends StatelessWidget {
           hoverColor: Theme.of(context).hoverColor.withOpacity(0.1),
           splashColor: Theme.of(context).splashColor.withOpacity(0.2),
           highlightColor: Theme.of(context).highlightColor.withOpacity(0.1),
-          child: _buildCardContent(imageHeight, textTheme, context),
+          child: _buildCardContent(textTheme, context),
         ),
       ),
     );
   }
 
-  Widget _buildCardContent(
-      double imageHeight, TextTheme textTheme, BuildContext context) {
+  Widget _buildCardContent(TextTheme textTheme, BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildThumbnail(imageHeight, context),
+        AspectRatio(
+          aspectRatio: 220 / 160,
+          child: _buildThumbnail(context),
+        ),
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -61,50 +62,46 @@ class ImageModelCardListItemWidget extends StatelessWidget {
   }
 
   // 视频缩略图
-  Widget _buildThumbnail(double imageHeight, BuildContext context) {
-    return SizedBox(
-      height: imageHeight,
-      width: double.infinity,
-      child: Stack(
-        fit: StackFit.expand,
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(12),
-            child: CachedNetworkImage(
-              imageUrl: imageModel.thumbnailUrl,
-              fit: BoxFit.cover,
-              placeholder: (context, url) => _buildPlaceholder(),
-              errorWidget: (context, url, error) => Container(
-                      color: Colors.grey[200],
-                      child: Icon(Icons.image_not_supported, size: 40, color: Colors.grey[600])
-                    ),
-            ),
+  Widget _buildThumbnail(BuildContext context) {
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: CachedNetworkImage(
+            imageUrl: imageModel.thumbnailUrl,
+            fit: BoxFit.cover,
+            placeholder: (context, url) => _buildPlaceholder(),
+            errorWidget: (context, url, error) => Container(
+                    color: Colors.grey[200],
+                    child: Icon(Icons.image_not_supported, size: 40, color: Colors.grey[600])
+                  ),
           ),
-          if (imageModel.rating == 'ecchi')
-            Positioned(
-              left: 0,
-              bottom: 0,
-              child: _buildRatingTag(context),
-            ),
-          // 左下角显示图片数量
-          Positioned(
-              right: 0,
-              top: 0,
-              child: _buildImageNums(context, imageModel.numImages)),
-          // 右下角显示观看数量
-          Positioned(
-            right: 0,
-            bottom: 0,
-            child: _buildViewsNums(context, imageModel.numViews),
-          ),
-          // 左上角显示点赞数量
+        ),
+        if (imageModel.rating == 'ecchi')
           Positioned(
             left: 0,
+            bottom: 0,
+            child: _buildRatingTag(context),
+          ),
+        // 左下角显示图片数量
+        Positioned(
+            right: 0,
             top: 0,
-            child: _buildLikeNums(context, imageModel.numLikes),
-          )
-        ],
-      ),
+            child: _buildImageNums(context, imageModel.numImages)),
+        // 右下角显示观看数量
+        Positioned(
+          right: 0,
+          bottom: 0,
+          child: _buildViewsNums(context, imageModel.numViews),
+        ),
+        // 左上角显示点赞数量
+        Positioned(
+          left: 0,
+          top: 0,
+          child: _buildLikeNums(context, imageModel.numLikes),
+        )
+      ],
     );
   }
 

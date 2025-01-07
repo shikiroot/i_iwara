@@ -33,7 +33,6 @@ class _VideoCardListItemWidgetState extends State<VideoCardListItemWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final double imageHeight = (widget.width * 160) / 220;
     final TextTheme textTheme = Theme.of(context).textTheme;
 
     return SizedBox(
@@ -48,18 +47,20 @@ class _VideoCardListItemWidgetState extends State<VideoCardListItemWidget> {
           hoverColor: Theme.of(context).hoverColor.withOpacity(0.1),
           splashColor: Theme.of(context).splashColor.withOpacity(0.2),
           highlightColor: Theme.of(context).highlightColor.withOpacity(0.1),
-          child: _buildCardContent(imageHeight, textTheme, context),
+          child: _buildCardContent(textTheme, context),
         ),
       ),
     );
   }
 
-  Widget _buildCardContent(
-      double imageHeight, TextTheme textTheme, BuildContext context) {
+  Widget _buildCardContent(TextTheme textTheme, BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildThumbnail(imageHeight, context),
+        AspectRatio(
+          aspectRatio: 220 / 160,
+          child: _buildThumbnail(context),
+        ),
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -77,93 +78,89 @@ class _VideoCardListItemWidgetState extends State<VideoCardListItemWidget> {
   }
 
   // 视频缩略图
-  Widget _buildThumbnail(double imageHeight, BuildContext context) {
-    return SizedBox(
-      height: imageHeight,
-      width: double.infinity,
-      child: MouseRegion(
-        onEnter: (_) {
-          _hoverTimer?.cancel();
-          _hoverTimer = Timer(const Duration(seconds: 1), () {
-            if (mounted) {
-              setState(() {
-                _showAnimatedPreview = true;
-              });
-            }
-          });
-        },
-        onExit: (_) {
-          _hoverTimer?.cancel();
+  Widget _buildThumbnail(BuildContext context) {
+    return MouseRegion(
+      onEnter: (_) {
+        _hoverTimer?.cancel();
+        _hoverTimer = Timer(const Duration(seconds: 1), () {
           if (mounted) {
             setState(() {
-              _showAnimatedPreview = false;
+              _showAnimatedPreview = true;
             });
           }
-        },
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: _showAnimatedPreview
-                  ? CachedNetworkImage(
-                      imageUrl: widget.video.previewUrl,
-                      fit: BoxFit.cover,
-                      placeholder: (context, url) => _buildPlaceholder(),
-                      errorWidget: (context, url, error) {
-                        if (widget.video.file?.numThumbnails != null &&
-                            widget.video.file!.numThumbnails! > 0) {
-                          return AnimatedPreview(
-                            videoId: widget.video.file!.id,
-                            numThumbnails: widget.video.file!.numThumbnails!,
-                            width: double.infinity,
-                            height: double.infinity,
-                            fit: BoxFit.cover,
-                          );
-                        } else {
-                          return Container(
-                              color: Colors.grey[200],
-                              child: Icon(Icons.image_not_supported,
-                                  size: 40, color: Colors.grey[600]));
-                        }
-                      },
-                    )
-                  : CachedNetworkImage(
-                      imageUrl: widget.video.thumbnailUrl,
-                      fit: BoxFit.cover,
-                      placeholder: (context, url) => _buildPlaceholder(),
-                      errorWidget: (context, url, error) => Container(
-                          color: Colors.grey[200],
-                          child: Icon(Icons.image_not_supported,
-                              size: 40, color: Colors.grey[600])),
-                    ),
+        });
+      },
+      onExit: (_) {
+        _hoverTimer?.cancel();
+        if (mounted) {
+          setState(() {
+            _showAnimatedPreview = false;
+          });
+        }
+      },
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: _showAnimatedPreview
+                ? CachedNetworkImage(
+                    imageUrl: widget.video.previewUrl,
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) => _buildPlaceholder(),
+                    errorWidget: (context, url, error) {
+                      if (widget.video.file?.numThumbnails != null &&
+                          widget.video.file!.numThumbnails! > 0) {
+                        return AnimatedPreview(
+                          videoId: widget.video.file!.id,
+                          numThumbnails: widget.video.file!.numThumbnails!,
+                          width: double.infinity,
+                          height: double.infinity,
+                          fit: BoxFit.cover,
+                        );
+                      } else {
+                        return Container(
+                            color: Colors.grey[200],
+                            child: Icon(Icons.image_not_supported,
+                                size: 40, color: Colors.grey[600]));
+                      }
+                    },
+                  )
+                : CachedNetworkImage(
+                    imageUrl: widget.video.thumbnailUrl,
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) => _buildPlaceholder(),
+                    errorWidget: (context, url, error) => Container(
+                        color: Colors.grey[200],
+                        child: Icon(Icons.image_not_supported,
+                            size: 40, color: Colors.grey[600])),
+                  ),
+          ),
+          if (widget.video.rating == 'ecchi')
+            Positioned(
+              left: 0,
+              bottom: 0,
+              child: _buildRatingTag(context),
             ),
-            if (widget.video.rating == 'ecchi')
-              Positioned(
-                left: 0,
-                bottom: 0,
-                child: _buildRatingTag(context),
-              ),
-            if (widget.video.private == true)
-              Positioned(
-                left: 0,
-                top: 0,
-                child: _buildPrivateTag(context),
-              ),
-            if (widget.video.minutesDuration != null)
-              Positioned(
-                right: 0,
-                bottom: 0,
-                child: _buildDurationTag(context),
-              ),
-            if (widget.video.isExternalVideo)
-              Positioned(
-                right: 0,
-                bottom: 0,
-                child: _buildExternalVideoTag(context),
-              ),
-          ],
-        ),
+          if (widget.video.private == true)
+            Positioned(
+              left: 0,
+              top: 0,
+              child: _buildPrivateTag(context),
+            ),
+          if (widget.video.minutesDuration != null)
+            Positioned(
+              right: 0,
+              bottom: 0,
+              child: _buildDurationTag(context),
+            ),
+          if (widget.video.isExternalVideo)
+            Positioned(
+              right: 0,
+              bottom: 0,
+              child: _buildExternalVideoTag(context),
+            ),
+        ],
       ),
     );
   }
@@ -202,19 +199,29 @@ class _VideoCardListItemWidgetState extends State<VideoCardListItemWidget> {
         bottomRight: Radius.circular(12),
       ),
       child: Container(
-        width: 100,
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         decoration: const BoxDecoration(
           color: Colors.black54,
         ),
-        child: Text(
-          t.common.private,
-          style: TextStyle(
-            color: Theme.of(context).colorScheme.onPrimary,
-            fontWeight: FontWeight.bold,
-            fontSize: Theme.of(context).textTheme.bodySmall?.fontSize,
-            decoration: TextDecoration.none,
-          ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(
+              Icons.lock,
+              size: 16,
+              color: Colors.white,
+            ),
+            const SizedBox(width: 4),
+            Text(
+              t.common.private,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onPrimary,
+                fontWeight: FontWeight.bold,
+                fontSize: Theme.of(context).textTheme.bodySmall?.fontSize,
+                decoration: TextDecoration.none,
+              ),
+            ),
+          ],
         ),
       ),
     );

@@ -100,6 +100,7 @@ class VideoPreviewDetailModal extends StatelessWidget {
                                               backgroundColor: Colors.black54,
                                               textColor: colorScheme.onPrimary,
                                               theme: theme,
+                                              icon: Icons.lock,
                                             ),
                                           ),
                                         if (video.minutesDuration != null)
@@ -271,9 +272,9 @@ class VideoPreviewDetailModal extends StatelessWidget {
     required Color backgroundColor,
     required Color textColor,
     required ThemeData theme,
+    required IconData icon,
   }) {
     return Container(
-      width: 100,
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         color: backgroundColor,
@@ -282,14 +283,20 @@ class VideoPreviewDetailModal extends StatelessWidget {
           topLeft: Radius.circular(12),
         ),
       ),
-      child: Text(
-        label,
-        style: TextStyle(
-          color: textColor,
-          fontWeight: FontWeight.bold,
-          fontSize: theme.textTheme.bodySmall?.fontSize,
-        ),
-        textAlign: TextAlign.center,
+      child: Row(
+        children: [
+            Icon(icon, size: 16, color: textColor),
+            const SizedBox(width: 4),
+            Text(
+              label,
+              style: TextStyle(
+              color: textColor,
+              fontWeight: FontWeight.bold,
+              fontSize: theme.textTheme.bodySmall?.fontSize,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
       ),
     );
   }

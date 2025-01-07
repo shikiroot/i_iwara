@@ -157,13 +157,6 @@ class _SubscriptionsPageState extends State<SubscriptionsPage>
                 ),
               ),
             ),
-            RotationTransition(
-              turns: _refreshIconController,
-              child: IconButton(
-                icon: const Icon(Icons.refresh),
-                onPressed: _refreshCurrentList,
-              ),
-            ),
           ],
         ),
         Obx(() {
@@ -177,6 +170,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage>
                     id: userDto.id,
                     label: userDto.name,
                     avatarUrl: userDto.avatarUrl,
+                    onLongPress: () => NaviService.navigateToAuthorProfilePage(userDto.username),
                   ))
               .toList();
           return SubscriptionSelectList(
@@ -185,25 +179,38 @@ class _SubscriptionsPageState extends State<SubscriptionsPage>
             onIdSelected: _onIdSelected,
           );
         }),
-        TabBar(
-          isScrollable: true,
-          physics: const NeverScrollableScrollPhysics(),
-          overlayColor: MaterialStateProperty.all(Colors.transparent),
-          tabAlignment: TabAlignment.start,
-          dividerColor: Colors.transparent,
-          controller: _tabController,
-          labelStyle: const TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
-          ),
-          unselectedLabelStyle: const TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w400,
-          ),
-          tabs: [
-            Tab(text: t.common.video),
-            Tab(text: t.common.gallery),
-            Tab(text: t.common.post),
+        Row(
+          children: [
+            Expanded(
+              child: TabBar(
+                isScrollable: true,
+                physics: const NeverScrollableScrollPhysics(),
+                overlayColor: WidgetStateProperty.all(Colors.transparent),
+                tabAlignment: TabAlignment.start,
+                dividerColor: Colors.transparent,
+                controller: _tabController,
+                labelStyle: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
+                unselectedLabelStyle: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                ),
+                tabs: [
+                  Tab(text: t.common.video),
+                  Tab(text: t.common.gallery),
+                  Tab(text: t.common.post),
+                ],
+              ),
+            ),
+            RotationTransition(
+              turns: _refreshIconController,
+              child: IconButton(
+                icon: const Icon(Icons.refresh),
+                onPressed: _refreshCurrentList,
+              ),
+            ),
           ],
         ),
         Expanded(

@@ -18,7 +18,7 @@ class SubscriptionPostList extends StatefulWidget {
   SubscriptionPostListState createState() => SubscriptionPostListState();
 }
 
-class SubscriptionPostListState extends State<SubscriptionPostList> {
+class SubscriptionPostListState extends State<SubscriptionPostList> with AutomaticKeepAliveClientMixin {
   late SubscriptionPostRepository listSourceRepository;
 
   @override
@@ -39,7 +39,11 @@ class SubscriptionPostListState extends State<SubscriptionPostList> {
   }
 
   @override
+  bool get wantKeepAlive => true;
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     return LoadingMoreCustomScrollView(
       slivers: <Widget>[
         LoadingMoreSliverList(

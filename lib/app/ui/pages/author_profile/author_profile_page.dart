@@ -567,10 +567,31 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                               return const SizedBox.shrink();
                             }
 
+                            // 加载中状态
+                            if (profileController.isFriendLoading.value) {
+                              return ElevatedButton.icon(
+                                onPressed: null,
+                                icon: const Icon(Icons.person_add, size: 18),
+                                label: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    const SizedBox(
+                                      width: 12,
+                                      height: 12,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 4),
+                                    Text(t.common.loading),
+                                  ],
+                                ),
+                              );
+                            }
+
                             // 处于代办状态
-                            if (profileController
-                                .isFriendRequestPending.value) {
-                              return ElevatedButton(
+                            if (profileController.isFriendRequestPending.value) {
+                              return ElevatedButton.icon(
                                 onPressed: () {
                                   // 取消朋友申请
                                   profileController.cancelFriendRequest();
@@ -578,38 +599,27 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.orange,
                                 ),
-                                child: Text(t.common.cancelFriendRequest),
+                                icon: const Icon(Icons.person_remove, size: 18),
+                                label: Text(t.common.cancelFriendRequest),
                               );
-                              // 加载中
-                            } else if (profileController
-                                .isFriendLoading.value) {
-                              return Shimmer.fromColors(
-                                baseColor: Colors.grey[300]!,
-                                highlightColor: Colors.grey[100]!,
-                                child: ElevatedButton(
-                                  onPressed: () {},
-                                  child: Text(t.common.loading),
-                                ),
-                              );
-                              // 是朋友
-                            } else if (profileController.author.value?.friend ==
-                                    true &&
-                                userService.currentUser.value?.id !=
-                                    profileController.author.value?.id) {
-                              return ElevatedButton(
+                            // 是朋友
+                            } else if (profileController.author.value?.friend == true) {
+                              return ElevatedButton.icon(
                                 onPressed: () {
                                   // 取消朋友
                                   profileController.cancelFriendRequest();
                                 },
-                                child: Text(t.common.removeFriend),
+                                icon: const Icon(Icons.person_remove, size: 18),
+                                label: Text(t.common.removeFriend),
                               );
                             } else {
-                              return ElevatedButton(
+                              return ElevatedButton.icon(
                                 onPressed: () {
                                   // 发送朋友申请
                                   profileController.sendFriendRequest();
                                 },
-                                child: Text(t.common.addFriend),
+                                icon: const Icon(Icons.person_add, size: 18),
+                                label: Text(t.common.addFriend),
                               );
                             }
                           }),

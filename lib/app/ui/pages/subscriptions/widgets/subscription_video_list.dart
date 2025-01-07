@@ -18,7 +18,7 @@ class SubscriptionVideoList extends StatefulWidget {
   SubscriptionVideoListState createState() => SubscriptionVideoListState();
 }
 
-class SubscriptionVideoListState extends State<SubscriptionVideoList> {
+class SubscriptionVideoListState extends State<SubscriptionVideoList> with AutomaticKeepAliveClientMixin {
   late SubscriptionVideoRepository listSourceRepository;
 
   @override
@@ -38,23 +38,27 @@ class SubscriptionVideoListState extends State<SubscriptionVideoList> {
   }
 
   @override
+  bool get wantKeepAlive => true;
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     return LoadingMoreCustomScrollView(
       slivers: <Widget>[
         LoadingMoreSliverList(
           SliverListConfig<Video>(
             extendedListDelegate:
                 const SliverWaterfallFlowDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: 300,
+              maxCrossAxisExtent: 200,
               crossAxisSpacing: 5,
               mainAxisSpacing: 5,
             ),
             itemBuilder: (BuildContext context, Video video, int index) {
               return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                padding: const EdgeInsets.symmetric(horizontal: 0),
                 child: VideoCardListItemWidget(
                   video: video,
-                  width: 300,
+                  width: 200,
                 ),
               );
             },

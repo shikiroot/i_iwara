@@ -12,11 +12,13 @@ class SubscriptionSelectItem {
   final String id;
   final String label;
   final String avatarUrl;
+  final VoidCallback? onLongPress;
 
   SubscriptionSelectItem({
     required this.id,
     required this.label,
     required this.avatarUrl,
+    this.onLongPress,
   });
 }
 
@@ -172,16 +174,18 @@ class _SubscriptionSelectListState extends State<SubscriptionSelectList> {
   ) {
     final bool isSelected = widget.selectedId == selectItem.id;
     return Container(
-      width: 80,
-      padding: const EdgeInsets.symmetric(horizontal: 4.0),
+      width: 70,
+      padding: const EdgeInsets.symmetric(horizontal: 2.0),
       child: InkWell(
         onTap: () => {
           if (widget.selectedId != selectItem.id)
             widget.onIdSelected(selectItem.id)
         },
+        onLongPress: selectItem.onLongPress,
+        onSecondaryTap: selectItem.onLongPress,
         borderRadius: BorderRadius.circular(8),
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
