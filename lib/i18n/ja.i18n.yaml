@@ -416,6 +416,7 @@ videoDetail:
   privateVideo: これはプライベートビデオです
   externalVideo: これは站外ビデオです
   openInBrowser: ブラウザで開く
+  resourceDeleted: このビデオは削除されたようです :/
 
 share:
   sharePlayList: プレイリストを共有

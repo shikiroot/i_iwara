@@ -568,6 +568,7 @@ class _TranslationsVideoDetailZhCn implements TranslationsVideoDetailEn {
 	@override String get privateVideo => '这是一个私密视频';
 	@override String get externalVideo => '这是一个站外视频';
 	@override String get openInBrowser => '在浏览器中打开';
+	@override String get resourceDeleted => '这个视频貌似被删除了 :/';
 }
 
 // Path: share
@@ -985,6 +986,7 @@ extension on TranslationsZhCn {
 			case 'videoDetail.privateVideo': return '这是一个私密视频';
 			case 'videoDetail.externalVideo': return '这是一个站外视频';
 			case 'videoDetail.openInBrowser': return '在浏览器中打开';
+			case 'videoDetail.resourceDeleted': return '这个视频貌似被删除了 :/';
 			case 'share.sharePlayList': return '分享播放列表';
 			case 'share.wowDidYouSeeThis': return '哇哦，你看过这个吗？';
 			case 'share.nameIs': return '名字叫做';

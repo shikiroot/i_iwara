@@ -565,6 +565,7 @@ class _TranslationsVideoDetailJa implements TranslationsVideoDetailEn {
 	@override String get privateVideo => 'これはプライベートビデオです';
 	@override String get externalVideo => 'これは站外ビデオです';
 	@override String get openInBrowser => 'ブラウザで開く';
+	@override String get resourceDeleted => 'このビデオは削除されたようです :/';
 }
 
 // Path: share
@@ -979,6 +980,7 @@ extension on TranslationsJa {
 			case 'videoDetail.privateVideo': return 'これはプライベートビデオです';
 			case 'videoDetail.externalVideo': return 'これは站外ビデオです';
 			case 'videoDetail.openInBrowser': return 'ブラウザで開く';
+			case 'videoDetail.resourceDeleted': return 'このビデオは削除されたようです :/';
 			case 'share.sharePlayList': return 'プレイリストを共有';
 			case 'share.wowDidYouSeeThis': return 'ああ、見たの？';
 			case 'share.nameIs': return '名前は';

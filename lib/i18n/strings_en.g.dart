@@ -569,6 +569,7 @@ class TranslationsVideoDetailEn {
 	String get privateVideo => 'This is a private video';
 	String get externalVideo => 'This is an external video';
 	String get openInBrowser => 'Open in Browser';
+	String get resourceDeleted => 'This video seems to have been deleted :/';
 }
 
 // Path: share
@@ -983,6 +984,7 @@ extension on Translations {
 			case 'videoDetail.privateVideo': return 'This is a private video';
 			case 'videoDetail.externalVideo': return 'This is an external video';
 			case 'videoDetail.openInBrowser': return 'Open in Browser';
+			case 'videoDetail.resourceDeleted': return 'This video seems to have been deleted :/';
 			case 'share.sharePlayList': return 'Share Play List';
 			case 'share.wowDidYouSeeThis': return 'Wow, did you see this?';
 			case 'share.nameIs': return 'Name is';

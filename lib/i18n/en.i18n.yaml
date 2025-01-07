@@ -414,6 +414,7 @@ videoDetail:
   privateVideo: This is a private video
   externalVideo: This is an external video
   openInBrowser: Open in Browser
+  resourceDeleted: This video seems to have been deleted :/
 
 share:
   sharePlayList: Share Play List

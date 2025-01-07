@@ -63,6 +63,10 @@ class VideoDetailContent extends StatelessWidget {
                             child: CachedNetworkImage(
                               imageUrl: controller.videoInfo.value!.previewUrl,
                               fit: BoxFit.cover,
+                              errorWidget: (context, url, error) => Container(
+                                color: Colors.black,
+                                child: const Icon(Icons.error_outline, size: 48, color: Colors.white54),
+                              ),
                             ),
                           ),
                         // 添加半透明遮罩
@@ -73,22 +77,41 @@ class VideoDetailContent extends StatelessWidget {
                         ),
                         // 错误提示内容
                         Center(
-                          child: CommonErrorWidget(
-                            text: controller.videoErrorMessage.value ?? t.videoDetail.errorLoadingVideo,
-                            children: [
-                              ElevatedButton.icon(
-                                onPressed: () => AppService.tryPop(),
-                                icon: const Icon(Icons.arrow_back),
-                                label: Text(t.common.back),
+                          child: controller.videoErrorMessage.value == 'resource_404' 
+                            ? Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Icon(Icons.not_interested, size: 48, color: Colors.white),
+                                  const SizedBox(height: 16),
+                                  Text(
+                                    t.videoDetail.resourceDeleted,
+                                    style: const TextStyle(fontSize: 18, color: Colors.white),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  const SizedBox(height: 16),
+                                  ElevatedButton.icon(
+                                    onPressed: () => AppService.tryPop(),
+                                    icon: const Icon(Icons.arrow_back),
+                                    label: Text(t.common.back),
+                                  ),
+                                ],
+                              )
+                            : CommonErrorWidget(
+                                text: controller.videoErrorMessage.value ?? t.videoDetail.errorLoadingVideo,
+                                children: [
+                                  ElevatedButton.icon(
+                                    onPressed: () => AppService.tryPop(),
+                                    icon: const Icon(Icons.arrow_back),
+                                    label: Text(t.common.back),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  ElevatedButton.icon(
+                                    onPressed: () => controller.fetchVideoDetail(controller.videoId ?? ''),
+                                    icon: const Icon(Icons.refresh),
+                                    label: Text(t.common.retry),
+                                  ),
+                                ],
                               ),
-                              const SizedBox(width: 8),
-                              ElevatedButton.icon(
-                                onPressed: () => controller.fetchVideoDetail(controller.videoId ?? ''),
-                                icon: const Icon(Icons.refresh),
-                                label: Text(t.common.retry),
-                              ),
-                            ],
-                          ),
                         ),
                       ],
                     ),

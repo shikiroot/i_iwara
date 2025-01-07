@@ -344,6 +344,12 @@ class MyVideoStateController extends GetxController
             filterPreview: true),
       );
     } catch (e) {
+      // 如果是个 404 的DioException 
+      if (e is DioException && e.response?.statusCode == 404) {
+        videoErrorMessage.value = 'resource_404';
+        return;
+      }
+
       // 处理错误
       LogUtils.e('获取视频源失败: $e', tag: 'MyVideoStateController', error: e);
       videoErrorMessage.value = slang.t.videoDetail.getVideoInfoFailed;

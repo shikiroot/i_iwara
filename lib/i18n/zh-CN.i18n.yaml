@@ -421,6 +421,7 @@ videoDetail:
   privateVideo: 这是一个私密视频
   externalVideo: 这是一个站外视频
   openInBrowser: 在浏览器中打开
+  resourceDeleted: 这个视频貌似被删除了 :/
 
 share:
   sharePlayList: 分享播放列表
