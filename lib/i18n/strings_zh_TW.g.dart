@@ -210,6 +210,9 @@ class _TranslationsCommonZhTw implements TranslationsCommonEn {
 	@override String get content => '內容';
 	@override String get enterContent => '請輸入內容';
 	@override String get writeYourContentHere => '請輸入內容...';
+	@override String get tagBlacklist => '黑名單標籤';
+	@override String get noData => '沒有資料';
+	@override String get tagLimit => '標籤上限';
 }
 
 // Path: auth
@@ -300,6 +303,7 @@ class _TranslationsErrorsZhTw implements TranslationsErrorsEn {
 	@override String remainingHours({required Object num}) => '${num}小時';
 	@override String remainingMinutes({required Object num}) => '${num}分';
 	@override String remainingSeconds({required Object num}) => '${num}秒';
+	@override String tagLimitExceeded({required Object limit}) => '標籤上限超出，上限: ${limit}';
 }
 
 // Path: friends
@@ -799,6 +803,9 @@ extension on TranslationsZhTw {
 			case 'common.content': return '內容';
 			case 'common.enterContent': return '請輸入內容';
 			case 'common.writeYourContentHere': return '請輸入內容...';
+			case 'common.tagBlacklist': return '黑名單標籤';
+			case 'common.noData': return '沒有資料';
+			case 'common.tagLimit': return '標籤上限';
 			case 'auth.login': return '登入';
 			case 'auth.logout': return '登出';
 			case 'auth.email': return '電子郵件';
@@ -871,6 +878,7 @@ extension on TranslationsZhTw {
 			case 'errors.remainingHours': return ({required Object num}) => '${num}小時';
 			case 'errors.remainingMinutes': return ({required Object num}) => '${num}分';
 			case 'errors.remainingSeconds': return ({required Object num}) => '${num}秒';
+			case 'errors.tagLimitExceeded': return ({required Object limit}) => '標籤上限超出，上限: ${limit}';
 			case 'friends.clickToRestoreFriend': return '點擊恢復朋友';
 			case 'friends.friendsList': return '朋友列表';
 			case 'friends.friendRequests': return '朋友請求';

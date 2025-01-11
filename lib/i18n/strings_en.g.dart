@@ -214,6 +214,9 @@ class TranslationsCommonEn {
 	String get content => 'Content';
 	String get enterContent => 'Please enter content';
 	String get writeYourContentHere => 'Please enter content...';
+	String get tagBlacklist => 'Tag Blacklist';
+	String get noData => 'No data';
+	String get tagLimit => 'Tag Limit';
 }
 
 // Path: auth
@@ -304,6 +307,7 @@ class TranslationsErrorsEn {
 	String remainingHours({required Object num}) => '${num} hours';
 	String remainingMinutes({required Object num}) => '${num} minutes';
 	String remainingSeconds({required Object num}) => '${num} seconds';
+	String tagLimitExceeded({required Object limit}) => 'Tag limit exceeded, limit: ${limit}';
 }
 
 // Path: friends
@@ -803,6 +807,9 @@ extension on Translations {
 			case 'common.content': return 'Content';
 			case 'common.enterContent': return 'Please enter content';
 			case 'common.writeYourContentHere': return 'Please enter content...';
+			case 'common.tagBlacklist': return 'Tag Blacklist';
+			case 'common.noData': return 'No data';
+			case 'common.tagLimit': return 'Tag Limit';
 			case 'auth.login': return 'Login';
 			case 'auth.logout': return 'Logout';
 			case 'auth.email': return 'Email';
@@ -875,6 +882,7 @@ extension on Translations {
 			case 'errors.remainingHours': return ({required Object num}) => '${num} hours';
 			case 'errors.remainingMinutes': return ({required Object num}) => '${num} minutes';
 			case 'errors.remainingSeconds': return ({required Object num}) => '${num} seconds';
+			case 'errors.tagLimitExceeded': return ({required Object limit}) => 'Tag limit exceeded, limit: ${limit}';
 			case 'friends.clickToRestoreFriend': return 'Click to restore friend';
 			case 'friends.friendsList': return 'Friends List';
 			case 'friends.friendRequests': return 'Friend Requests';

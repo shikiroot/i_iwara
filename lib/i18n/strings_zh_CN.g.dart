@@ -212,6 +212,9 @@ class _TranslationsCommonZhCn implements TranslationsCommonEn {
 	@override String get content => '内容';
 	@override String get enterContent => '请输入内容';
 	@override String get writeYourContentHere => '请输入内容...';
+	@override String get tagBlacklist => '黑名单标签';
+	@override String get noData => '没有数据';
+	@override String get tagLimit => '标签上限';
 }
 
 // Path: auth
@@ -304,6 +307,7 @@ class _TranslationsErrorsZhCn implements TranslationsErrorsEn {
 	@override String remainingHours({required Object num}) => '${num}小时';
 	@override String remainingMinutes({required Object num}) => '${num}分钟';
 	@override String remainingSeconds({required Object num}) => '${num}秒';
+	@override String tagLimitExceeded({required Object limit}) => '标签上限超出，上限: ${limit}';
 }
 
 // Path: friends
@@ -805,6 +809,9 @@ extension on TranslationsZhCn {
 			case 'common.content': return '内容';
 			case 'common.enterContent': return '请输入内容';
 			case 'common.writeYourContentHere': return '请输入内容...';
+			case 'common.tagBlacklist': return '黑名单标签';
+			case 'common.noData': return '没有数据';
+			case 'common.tagLimit': return '标签上限';
 			case 'auth.login': return '登录';
 			case 'auth.logout': return '退出登录';
 			case 'auth.email': return '邮箱';
@@ -879,6 +886,7 @@ extension on TranslationsZhCn {
 			case 'errors.remainingHours': return ({required Object num}) => '${num}小时';
 			case 'errors.remainingMinutes': return ({required Object num}) => '${num}分钟';
 			case 'errors.remainingSeconds': return ({required Object num}) => '${num}秒';
+			case 'errors.tagLimitExceeded': return ({required Object limit}) => '标签上限超出，上限: ${limit}';
 			case 'friends.clickToRestoreFriend': return '点击恢复好友';
 			case 'friends.friendsList': return '好友列表';
 			case 'friends.friendRequests': return '好友请求';

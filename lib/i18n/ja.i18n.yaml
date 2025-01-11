@@ -153,6 +153,9 @@ common:
   content: 内容
   enterContent: 内容を入力してください
   writeYourContentHere: 内容を入力してください...
+  tagBlacklist: ブラックリストタグ
+  noData: データがありません
+  tagLimit: タグ上限
 auth:
   login: ログイン
   logout: ログアウト
@@ -228,6 +231,7 @@ errors:
   remainingHours: "${num}時間"
   remainingMinutes: "${num}分"
   remainingSeconds: "${num}秒"
+  tagLimitExceeded: 'タグの上限を超えています。上限: ${limit}'
 friends:
   clickToRestoreFriend: 友達を復元するにはクリックしてください
   friendsList: 友達リスト

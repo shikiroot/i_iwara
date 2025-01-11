@@ -44,6 +44,8 @@ abstract class Routes {
 
   static const PHOTO_VIEW_WRAPPER = '/photo_view_wrapper';
 
+  static const TAG_BLACKLIST = '/tag_blacklist';
+
   static String POST_DETAIL(String id) => '/post/$id';
 }
 

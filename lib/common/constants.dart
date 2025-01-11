@@ -97,6 +97,12 @@ class ApiConstants {
   // 规则
   static String rules = '/rules';
 
+  // 用户
+  static String user = '/user';
+
+  // 用户WithId
+  static String userWithId(String userId) => '/user/$userId';
+
   // 视频列表
   static String videos() => '/videos';
 

@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:i_iwara/app/models/dto/profile_user_dto.dart';
 import 'package:i_iwara/app/models/dto/user_request_dto.dart';
 import 'package:i_iwara/app/models/page_data.model.dart';
 import 'package:i_iwara/i18n/strings.g.dart';
@@ -276,6 +277,43 @@ class UserService extends GetxService {
       return ApiResult.fail(t.errors.failedToFetchData);
     }
   }
+
+  /// 获取当前的用户信息
+  /// /user 
+  Future<ApiResult<ProfileUserDto>> fetchProfileUser() async {
+    try {
+      final response = await _apiService.get(ApiConstants.user);
+      return ApiResult.success(data: ProfileUserDto.fromJson(response.data));
+    } catch (e) {
+      LogUtils.e('获取当前用户信息失败', error: e);
+      return ApiResult.fail(t.errors.failedToFetchData);
+    }
+  }
+
+  /// 更新用户信息
+  /// /user/:userId
+  /// @putbody {
+  /// 
+  ///   // 如果更新黑名单，则给出此参数
+  ///   "tagBlacklist": [
+  ///     "abigail_williams"
+  ///   ]
+  /// }
+  Future<ApiResult<User>> updateUserProfile(List<String>? tagBlacklist) async {
+    if (tagBlacklist != null) {
+      try {
+        final response = await _apiService.put(ApiConstants.userWithId(currentUser.value?.id ?? ''), data: {
+          'tagBlacklist': tagBlacklist,
+        });
+        return ApiResult.success(data: User.fromJson(response.data));
+      } catch (e) {
+        LogUtils.e('更新用户信息失败', error: e);
+        return ApiResult.fail(t.errors.failedToOperate);
+      }
+    }
+    return ApiResult.fail(t.errors.invalidParameter);
+  }
+
 
   // 添加处理登出的方法
   void handleLogout() {

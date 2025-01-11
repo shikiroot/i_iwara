@@ -152,6 +152,9 @@ common:
   content: Content
   enterContent: Please enter content
   writeYourContentHere: Please enter content...
+  tagBlacklist: Tag Blacklist
+  noData: No data
+  tagLimit: Tag Limit
 auth:
   login: Login
   logout: Logout
@@ -227,6 +230,7 @@ errors:
   remainingHours: "${num} hours"
   remainingMinutes: "${num} minutes"
   remainingSeconds: "${num} seconds"
+  tagLimitExceeded: 'Tag limit exceeded, limit: ${limit}'
 friends:
   clickToRestoreFriend: Click to restore friend
   friendsList: Friends List

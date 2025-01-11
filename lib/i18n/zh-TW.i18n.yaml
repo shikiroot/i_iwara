@@ -152,6 +152,9 @@ common:
   content: 內容
   enterContent: 請輸入內容
   writeYourContentHere: 請輸入內容...
+  tagBlacklist: 黑名單標籤
+  noData: 沒有資料
+  tagLimit: 標籤上限
 
 auth:
   login: 登入
@@ -228,6 +231,7 @@ errors:
   remainingHours: "${num}小時"
   remainingMinutes: "${num}分"
   remainingSeconds: "${num}秒"
+  tagLimitExceeded: '標籤上限超出，上限: ${limit}'
 friends:
   clickToRestoreFriend: 點擊恢復朋友
   friendsList: 朋友列表

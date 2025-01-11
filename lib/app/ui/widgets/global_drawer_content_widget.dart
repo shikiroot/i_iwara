@@ -29,6 +29,16 @@ class GlobalDrawerColumns extends StatelessWidget {
           child: ListView(
             padding: EdgeInsets.zero,
             children: [
+              // Tag黑名单
+              _buildMenuItem(Icons.block, t.common.tagBlacklist, () {
+                if (userService.isLogin) {
+                  NaviService.navigateToTagBlacklistPage();
+                  AppService.switchGlobalDrawer();
+                } else {
+                  AppService.switchGlobalDrawer();
+                  showToastWidget(MDToastWidget(message: t.errors.pleaseLoginFirst, type: MDToastType.error));
+                }
+              }),
               // 历史记录
               _buildMenuItem(Icons.history, t.common.history, () {
                 NaviService.navigateToHistoryListPage();

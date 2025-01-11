@@ -156,7 +156,9 @@ common:
   content: 内容
   enterContent: 请输入内容
   writeYourContentHere: 请输入内容...
-
+  tagBlacklist: 黑名单标签
+  noData: 没有数据
+  tagLimit: 标签上限
 auth:
   login: 登录
   logout: 退出登录
@@ -234,6 +236,7 @@ errors:
   remainingHours: "${num}小时"
   remainingMinutes: "${num}分钟"
   remainingSeconds: "${num}秒"
+  tagLimitExceeded: '标签上限超出，上限: ${limit}'
 friends:
   clickToRestoreFriend: 点击恢复好友
   friendsList: 好友列表

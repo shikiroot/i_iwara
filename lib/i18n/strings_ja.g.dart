@@ -210,6 +210,9 @@ class _TranslationsCommonJa implements TranslationsCommonEn {
 	@override String get content => '内容';
 	@override String get enterContent => '内容を入力してください';
 	@override String get writeYourContentHere => '内容を入力してください...';
+	@override String get tagBlacklist => 'ブラックリストタグ';
+	@override String get noData => 'データがありません';
+	@override String get tagLimit => 'タグ上限';
 }
 
 // Path: auth
@@ -300,6 +303,7 @@ class _TranslationsErrorsJa implements TranslationsErrorsEn {
 	@override String remainingHours({required Object num}) => '${num}時間';
 	@override String remainingMinutes({required Object num}) => '${num}分';
 	@override String remainingSeconds({required Object num}) => '${num}秒';
+	@override String tagLimitExceeded({required Object limit}) => 'タグの上限を超えています。上限: ${limit}';
 }
 
 // Path: friends
@@ -799,6 +803,9 @@ extension on TranslationsJa {
 			case 'common.content': return '内容';
 			case 'common.enterContent': return '内容を入力してください';
 			case 'common.writeYourContentHere': return '内容を入力してください...';
+			case 'common.tagBlacklist': return 'ブラックリストタグ';
+			case 'common.noData': return 'データがありません';
+			case 'common.tagLimit': return 'タグ上限';
 			case 'auth.login': return 'ログイン';
 			case 'auth.logout': return 'ログアウト';
 			case 'auth.email': return 'メールアドレス';
@@ -871,6 +878,7 @@ extension on TranslationsJa {
 			case 'errors.remainingHours': return ({required Object num}) => '${num}時間';
 			case 'errors.remainingMinutes': return ({required Object num}) => '${num}分';
 			case 'errors.remainingSeconds': return ({required Object num}) => '${num}秒';
+			case 'errors.tagLimitExceeded': return ({required Object limit}) => 'タグの上限を超えています。上限: ${limit}';
 			case 'friends.clickToRestoreFriend': return '友達を復元するにはクリックしてください';
 			case 'friends.friendsList': return '友達リスト';
 			case 'friends.friendRequests': return '友達リクエスト';
