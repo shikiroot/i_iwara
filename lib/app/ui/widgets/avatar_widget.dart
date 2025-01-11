@@ -10,6 +10,7 @@ class AvatarWidget extends StatelessWidget {
   final String defaultAvatarUrl;
   final bool isPremium;
   final bool isAdmin;
+  final String? role;
   final double borderWidth;
   final Function()? onTap;
   const AvatarWidget({
@@ -20,6 +21,7 @@ class AvatarWidget extends StatelessWidget {
     required this.defaultAvatarUrl,
     this.isPremium = false,
     this.isAdmin = false,
+    this.role,
     this.borderWidth = 2.0,
     this.onTap,
   });
@@ -51,53 +53,105 @@ class AvatarWidget extends StatelessWidget {
       ),
     );
 
-    if (isPremium || isAdmin) {
-      return GestureDetector(
-        onTap: onTap,
-        child: Container(
+    // 优先判断是否是会员或管理员
+    if (isPremium) {
+      return _buildBorderedAvatar(
+        avatar,
+        LinearGradient(
+          colors: [
+            Colors.purple.shade200,
+            Colors.blue.shade200,
+            Colors.pink.shade200,
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+      );
+    } else if (isAdmin) {
+      return _buildBorderedAvatar(
+        avatar,
+        LinearGradient(
+          colors: [
+            Colors.red.shade400,
+            Colors.orange.shade400,
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+      );
+    }
+
+    // 根据角色显示不同的边框
+    switch (role) {
+      case 'officer':
+      case 'moderator':
+        return _buildBorderedAvatar(
+          avatar,
+          LinearGradient(
+            colors: [
+              Colors.green.shade400,
+              Colors.teal.shade400,
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        );
+      case 'admin':
+        return _buildBorderedAvatar(
+          avatar,
+          LinearGradient(
+            colors: [
+              Colors.red.shade400,
+              Colors.orange.shade400,
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        );
+      case 'limited':
+        return _buildBorderedAvatar(
+          avatar,
+          LinearGradient(
+            colors: [
+              Colors.grey.shade400,
+              Colors.grey.shade600,
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        );
+      default:
+        // 普通用户添加透明边框，保持一致的大小
+        return Container(
           width: radius * 2,
           height: radius * 2,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             shape: BoxShape.circle,
-            gradient: isPremium
-                ? LinearGradient(
-                    colors: [
-                      Colors.purple.shade200,
-                      Colors.blue.shade200,
-                      Colors.pink.shade200,
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  )
-                : LinearGradient(
-                    colors: [
-                      Colors.red.shade400,
-                      Colors.orange.shade400,
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
+            color: Colors.transparent,
           ),
           child: Padding(
             padding: EdgeInsets.all(borderWidth),
             child: avatar,
           ),
-        ),
-      );
-    } else {
-      // 为普通用户添加透明边框，保持一致的大小
-      return Container(
+        );
+    }
+  }
+
+  Widget _buildBorderedAvatar(Widget avatar, Gradient gradient) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
         width: radius * 2,
         height: radius * 2,
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: Colors.transparent,
+          gradient: gradient,
         ),
         child: Padding(
           padding: EdgeInsets.all(borderWidth),
           child: avatar,
         ),
-      );
-    }
+      ),
+    );
   }
 }

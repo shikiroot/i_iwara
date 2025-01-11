@@ -53,6 +53,7 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	late final TranslationsVideoDetailEn videoDetail = TranslationsVideoDetailEn._(_root);
 	late final TranslationsShareEn share = TranslationsShareEn._(_root);
 	late final TranslationsMarkdownEn markdown = TranslationsMarkdownEn._(_root);
+	late final TranslationsForumEn forum = TranslationsForumEn._(_root);
 }
 
 // Path: common
@@ -650,6 +651,82 @@ class TranslationsMarkdownEn {
 	String get syntax => 'Syntax';
 }
 
+// Path: forum
+class TranslationsForumEn {
+	TranslationsForumEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	late final TranslationsForumErrorsEn errors = TranslationsForumErrorsEn._(_root);
+	String get createPost => 'Create Post';
+	String get title => 'Title';
+	String get enterTitle => 'Enter Title';
+	String get content => 'Content';
+	String get enterContent => 'Enter Content';
+	String get writeYourContentHere => 'Write Your Content Here...';
+	String get posts => 'Posts';
+	String get threads => 'Threads';
+	String get createThread => 'Create Thread';
+	String get forum => 'Forum';
+	String get selectCategory => 'Select Category';
+	String cooldownRemaining({required Object minutes, required Object seconds}) => 'Cooldown Remaining ${minutes} minutes ${seconds} seconds';
+	late final TranslationsForumGroupsEn groups = TranslationsForumGroupsEn._(_root);
+	late final TranslationsForumLeafNamesEn leafNames = TranslationsForumLeafNamesEn._(_root);
+}
+
+// Path: forum.errors
+class TranslationsForumErrorsEn {
+	TranslationsForumErrorsEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get pleaseSelectCategory => 'Please select category';
+}
+
+// Path: forum.groups
+class TranslationsForumGroupsEn {
+	TranslationsForumGroupsEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get administration => 'Administration';
+	String get global => 'Global';
+	String get chinese => 'Chinese';
+	String get japanese => 'Japanese';
+	String get korean => 'Korean';
+	String get other => 'Other';
+}
+
+// Path: forum.leafNames
+class TranslationsForumLeafNamesEn {
+	TranslationsForumLeafNamesEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get announcements => 'Announcements';
+	String get feedback => 'Feedback';
+	String get support => 'Support';
+	String get general => 'General';
+	String get guides => 'Guides';
+	String get questions => 'Questions';
+	String get requests => 'Requests';
+	String get sharing => 'Sharing';
+	String get general_zh => 'General';
+	String get questions_zh => 'Questions';
+	String get requests_zh => 'Requests';
+	String get support_zh => 'Support';
+	String get general_ja => 'General';
+	String get questions_ja => 'Questions';
+	String get requests_ja => 'Requests';
+	String get support_ja => 'Support';
+	String get korean => 'Korean';
+	String get other => 'Other';
+}
+
 /// Flat map(s) containing all translations.
 /// Only for edge cases! For simple maps, use the map function of this library.
 extension on Translations {
@@ -1106,6 +1183,43 @@ extension on Translations {
 			case 'markdown.separatorDescription': return 'Create separator with three or more - symbols';
 			case 'markdown.separatorSyntax': return '---';
 			case 'markdown.syntax': return 'Syntax';
+			case 'forum.errors.pleaseSelectCategory': return 'Please select category';
+			case 'forum.createPost': return 'Create Post';
+			case 'forum.title': return 'Title';
+			case 'forum.enterTitle': return 'Enter Title';
+			case 'forum.content': return 'Content';
+			case 'forum.enterContent': return 'Enter Content';
+			case 'forum.writeYourContentHere': return 'Write Your Content Here...';
+			case 'forum.posts': return 'Posts';
+			case 'forum.threads': return 'Threads';
+			case 'forum.createThread': return 'Create Thread';
+			case 'forum.forum': return 'Forum';
+			case 'forum.selectCategory': return 'Select Category';
+			case 'forum.cooldownRemaining': return ({required Object minutes, required Object seconds}) => 'Cooldown Remaining ${minutes} minutes ${seconds} seconds';
+			case 'forum.groups.administration': return 'Administration';
+			case 'forum.groups.global': return 'Global';
+			case 'forum.groups.chinese': return 'Chinese';
+			case 'forum.groups.japanese': return 'Japanese';
+			case 'forum.groups.korean': return 'Korean';
+			case 'forum.groups.other': return 'Other';
+			case 'forum.leafNames.announcements': return 'Announcements';
+			case 'forum.leafNames.feedback': return 'Feedback';
+			case 'forum.leafNames.support': return 'Support';
+			case 'forum.leafNames.general': return 'General';
+			case 'forum.leafNames.guides': return 'Guides';
+			case 'forum.leafNames.questions': return 'Questions';
+			case 'forum.leafNames.requests': return 'Requests';
+			case 'forum.leafNames.sharing': return 'Sharing';
+			case 'forum.leafNames.general_zh': return 'General';
+			case 'forum.leafNames.questions_zh': return 'Questions';
+			case 'forum.leafNames.requests_zh': return 'Requests';
+			case 'forum.leafNames.support_zh': return 'Support';
+			case 'forum.leafNames.general_ja': return 'General';
+			case 'forum.leafNames.questions_ja': return 'Questions';
+			case 'forum.leafNames.requests_ja': return 'Requests';
+			case 'forum.leafNames.support_ja': return 'Support';
+			case 'forum.leafNames.korean': return 'Korean';
+			case 'forum.leafNames.other': return 'Other';
 			default: return null;
 		}
 	}

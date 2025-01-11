@@ -46,6 +46,8 @@ abstract class Routes {
 
   static const TAG_BLACKLIST = '/tag_blacklist';
 
+  static const FORUM = '/forum';
+
   static String POST_DETAIL(String id) => '/post/$id';
 }
 

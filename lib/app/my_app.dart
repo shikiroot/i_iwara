@@ -13,6 +13,7 @@ import 'package:i_iwara/app/ui/pages/settings/proxy_settings_page.dart';
 import 'package:i_iwara/app/ui/pages/settings/settings_page.dart';
 import 'package:i_iwara/app/ui/pages/settings/theme_settings_page.dart';
 import 'package:i_iwara/app/ui/pages/sign_in/sing_in_page.dart';
+import 'package:i_iwara/app/ui/pages/forum/forum_page.dart';
 import 'package:i_iwara/app/ui/widgets/global_drawer_content_widget.dart';
 import 'package:i_iwara/app/ui/widgets/window_layout_widget.dart';
 import 'package:i_iwara/i18n/strings.g.dart';

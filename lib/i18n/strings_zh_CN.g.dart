@@ -49,6 +49,7 @@ class TranslationsZhCn implements Translations {
 	@override late final _TranslationsVideoDetailZhCn videoDetail = _TranslationsVideoDetailZhCn._(_root);
 	@override late final _TranslationsShareZhCn share = _TranslationsShareZhCn._(_root);
 	@override late final _TranslationsMarkdownZhCn markdown = _TranslationsMarkdownZhCn._(_root);
+	@override late final _TranslationsForumZhCn forum = _TranslationsForumZhCn._(_root);
 }
 
 // Path: common
@@ -650,6 +651,82 @@ class _TranslationsMarkdownZhCn implements TranslationsMarkdownEn {
 	@override String get syntax => '语法';
 }
 
+// Path: forum
+class _TranslationsForumZhCn implements TranslationsForumEn {
+	_TranslationsForumZhCn._(this._root);
+
+	final TranslationsZhCn _root; // ignore: unused_field
+
+	// Translations
+	@override late final _TranslationsForumErrorsZhCn errors = _TranslationsForumErrorsZhCn._(_root);
+	@override String get createPost => '创建帖子';
+	@override String get title => '标题';
+	@override String get enterTitle => '输入标题';
+	@override String get content => '内容';
+	@override String get enterContent => '输入内容';
+	@override String get writeYourContentHere => '在此输入内容...';
+	@override String get posts => '帖子';
+	@override String get threads => '主题';
+	@override String get forum => '论坛';
+	@override String get createThread => '创建主题';
+	@override String get selectCategory => '选择分类';
+	@override String cooldownRemaining({required Object minutes, required Object seconds}) => '冷却剩余时间 ${minutes} 分 ${seconds} 秒';
+	@override late final _TranslationsForumGroupsZhCn groups = _TranslationsForumGroupsZhCn._(_root);
+	@override late final _TranslationsForumLeafNamesZhCn leafNames = _TranslationsForumLeafNamesZhCn._(_root);
+}
+
+// Path: forum.errors
+class _TranslationsForumErrorsZhCn implements TranslationsForumErrorsEn {
+	_TranslationsForumErrorsZhCn._(this._root);
+
+	final TranslationsZhCn _root; // ignore: unused_field
+
+	// Translations
+	@override String get pleaseSelectCategory => '请选择分类';
+}
+
+// Path: forum.groups
+class _TranslationsForumGroupsZhCn implements TranslationsForumGroupsEn {
+	_TranslationsForumGroupsZhCn._(this._root);
+
+	final TranslationsZhCn _root; // ignore: unused_field
+
+	// Translations
+	@override String get administration => '管理';
+	@override String get global => '全球';
+	@override String get chinese => '中文';
+	@override String get japanese => '日语';
+	@override String get korean => '韩语';
+	@override String get other => '其他';
+}
+
+// Path: forum.leafNames
+class _TranslationsForumLeafNamesZhCn implements TranslationsForumLeafNamesEn {
+	_TranslationsForumLeafNamesZhCn._(this._root);
+
+	final TranslationsZhCn _root; // ignore: unused_field
+
+	// Translations
+	@override String get announcements => '公告';
+	@override String get feedback => '反馈';
+	@override String get support => '支持';
+	@override String get general => '一般';
+	@override String get guides => '指南';
+	@override String get questions => '问题';
+	@override String get requests => '请求';
+	@override String get sharing => '分享';
+	@override String get general_zh => '一般';
+	@override String get questions_zh => '问题';
+	@override String get requests_zh => '请求';
+	@override String get support_zh => '支持';
+	@override String get general_ja => '一般';
+	@override String get questions_ja => '问题';
+	@override String get requests_ja => '请求';
+	@override String get support_ja => '支持';
+	@override String get korean => '韩语';
+	@override String get other => '其他';
+}
+
 /// Flat map(s) containing all translations.
 /// Only for edge cases! For simple maps, use the map function of this library.
 extension on TranslationsZhCn {
@@ -1110,6 +1187,43 @@ extension on TranslationsZhCn {
 			case 'markdown.separatorDescription': return '使用三个或更多 - 号创建分隔线';
 			case 'markdown.separatorSyntax': return '---';
 			case 'markdown.syntax': return '语法';
+			case 'forum.errors.pleaseSelectCategory': return '请选择分类';
+			case 'forum.createPost': return '创建帖子';
+			case 'forum.title': return '标题';
+			case 'forum.enterTitle': return '输入标题';
+			case 'forum.content': return '内容';
+			case 'forum.enterContent': return '输入内容';
+			case 'forum.writeYourContentHere': return '在此输入内容...';
+			case 'forum.posts': return '帖子';
+			case 'forum.threads': return '主题';
+			case 'forum.forum': return '论坛';
+			case 'forum.createThread': return '创建主题';
+			case 'forum.selectCategory': return '选择分类';
+			case 'forum.cooldownRemaining': return ({required Object minutes, required Object seconds}) => '冷却剩余时间 ${minutes} 分 ${seconds} 秒';
+			case 'forum.groups.administration': return '管理';
+			case 'forum.groups.global': return '全球';
+			case 'forum.groups.chinese': return '中文';
+			case 'forum.groups.japanese': return '日语';
+			case 'forum.groups.korean': return '韩语';
+			case 'forum.groups.other': return '其他';
+			case 'forum.leafNames.announcements': return '公告';
+			case 'forum.leafNames.feedback': return '反馈';
+			case 'forum.leafNames.support': return '支持';
+			case 'forum.leafNames.general': return '一般';
+			case 'forum.leafNames.guides': return '指南';
+			case 'forum.leafNames.questions': return '问题';
+			case 'forum.leafNames.requests': return '请求';
+			case 'forum.leafNames.sharing': return '分享';
+			case 'forum.leafNames.general_zh': return '一般';
+			case 'forum.leafNames.questions_zh': return '问题';
+			case 'forum.leafNames.requests_zh': return '请求';
+			case 'forum.leafNames.support_zh': return '支持';
+			case 'forum.leafNames.general_ja': return '一般';
+			case 'forum.leafNames.questions_ja': return '问题';
+			case 'forum.leafNames.requests_ja': return '请求';
+			case 'forum.leafNames.support_ja': return '支持';
+			case 'forum.leafNames.korean': return '韩语';
+			case 'forum.leafNames.other': return '其他';
 			default: return null;
 		}
 	}

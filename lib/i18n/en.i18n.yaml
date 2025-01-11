@@ -478,3 +478,45 @@ markdown:
   separatorDescription: 'Create separator with three or more - symbols'
   separatorSyntax: '---'
   syntax: Syntax
+
+forum:
+  errors:
+    pleaseSelectCategory: Please select category
+  createPost: Create Post
+  title: Title
+  enterTitle: Enter Title
+  content: Content
+  enterContent: Enter Content
+  writeYourContentHere: Write Your Content Here...
+  posts: Posts
+  threads: Threads
+  createThread: Create Thread
+  forum: Forum
+  selectCategory: Select Category
+  cooldownRemaining: 'Cooldown Remaining ${minutes} minutes ${seconds} seconds'
+  groups:
+    administration: Administration
+    global: Global
+    chinese: Chinese
+    japanese: Japanese
+    korean: Korean
+    other: Other
+  leafNames:
+    announcements: Announcements
+    feedback: Feedback
+    support: Support
+    general: General
+    guides: Guides
+    questions: Questions
+    requests: Requests
+    sharing: Sharing
+    'general_zh': General
+    'questions_zh': Questions
+    'requests_zh': Requests
+    'support_zh': Support
+    'general_ja': General
+    'questions_ja': Questions
+    'requests_ja': Requests
+    'support_ja': Support
+    korean: Korean
+    other: Other

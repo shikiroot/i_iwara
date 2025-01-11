@@ -481,3 +481,45 @@ markdown:
   separatorDescription: '使用三個或更多 - 號創建分隔線'
   separatorSyntax: '---'
   syntax: 語法
+
+forum:
+  errors:
+    pleaseSelectCategory: 請選擇分類
+  createPost: 創建帖子
+  title: 標題
+  enterTitle: 輸入標題
+  content: 內容
+  enterContent: 輸入內容
+  writeYourContentHere: 在此輸入內容...
+  posts: 帖子
+  threads: 主題
+  createThread: 創建主題
+  forum: 論壇
+  selectCategory: 選擇分類
+  cooldownRemaining: '冷卻剩餘時間 ${minutes} 分 ${seconds} 秒'
+  groups:
+    administration: 管理
+    global: 全球
+    chinese: 中文
+    japanese: 日语
+    korean: 韩语
+    other: 其他
+  leafNames:
+    announcements: 公告
+    feedback: 反馈
+    support: 支持
+    general: 一般
+    guides: 指南
+    questions: 问题
+    requests: 请求
+    sharing: 分享
+    'general_zh': 一般
+    'questions_zh': 问题
+    'requests_zh': 请求
+    'support_zh': 支持
+    'general_ja': 一般
+    'questions_ja': 问题
+    'requests_ja': 请求
+    'support_ja': 支持
+    korean: 韩语
+    other: 其他

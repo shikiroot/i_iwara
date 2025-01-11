@@ -206,6 +206,18 @@ class ApiConstants {
 
   // 用户发帖子冷却时间
   static String userPostCooldown() => '/user/post/cooldown';
+
+  // 论坛帖子冷却时间
+  static String forumThreadCooldown() => '/user/forumThread/cooldown';
+
+  // 论坛总表
+  static String forum() => '/forum';
+
+  // 论坛帖子
+  static String forumThread(String forumCategoryId) => '/forum/$forumCategoryId';
+
+  // 论坛帖子回复
+  static String forumThreadReply(String threadId) => '/forum/$threadId/reply';
 }
 
 // 视频接口的排序方式

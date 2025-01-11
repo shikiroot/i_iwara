@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:i_iwara/app/ui/pages/forum/forum_page.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
 
 import '../../../routes/app_routes.dart';
@@ -11,7 +12,6 @@ import '../popular_media_list/popular_gallery_list_page.dart';
 import '../popular_media_list/popular_video_list_page.dart';
 import '../subscriptions/subscriptions_page.dart';
 import 'package:i_iwara/i18n/strings.g.dart' as slang;  
-
 /// 侧边栏、底部导航栏、主要内容
 class HomeNavigationLayout extends StatelessWidget {
   HomeNavigationLayout({super.key});
@@ -80,6 +80,7 @@ class HomeNavigationLayout extends StatelessWidget {
                         Routes.POPULAR_VIDEOS,
                         Routes.GALLERY,
                         Routes.SUBSCRIPTIONS,
+                        Routes.FORUM,
                       ];
                       AppService.homeNavigatorKey.currentState!
                           .pushNamedAndRemoveUntil(
@@ -99,6 +100,10 @@ class HomeNavigationLayout extends StatelessWidget {
                       NavigationRailDestination(
                         icon: const Icon(Icons.subscriptions),
                         label: Text(t.common.subscriptions),
+                      ),
+                      NavigationRailDestination(
+                        icon: const Icon(Icons.forum),
+                        label: Text(t.forum.forum),
                       ),
                     ],
                   );
@@ -150,6 +155,17 @@ class HomeNavigationLayout extends StatelessWidget {
                               transitionDuration: Duration.zero,
                             );
                             break;
+                          case Routes.FORUM:
+                            builder = (BuildContext context) =>
+                                const ForumPage();
+                            route = PageRouteBuilder(
+                              pageBuilder:
+                                  (context, animation, secondaryAnimation) =>
+                                      builder(context),
+                              settings: settings,
+                              transitionDuration: Duration.zero,
+                            );
+                            break;
                           default:
                             builder = (BuildContext context) =>
                                 const Center(child: Text('404'));
@@ -177,10 +193,15 @@ class HomeNavigationLayout extends StatelessWidget {
                         Routes.POPULAR_VIDEOS,
                         Routes.GALLERY,
                         Routes.SUBSCRIPTIONS,
+                        Routes.FORUM,
                       ];
 
                       return BottomNavigationBar(
                         currentIndex: index,
+                        type: BottomNavigationBarType.fixed,
+                        backgroundColor: Theme.of(context).colorScheme.surface,
+                        selectedItemColor: Theme.of(context).colorScheme.primary,
+                        unselectedItemColor: Theme.of(context).colorScheme.onSurfaceVariant,
                         onTap: (value) {
                           appService.currentIndex = value;
                           AppService.homeNavigatorKey.currentState
@@ -201,6 +222,10 @@ class HomeNavigationLayout extends StatelessWidget {
                           BottomNavigationBarItem(
                             icon: const Icon(Icons.subscriptions),
                             label: t.common.subscriptions,
+                          ),
+                          BottomNavigationBarItem(
+                            icon: const Icon(Icons.forum),
+                            label: t.forum.forum,
                           ),
                         ],
                       );
