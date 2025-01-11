@@ -673,6 +673,7 @@ class _TranslationsForumZhCn implements TranslationsForumEn {
 	@override String cooldownRemaining({required Object minutes, required Object seconds}) => '冷却剩余时间 ${minutes} 分 ${seconds} 秒';
 	@override late final _TranslationsForumGroupsZhCn groups = _TranslationsForumGroupsZhCn._(_root);
 	@override late final _TranslationsForumLeafNamesZhCn leafNames = _TranslationsForumLeafNamesZhCn._(_root);
+	@override late final _TranslationsForumLeafDescriptionsZhCn leafDescriptions = _TranslationsForumLeafDescriptionsZhCn._(_root);
 }
 
 // Path: forum.errors
@@ -709,7 +710,7 @@ class _TranslationsForumLeafNamesZhCn implements TranslationsForumLeafNamesEn {
 	// Translations
 	@override String get announcements => '公告';
 	@override String get feedback => '反馈';
-	@override String get support => '支持';
+	@override String get support => '帮助';
 	@override String get general => '一般';
 	@override String get guides => '指南';
 	@override String get questions => '问题';
@@ -718,13 +719,40 @@ class _TranslationsForumLeafNamesZhCn implements TranslationsForumLeafNamesEn {
 	@override String get general_zh => '一般';
 	@override String get questions_zh => '问题';
 	@override String get requests_zh => '请求';
-	@override String get support_zh => '支持';
+	@override String get support_zh => '帮助';
 	@override String get general_ja => '一般';
 	@override String get questions_ja => '问题';
 	@override String get requests_ja => '请求';
-	@override String get support_ja => '支持';
+	@override String get support_ja => '帮助';
 	@override String get korean => '韩语';
 	@override String get other => '其他';
+}
+
+// Path: forum.leafDescriptions
+class _TranslationsForumLeafDescriptionsZhCn implements TranslationsForumLeafDescriptionsEn {
+	_TranslationsForumLeafDescriptionsZhCn._(this._root);
+
+	final TranslationsZhCn _root; // ignore: unused_field
+
+	// Translations
+	@override String get announcements => '官方重要通知和公告';
+	@override String get feedback => '对网站功能和服务的反馈';
+	@override String get support => '帮助解决网站相关问题';
+	@override String get general => '讨论任何话题';
+	@override String get guides => '分享你的经验和教程';
+	@override String get questions => '提出你的疑问';
+	@override String get requests => '发布你的请求';
+	@override String get sharing => '分享有趣的内容';
+	@override String get general_zh => '讨论任何话题';
+	@override String get questions_zh => '提出你的疑问';
+	@override String get requests_zh => '发布你的请求';
+	@override String get support_zh => '帮助解决网站相关问题';
+	@override String get general_ja => '讨论任何话题';
+	@override String get questions_ja => '提出你的疑问';
+	@override String get requests_ja => '发布你的请求';
+	@override String get support_ja => '帮助解决网站相关问题';
+	@override String get korean => '韩语相关讨论';
+	@override String get other => '其他未分类的内容';
 }
 
 /// Flat map(s) containing all translations.
@@ -1208,7 +1236,7 @@ extension on TranslationsZhCn {
 			case 'forum.groups.other': return '其他';
 			case 'forum.leafNames.announcements': return '公告';
 			case 'forum.leafNames.feedback': return '反馈';
-			case 'forum.leafNames.support': return '支持';
+			case 'forum.leafNames.support': return '帮助';
 			case 'forum.leafNames.general': return '一般';
 			case 'forum.leafNames.guides': return '指南';
 			case 'forum.leafNames.questions': return '问题';
@@ -1217,13 +1245,31 @@ extension on TranslationsZhCn {
 			case 'forum.leafNames.general_zh': return '一般';
 			case 'forum.leafNames.questions_zh': return '问题';
 			case 'forum.leafNames.requests_zh': return '请求';
-			case 'forum.leafNames.support_zh': return '支持';
+			case 'forum.leafNames.support_zh': return '帮助';
 			case 'forum.leafNames.general_ja': return '一般';
 			case 'forum.leafNames.questions_ja': return '问题';
 			case 'forum.leafNames.requests_ja': return '请求';
-			case 'forum.leafNames.support_ja': return '支持';
+			case 'forum.leafNames.support_ja': return '帮助';
 			case 'forum.leafNames.korean': return '韩语';
 			case 'forum.leafNames.other': return '其他';
+			case 'forum.leafDescriptions.announcements': return '官方重要通知和公告';
+			case 'forum.leafDescriptions.feedback': return '对网站功能和服务的反馈';
+			case 'forum.leafDescriptions.support': return '帮助解决网站相关问题';
+			case 'forum.leafDescriptions.general': return '讨论任何话题';
+			case 'forum.leafDescriptions.guides': return '分享你的经验和教程';
+			case 'forum.leafDescriptions.questions': return '提出你的疑问';
+			case 'forum.leafDescriptions.requests': return '发布你的请求';
+			case 'forum.leafDescriptions.sharing': return '分享有趣的内容';
+			case 'forum.leafDescriptions.general_zh': return '讨论任何话题';
+			case 'forum.leafDescriptions.questions_zh': return '提出你的疑问';
+			case 'forum.leafDescriptions.requests_zh': return '发布你的请求';
+			case 'forum.leafDescriptions.support_zh': return '帮助解决网站相关问题';
+			case 'forum.leafDescriptions.general_ja': return '讨论任何话题';
+			case 'forum.leafDescriptions.questions_ja': return '提出你的疑问';
+			case 'forum.leafDescriptions.requests_ja': return '发布你的请求';
+			case 'forum.leafDescriptions.support_ja': return '帮助解决网站相关问题';
+			case 'forum.leafDescriptions.korean': return '韩语相关讨论';
+			case 'forum.leafDescriptions.other': return '其他未分类的内容';
 			default: return null;
 		}
 	}

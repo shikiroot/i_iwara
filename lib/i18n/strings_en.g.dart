@@ -664,15 +664,16 @@ class TranslationsForumEn {
 	String get enterTitle => 'Enter Title';
 	String get content => 'Content';
 	String get enterContent => 'Enter Content';
-	String get writeYourContentHere => 'Write Your Content Here...';
+	String get writeYourContentHere => 'Write your content here...';
 	String get posts => 'Posts';
 	String get threads => 'Threads';
-	String get createThread => 'Create Thread';
 	String get forum => 'Forum';
+	String get createThread => 'Create Thread';
 	String get selectCategory => 'Select Category';
-	String cooldownRemaining({required Object minutes, required Object seconds}) => 'Cooldown Remaining ${minutes} minutes ${seconds} seconds';
+	String cooldownRemaining({required Object minutes, required Object seconds}) => 'Cooldown remaining ${minutes} minutes ${seconds} seconds';
 	late final TranslationsForumGroupsEn groups = TranslationsForumGroupsEn._(_root);
 	late final TranslationsForumLeafNamesEn leafNames = TranslationsForumLeafNamesEn._(_root);
+	late final TranslationsForumLeafDescriptionsEn leafDescriptions = TranslationsForumLeafDescriptionsEn._(_root);
 }
 
 // Path: forum.errors
@@ -682,7 +683,7 @@ class TranslationsForumErrorsEn {
 	final Translations _root; // ignore: unused_field
 
 	// Translations
-	String get pleaseSelectCategory => 'Please select category';
+	String get pleaseSelectCategory => 'Please select a category';
 }
 
 // Path: forum.groups
@@ -725,6 +726,33 @@ class TranslationsForumLeafNamesEn {
 	String get support_ja => 'Support';
 	String get korean => 'Korean';
 	String get other => 'Other';
+}
+
+// Path: forum.leafDescriptions
+class TranslationsForumLeafDescriptionsEn {
+	TranslationsForumLeafDescriptionsEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get announcements => 'Official important notifications and announcements';
+	String get feedback => 'Feedback on the website\'s features and services';
+	String get support => 'Help to resolve website-related issues';
+	String get general => 'Discuss any topic';
+	String get guides => 'Share your experiences and tutorials';
+	String get questions => 'Raise your inquiries';
+	String get requests => 'Post your requests';
+	String get sharing => 'Share interesting content';
+	String get general_zh => 'Discuss any topic';
+	String get questions_zh => 'Raise your inquiries';
+	String get requests_zh => 'Post your requests';
+	String get support_zh => 'Help to resolve website-related issues';
+	String get general_ja => 'Discuss any topic';
+	String get questions_ja => 'Raise your inquiries';
+	String get requests_ja => 'Post your requests';
+	String get support_ja => 'Help to resolve website-related issues';
+	String get korean => 'Discussions related to Korean';
+	String get other => 'Other unclassified content';
 }
 
 /// Flat map(s) containing all translations.
@@ -1183,19 +1211,19 @@ extension on Translations {
 			case 'markdown.separatorDescription': return 'Create separator with three or more - symbols';
 			case 'markdown.separatorSyntax': return '---';
 			case 'markdown.syntax': return 'Syntax';
-			case 'forum.errors.pleaseSelectCategory': return 'Please select category';
+			case 'forum.errors.pleaseSelectCategory': return 'Please select a category';
 			case 'forum.createPost': return 'Create Post';
 			case 'forum.title': return 'Title';
 			case 'forum.enterTitle': return 'Enter Title';
 			case 'forum.content': return 'Content';
 			case 'forum.enterContent': return 'Enter Content';
-			case 'forum.writeYourContentHere': return 'Write Your Content Here...';
+			case 'forum.writeYourContentHere': return 'Write your content here...';
 			case 'forum.posts': return 'Posts';
 			case 'forum.threads': return 'Threads';
-			case 'forum.createThread': return 'Create Thread';
 			case 'forum.forum': return 'Forum';
+			case 'forum.createThread': return 'Create Thread';
 			case 'forum.selectCategory': return 'Select Category';
-			case 'forum.cooldownRemaining': return ({required Object minutes, required Object seconds}) => 'Cooldown Remaining ${minutes} minutes ${seconds} seconds';
+			case 'forum.cooldownRemaining': return ({required Object minutes, required Object seconds}) => 'Cooldown remaining ${minutes} minutes ${seconds} seconds';
 			case 'forum.groups.administration': return 'Administration';
 			case 'forum.groups.global': return 'Global';
 			case 'forum.groups.chinese': return 'Chinese';
@@ -1220,6 +1248,24 @@ extension on Translations {
 			case 'forum.leafNames.support_ja': return 'Support';
 			case 'forum.leafNames.korean': return 'Korean';
 			case 'forum.leafNames.other': return 'Other';
+			case 'forum.leafDescriptions.announcements': return 'Official important notifications and announcements';
+			case 'forum.leafDescriptions.feedback': return 'Feedback on the website\'s features and services';
+			case 'forum.leafDescriptions.support': return 'Help to resolve website-related issues';
+			case 'forum.leafDescriptions.general': return 'Discuss any topic';
+			case 'forum.leafDescriptions.guides': return 'Share your experiences and tutorials';
+			case 'forum.leafDescriptions.questions': return 'Raise your inquiries';
+			case 'forum.leafDescriptions.requests': return 'Post your requests';
+			case 'forum.leafDescriptions.sharing': return 'Share interesting content';
+			case 'forum.leafDescriptions.general_zh': return 'Discuss any topic';
+			case 'forum.leafDescriptions.questions_zh': return 'Raise your inquiries';
+			case 'forum.leafDescriptions.requests_zh': return 'Post your requests';
+			case 'forum.leafDescriptions.support_zh': return 'Help to resolve website-related issues';
+			case 'forum.leafDescriptions.general_ja': return 'Discuss any topic';
+			case 'forum.leafDescriptions.questions_ja': return 'Raise your inquiries';
+			case 'forum.leafDescriptions.requests_ja': return 'Post your requests';
+			case 'forum.leafDescriptions.support_ja': return 'Help to resolve website-related issues';
+			case 'forum.leafDescriptions.korean': return 'Discussions related to Korean';
+			case 'forum.leafDescriptions.other': return 'Other unclassified content';
 			default: return null;
 		}
 	}

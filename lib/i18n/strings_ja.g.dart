@@ -655,20 +655,21 @@ class _TranslationsForumJa implements TranslationsForumEn {
 
 	// Translations
 	@override late final _TranslationsForumErrorsJa errors = _TranslationsForumErrorsJa._(_root);
-	@override String get createPost => '创建帖子';
-	@override String get title => '标题';
-	@override String get enterTitle => '输入标题';
-	@override String get content => '内容';
-	@override String get enterContent => '输入内容';
-	@override String get writeYourContentHere => '在此输入内容...';
-	@override String get posts => '帖子';
-	@override String get threads => '主题';
-	@override String get createThread => '创建主题';
-	@override String get forum => '论坛';
-	@override String get selectCategory => '选择分类';
-	@override String cooldownRemaining({required Object minutes, required Object seconds}) => '冷却剩餘時間 ${minutes} 分 ${seconds} 秒';
+	@override String get createPost => '投稿を作成';
+	@override String get title => 'タイトル';
+	@override String get enterTitle => 'タイトルを入力してください';
+	@override String get content => 'コンテンツ';
+	@override String get enterContent => 'コンテンツを入力してください';
+	@override String get writeYourContentHere => 'ここにコンテンツを入力...';
+	@override String get posts => '投稿';
+	@override String get threads => 'スレッド';
+	@override String get forum => 'フォーラム';
+	@override String get createThread => 'スレッドを作成';
+	@override String get selectCategory => 'カテゴリを選択';
+	@override String cooldownRemaining({required Object minutes, required Object seconds}) => 'クールダウン残り時間 ${minutes} 分 ${seconds} 秒';
 	@override late final _TranslationsForumGroupsJa groups = _TranslationsForumGroupsJa._(_root);
 	@override late final _TranslationsForumLeafNamesJa leafNames = _TranslationsForumLeafNamesJa._(_root);
+	@override late final _TranslationsForumLeafDescriptionsJa leafDescriptions = _TranslationsForumLeafDescriptionsJa._(_root);
 }
 
 // Path: forum.errors
@@ -678,7 +679,7 @@ class _TranslationsForumErrorsJa implements TranslationsForumErrorsEn {
 	final TranslationsJa _root; // ignore: unused_field
 
 	// Translations
-	@override String get pleaseSelectCategory => '请选择分类';
+	@override String get pleaseSelectCategory => 'カテゴリを選択してください';
 }
 
 // Path: forum.groups
@@ -689,11 +690,11 @@ class _TranslationsForumGroupsJa implements TranslationsForumGroupsEn {
 
 	// Translations
 	@override String get administration => '管理';
-	@override String get global => '全球';
-	@override String get chinese => '中文';
-	@override String get japanese => '日语';
-	@override String get korean => '韩语';
-	@override String get other => '其他';
+	@override String get global => 'グローバル';
+	@override String get chinese => '中国語';
+	@override String get japanese => '日本語';
+	@override String get korean => '韓国語';
+	@override String get other => 'その他';
 }
 
 // Path: forum.leafNames
@@ -703,24 +704,51 @@ class _TranslationsForumLeafNamesJa implements TranslationsForumLeafNamesEn {
 	final TranslationsJa _root; // ignore: unused_field
 
 	// Translations
-	@override String get announcements => '公告';
-	@override String get feedback => '反馈';
-	@override String get support => '支持';
+	@override String get announcements => 'お知らせ';
+	@override String get feedback => 'フィードバック';
+	@override String get support => 'サポート';
 	@override String get general => '一般';
-	@override String get guides => '指南';
-	@override String get questions => '问题';
-	@override String get requests => '请求';
-	@override String get sharing => '分享';
+	@override String get guides => 'ガイド';
+	@override String get questions => '質問';
+	@override String get requests => 'リクエスト';
+	@override String get sharing => 'シェア';
 	@override String get general_zh => '一般';
-	@override String get questions_zh => '问题';
-	@override String get requests_zh => '请求';
-	@override String get support_zh => '支持';
+	@override String get questions_zh => '質問';
+	@override String get requests_zh => 'リクエスト';
+	@override String get support_zh => 'サポート';
 	@override String get general_ja => '一般';
-	@override String get questions_ja => '问题';
-	@override String get requests_ja => '请求';
-	@override String get support_ja => '支持';
-	@override String get korean => '韩语';
-	@override String get other => '其他';
+	@override String get questions_ja => '質問';
+	@override String get requests_ja => 'リクエスト';
+	@override String get support_ja => 'サポート';
+	@override String get korean => '韓国語';
+	@override String get other => 'その他';
+}
+
+// Path: forum.leafDescriptions
+class _TranslationsForumLeafDescriptionsJa implements TranslationsForumLeafDescriptionsEn {
+	_TranslationsForumLeafDescriptionsJa._(this._root);
+
+	final TranslationsJa _root; // ignore: unused_field
+
+	// Translations
+	@override String get announcements => '公式の重要なお知らせと通知';
+	@override String get feedback => 'サイトの機能やサービスに対するフィードバック';
+	@override String get support => 'サイト関連の問題を解決する手助け';
+	@override String get general => 'あらゆる話題を議論する';
+	@override String get guides => '経験やチュートリアルを共有する';
+	@override String get questions => '疑問を提起する';
+	@override String get requests => 'リクエストを投稿する';
+	@override String get sharing => '面白いコンテンツを共有する';
+	@override String get general_zh => 'あらゆる話題を議論する';
+	@override String get questions_zh => '疑問を提起する';
+	@override String get requests_zh => 'リクエストを投稿する';
+	@override String get support_zh => 'サイト関連の問題を解決する手助け';
+	@override String get general_ja => 'あらゆる話題を議論する';
+	@override String get questions_ja => '疑問を提起する';
+	@override String get requests_ja => 'リクエストを投稿する';
+	@override String get support_ja => 'サイト関連の問題を解決する手助け';
+	@override String get korean => '韓国語に関する議論';
+	@override String get other => 'その他の未分類のコンテンツ';
 }
 
 /// Flat map(s) containing all translations.
@@ -1179,43 +1207,61 @@ extension on TranslationsJa {
 			case 'markdown.separatorDescription': return '三個以上の - 号で分隔線を作成';
 			case 'markdown.separatorSyntax': return '---';
 			case 'markdown.syntax': return '語法';
-			case 'forum.errors.pleaseSelectCategory': return '请选择分类';
-			case 'forum.createPost': return '创建帖子';
-			case 'forum.title': return '标题';
-			case 'forum.enterTitle': return '输入标题';
-			case 'forum.content': return '内容';
-			case 'forum.enterContent': return '输入内容';
-			case 'forum.writeYourContentHere': return '在此输入内容...';
-			case 'forum.posts': return '帖子';
-			case 'forum.threads': return '主题';
-			case 'forum.createThread': return '创建主题';
-			case 'forum.forum': return '论坛';
-			case 'forum.selectCategory': return '选择分类';
-			case 'forum.cooldownRemaining': return ({required Object minutes, required Object seconds}) => '冷却剩餘時間 ${minutes} 分 ${seconds} 秒';
+			case 'forum.errors.pleaseSelectCategory': return 'カテゴリを選択してください';
+			case 'forum.createPost': return '投稿を作成';
+			case 'forum.title': return 'タイトル';
+			case 'forum.enterTitle': return 'タイトルを入力してください';
+			case 'forum.content': return 'コンテンツ';
+			case 'forum.enterContent': return 'コンテンツを入力してください';
+			case 'forum.writeYourContentHere': return 'ここにコンテンツを入力...';
+			case 'forum.posts': return '投稿';
+			case 'forum.threads': return 'スレッド';
+			case 'forum.forum': return 'フォーラム';
+			case 'forum.createThread': return 'スレッドを作成';
+			case 'forum.selectCategory': return 'カテゴリを選択';
+			case 'forum.cooldownRemaining': return ({required Object minutes, required Object seconds}) => 'クールダウン残り時間 ${minutes} 分 ${seconds} 秒';
 			case 'forum.groups.administration': return '管理';
-			case 'forum.groups.global': return '全球';
-			case 'forum.groups.chinese': return '中文';
-			case 'forum.groups.japanese': return '日语';
-			case 'forum.groups.korean': return '韩语';
-			case 'forum.groups.other': return '其他';
-			case 'forum.leafNames.announcements': return '公告';
-			case 'forum.leafNames.feedback': return '反馈';
-			case 'forum.leafNames.support': return '支持';
+			case 'forum.groups.global': return 'グローバル';
+			case 'forum.groups.chinese': return '中国語';
+			case 'forum.groups.japanese': return '日本語';
+			case 'forum.groups.korean': return '韓国語';
+			case 'forum.groups.other': return 'その他';
+			case 'forum.leafNames.announcements': return 'お知らせ';
+			case 'forum.leafNames.feedback': return 'フィードバック';
+			case 'forum.leafNames.support': return 'サポート';
 			case 'forum.leafNames.general': return '一般';
-			case 'forum.leafNames.guides': return '指南';
-			case 'forum.leafNames.questions': return '问题';
-			case 'forum.leafNames.requests': return '请求';
-			case 'forum.leafNames.sharing': return '分享';
+			case 'forum.leafNames.guides': return 'ガイド';
+			case 'forum.leafNames.questions': return '質問';
+			case 'forum.leafNames.requests': return 'リクエスト';
+			case 'forum.leafNames.sharing': return 'シェア';
 			case 'forum.leafNames.general_zh': return '一般';
-			case 'forum.leafNames.questions_zh': return '问题';
-			case 'forum.leafNames.requests_zh': return '请求';
-			case 'forum.leafNames.support_zh': return '支持';
+			case 'forum.leafNames.questions_zh': return '質問';
+			case 'forum.leafNames.requests_zh': return 'リクエスト';
+			case 'forum.leafNames.support_zh': return 'サポート';
 			case 'forum.leafNames.general_ja': return '一般';
-			case 'forum.leafNames.questions_ja': return '问题';
-			case 'forum.leafNames.requests_ja': return '请求';
-			case 'forum.leafNames.support_ja': return '支持';
-			case 'forum.leafNames.korean': return '韩语';
-			case 'forum.leafNames.other': return '其他';
+			case 'forum.leafNames.questions_ja': return '質問';
+			case 'forum.leafNames.requests_ja': return 'リクエスト';
+			case 'forum.leafNames.support_ja': return 'サポート';
+			case 'forum.leafNames.korean': return '韓国語';
+			case 'forum.leafNames.other': return 'その他';
+			case 'forum.leafDescriptions.announcements': return '公式の重要なお知らせと通知';
+			case 'forum.leafDescriptions.feedback': return 'サイトの機能やサービスに対するフィードバック';
+			case 'forum.leafDescriptions.support': return 'サイト関連の問題を解決する手助け';
+			case 'forum.leafDescriptions.general': return 'あらゆる話題を議論する';
+			case 'forum.leafDescriptions.guides': return '経験やチュートリアルを共有する';
+			case 'forum.leafDescriptions.questions': return '疑問を提起する';
+			case 'forum.leafDescriptions.requests': return 'リクエストを投稿する';
+			case 'forum.leafDescriptions.sharing': return '面白いコンテンツを共有する';
+			case 'forum.leafDescriptions.general_zh': return 'あらゆる話題を議論する';
+			case 'forum.leafDescriptions.questions_zh': return '疑問を提起する';
+			case 'forum.leafDescriptions.requests_zh': return 'リクエストを投稿する';
+			case 'forum.leafDescriptions.support_zh': return 'サイト関連の問題を解決する手助け';
+			case 'forum.leafDescriptions.general_ja': return 'あらゆる話題を議論する';
+			case 'forum.leafDescriptions.questions_ja': return '疑問を提起する';
+			case 'forum.leafDescriptions.requests_ja': return 'リクエストを投稿する';
+			case 'forum.leafDescriptions.support_ja': return 'サイト関連の問題を解決する手助け';
+			case 'forum.leafDescriptions.korean': return '韓国語に関する議論';
+			case 'forum.leafDescriptions.other': return 'その他の未分類のコンテンツ';
 			default: return null;
 		}
 	}

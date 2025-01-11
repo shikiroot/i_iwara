@@ -481,19 +481,19 @@ markdown:
 
 forum:
   errors:
-    pleaseSelectCategory: Please select category
+    pleaseSelectCategory: Please select a category
   createPost: Create Post
   title: Title
   enterTitle: Enter Title
   content: Content
   enterContent: Enter Content
-  writeYourContentHere: Write Your Content Here...
+  writeYourContentHere: Write your content here...
   posts: Posts
   threads: Threads
-  createThread: Create Thread
   forum: Forum
+  createThread: Create Thread
   selectCategory: Select Category
-  cooldownRemaining: 'Cooldown Remaining ${minutes} minutes ${seconds} seconds'
+  cooldownRemaining: 'Cooldown remaining ${minutes} minutes ${seconds} seconds'
   groups:
     administration: Administration
     global: Global
@@ -520,3 +520,22 @@ forum:
     'support_ja': Support
     korean: Korean
     other: Other
+  leafDescriptions:
+    announcements: Official important notifications and announcements
+    feedback: Feedback on the website's features and services
+    support: Help to resolve website-related issues
+    general: Discuss any topic
+    guides: Share your experiences and tutorials
+    questions: Raise your inquiries
+    requests: Post your requests
+    sharing: Share interesting content
+    'general_zh': Discuss any topic
+    'questions_zh': Raise your inquiries
+    'requests_zh': Post your requests
+    'support_zh': Help to resolve website-related issues
+    'general_ja': Discuss any topic
+    'questions_ja': Raise your inquiries
+    'requests_ja': Post your requests
+    'support_ja': Help to resolve website-related issues
+    korean: Discussions related to Korean
+    other: Other unclassified content

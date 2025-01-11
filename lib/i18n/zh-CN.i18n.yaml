@@ -511,7 +511,7 @@ forum:
   leafNames:
     announcements: 公告
     feedback: 反馈
-    support: 支持
+    support: 帮助
     general: 一般
     guides: 指南
     questions: 问题
@@ -520,10 +520,29 @@ forum:
     'general_zh': 一般
     'questions_zh': 问题
     'requests_zh': 请求
-    'support_zh': 支持
+    'support_zh': 帮助
     'general_ja': 一般
     'questions_ja': 问题
     'requests_ja': 请求
-    'support_ja': 支持
+    'support_ja': 帮助
     korean: 韩语
     other: 其他
+  leafDescriptions:
+    announcements: 官方重要通知和公告
+    feedback: 对网站功能和服务的反馈
+    support: 帮助解决网站相关问题
+    general: 讨论任何话题
+    guides: 分享你的经验和教程
+    questions: 提出你的疑问
+    requests: 发布你的请求
+    sharing: 分享有趣的内容
+    'general_zh': 讨论任何话题
+    'questions_zh': 提出你的疑问
+    'requests_zh': 发布你的请求
+    'support_zh': 帮助解决网站相关问题
+    'general_ja': 讨论任何话题
+    'questions_ja': 提出你的疑问
+    'requests_ja': 发布你的请求
+    'support_ja': 帮助解决网站相关问题
+    korean: 韩语相关讨论
+    other: 其他未分类的内容

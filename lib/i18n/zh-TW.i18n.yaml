@@ -493,33 +493,52 @@ forum:
   writeYourContentHere: 在此輸入內容...
   posts: 帖子
   threads: 主題
-  createThread: 創建主題
   forum: 論壇
+  createThread: 創建主題
   selectCategory: 選擇分類
   cooldownRemaining: '冷卻剩餘時間 ${minutes} 分 ${seconds} 秒'
   groups:
     administration: 管理
     global: 全球
     chinese: 中文
-    japanese: 日语
-    korean: 韩语
+    japanese: 日語
+    korean: 韓語
     other: 其他
   leafNames:
     announcements: 公告
-    feedback: 反馈
-    support: 支持
+    feedback: 反饋
+    support: 幫助
     general: 一般
     guides: 指南
-    questions: 问题
-    requests: 请求
+    questions: 問題
+    requests: 請求
     sharing: 分享
     'general_zh': 一般
-    'questions_zh': 问题
-    'requests_zh': 请求
-    'support_zh': 支持
+    'questions_zh': 問題
+    'requests_zh': 請求
+    'support_zh': 幫助
     'general_ja': 一般
-    'questions_ja': 问题
-    'requests_ja': 请求
-    'support_ja': 支持
-    korean: 韩语
+    'questions_ja': 問題
+    'requests_ja': 請求
+    'support_ja': 幫助
+    korean: 韓語
     other: 其他
+  leafDescriptions:
+    announcements: 官方重要通知和公告
+    feedback: 對網站功能和服務的反饋
+    support: 幫助解決網站相關問題
+    general: 討論任何話題
+    guides: 分享你的經驗和教程
+    questions: 提出你的疑問
+    requests: 發布你的請求
+    sharing: 分享有趣的內容
+    'general_zh': 討論任何話題
+    'questions_zh': 提出你的疑問
+    'requests_zh': 發布你的請求
+    'support_zh': 幫助解決網站相關問題
+    'general_ja': 討論任何話題
+    'questions_ja': 提出你的疑問
+    'requests_ja': 發布你的請求
+    'support_ja': 幫助解決網站相關問題
+    korean: 韓語相關討論
+    other: 其他未分類的內容
