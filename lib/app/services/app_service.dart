@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:i_iwara/app/models/post.model.dart';
 import 'package:i_iwara/app/ui/pages/favorites/my_favorites.dart';
 import 'package:i_iwara/app/ui/pages/follows/follows_page.dart';
+import 'package:i_iwara/app/ui/pages/forum/thread_list_page.dart';
 import 'package:i_iwara/app/ui/pages/friends/friends_page.dart';
 import 'package:i_iwara/app/ui/pages/gallery_detail/widgets/horizontial_image_list.dart';
 import 'package:i_iwara/app/ui/pages/gallery_detail/widgets/my_gallery_photo_view_wrapper.dart';
@@ -419,6 +420,7 @@ class NaviService {
     ));
   }
 
+  /// 跳转到标签黑名单页
   static void navigateToTagBlacklistPage() {
     AppService.homeNavigatorKey.currentState?.push(PageRouteBuilder(
       settings: const RouteSettings(name: Routes.TAG_BLACKLIST),
@@ -434,6 +436,36 @@ class NaviService {
         );
       },
     ));
+  }
+
+  /// 跳转到论坛帖子列表页
+  static void navigateToForumThreadListPage(String categoryId) {
+    AppService.homeNavigatorKey.currentState?.push(PageRouteBuilder(
+      settings: RouteSettings(name: Routes.FORUM_THREAD_LIST(categoryId)),
+      pageBuilder: (context, animation, secondaryAnimation) {
+        return ThreadListPage(
+          categoryId: categoryId,
+        );
+      },
+      transitionDuration: const Duration(milliseconds: 200),
+      // 从右到左的原生动画
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        return SlideTransition(
+          position: Tween<Offset>(begin: const Offset(1, 0), end: Offset.zero).animate(animation),
+          child: child,
+        );
+      },
+    ));
+  }
+
+  /// TODO: 跳转到论坛帖子详情页
+  static void navigateToForumThreadDetailPage(String id) {
+    // AppService.homeNavigatorKey.currentState?.push(PageRouteBuilder(
+    //   settings: RouteSettings(name: Routes.FORUM_THREAD_DETAIL(id)),
+    //   pageBuilder: (context, animation, secondaryAnimation) {
+    //     return ThreadDetailPage(threadId: id);
+    //   },
+    // ));
   }
 }
 

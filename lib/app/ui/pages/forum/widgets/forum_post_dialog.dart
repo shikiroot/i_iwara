@@ -13,7 +13,6 @@ import 'package:i_iwara/app/ui/widgets/custom_markdown_body_widget.dart';
 import 'package:i_iwara/app/ui/widgets/markdown_syntax_help_dialog.dart';
 import 'package:i_iwara/i18n/strings.g.dart';
 import 'package:oktoast/oktoast.dart';
-import 'package:shimmer/shimmer.dart';
 
 class ForumPostDialog extends StatefulWidget {
   final String? initialCategoryId;
@@ -28,7 +27,7 @@ class ForumPostDialog extends StatefulWidget {
 }
 
 class _ForumPostDialogState extends State<ForumPostDialog> {
-  final ForumService _forumService = ForumService();
+  final ForumService _forumService = Get.find<ForumService>();
   final ConfigService _configService = Get.find<ConfigService>();
   late TextEditingController _titleController;
   late TextEditingController _bodyController;

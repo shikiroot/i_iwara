@@ -218,6 +218,9 @@ class ApiConstants {
 
   // 论坛帖子回复
   static String forumThreadReply(String threadId) => '/forum/$threadId/reply';
+
+  // 论坛帖子列表
+  static String forumThreads(String categoryId) => '/forum/$categoryId';
 }
 
 // 视频接口的排序方式

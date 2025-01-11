@@ -49,6 +49,8 @@ abstract class Routes {
   static const FORUM = '/forum';
 
   static String POST_DETAIL(String id) => '/post/$id';
+
+  static FORUM_THREAD_LIST(String categoryId) => '/forum/$categoryId';
 }
 
 abstract class _Paths {

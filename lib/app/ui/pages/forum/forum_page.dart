@@ -23,7 +23,7 @@ class ForumPage extends StatefulWidget {
 }
 
 class _ForumPageState extends State<ForumPage> {
-  final ForumService _forumService = ForumService();
+  final ForumService _forumService = Get.find<ForumService>();
   List<ForumCategoryTreeModel>? _categories;
   bool _isLoading = true;
   String? _error;
@@ -252,6 +252,7 @@ class _ForumPageState extends State<ForumPage> {
       return InkWell(
         onTap: () {
           // TODO: 导航到分类详情页面
+          NaviService.navigateToForumThreadListPage(subCategory.id);
         },
         child: Table(
           columnWidths: const {
@@ -360,13 +361,18 @@ class _ForumPageState extends State<ForumPage> {
                                       ),
                                     ),
                                   Expanded(
-                                    child: Text(
-                                      subCategory.lastThread!.title,
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Theme.of(context).colorScheme.primary,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        NaviService.navigateToForumThreadDetailPage(subCategory.lastThread!.id);
+                                      },
+                                      child: Text(
+                                        subCategory.lastThread!.title,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Theme.of(context).colorScheme.primary,
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -426,7 +432,7 @@ class _ForumPageState extends State<ForumPage> {
     // 窄屏布局保持不变
     return InkWell(
       onTap: () {
-        // TODO: 导航到分类详情页面
+        NaviService.navigateToForumThreadListPage(subCategory.id);
       },
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -510,13 +516,18 @@ class _ForumPageState extends State<ForumPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          subCategory.lastThread!.title,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Theme.of(context).colorScheme.primary,
+                        GestureDetector(
+                          onTap: () {
+                            NaviService.navigateToForumThreadDetailPage(subCategory.lastThread!.id);
+                          },
+                          child: Text(
+                            subCategory.lastThread!.title,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
                           ),
                         ),
                         if (subCategory.lastThread!.lastPost != null)
