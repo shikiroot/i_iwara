@@ -206,6 +206,12 @@ class _TranslationsCommonZhCn implements TranslationsCommonEn {
 	@override String get agree => '同意';
 	@override String get disagree => '不同意';
 	@override String get agreeToRules => '同意规则';
+	@override String get createPost => '创建帖子';
+	@override String get title => '标题';
+	@override String get enterTitle => '请输入标题';
+	@override String get content => '内容';
+	@override String get enterContent => '请输入内容';
+	@override String get writeYourContentHere => '请输入内容...';
 }
 
 // Path: auth
@@ -292,6 +298,12 @@ class _TranslationsErrorsZhCn implements TranslationsErrorsEn {
 	@override String get invalidLogin => '登录失败，请检查邮箱和密码';
 	@override String get tooManyRequests => '请求过多，请稍后再试';
 	@override String exceedsMaxLength({required Object max}) => '超出最大长度: ${max} 个字符';
+	@override String get contentCanNotBeEmpty => '内容不能为空';
+	@override String get titleCanNotBeEmpty => '标题不能为空';
+	@override String get tooManyRequestsPleaseTryAgainLaterText => '请求过多，请稍后再试，剩余时间';
+	@override String remainingHours({required Object num}) => '${num}小时';
+	@override String remainingMinutes({required Object num}) => '${num}分钟';
+	@override String remainingSeconds({required Object num}) => '${num}秒';
 }
 
 // Path: friends
@@ -787,6 +799,12 @@ extension on TranslationsZhCn {
 			case 'common.agree': return '同意';
 			case 'common.disagree': return '不同意';
 			case 'common.agreeToRules': return '同意规则';
+			case 'common.createPost': return '创建帖子';
+			case 'common.title': return '标题';
+			case 'common.enterTitle': return '请输入标题';
+			case 'common.content': return '内容';
+			case 'common.enterContent': return '请输入内容';
+			case 'common.writeYourContentHere': return '请输入内容...';
 			case 'auth.login': return '登录';
 			case 'auth.logout': return '退出登录';
 			case 'auth.email': return '邮箱';
@@ -855,6 +873,12 @@ extension on TranslationsZhCn {
 			case 'errors.invalidLogin': return '登录失败，请检查邮箱和密码';
 			case 'errors.tooManyRequests': return '请求过多，请稍后再试';
 			case 'errors.exceedsMaxLength': return ({required Object max}) => '超出最大长度: ${max} 个字符';
+			case 'errors.contentCanNotBeEmpty': return '内容不能为空';
+			case 'errors.titleCanNotBeEmpty': return '标题不能为空';
+			case 'errors.tooManyRequestsPleaseTryAgainLaterText': return '请求过多，请稍后再试，剩余时间';
+			case 'errors.remainingHours': return ({required Object num}) => '${num}小时';
+			case 'errors.remainingMinutes': return ({required Object num}) => '${num}分钟';
+			case 'errors.remainingSeconds': return ({required Object num}) => '${num}秒';
 			case 'friends.clickToRestoreFriend': return '点击恢复好友';
 			case 'friends.friendsList': return '好友列表';
 			case 'friends.friendRequests': return '好友请求';

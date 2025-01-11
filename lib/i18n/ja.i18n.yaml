@@ -147,6 +147,12 @@ common:
   agree: 同意
   disagree: 不同意
   agreeToRules: 同意ルール
+  createPost: 投稿を作成
+  title: タイトル
+  enterTitle: タイトルを入力してください
+  content: 内容
+  enterContent: 内容を入力してください
+  writeYourContentHere: 内容を入力してください...
 auth:
   login: ログイン
   logout: ログアウト
@@ -216,6 +222,12 @@ errors:
   invalidLogin: ログインに失敗しました。メールアドレスとパスワードを確認してください
   tooManyRequests: リクエストが多すぎます。後でもう一度お試しください
   exceedsMaxLength: '最大長さを超えています: ${max}'
+  contentCanNotBeEmpty: コンテンツは空にできません
+  titleCanNotBeEmpty: タイトルは空にできません
+  tooManyRequestsPleaseTryAgainLaterText: "リクエストが多すぎます。後でもう一度お試しください。残り時間"
+  remainingHours: "${num}時間"
+  remainingMinutes: "${num}分"
+  remainingSeconds: "${num}秒"
 friends:
   clickToRestoreFriend: 友達を復元するにはクリックしてください
   friendsList: 友達リスト

@@ -208,6 +208,12 @@ class TranslationsCommonEn {
 	String get agree => 'Agree';
 	String get disagree => 'Disagree';
 	String get agreeToRules => 'Agree to Rules';
+	String get createPost => 'Create Post';
+	String get title => 'Title';
+	String get enterTitle => 'Please enter title';
+	String get content => 'Content';
+	String get enterContent => 'Please enter content';
+	String get writeYourContentHere => 'Please enter content...';
 }
 
 // Path: auth
@@ -292,6 +298,12 @@ class TranslationsErrorsEn {
 	String get invalidLogin => 'Invalid login, Please check your email and password';
 	String get tooManyRequests => 'Too many requests, please try again later';
 	String exceedsMaxLength({required Object max}) => 'Exceeds max length: ${max}';
+	String get contentCanNotBeEmpty => 'Content cannot be empty';
+	String get titleCanNotBeEmpty => 'Title cannot be empty';
+	String get tooManyRequestsPleaseTryAgainLaterText => 'Too many requests, please try again later, remaining';
+	String remainingHours({required Object num}) => '${num} hours';
+	String remainingMinutes({required Object num}) => '${num} minutes';
+	String remainingSeconds({required Object num}) => '${num} seconds';
 }
 
 // Path: friends
@@ -785,6 +797,12 @@ extension on Translations {
 			case 'common.agree': return 'Agree';
 			case 'common.disagree': return 'Disagree';
 			case 'common.agreeToRules': return 'Agree to Rules';
+			case 'common.createPost': return 'Create Post';
+			case 'common.title': return 'Title';
+			case 'common.enterTitle': return 'Please enter title';
+			case 'common.content': return 'Content';
+			case 'common.enterContent': return 'Please enter content';
+			case 'common.writeYourContentHere': return 'Please enter content...';
 			case 'auth.login': return 'Login';
 			case 'auth.logout': return 'Logout';
 			case 'auth.email': return 'Email';
@@ -851,6 +869,12 @@ extension on Translations {
 			case 'errors.invalidLogin': return 'Invalid login, Please check your email and password';
 			case 'errors.tooManyRequests': return 'Too many requests, please try again later';
 			case 'errors.exceedsMaxLength': return ({required Object max}) => 'Exceeds max length: ${max}';
+			case 'errors.contentCanNotBeEmpty': return 'Content cannot be empty';
+			case 'errors.titleCanNotBeEmpty': return 'Title cannot be empty';
+			case 'errors.tooManyRequestsPleaseTryAgainLaterText': return 'Too many requests, please try again later, remaining';
+			case 'errors.remainingHours': return ({required Object num}) => '${num} hours';
+			case 'errors.remainingMinutes': return ({required Object num}) => '${num} minutes';
+			case 'errors.remainingSeconds': return ({required Object num}) => '${num} seconds';
 			case 'friends.clickToRestoreFriend': return 'Click to restore friend';
 			case 'friends.friendsList': return 'Friends List';
 			case 'friends.friendRequests': return 'Friend Requests';

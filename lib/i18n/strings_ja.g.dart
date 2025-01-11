@@ -204,6 +204,12 @@ class _TranslationsCommonJa implements TranslationsCommonEn {
 	@override String get agree => '同意';
 	@override String get disagree => '不同意';
 	@override String get agreeToRules => '同意ルール';
+	@override String get createPost => '投稿を作成';
+	@override String get title => 'タイトル';
+	@override String get enterTitle => 'タイトルを入力してください';
+	@override String get content => '内容';
+	@override String get enterContent => '内容を入力してください';
+	@override String get writeYourContentHere => '内容を入力してください...';
 }
 
 // Path: auth
@@ -288,6 +294,12 @@ class _TranslationsErrorsJa implements TranslationsErrorsEn {
 	@override String get invalidLogin => 'ログインに失敗しました。メールアドレスとパスワードを確認してください';
 	@override String get tooManyRequests => 'リクエストが多すぎます。後でもう一度お試しください';
 	@override String exceedsMaxLength({required Object max}) => '最大長さを超えています: ${max}';
+	@override String get contentCanNotBeEmpty => 'コンテンツは空にできません';
+	@override String get titleCanNotBeEmpty => 'タイトルは空にできません';
+	@override String get tooManyRequestsPleaseTryAgainLaterText => 'リクエストが多すぎます。後でもう一度お試しください。残り時間';
+	@override String remainingHours({required Object num}) => '${num}時間';
+	@override String remainingMinutes({required Object num}) => '${num}分';
+	@override String remainingSeconds({required Object num}) => '${num}秒';
 }
 
 // Path: friends
@@ -781,6 +793,12 @@ extension on TranslationsJa {
 			case 'common.agree': return '同意';
 			case 'common.disagree': return '不同意';
 			case 'common.agreeToRules': return '同意ルール';
+			case 'common.createPost': return '投稿を作成';
+			case 'common.title': return 'タイトル';
+			case 'common.enterTitle': return 'タイトルを入力してください';
+			case 'common.content': return '内容';
+			case 'common.enterContent': return '内容を入力してください';
+			case 'common.writeYourContentHere': return '内容を入力してください...';
 			case 'auth.login': return 'ログイン';
 			case 'auth.logout': return 'ログアウト';
 			case 'auth.email': return 'メールアドレス';
@@ -847,6 +865,12 @@ extension on TranslationsJa {
 			case 'errors.invalidLogin': return 'ログインに失敗しました。メールアドレスとパスワードを確認してください';
 			case 'errors.tooManyRequests': return 'リクエストが多すぎます。後でもう一度お試しください';
 			case 'errors.exceedsMaxLength': return ({required Object max}) => '最大長さを超えています: ${max}';
+			case 'errors.contentCanNotBeEmpty': return 'コンテンツは空にできません';
+			case 'errors.titleCanNotBeEmpty': return 'タイトルは空にできません';
+			case 'errors.tooManyRequestsPleaseTryAgainLaterText': return 'リクエストが多すぎます。後でもう一度お試しください。残り時間';
+			case 'errors.remainingHours': return ({required Object num}) => '${num}時間';
+			case 'errors.remainingMinutes': return ({required Object num}) => '${num}分';
+			case 'errors.remainingSeconds': return ({required Object num}) => '${num}秒';
 			case 'friends.clickToRestoreFriend': return '友達を復元するにはクリックしてください';
 			case 'friends.friendsList': return '友達リスト';
 			case 'friends.friendRequests': return '友達リクエスト';

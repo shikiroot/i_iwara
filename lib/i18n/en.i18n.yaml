@@ -146,6 +146,12 @@ common:
   agree: Agree
   disagree: Disagree
   agreeToRules: Agree to Rules
+  createPost: Create Post
+  title: Title
+  enterTitle: Please enter title
+  content: Content
+  enterContent: Please enter content
+  writeYourContentHere: Please enter content...
 auth:
   login: Login
   logout: Logout
@@ -215,6 +221,12 @@ errors:
   invalidLogin: Invalid login, Please check your email and password
   tooManyRequests: Too many requests, please try again later
   exceedsMaxLength: 'Exceeds max length: ${max}'
+  contentCanNotBeEmpty: Content cannot be empty
+  titleCanNotBeEmpty: Title cannot be empty
+  tooManyRequestsPleaseTryAgainLaterText: "Too many requests, please try again later, remaining"
+  remainingHours: "${num} hours"
+  remainingMinutes: "${num} minutes"
+  remainingSeconds: "${num} seconds"
 friends:
   clickToRestoreFriend: Click to restore friend
   friendsList: Friends List

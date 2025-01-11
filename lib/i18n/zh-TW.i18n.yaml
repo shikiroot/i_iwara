@@ -146,6 +146,12 @@ common:
   agree: 同意
   disagree: 不同意
   agreeToRules: 同意規則
+  createPost: 創建帖子
+  title: 標題
+  enterTitle: 請輸入標題
+  content: 內容
+  enterContent: 請輸入內容
+  writeYourContentHere: 請輸入內容...
 
 auth:
   login: 登入
@@ -216,6 +222,12 @@ errors:
   invalidLogin: 登入失敗，請檢查電子郵件和密碼
   tooManyRequests: 請求過多，請稍後再試
   exceedsMaxLength: '超出最大長度: ${max}'
+  contentCanNotBeEmpty: 內容不能為空
+  titleCanNotBeEmpty: 標題不能為空
+  tooManyRequestsPleaseTryAgainLaterText: "請求過多，請稍後再試，剩餘時間"
+  remainingHours: "${num}小時"
+  remainingMinutes: "${num}分"
+  remainingSeconds: "${num}秒"
 friends:
   clickToRestoreFriend: 點擊恢復朋友
   friendsList: 朋友列表

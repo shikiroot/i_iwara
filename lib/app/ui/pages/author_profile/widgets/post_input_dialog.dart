@@ -3,56 +3,65 @@ import 'package:get/get.dart';
 import 'package:i_iwara/app/services/app_service.dart';
 import 'package:i_iwara/app/services/config_service.dart';
 import 'package:i_iwara/app/ui/pages/comment/widgets/rules_agreement_dialog_widget.dart';
-import 'package:i_iwara/i18n/strings.g.dart' as slang;
+import 'package:i_iwara/app/ui/widgets/MDToastWidget.dart';
 import 'package:i_iwara/app/ui/widgets/custom_markdown_body_widget.dart';
 import 'package:i_iwara/app/ui/widgets/markdown_syntax_help_dialog.dart';
+import 'package:i_iwara/i18n/strings.g.dart' as slang;
+import 'package:oktoast/oktoast.dart';
 
-class CommentInputDialog extends StatefulWidget {
-  final String? initialText;
-  final Function(String) onSubmit;
-  final String title;
-  final String submitText;
-  final int maxLength;
+class PostInputDialog extends StatefulWidget {
+  final Function(String title, String body) onSubmit;
 
-
-  const CommentInputDialog({
+  const PostInputDialog({
     super.key,
-    this.initialText,
     required this.onSubmit,
-    required this.title,
-    required this.submitText,
-    this.maxLength = 1000,
   });
 
   @override
-  State<CommentInputDialog> createState() => _CommentInputDialogState();
+  State<PostInputDialog> createState() => _PostInputDialogState();
 }
 
-class _CommentInputDialogState extends State<CommentInputDialog> {
-  late TextEditingController _controller;
+class _PostInputDialogState extends State<PostInputDialog> {
+  late TextEditingController _titleController;
+  late TextEditingController _bodyController;
   bool _isLoading = false;
-  int _currentLength = 0;
+  int _currentTitleLength = 0;
+  int _currentBodyLength = 0;
   final ConfigService _configService = Get.find<ConfigService>();
+
+  // 标题最大长度
+  static const int maxTitleLength = 100;
+  // 内容最大长度
+  static const int maxBodyLength = 50000;
 
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController(text: widget.initialText);
-    _currentLength = _controller.text.length;
-    _controller.addListener(() {
+    _titleController = TextEditingController();
+    _bodyController = TextEditingController();
+    
+    _titleController.addListener(() {
       setState(() {
-        _currentLength = _controller.text.length;
+        _currentTitleLength = _titleController.text.length;
+      });
+    });
+    
+    _bodyController.addListener(() {
+      setState(() {
+        _currentBodyLength = _bodyController.text.length;
       });
     });
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _titleController.dispose();
+    _bodyController.dispose();
     super.dispose();
   }
 
   void _showPreview() {
+    final t = slang.t;
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -69,7 +78,7 @@ class _CommentInputDialogState extends State<CommentInputDialog> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    slang.t.common.preview,
+                    t.common.preview,
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -87,9 +96,22 @@ class _CommentInputDialogState extends State<CommentInputDialog> {
               child: SingleChildScrollView(
                 controller: scrollController,
                 padding: const EdgeInsets.all(16.0),
-                child: CustomMarkdownBody(
-                  data: _controller.text,
-                  clickInternalLinkByUrlLaunch: true,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      _titleController.text,
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    CustomMarkdownBody(
+                      data: _bodyController.text,
+                      clickInternalLinkByUrlLaunch: true,
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -131,7 +153,31 @@ class _CommentInputDialogState extends State<CommentInputDialog> {
   }
 
   void _handleSubmit() async {
-    if (_currentLength > widget.maxLength || _currentLength == 0) return;
+    final t = slang.t;
+    if (_currentTitleLength > maxTitleLength || _currentTitleLength == 0) return;
+    if (_currentBodyLength > maxBodyLength || _currentBodyLength == 0) return;
+
+    // 检查标题是否为空
+    if (_titleController.text.trim().isEmpty) {
+      showToastWidget(
+        MDToastWidget(
+          message: t.errors.titleCanNotBeEmpty,
+          type: MDToastType.error,
+        ),
+      );
+      return;
+    }
+
+    // 检查内容是否为空
+    if (_bodyController.text.trim().isEmpty) {
+      showToastWidget(
+        MDToastWidget(
+          message: t.errors.contentCanNotBeEmpty,
+          type: MDToastType.error,
+        ),
+      );
+      return;
+    }
 
     final bool hasAgreed = _configService[ConfigService.RULES_AGREEMENT_KEY];
     if (!hasAgreed) {
@@ -142,7 +188,7 @@ class _CommentInputDialogState extends State<CommentInputDialog> {
     setState(() {
       _isLoading = true;
     });
-    await widget.onSubmit(_controller.text);
+    await widget.onSubmit(_titleController.text, _bodyController.text);
     setState(() {
       _isLoading = false;
     });
@@ -163,7 +209,7 @@ class _CommentInputDialogState extends State<CommentInputDialog> {
               children: [
                 Expanded(
                   child: Text(
-                    widget.title,
+                    t.common.createPost,
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -172,19 +218,16 @@ class _CommentInputDialogState extends State<CommentInputDialog> {
                 ),
                 Row(
                   children: [
-                    // 帮助按钮
                     IconButton(
                       onPressed: _showMarkdownHelp,
                       icon: const Icon(Icons.help_outline),
                       tooltip: t.markdown.markdownSyntax,
                     ),
-                    // 预览按钮
                     IconButton(
                       onPressed: _showPreview,
                       icon: const Icon(Icons.preview),
                       tooltip: t.common.preview,
                     ),
-                    // 关闭按钮
                     IconButton(
                       onPressed: () => AppService.tryPop(),
                       icon: const Icon(Icons.close),
@@ -195,16 +238,34 @@ class _CommentInputDialogState extends State<CommentInputDialog> {
               ],
             ),
             const SizedBox(height: 16),
+            // 标题输入框
             TextField(
-              controller: _controller,
-              maxLines: 5,
-              maxLength: widget.maxLength,
+              controller: _titleController,
+              maxLines: 1,
+              maxLength: maxTitleLength,
               decoration: InputDecoration(
-                hintText: t.common.writeYourCommentHere,
+                labelText: t.common.title,
+                hintText: t.common.enterTitle,
                 border: const OutlineInputBorder(),
-                counterText: '$_currentLength/${widget.maxLength}',
-                errorText: _currentLength > widget.maxLength 
-                    ? t.errors.exceedsMaxLength(max: widget.maxLength.toString())
+                counterText: '$_currentTitleLength/$maxTitleLength',
+                errorText: _currentTitleLength > maxTitleLength 
+                    ? t.errors.exceedsMaxLength(max: maxTitleLength.toString())
+                    : null,
+              ),
+            ),
+            const SizedBox(height: 16),
+            // 内容输入框
+            TextField(
+              controller: _bodyController,
+              maxLines: 5,
+              maxLength: maxBodyLength,
+              decoration: InputDecoration(
+                labelText: t.common.content,
+                hintText: t.common.writeYourContentHere,
+                border: const OutlineInputBorder(),
+                counterText: '$_currentBodyLength/$maxBodyLength',
+                errorText: _currentBodyLength > maxBodyLength 
+                    ? t.errors.exceedsMaxLength(max: maxBodyLength.toString())
                     : null,
               ),
             ),
@@ -234,7 +295,8 @@ class _CommentInputDialogState extends State<CommentInputDialog> {
                   child: Text(t.common.cancel),
                 ),
                 ElevatedButton(
-                  onPressed: _currentLength > widget.maxLength || _currentLength == 0
+                  onPressed: (_currentTitleLength > maxTitleLength || _currentTitleLength == 0) ||
+                           (_currentBodyLength > maxBodyLength || _currentBodyLength == 0)
                       ? null
                       : _handleSubmit,
                   child: _isLoading
@@ -243,7 +305,7 @@ class _CommentInputDialogState extends State<CommentInputDialog> {
                           height: 20,
                           child: CircularProgressIndicator(strokeWidth: 2),
                         )
-                      : Text(widget.submitText),
+                      : Text(t.common.send),
                 ),
               ],
             ),
@@ -252,4 +314,4 @@ class _CommentInputDialogState extends State<CommentInputDialog> {
       ),
     );
   }
-}
+} 

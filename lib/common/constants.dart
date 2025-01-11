@@ -197,6 +197,9 @@ class ApiConstants {
 
   // 帖子详情
   static String post(String id) => '/post/$id';
+
+  // 用户发帖子冷却时间
+  static String userPostCooldown() => '/user/post/cooldown';
 }
 
 // 视频接口的排序方式

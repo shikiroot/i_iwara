@@ -3,9 +3,12 @@ import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:i_iwara/app/models/api_result.model.dart';
 import 'package:i_iwara/app/models/dto/user_dto.dart';
+import 'package:i_iwara/app/models/post.model.dart';
 import 'package:i_iwara/app/routes/app_routes.dart';
 import 'package:i_iwara/app/services/app_service.dart';
+import 'package:i_iwara/app/services/post_service.dart';
 import 'package:i_iwara/app/services/user_preference_service.dart';
 import 'package:i_iwara/app/ui/pages/author_profile/widgets/author_profile_skeleton_widget.dart';
 import 'package:i_iwara/app/ui/pages/author_profile/widgets/profile_image_model_tab_list_widget.dart';
@@ -20,7 +23,6 @@ import 'package:i_iwara/app/ui/widgets/top_padding_height_widget.dart';
 import 'package:i_iwara/utils/common_utils.dart';
 import 'package:i_iwara/utils/image_utils.dart';
 import 'package:oktoast/oktoast.dart';
-import 'package:shimmer/shimmer.dart';
 
 import '../../../../common/constants.dart';
 import '../../../services/user_service.dart';
@@ -30,6 +32,7 @@ import '../popular_media_list/widgets/media_description_widget.dart';
 import 'controllers/authro_profile_controller.dart';
 import 'package:i_iwara/i18n/strings.g.dart' as slang;
 import 'package:i_iwara/app/ui/widgets/follow_button_widget.dart';
+import 'package:i_iwara/app/ui/pages/author_profile/widgets/post_input_dialog.dart';
 
 class AuthorProfilePage extends StatefulWidget {
   final String username;
@@ -57,6 +60,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
       GlobalKey<ExtendedNestedScrollViewState>();
   late String uniqueTag;
   late ScrollController _tabBarScrollController;
+  final GlobalKey<State<StatefulWidget>> _postListKey = GlobalKey();
 
   @override
   void initState() {
@@ -122,7 +126,8 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                       Text(
                         t.common.commentList,
                         style: TextStyle(
-                          fontSize: Theme.of(context).textTheme.titleLarge?.fontSize,
+                          fontSize:
+                              Theme.of(context).textTheme.titleLarge?.fontSize,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -298,6 +303,30 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
         expandedHeight:
             context.width * 43 / 150 > 300 ? 300 : context.width * 43 / 150,
         pinned: true,
+        actions: [
+          // 添加more按钮
+          Obx(() {
+            final popupMenuItems = <PopupMenuEntry<String>>[];
+            if (userService.currentUser.value?.id ==
+                profileController.author.value?.id) {
+              popupMenuItems.add(
+                PopupMenuItem(
+                  value: 'create',
+                  child: Text(t.common.createPost),
+                ),
+              );
+            }
+            return PopupMenuButton(
+              icon: const Icon(Icons.more_vert),
+              onSelected: (value) {
+                if (value == 'create') {
+                  _showCreatePostDialog();
+                }
+              },
+              itemBuilder: (context) => popupMenuItems,
+            );
+          }),
+        ],
         flexibleSpace: FlexibleSpaceBar(
           background: GestureDetector(
             onTap: () {
@@ -384,7 +413,10 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                               return SelectableText(
                                 profileController.author.value?.name ?? '',
                                 style: TextStyle(
-                                  fontSize: Theme.of(context).textTheme.headlineMedium?.fontSize,
+                                  fontSize: Theme.of(context)
+                                      .textTheme
+                                      .headlineMedium
+                                      ?.fontSize,
                                   fontWeight: FontWeight.bold,
                                   color: Theme.of(context).colorScheme.primary,
                                 ),
@@ -477,7 +509,10 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                                 '@$username',
                                 style: TextStyle(
                                   color: Colors.grey,
-                                  fontSize: Theme.of(context).textTheme.bodyMedium?.fontSize,
+                                  fontSize: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium
+                                      ?.fontSize,
                                 ),
                               );
                             } else {
@@ -504,7 +539,10 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                                   '$followerCount ${t.common.follower}',
                                   style: TextStyle(
                                     color: Colors.grey,
-                                    fontSize: Theme.of(context).textTheme.bodyMedium?.fontSize,
+                                    fontSize: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.fontSize,
                                   ),
                                 ),
                               );
@@ -532,7 +570,10 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                                   '$followingCount ${t.common.following}',
                                   style: TextStyle(
                                     color: Colors.grey,
-                                    fontSize: Theme.of(context).textTheme.bodyMedium?.fontSize,
+                                    fontSize: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.fontSize,
                                   ),
                                 ),
                               );
@@ -548,7 +589,10 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                               '$videoCount ${t.common.video}',
                               style: TextStyle(
                                 color: Colors.grey,
-                                fontSize: Theme.of(context).textTheme.bodyMedium?.fontSize,
+                                fontSize: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.fontSize,
                               ),
                             );
                           }),
@@ -590,7 +634,8 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                             }
 
                             // 处于代办状态
-                            if (profileController.isFriendRequestPending.value) {
+                            if (profileController
+                                .isFriendRequestPending.value) {
                               return ElevatedButton.icon(
                                 onPressed: () {
                                   // 取消朋友申请
@@ -602,8 +647,9 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                                 icon: const Icon(Icons.person_remove, size: 18),
                                 label: Text(t.common.cancelFriendRequest),
                               );
-                            // 是朋友
-                            } else if (profileController.author.value?.friend == true) {
+                              // 是朋友
+                            } else if (profileController.author.value?.friend ==
+                                true) {
                               return ElevatedButton.icon(
                                 onPressed: () {
                                   // 取消朋友
@@ -698,49 +744,53 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
               controller: _tabBarScrollController,
               scrollDirection: Axis.horizontal,
               physics: const ClampingScrollPhysics(),
-              child: TabBar(
-                isScrollable: true,
-                physics: const NeverScrollableScrollPhysics(),
-                overlayColor: WidgetStateProperty.all(Colors.transparent),
-                tabAlignment: TabAlignment.start,
-                dividerColor: Colors.transparent,
-                controller: primaryTC,
-                tabs: [
-                  Tab(
-                    child: Row(
-                      children: [
-                        const Icon(Icons.video_collection),
-                        const SizedBox(width: 8),
-                        Text(t.common.video),
-                      ],
-                    ),
-                  ),
-                  Tab(
-                    child: Row(
-                      children: [
-                        const Icon(Icons.image),
-                        const SizedBox(width: 8),
-                        Text(t.common.gallery),
-                      ],
-                    ),
-                  ),
-                  Tab(
-                    child: Row(
-                      children: [
-                        const Icon(Icons.playlist_play),
-                        const SizedBox(width: 8),
-                        Text(t.common.playlist),
-                      ],
-                    ),
-                  ),
-                  Tab(
-                    child: Row(
-                      children: [
-                        const Icon(Icons.article),
-                        const SizedBox(width: 8),
-                        Text(t.common.post),
-                      ],
-                    ),
+              child: Row(
+                children: [
+                  TabBar(
+                    isScrollable: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    overlayColor: WidgetStateProperty.all(Colors.transparent),
+                    tabAlignment: TabAlignment.start,
+                    dividerColor: Colors.transparent,
+                    controller: primaryTC,
+                    tabs: [
+                      Tab(
+                        child: Row(
+                          children: [
+                            const Icon(Icons.video_collection),
+                            const SizedBox(width: 8),
+                            Text(t.common.video),
+                          ],
+                        ),
+                      ),
+                      Tab(
+                        child: Row(
+                          children: [
+                            const Icon(Icons.image),
+                            const SizedBox(width: 8),
+                            Text(t.common.gallery),
+                          ],
+                        ),
+                      ),
+                      Tab(
+                        child: Row(
+                          children: [
+                            const Icon(Icons.playlist_play),
+                            const SizedBox(width: 8),
+                            Text(t.common.playlist),
+                          ],
+                        ),
+                      ),
+                      Tab(
+                        child: Row(
+                          children: [
+                            const Icon(Icons.article),
+                            const SizedBox(width: 8),
+                            Text(t.common.post),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -779,7 +829,8 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                   : const SizedBox.shrink()),
               Obx(() => profileController.author.value?.id != null
                   ? ProfilePostTabListWidget(
-                      key: const Key('post'),
+                      key: _postListKey,
+                      widgetKey: _postListKey,
                       userId: profileController.author.value!.id,
                       tabKey: t.common.post,
                       tc: TabController(length: 1, vsync: this),
@@ -800,5 +851,76 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
             //pinned SliverAppBar height in header
             kToolbarHeight;
     return pinnedHeaderHeight;
+  }
+
+  // 添加创建帖子的方法
+  void _showCreatePostDialog() async {
+    final t = slang.Translations.of(context);
+    final PostService postService = Get.find<PostService>();
+    final profilePostTabListWidget =
+        context.findAncestorWidgetOfExactType<ProfilePostTabListWidget>();
+
+    Get.dialog(
+      PostInputDialog(
+        onSubmit: (title, body) async {
+          if (!mounted) return;
+
+          final result = await postService.postPost(title, body);
+          if (!mounted) return;
+
+          if (result.isSuccess) {
+            showToastWidget(
+              MDToastWidget(
+                message: t.common.success,
+                type: MDToastType.success,
+              ),
+            );
+            AppService.tryPop();
+            profilePostTabListWidget?.refresh();
+          } else if (result.message == t.errors.tooManyRequests) {
+            // 如果是请求过于频繁，则获取冷却时间
+            ApiResult<PostCooldownModel> cooldownResult =
+                await postService.fetchPostCollingInfo();
+            if (cooldownResult.isSuccess && cooldownResult.data != null) {
+              final cooldown = cooldownResult.data!;
+              if (cooldown.limited) {
+                // 计算剩余时间,小数点后二位
+                final remaining = cooldown.remaining; // 秒
+                final hours = remaining ~/ 3600;
+                final minutes = (remaining % 3600) ~/ 60;
+                final seconds = remaining % 60;
+
+                String timeStr =
+                    '${t.errors.tooManyRequestsPleaseTryAgainLaterText} ';
+                if (hours > 0) {
+                  timeStr += '${t.errors.remainingHours(num: hours)} ';
+                }
+                if (minutes > 0) {
+                  timeStr += '${t.errors.remainingMinutes(num: minutes)} ';
+                }
+                if (seconds > 0) {
+                  timeStr += t.errors.remainingSeconds(num: seconds);
+                }
+
+                showToastWidget(
+                  MDToastWidget(
+                    message: timeStr.trim(),
+                    type: MDToastType.error,
+                  ),
+                );
+              }
+            }
+          } else {
+            showToastWidget(
+              MDToastWidget(
+                message: result.message,
+                type: MDToastType.error,
+              ),
+            );
+          }
+        },
+      ),
+      barrierDismissible: true,
+    );
   }
 }
