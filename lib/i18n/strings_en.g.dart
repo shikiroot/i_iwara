@@ -204,6 +204,10 @@ class TranslationsCommonEn {
 	String get showOriginalText => 'Show Original Text';
 	String get showProcessedText => 'Show Processed Text';
 	String get preview => 'Preview';
+	String get rules => 'Rules';
+	String get agree => 'Agree';
+	String get disagree => 'Disagree';
+	String get agreeToRules => 'Agree to Rules';
 }
 
 // Path: auth
@@ -620,7 +624,7 @@ class TranslationsMarkdownEn {
 	String get listSyntax => '1. First item\n2. Second item\n\n- Unordered item\n  - Subitem\n  - Another subitem';
 	String get linkAndImage => 'Link and Image';
 	String get linkAndImageDescription => 'Link format: [text](URL)\nImage format: ![description](URL)';
-	String linkAndImageSyntax({required Object imgUrl}) => '[link text](https://google.com)\n![image description](${imgUrl})';
+	String linkAndImageSyntax({required Object link, required Object imgUrl}) => '[link text](${link})\n![image description](${imgUrl})';
 	String get title => 'Title';
 	String get titleDescription => 'Use # symbol to create title, number to show level';
 	String get titleSyntax => '# First-level title\n## Second-level title\n### Third-level title';
@@ -777,6 +781,10 @@ extension on Translations {
 			case 'common.showOriginalText': return 'Show Original Text';
 			case 'common.showProcessedText': return 'Show Processed Text';
 			case 'common.preview': return 'Preview';
+			case 'common.rules': return 'Rules';
+			case 'common.agree': return 'Agree';
+			case 'common.disagree': return 'Disagree';
+			case 'common.agreeToRules': return 'Agree to Rules';
 			case 'auth.login': return 'Login';
 			case 'auth.logout': return 'Logout';
 			case 'auth.email': return 'Email';
@@ -1058,7 +1066,7 @@ extension on Translations {
 			case 'markdown.listSyntax': return '1. First item\n2. Second item\n\n- Unordered item\n  - Subitem\n  - Another subitem';
 			case 'markdown.linkAndImage': return 'Link and Image';
 			case 'markdown.linkAndImageDescription': return 'Link format: [text](URL)\nImage format: ![description](URL)';
-			case 'markdown.linkAndImageSyntax': return ({required Object imgUrl}) => '[link text](https://google.com)\n![image description](${imgUrl})';
+			case 'markdown.linkAndImageSyntax': return ({required Object link, required Object imgUrl}) => '[link text](${link})\n![image description](${imgUrl})';
 			case 'markdown.title': return 'Title';
 			case 'markdown.titleDescription': return 'Use # symbol to create title, number to show level';
 			case 'markdown.titleSyntax': return '# First-level title\n## Second-level title\n### Third-level title';

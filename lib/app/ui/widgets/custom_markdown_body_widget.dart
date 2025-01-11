@@ -17,13 +17,13 @@ import '../../../common/constants.dart';
 class CustomMarkdownBody extends StatefulWidget {
   final String data;
   final bool? initialShowUnprocessedText;
-  final bool disableLinkClick;
+  final bool clickInternalLinkByUrlLaunch;  // 当为true时，内部链接也使用urllaunch打开
 
   const CustomMarkdownBody({
     super.key, 
     required this.data, 
     this.initialShowUnprocessedText,
-    this.disableLinkClick = false,
+    this.clickInternalLinkByUrlLaunch = false,
   });
 
   @override
@@ -253,40 +253,44 @@ class _CustomMarkdownBodyState extends State<CustomMarkdownBody> {
   }
 
   void _onTapLink(String text, String? href, String title) async {
-    if (href == null || widget.disableLinkClick) return;
+    if (href == null) return;
 
     try {
       Uri uri = Uri.parse(href);
-      if (href.startsWith(
-          '${CommonConstants.iwaraBaseUrl}${ApiConstants.profilePrefix()}')) {
-        final userName = uri.pathSegments.last;
-        NaviService.navigateToAuthorProfilePage(userName);
-      } else if (href.startsWith(
-          '${CommonConstants.iwaraBaseUrl}${ApiConstants.galleryDetail()}')) {
-        final imageId = uri.pathSegments.last;
-        NaviService.navigateToGalleryDetailPage(imageId);
-      } else if (href.startsWith(
-          '${CommonConstants.iwaraBaseUrl}/video/')) {
-        final videoId = uri.pathSegments[1];
-        NaviService.navigateToVideoDetailPage(videoId);
-      } else if (href.startsWith(
-          '${CommonConstants.iwaraBaseUrl}/playlist/')) {
-        final playlistId = uri.pathSegments.last;
-        NaviService.navigateToPlayListDetail(playlistId, isMine: false);
-      } else if (href.startsWith(
-          '${CommonConstants.iwaraBaseUrl}/post/')) {
-        final postId = uri.pathSegments.last;
-        NaviService.navigateToPostDetailPage(postId, null);
-      } else {
-        if (await canLaunchUrl(uri)) {
-          await launchUrl(uri);
+      
+      if (!widget.clickInternalLinkByUrlLaunch && href.startsWith(CommonConstants.iwaraBaseUrl)) {
+        if (href.startsWith('${CommonConstants.iwaraBaseUrl}${ApiConstants.profilePrefix()}')) {
+          final userName = uri.pathSegments.last;
+          NaviService.navigateToAuthorProfilePage(userName);
+        } else if (href.startsWith('${CommonConstants.iwaraBaseUrl}${ApiConstants.galleryDetail()}')) {
+          final imageId = uri.pathSegments.last;
+          NaviService.navigateToGalleryDetailPage(imageId);
+        } else if (href.startsWith('${CommonConstants.iwaraBaseUrl}/video/')) {
+          final videoId = uri.pathSegments[1];
+          NaviService.navigateToVideoDetailPage(videoId);
+        } else if (href.startsWith('${CommonConstants.iwaraBaseUrl}/playlist/')) {
+          final playlistId = uri.pathSegments.last;
+          NaviService.navigateToPlayListDetail(playlistId, isMine: false);
+        } else if (href.startsWith('${CommonConstants.iwaraBaseUrl}/post/')) {
+          final postId = uri.pathSegments.last;
+          NaviService.navigateToPostDetailPage(postId, null);
         } else {
-          LogUtils.e('无法打开链接: $href', tag: 'CustomMarkdownBody');
-          showToastWidget(MDToastWidget(message: t.errors.errorWhileOpeningLink(link: href), type: MDToastType.error),position: ToastPosition.top);
+          await _launchUrl(uri, href);
         }
+      } else {
+        await _launchUrl(uri, href);
       }
     } catch (e) {
       LogUtils.e('处理链接点击时发生错误', tag: 'CustomMarkdownBody', error: e);
+      showToastWidget(MDToastWidget(message: t.errors.errorWhileOpeningLink(link: href), type: MDToastType.error),position: ToastPosition.top);
+    }
+  }
+
+  Future<void> _launchUrl(Uri uri, String href) async {
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    } else {
+      LogUtils.e('无法打开链接: $href', tag: 'CustomMarkdownBody');
       showToastWidget(MDToastWidget(message: t.errors.errorWhileOpeningLink(link: href), type: MDToastType.error),position: ToastPosition.top);
     }
   }

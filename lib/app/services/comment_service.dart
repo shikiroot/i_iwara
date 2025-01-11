@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:i_iwara/app/models/api_result.model.dart';
 import 'package:i_iwara/app/models/comment.model.dart';
 import 'package:i_iwara/app/models/page_data.model.dart';
+import 'package:i_iwara/app/models/rules.model.dart';
 import 'package:i_iwara/app/services/api_service.dart';
 import 'package:i_iwara/common/constants.dart';
 import 'package:i_iwara/i18n/strings.g.dart';
@@ -89,6 +90,40 @@ class CommentService extends GetxService {
     } catch (e) {
       LogUtils.e('发表评论失败', tag: 'CommentService', error: e);
       return ApiResult.fail(t.errors.failedToOperate);
+    }
+  }
+
+  /// 获取规则
+  Future<ApiResult<PageData<RulesModel>>> getRules() async {
+    try {
+      final response = await _apiService.get(ApiConstants.rules);
+      final List<RulesModel> results = (response.data['results'] as List)
+          .map((rule) {
+            if (rule['body'] is! Map) {
+              LogUtils.e('规则 body 字段格式错误: ${rule['body']}', tag: 'CommentService');
+              return null;
+            }
+            try {
+              return RulesModel.fromJson(rule);
+            } catch (e) {
+              LogUtils.e('解析规则失败', tag: 'CommentService', error: e);
+              return null;
+            }
+          })
+          .where((rule) => rule != null)
+          .cast<RulesModel>()
+          .toList();
+
+      final PageData<RulesModel> pageData = PageData(
+        page: response.data['page'],
+        limit: response.data['limit'],
+        count: response.data['count'],
+        results: results,
+      );
+      return ApiResult.success(data: pageData);
+    } catch (e) { 
+      LogUtils.e('获取规则失败', tag: 'CommentService', error: e);
+      return ApiResult.fail(t.errors.failedToFetchData);
     }
   }
 }

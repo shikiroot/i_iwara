@@ -146,6 +146,10 @@ common:
   showProcessedText: 显示处理后文本
   preview: 预览
   markdownSyntax: Markdown 语法
+  rules: 规则
+  agree: 同意
+  disagree: 不同意
+  agreeToRules: 同意规则
 
 auth:
   login: 登录
@@ -458,7 +462,7 @@ markdown:
   listSyntax: '1. 第一项\n2. 第二项\n\n- 无序项\n  - 子项\n  - 另一个子项'
   linkAndImage: 链接与图片
   linkAndImageDescription: '链接格式：[文字](URL)\n图片格式：![描述](URL)'
-  linkAndImageSyntax: '[链接文字](https://google.com)\n![图片描述](${imgUrl})'
+  linkAndImageSyntax: '[链接文字](${link})\n![图片描述](${imgUrl})'
   title: 标题
   titleDescription: '使用 # 号创建标题，数量表示级别'
   titleSyntax: '# 一级标题\n## 二级标题\n### 三级标题'

@@ -94,6 +94,9 @@ class KeyConstants {
 }
 
 class ApiConstants {
+  // 规则
+  static String rules = '/rules';
+
   // 视频列表
   static String videos() => '/videos';
 

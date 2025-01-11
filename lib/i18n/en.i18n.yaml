@@ -142,6 +142,10 @@ common:
   showOriginalText: Show Original Text
   showProcessedText: Show Processed Text
   preview: Preview
+  rules: Rules
+  agree: Agree
+  disagree: Disagree
+  agreeToRules: Agree to Rules
 auth:
   login: Login
   logout: Logout
@@ -450,7 +454,7 @@ markdown:
   listSyntax: '1. First item\n2. Second item\n\n- Unordered item\n  - Subitem\n  - Another subitem'
   linkAndImage: Link and Image
   linkAndImageDescription: 'Link format: [text](URL)\nImage format: ![description](URL)'
-  linkAndImageSyntax: '[link text](https://google.com)\n![image description](${imgUrl})'
+  linkAndImageSyntax: '[link text](${link})\n![image description](${imgUrl})'
   title: Title
   titleDescription: 'Use # symbol to create title, number to show level'
   titleSyntax: '# First-level title\n## Second-level title\n### Third-level title'

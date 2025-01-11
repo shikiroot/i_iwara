@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:i_iwara/app/services/app_service.dart';
+import 'package:i_iwara/app/services/config_service.dart';
+import 'package:i_iwara/app/ui/pages/comment/widgets/rules_agreement_dialog_widget.dart';
 import 'package:i_iwara/i18n/strings.g.dart' as slang;
 import 'package:i_iwara/app/ui/widgets/custom_markdown_body_widget.dart';
 import 'package:i_iwara/app/ui/widgets/markdown_syntax_help_dialog.dart';
@@ -28,6 +31,7 @@ class _CommentInputDialogState extends State<CommentInputDialog> {
   late TextEditingController _controller;
   bool _isLoading = false;
   int _currentLength = 0;
+  final ConfigService _configService = Get.find<ConfigService>();
 
   @override
   void initState() {
@@ -84,7 +88,7 @@ class _CommentInputDialogState extends State<CommentInputDialog> {
                 padding: const EdgeInsets.all(16.0),
                 child: CustomMarkdownBody(
                   data: _controller.text,
-                  disableLinkClick: true,
+                  clickInternalLinkByUrlLaunch: true,
                 ),
               ),
             ),
@@ -102,6 +106,47 @@ class _CommentInputDialogState extends State<CommentInputDialog> {
     );
   }
 
+  Future<void> _showRulesDialog() async {
+    final result = await showModalBottomSheet<bool>(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => DraggableScrollableSheet(
+        initialChildSize: 0.8,
+        minChildSize: 0.5,
+        maxChildSize: 0.95,
+        expand: false,
+        builder: (context, scrollController) => RulesAgreementDialog(
+          scrollController: scrollController,
+        ),
+      ),
+    );
+
+    if (result == true) {
+      await _configService.setSetting(ConfigService.RULES_AGREEMENT_KEY, true);
+      if (mounted) {
+        _handleSubmit();
+      }
+    }
+  }
+
+  void _handleSubmit() async {
+    if (_currentLength > widget.maxLength || _currentLength == 0) return;
+
+    final bool hasAgreed = _configService[ConfigService.RULES_AGREEMENT_KEY];
+    if (!hasAgreed) {
+      await _showRulesDialog();
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+    });
+    await widget.onSubmit(_controller.text);
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final t = slang.t;
@@ -115,24 +160,34 @@ class _CommentInputDialogState extends State<CommentInputDialog> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  widget.title,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
+                Expanded(
+                  child: Text(
+                    widget.title,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
                 Row(
                   children: [
+                    // 帮助按钮
                     IconButton(
                       onPressed: _showMarkdownHelp,
                       icon: const Icon(Icons.help_outline),
                       tooltip: t.markdown.markdownSyntax,
                     ),
+                    // 预览按钮
                     IconButton(
                       onPressed: _showPreview,
                       icon: const Icon(Icons.preview),
                       tooltip: t.common.preview,
+                    ),
+                    // 关闭按钮
+                    IconButton(
+                      onPressed: () => AppService.tryPop(),
+                      icon: const Icon(Icons.close),
+                      tooltip: t.common.close,
                     ),
                   ],
                 ),
@@ -153,26 +208,34 @@ class _CommentInputDialogState extends State<CommentInputDialog> {
               ),
             ),
             const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+            Wrap(
+              alignment: WrapAlignment.end,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              spacing: 8,
+              runSpacing: 8,
               children: [
+                Obx(() {
+                  final bool hasAgreed = _configService[ConfigService.RULES_AGREEMENT_KEY];
+                  return TextButton.icon(
+                    onPressed: () => _showRulesDialog(),
+                    icon: Icon(
+                      hasAgreed ? Icons.check_box : Icons.check_box_outline_blank,
+                      size: 20,
+                    ),
+                    label: Text(t.common.agreeToRules),
+                    style: TextButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                    ),
+                  );
+                }),
                 TextButton(
                   onPressed: () => AppService.tryPop(),
                   child: Text(t.common.cancel),
                 ),
-                const SizedBox(width: 8),
                 ElevatedButton(
                   onPressed: _currentLength > widget.maxLength || _currentLength == 0
                       ? null
-                      : () async {
-                          setState(() {
-                            _isLoading = true;
-                          });
-                          await widget.onSubmit(_controller.text);
-                          setState(() {
-                            _isLoading = false;
-                          });
-                        },
+                      : _handleSubmit,
                   child: _isLoading
                       ? const SizedBox(
                           width: 20,
@@ -188,4 +251,4 @@ class _CommentInputDialogState extends State<CommentInputDialog> {
       ),
     );
   }
-} 
+}

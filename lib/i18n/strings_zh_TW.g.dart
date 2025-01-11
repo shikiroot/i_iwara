@@ -200,6 +200,10 @@ class _TranslationsCommonZhTw implements TranslationsCommonEn {
 	@override String get showOriginalText => '顯示原始文本';
 	@override String get showProcessedText => '顯示處理後文本';
 	@override String get preview => '預覽';
+	@override String get rules => '規則';
+	@override String get agree => '同意';
+	@override String get disagree => '不同意';
+	@override String get agreeToRules => '同意規則';
 }
 
 // Path: auth
@@ -616,7 +620,7 @@ class _TranslationsMarkdownZhTw implements TranslationsMarkdownEn {
 	@override String get listSyntax => '1. 第一項\n2. 第二項\n\n- 無序項\n  - 子項\n  - 另一個子項';
 	@override String get linkAndImage => '鏈接與圖片';
 	@override String get linkAndImageDescription => '鏈接格式：[文字](URL)\n圖片格式：![描述](URL)';
-	@override String linkAndImageSyntax({required Object imgUrl}) => '[鏈接文字](https://google.com)\n![圖片描述](${imgUrl})';
+	@override String linkAndImageSyntax({required Object link, required Object imgUrl}) => '[鏈接文字](${link})\n![圖片描述](${imgUrl})';
 	@override String get title => '標題';
 	@override String get titleDescription => '使用 # 號創建標題，數量表示級別';
 	@override String get titleSyntax => '# 一級標題\n## 二級標題\n### 三級標題';
@@ -773,6 +777,10 @@ extension on TranslationsZhTw {
 			case 'common.showOriginalText': return '顯示原始文本';
 			case 'common.showProcessedText': return '顯示處理後文本';
 			case 'common.preview': return '預覽';
+			case 'common.rules': return '規則';
+			case 'common.agree': return '同意';
+			case 'common.disagree': return '不同意';
+			case 'common.agreeToRules': return '同意規則';
 			case 'auth.login': return '登入';
 			case 'auth.logout': return '登出';
 			case 'auth.email': return '電子郵件';
@@ -1054,7 +1062,7 @@ extension on TranslationsZhTw {
 			case 'markdown.listSyntax': return '1. 第一項\n2. 第二項\n\n- 無序項\n  - 子項\n  - 另一個子項';
 			case 'markdown.linkAndImage': return '鏈接與圖片';
 			case 'markdown.linkAndImageDescription': return '鏈接格式：[文字](URL)\n圖片格式：![描述](URL)';
-			case 'markdown.linkAndImageSyntax': return ({required Object imgUrl}) => '[鏈接文字](https://google.com)\n![圖片描述](${imgUrl})';
+			case 'markdown.linkAndImageSyntax': return ({required Object link, required Object imgUrl}) => '[鏈接文字](${link})\n![圖片描述](${imgUrl})';
 			case 'markdown.title': return '標題';
 			case 'markdown.titleDescription': return '使用 # 號創建標題，數量表示級別';
 			case 'markdown.titleSyntax': return '# 一級標題\n## 二級標題\n### 三級標題';

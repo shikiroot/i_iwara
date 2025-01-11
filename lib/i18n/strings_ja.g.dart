@@ -200,6 +200,10 @@ class _TranslationsCommonJa implements TranslationsCommonEn {
 	@override String get showOriginalText => '原文を表示';
 	@override String get showProcessedText => '処理後の原文を表示';
 	@override String get preview => 'プレビュー';
+	@override String get rules => 'ルール';
+	@override String get agree => '同意';
+	@override String get disagree => '不同意';
+	@override String get agreeToRules => '同意ルール';
 }
 
 // Path: auth
@@ -616,7 +620,7 @@ class _TranslationsMarkdownJa implements TranslationsMarkdownEn {
 	@override String get listSyntax => '1. 第一項\n2. 第二項\n\n- 順序なし項\n  - 子項\n  - 別の子項';
 	@override String get linkAndImage => 'リンクと画像';
 	@override String get linkAndImageDescription => 'リンク形式：[テキスト](URL)\n画像形式：![説明](URL)';
-	@override String linkAndImageSyntax({required Object imgUrl}) => '[リンクテキスト](https://google.com)\n![画像説明](${imgUrl})';
+	@override String linkAndImageSyntax({required Object link, required Object imgUrl}) => '[リンクテキスト](${link})\n![画像説明](${imgUrl})';
 	@override String get title => 'タイトル';
 	@override String get titleDescription => '＃ 号でタイトルを作成し、数でレベルを表示';
 	@override String get titleSyntax => '# 一階タイトル\n## 二階タイトル\n### 三階タイトル';
@@ -773,6 +777,10 @@ extension on TranslationsJa {
 			case 'common.showOriginalText': return '原文を表示';
 			case 'common.showProcessedText': return '処理後の原文を表示';
 			case 'common.preview': return 'プレビュー';
+			case 'common.rules': return 'ルール';
+			case 'common.agree': return '同意';
+			case 'common.disagree': return '不同意';
+			case 'common.agreeToRules': return '同意ルール';
 			case 'auth.login': return 'ログイン';
 			case 'auth.logout': return 'ログアウト';
 			case 'auth.email': return 'メールアドレス';
@@ -1054,7 +1062,7 @@ extension on TranslationsJa {
 			case 'markdown.listSyntax': return '1. 第一項\n2. 第二項\n\n- 順序なし項\n  - 子項\n  - 別の子項';
 			case 'markdown.linkAndImage': return 'リンクと画像';
 			case 'markdown.linkAndImageDescription': return 'リンク形式：[テキスト](URL)\n画像形式：![説明](URL)';
-			case 'markdown.linkAndImageSyntax': return ({required Object imgUrl}) => '[リンクテキスト](https://google.com)\n![画像説明](${imgUrl})';
+			case 'markdown.linkAndImageSyntax': return ({required Object link, required Object imgUrl}) => '[リンクテキスト](${link})\n![画像説明](${imgUrl})';
 			case 'markdown.title': return 'タイトル';
 			case 'markdown.titleDescription': return '＃ 号でタイトルを作成し、数でレベルを表示';
 			case 'markdown.titleSyntax': return '# 一階タイトル\n## 二階タイトル\n### 三階タイトル';

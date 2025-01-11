@@ -92,7 +92,7 @@ class MarkdownSyntaxHelp extends StatelessWidget {
                       ),
                       _SyntaxItem(
                         title: t.markdown.linkAndImage,
-                        syntax: t.markdown.linkAndImageSyntax(imgUrl: CommonConstants.defaultAvatarUrl),
+                        syntax: t.markdown.linkAndImageSyntax(imgUrl: CommonConstants.defaultAvatarUrl, link: CommonConstants.iwaraBaseUrl),
                         description: t.markdown.linkAndImageDescription,
                       ),
                       _SyntaxItem(
@@ -246,7 +246,7 @@ class MarkdownSyntaxHelp extends StatelessWidget {
           const SizedBox(height: 4),
           CustomMarkdownBody(
             data: item.syntax,
-            disableLinkClick: true,
+            clickInternalLinkByUrlLaunch: true,
           ),
         ],
       ),

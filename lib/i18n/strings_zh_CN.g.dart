@@ -202,6 +202,10 @@ class _TranslationsCommonZhCn implements TranslationsCommonEn {
 	@override String get showProcessedText => '显示处理后文本';
 	@override String get preview => '预览';
 	@override String get markdownSyntax => 'Markdown 语法';
+	@override String get rules => '规则';
+	@override String get agree => '同意';
+	@override String get disagree => '不同意';
+	@override String get agreeToRules => '同意规则';
 }
 
 // Path: auth
@@ -620,7 +624,7 @@ class _TranslationsMarkdownZhCn implements TranslationsMarkdownEn {
 	@override String get listSyntax => '1. 第一项\n2. 第二项\n\n- 无序项\n  - 子项\n  - 另一个子项';
 	@override String get linkAndImage => '链接与图片';
 	@override String get linkAndImageDescription => '链接格式：[文字](URL)\n图片格式：![描述](URL)';
-	@override String linkAndImageSyntax({required Object imgUrl}) => '[链接文字](https://google.com)\n![图片描述](${imgUrl})';
+	@override String linkAndImageSyntax({required Object link, required Object imgUrl}) => '[链接文字](${link})\n![图片描述](${imgUrl})';
 	@override String get title => '标题';
 	@override String get titleDescription => '使用 # 号创建标题，数量表示级别';
 	@override String get titleSyntax => '# 一级标题\n## 二级标题\n### 三级标题';
@@ -779,6 +783,10 @@ extension on TranslationsZhCn {
 			case 'common.showProcessedText': return '显示处理后文本';
 			case 'common.preview': return '预览';
 			case 'common.markdownSyntax': return 'Markdown 语法';
+			case 'common.rules': return '规则';
+			case 'common.agree': return '同意';
+			case 'common.disagree': return '不同意';
+			case 'common.agreeToRules': return '同意规则';
 			case 'auth.login': return '登录';
 			case 'auth.logout': return '退出登录';
 			case 'auth.email': return '邮箱';
@@ -1062,7 +1070,7 @@ extension on TranslationsZhCn {
 			case 'markdown.listSyntax': return '1. 第一项\n2. 第二项\n\n- 无序项\n  - 子项\n  - 另一个子项';
 			case 'markdown.linkAndImage': return '链接与图片';
 			case 'markdown.linkAndImageDescription': return '链接格式：[文字](URL)\n图片格式：![描述](URL)';
-			case 'markdown.linkAndImageSyntax': return ({required Object imgUrl}) => '[链接文字](https://google.com)\n![图片描述](${imgUrl})';
+			case 'markdown.linkAndImageSyntax': return ({required Object link, required Object imgUrl}) => '[链接文字](${link})\n![图片描述](${imgUrl})';
 			case 'markdown.title': return '标题';
 			case 'markdown.titleDescription': return '使用 # 号创建标题，数量表示级别';
 			case 'markdown.titleSyntax': return '# 一级标题\n## 二级标题\n### 三级标题';
