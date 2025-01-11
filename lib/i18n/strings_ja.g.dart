@@ -48,6 +48,7 @@ class TranslationsJa implements Translations {
 	@override late final _TranslationsSubscriptionsJa subscriptions = _TranslationsSubscriptionsJa._(_root);
 	@override late final _TranslationsVideoDetailJa videoDetail = _TranslationsVideoDetailJa._(_root);
 	@override late final _TranslationsShareJa share = _TranslationsShareJa._(_root);
+	@override late final _TranslationsMarkdownJa markdown = _TranslationsMarkdownJa._(_root);
 }
 
 // Path: common
@@ -198,6 +199,7 @@ class _TranslationsCommonJa implements TranslationsCommonEn {
 	@override String get originalText => '原文';
 	@override String get showOriginalText => '原文を表示';
 	@override String get showProcessedText => '処理後の原文を表示';
+	@override String get preview => 'プレビュー';
 }
 
 // Path: auth
@@ -281,6 +283,7 @@ class _TranslationsErrorsJa implements TranslationsErrorsEn {
 	@override String get pleaseLoginAgain => 'ログインしてください';
 	@override String get invalidLogin => 'ログインに失敗しました。メールアドレスとパスワードを確認してください';
 	@override String get tooManyRequests => 'リクエストが多すぎます。後でもう一度お試しください';
+	@override String exceedsMaxLength({required Object max}) => '最大長さを超えています: ${max}';
 }
 
 // Path: friends
@@ -584,6 +587,45 @@ class _TranslationsShareJa implements TranslationsShareEn {
 	@override String get share => '共有';
 }
 
+// Path: markdown
+class _TranslationsMarkdownJa implements TranslationsMarkdownEn {
+	_TranslationsMarkdownJa._(this._root);
+
+	final TranslationsJa _root; // ignore: unused_field
+
+	// Translations
+	@override String get markdownSyntax => 'Markdown 構文';
+	@override String get iwaraSpecialMarkdownSyntax => 'Iwara 専用構文';
+	@override String get internalLink => '站内鏈接';
+	@override String get supportAutoConvertLinkBelow => '以下のタイプのリンクを自動変換します：';
+	@override String get convertLinkExample => '🎬 ビデオリンク\n🖼️ 画像リンク\n👤 ユーザーリンク\n📌 フォーラムリンク\n🎵 プレイリストリンク\n💬 スレッドリンク';
+	@override String get mentionUser => 'ユーザーを言及';
+	@override String get mentionUserDescription => '@後にユーザー名を入力すると、ユーザーリンクに自動変換されます';
+	@override String get markdownBasicSyntax => 'Markdown 基本構文';
+	@override String get paragraphAndLineBreak => '段落と改行';
+	@override String get paragraphAndLineBreakDescription => '段落間に空行を入れ、行末に2つのスペースを追加すると改行されます';
+	@override String get paragraphAndLineBreakSyntax => 'これは第一段落です\n\nこれは第二段落です\nこの行の後に2つのスペースを追加して  \n改行されます';
+	@override String get textStyle => 'テキストスタイル';
+	@override String get textStyleDescription => '特殊記号でテキストのスタイルを変更';
+	@override String get textStyleSyntax => '**太字テキスト**\n*斜体テキスト*\n~~削除線テキスト~~\n`コードテキスト`';
+	@override String get quote => '引用';
+	@override String get quoteDescription => '> 符号で引用を作成し、複数の > で多段引用を作成';
+	@override String get quoteSyntax => '> これは一階引用です\n>> これは二階引用です';
+	@override String get list => 'リスト';
+	@override String get listDescription => '数字+点号で順序付きリストを作成し、- で順序なしリストを作成';
+	@override String get listSyntax => '1. 第一項\n2. 第二項\n\n- 順序なし項\n  - 子項\n  - 別の子項';
+	@override String get linkAndImage => 'リンクと画像';
+	@override String get linkAndImageDescription => 'リンク形式：[テキスト](URL)\n画像形式：![説明](URL)';
+	@override String linkAndImageSyntax({required Object imgUrl}) => '[リンクテキスト](https://google.com)\n![画像説明](${imgUrl})';
+	@override String get title => 'タイトル';
+	@override String get titleDescription => '＃ 号でタイトルを作成し、数でレベルを表示';
+	@override String get titleSyntax => '# 一階タイトル\n## 二階タイトル\n### 三階タイトル';
+	@override String get separator => '分隔線';
+	@override String get separatorDescription => '三個以上の - 号で分隔線を作成';
+	@override String get separatorSyntax => '---';
+	@override String get syntax => '語法';
+}
+
 /// Flat map(s) containing all translations.
 /// Only for edge cases! For simple maps, use the map function of this library.
 extension on TranslationsJa {
@@ -730,6 +772,7 @@ extension on TranslationsJa {
 			case 'common.originalText': return '原文';
 			case 'common.showOriginalText': return '原文を表示';
 			case 'common.showProcessedText': return '処理後の原文を表示';
+			case 'common.preview': return 'プレビュー';
 			case 'auth.login': return 'ログイン';
 			case 'auth.logout': return 'ログアウト';
 			case 'auth.email': return 'メールアドレス';
@@ -795,6 +838,7 @@ extension on TranslationsJa {
 			case 'errors.pleaseLoginAgain': return 'ログインしてください';
 			case 'errors.invalidLogin': return 'ログインに失敗しました。メールアドレスとパスワードを確認してください';
 			case 'errors.tooManyRequests': return 'リクエストが多すぎます。後でもう一度お試しください';
+			case 'errors.exceedsMaxLength': return ({required Object max}) => '最大長さを超えています: ${max}';
 			case 'friends.clickToRestoreFriend': return '友達を復元するにはクリックしてください';
 			case 'friends.friendsList': return '友達リスト';
 			case 'friends.friendRequests': return '友達リクエスト';
@@ -988,6 +1032,36 @@ extension on TranslationsJa {
 			case 'share.iReallyLikeThis': return '本当に好きです';
 			case 'share.shareFailed': return '共有に失敗しました。後でもう一度お試しください';
 			case 'share.share': return '共有';
+			case 'markdown.markdownSyntax': return 'Markdown 構文';
+			case 'markdown.iwaraSpecialMarkdownSyntax': return 'Iwara 専用構文';
+			case 'markdown.internalLink': return '站内鏈接';
+			case 'markdown.supportAutoConvertLinkBelow': return '以下のタイプのリンクを自動変換します：';
+			case 'markdown.convertLinkExample': return '🎬 ビデオリンク\n🖼️ 画像リンク\n👤 ユーザーリンク\n📌 フォーラムリンク\n🎵 プレイリストリンク\n💬 スレッドリンク';
+			case 'markdown.mentionUser': return 'ユーザーを言及';
+			case 'markdown.mentionUserDescription': return '@後にユーザー名を入力すると、ユーザーリンクに自動変換されます';
+			case 'markdown.markdownBasicSyntax': return 'Markdown 基本構文';
+			case 'markdown.paragraphAndLineBreak': return '段落と改行';
+			case 'markdown.paragraphAndLineBreakDescription': return '段落間に空行を入れ、行末に2つのスペースを追加すると改行されます';
+			case 'markdown.paragraphAndLineBreakSyntax': return 'これは第一段落です\n\nこれは第二段落です\nこの行の後に2つのスペースを追加して  \n改行されます';
+			case 'markdown.textStyle': return 'テキストスタイル';
+			case 'markdown.textStyleDescription': return '特殊記号でテキストのスタイルを変更';
+			case 'markdown.textStyleSyntax': return '**太字テキスト**\n*斜体テキスト*\n~~削除線テキスト~~\n`コードテキスト`';
+			case 'markdown.quote': return '引用';
+			case 'markdown.quoteDescription': return '> 符号で引用を作成し、複数の > で多段引用を作成';
+			case 'markdown.quoteSyntax': return '> これは一階引用です\n>> これは二階引用です';
+			case 'markdown.list': return 'リスト';
+			case 'markdown.listDescription': return '数字+点号で順序付きリストを作成し、- で順序なしリストを作成';
+			case 'markdown.listSyntax': return '1. 第一項\n2. 第二項\n\n- 順序なし項\n  - 子項\n  - 別の子項';
+			case 'markdown.linkAndImage': return 'リンクと画像';
+			case 'markdown.linkAndImageDescription': return 'リンク形式：[テキスト](URL)\n画像形式：![説明](URL)';
+			case 'markdown.linkAndImageSyntax': return ({required Object imgUrl}) => '[リンクテキスト](https://google.com)\n![画像説明](${imgUrl})';
+			case 'markdown.title': return 'タイトル';
+			case 'markdown.titleDescription': return '＃ 号でタイトルを作成し、数でレベルを表示';
+			case 'markdown.titleSyntax': return '# 一階タイトル\n## 二階タイトル\n### 三階タイトル';
+			case 'markdown.separator': return '分隔線';
+			case 'markdown.separatorDescription': return '三個以上の - 号で分隔線を作成';
+			case 'markdown.separatorSyntax': return '---';
+			case 'markdown.syntax': return '語法';
 			default: return null;
 		}
 	}

@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:i_iwara/app/services/app_service.dart';
 import 'package:i_iwara/i18n/strings.g.dart' as slang;
+import 'package:i_iwara/app/ui/widgets/custom_markdown_body_widget.dart';
+import 'package:i_iwara/app/ui/widgets/markdown_syntax_help_dialog.dart';
 
 class CommentInputDialog extends StatefulWidget {
   final String? initialText;
   final Function(String) onSubmit;
   final String title;
   final String submitText;
+  final int maxLength;
 
   const CommentInputDialog({
     super.key,
@@ -14,6 +17,7 @@ class CommentInputDialog extends StatefulWidget {
     required this.onSubmit,
     required this.title,
     required this.submitText,
+    this.maxLength = 1000,
   });
 
   @override
@@ -23,11 +27,18 @@ class CommentInputDialog extends StatefulWidget {
 class _CommentInputDialogState extends State<CommentInputDialog> {
   late TextEditingController _controller;
   bool _isLoading = false;
+  int _currentLength = 0;
 
   @override
   void initState() {
     super.initState();
     _controller = TextEditingController(text: widget.initialText);
+    _currentLength = _controller.text.length;
+    _controller.addListener(() {
+      setState(() {
+        _currentLength = _controller.text.length;
+      });
+    });
   }
 
   @override
@@ -36,9 +47,64 @@ class _CommentInputDialogState extends State<CommentInputDialog> {
     super.dispose();
   }
 
+  void _showPreview() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => DraggableScrollableSheet(
+        initialChildSize: 0.7,
+        minChildSize: 0.5,
+        maxChildSize: 0.95,
+        expand: false,
+        builder: (context, scrollController) => Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    slang.t.common.preview,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () => Navigator.pop(context),
+                    icon: const Icon(Icons.close),
+                  ),
+                ],
+              ),
+            ),
+            const Divider(height: 1),
+            Expanded(
+              child: SingleChildScrollView(
+                controller: scrollController,
+                padding: const EdgeInsets.all(16.0),
+                child: CustomMarkdownBody(
+                  data: _controller.text,
+                  disableLinkClick: true,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showMarkdownHelp() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => const MarkdownSyntaxHelp(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final t = slang.Translations.of(context);
+    final t = slang.t;
     return Dialog(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -46,20 +112,44 @@ class _CommentInputDialogState extends State<CommentInputDialog> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(
-              widget.title,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  widget.title,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Row(
+                  children: [
+                    IconButton(
+                      onPressed: _showMarkdownHelp,
+                      icon: const Icon(Icons.help_outline),
+                      tooltip: t.markdown.markdownSyntax,
+                    ),
+                    IconButton(
+                      onPressed: _showPreview,
+                      icon: const Icon(Icons.preview),
+                      tooltip: t.common.preview,
+                    ),
+                  ],
+                ),
+              ],
             ),
             const SizedBox(height: 16),
             TextField(
               controller: _controller,
               maxLines: 5,
+              maxLength: widget.maxLength,
               decoration: InputDecoration(
                 hintText: t.common.writeYourCommentHere,
                 border: const OutlineInputBorder(),
+                counterText: '$_currentLength/${widget.maxLength}',
+                errorText: _currentLength > widget.maxLength 
+                    ? t.errors.exceedsMaxLength(max: widget.maxLength.toString())
+                    : null,
               ),
             ),
             const SizedBox(height: 16),
@@ -72,15 +162,17 @@ class _CommentInputDialogState extends State<CommentInputDialog> {
                 ),
                 const SizedBox(width: 8),
                 ElevatedButton(
-                  onPressed: () async {
-                    setState(() {
-                      _isLoading = true;
-                    });
-                    await widget.onSubmit(_controller.text);
-                    setState(() {
-                      _isLoading = false;
-                    });
-                  },
+                  onPressed: _currentLength > widget.maxLength || _currentLength == 0
+                      ? null
+                      : () async {
+                          setState(() {
+                            _isLoading = true;
+                          });
+                          await widget.onSubmit(_controller.text);
+                          setState(() {
+                            _isLoading = false;
+                          });
+                        },
                   child: _isLoading
                       ? const SizedBox(
                           width: 20,

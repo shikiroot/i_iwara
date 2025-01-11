@@ -48,6 +48,7 @@ class TranslationsZhCn implements Translations {
 	@override late final _TranslationsSubscriptionsZhCn subscriptions = _TranslationsSubscriptionsZhCn._(_root);
 	@override late final _TranslationsVideoDetailZhCn videoDetail = _TranslationsVideoDetailZhCn._(_root);
 	@override late final _TranslationsShareZhCn share = _TranslationsShareZhCn._(_root);
+	@override late final _TranslationsMarkdownZhCn markdown = _TranslationsMarkdownZhCn._(_root);
 }
 
 // Path: common
@@ -97,7 +98,7 @@ class _TranslationsCommonZhCn implements TranslationsCommonEn {
 	@override String get commentDeletedSuccessfully => '评论已删除';
 	@override String get commentUpdatedSuccessfully => '评论已更新';
 	@override String totalComments({required Object count}) => '评论 ${count} 条';
-	@override String get writeYourCommentHere => '写下你的评论...';
+	@override String get writeYourCommentHere => '在此输入评论...';
 	@override String get tmpNoReplies => '暂无回复';
 	@override String get loadMore => '加载更多';
 	@override String get noMoreDatas => '没有更多数据了';
@@ -199,6 +200,8 @@ class _TranslationsCommonZhCn implements TranslationsCommonEn {
 	@override String get originalText => '原文';
 	@override String get showOriginalText => '显示原始文本';
 	@override String get showProcessedText => '显示处理后文本';
+	@override String get preview => '预览';
+	@override String get markdownSyntax => 'Markdown 语法';
 }
 
 // Path: auth
@@ -284,6 +287,7 @@ class _TranslationsErrorsZhCn implements TranslationsErrorsEn {
 	@override String get pleaseLoginAgain => '请重新登录';
 	@override String get invalidLogin => '登录失败，请检查邮箱和密码';
 	@override String get tooManyRequests => '请求过多，请稍后再试';
+	@override String exceedsMaxLength({required Object max}) => '超出最大长度: ${max} 个字符';
 }
 
 // Path: friends
@@ -587,6 +591,45 @@ class _TranslationsShareZhCn implements TranslationsShareEn {
 	@override String get share => '分享';
 }
 
+// Path: markdown
+class _TranslationsMarkdownZhCn implements TranslationsMarkdownEn {
+	_TranslationsMarkdownZhCn._(this._root);
+
+	final TranslationsZhCn _root; // ignore: unused_field
+
+	// Translations
+	@override String get markdownSyntax => 'Markdown 语法';
+	@override String get iwaraSpecialMarkdownSyntax => 'Iwara 专用语法';
+	@override String get internalLink => '站内链接';
+	@override String get supportAutoConvertLinkBelow => '支持自动转换以下类型的链接：';
+	@override String get convertLinkExample => '🎬 视频链接\n🖼️ 图片链接\n👤 用户链接\n📌 论坛链接\n🎵 播放列表链接\n💬 帖子链接';
+	@override String get mentionUser => '提及用户';
+	@override String get mentionUserDescription => '输入@后跟用户名，将自动转换为用户链接';
+	@override String get markdownBasicSyntax => 'Markdown 基本语法';
+	@override String get paragraphAndLineBreak => '段落与换行';
+	@override String get paragraphAndLineBreakDescription => '段落之间空一行，行末加两个空格实现换行';
+	@override String get paragraphAndLineBreakSyntax => '这是第一段文字\n\n这是第二段文字\n这一行后面加两个空格  \n就能换行了';
+	@override String get textStyle => '文本样式';
+	@override String get textStyleDescription => '使用特殊符号包围文本来改变样式';
+	@override String get textStyleSyntax => '**粗体文本**\n*斜体文本*\n~~删除线文本~~\n`代码文本`';
+	@override String get quote => '引用';
+	@override String get quoteDescription => '使用 > 符号创建引用，多个 > 创建多级引用';
+	@override String get quoteSyntax => '> 这是一级引用\n>> 这是二级引用';
+	@override String get list => '列表';
+	@override String get listDescription => '使用数字+点号创建有序列表，使用 - 创建无序列表';
+	@override String get listSyntax => '1. 第一项\n2. 第二项\n\n- 无序项\n  - 子项\n  - 另一个子项';
+	@override String get linkAndImage => '链接与图片';
+	@override String get linkAndImageDescription => '链接格式：[文字](URL)\n图片格式：![描述](URL)';
+	@override String linkAndImageSyntax({required Object imgUrl}) => '[链接文字](https://google.com)\n![图片描述](${imgUrl})';
+	@override String get title => '标题';
+	@override String get titleDescription => '使用 # 号创建标题，数量表示级别';
+	@override String get titleSyntax => '# 一级标题\n## 二级标题\n### 三级标题';
+	@override String get separator => '分隔线';
+	@override String get separatorDescription => '使用三个或更多 - 号创建分隔线';
+	@override String get separatorSyntax => '---';
+	@override String get syntax => '语法';
+}
+
 /// Flat map(s) containing all translations.
 /// Only for edge cases! For simple maps, use the map function of this library.
 extension on TranslationsZhCn {
@@ -632,7 +675,7 @@ extension on TranslationsZhCn {
 			case 'common.commentDeletedSuccessfully': return '评论已删除';
 			case 'common.commentUpdatedSuccessfully': return '评论已更新';
 			case 'common.totalComments': return ({required Object count}) => '评论 ${count} 条';
-			case 'common.writeYourCommentHere': return '写下你的评论...';
+			case 'common.writeYourCommentHere': return '在此输入评论...';
 			case 'common.tmpNoReplies': return '暂无回复';
 			case 'common.loadMore': return '加载更多';
 			case 'common.noMoreDatas': return '没有更多数据了';
@@ -734,6 +777,8 @@ extension on TranslationsZhCn {
 			case 'common.originalText': return '原文';
 			case 'common.showOriginalText': return '显示原始文本';
 			case 'common.showProcessedText': return '显示处理后文本';
+			case 'common.preview': return '预览';
+			case 'common.markdownSyntax': return 'Markdown 语法';
 			case 'auth.login': return '登录';
 			case 'auth.logout': return '退出登录';
 			case 'auth.email': return '邮箱';
@@ -801,6 +846,7 @@ extension on TranslationsZhCn {
 			case 'errors.pleaseLoginAgain': return '请重新登录';
 			case 'errors.invalidLogin': return '登录失败，请检查邮箱和密码';
 			case 'errors.tooManyRequests': return '请求过多，请稍后再试';
+			case 'errors.exceedsMaxLength': return ({required Object max}) => '超出最大长度: ${max} 个字符';
 			case 'friends.clickToRestoreFriend': return '点击恢复好友';
 			case 'friends.friendsList': return '好友列表';
 			case 'friends.friendRequests': return '好友请求';
@@ -994,6 +1040,36 @@ extension on TranslationsZhCn {
 			case 'share.iReallyLikeThis': return '我真的是太喜欢这个了，你也来看看吧！';
 			case 'share.shareFailed': return '分享失败，请稍后再试';
 			case 'share.share': return '分享';
+			case 'markdown.markdownSyntax': return 'Markdown 语法';
+			case 'markdown.iwaraSpecialMarkdownSyntax': return 'Iwara 专用语法';
+			case 'markdown.internalLink': return '站内链接';
+			case 'markdown.supportAutoConvertLinkBelow': return '支持自动转换以下类型的链接：';
+			case 'markdown.convertLinkExample': return '🎬 视频链接\n🖼️ 图片链接\n👤 用户链接\n📌 论坛链接\n🎵 播放列表链接\n💬 帖子链接';
+			case 'markdown.mentionUser': return '提及用户';
+			case 'markdown.mentionUserDescription': return '输入@后跟用户名，将自动转换为用户链接';
+			case 'markdown.markdownBasicSyntax': return 'Markdown 基本语法';
+			case 'markdown.paragraphAndLineBreak': return '段落与换行';
+			case 'markdown.paragraphAndLineBreakDescription': return '段落之间空一行，行末加两个空格实现换行';
+			case 'markdown.paragraphAndLineBreakSyntax': return '这是第一段文字\n\n这是第二段文字\n这一行后面加两个空格  \n就能换行了';
+			case 'markdown.textStyle': return '文本样式';
+			case 'markdown.textStyleDescription': return '使用特殊符号包围文本来改变样式';
+			case 'markdown.textStyleSyntax': return '**粗体文本**\n*斜体文本*\n~~删除线文本~~\n`代码文本`';
+			case 'markdown.quote': return '引用';
+			case 'markdown.quoteDescription': return '使用 > 符号创建引用，多个 > 创建多级引用';
+			case 'markdown.quoteSyntax': return '> 这是一级引用\n>> 这是二级引用';
+			case 'markdown.list': return '列表';
+			case 'markdown.listDescription': return '使用数字+点号创建有序列表，使用 - 创建无序列表';
+			case 'markdown.listSyntax': return '1. 第一项\n2. 第二项\n\n- 无序项\n  - 子项\n  - 另一个子项';
+			case 'markdown.linkAndImage': return '链接与图片';
+			case 'markdown.linkAndImageDescription': return '链接格式：[文字](URL)\n图片格式：![描述](URL)';
+			case 'markdown.linkAndImageSyntax': return ({required Object imgUrl}) => '[链接文字](https://google.com)\n![图片描述](${imgUrl})';
+			case 'markdown.title': return '标题';
+			case 'markdown.titleDescription': return '使用 # 号创建标题，数量表示级别';
+			case 'markdown.titleSyntax': return '# 一级标题\n## 二级标题\n### 三级标题';
+			case 'markdown.separator': return '分隔线';
+			case 'markdown.separatorDescription': return '使用三个或更多 - 号创建分隔线';
+			case 'markdown.separatorSyntax': return '---';
+			case 'markdown.syntax': return '语法';
 			default: return null;
 		}
 	}

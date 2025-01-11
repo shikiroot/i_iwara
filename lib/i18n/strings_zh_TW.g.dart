@@ -48,6 +48,7 @@ class TranslationsZhTw implements Translations {
 	@override late final _TranslationsSubscriptionsZhTw subscriptions = _TranslationsSubscriptionsZhTw._(_root);
 	@override late final _TranslationsVideoDetailZhTw videoDetail = _TranslationsVideoDetailZhTw._(_root);
 	@override late final _TranslationsShareZhTw share = _TranslationsShareZhTw._(_root);
+	@override late final _TranslationsMarkdownZhTw markdown = _TranslationsMarkdownZhTw._(_root);
 }
 
 // Path: common
@@ -198,6 +199,7 @@ class _TranslationsCommonZhTw implements TranslationsCommonEn {
 	@override String get originalText => '原文';
 	@override String get showOriginalText => '顯示原始文本';
 	@override String get showProcessedText => '顯示處理後文本';
+	@override String get preview => '預覽';
 }
 
 // Path: auth
@@ -281,6 +283,7 @@ class _TranslationsErrorsZhTw implements TranslationsErrorsEn {
 	@override String get pleaseLoginAgain => '請重新登入';
 	@override String get invalidLogin => '登入失敗，請檢查電子郵件和密碼';
 	@override String get tooManyRequests => '請求過多，請稍後再試';
+	@override String exceedsMaxLength({required Object max}) => '超出最大長度: ${max}';
 }
 
 // Path: friends
@@ -584,6 +587,45 @@ class _TranslationsShareZhTw implements TranslationsShareEn {
 	@override String get share => '分享';
 }
 
+// Path: markdown
+class _TranslationsMarkdownZhTw implements TranslationsMarkdownEn {
+	_TranslationsMarkdownZhTw._(this._root);
+
+	final TranslationsZhTw _root; // ignore: unused_field
+
+	// Translations
+	@override String get markdownSyntax => 'Markdown 語法';
+	@override String get iwaraSpecialMarkdownSyntax => 'Iwara 專用語法';
+	@override String get internalLink => '站內鏈接';
+	@override String get supportAutoConvertLinkBelow => '支持自動轉換以下類型的鏈接：';
+	@override String get convertLinkExample => '🎬 影片鏈接\n🖼️ 圖片鏈接\n👤 用戶鏈接\n📌 論壇鏈接\n🎵 播放列表鏈接\n💬 帖子鏈接';
+	@override String get mentionUser => '提及用戶';
+	@override String get mentionUserDescription => '輸入@後跟用戶名，將自動轉換為用戶鏈接';
+	@override String get markdownBasicSyntax => 'Markdown 基本語法';
+	@override String get paragraphAndLineBreak => '段落與換行';
+	@override String get paragraphAndLineBreakDescription => '段落之間空一行，行末加兩個空格實現換行';
+	@override String get paragraphAndLineBreakSyntax => '這是第一段文字\n\n這是第二段文字\n這一行後面加兩個空格  \n就能換行了';
+	@override String get textStyle => '文本樣式';
+	@override String get textStyleDescription => '使用特殊符號包圍文本来改變樣式';
+	@override String get textStyleSyntax => '**粗體文本**\n*斜體文本*\n~~刪除線文本~~\n`代碼文本`';
+	@override String get quote => '引用';
+	@override String get quoteDescription => '使用 > 符號創建引用，多個 > 創建多級引用';
+	@override String get quoteSyntax => '> 這是一級引用\n>> 這是二級引用';
+	@override String get list => '列表';
+	@override String get listDescription => '使用數字+點號創建有序列表，使用 - 創建無序列表';
+	@override String get listSyntax => '1. 第一項\n2. 第二項\n\n- 無序項\n  - 子項\n  - 另一個子項';
+	@override String get linkAndImage => '鏈接與圖片';
+	@override String get linkAndImageDescription => '鏈接格式：[文字](URL)\n圖片格式：![描述](URL)';
+	@override String linkAndImageSyntax({required Object imgUrl}) => '[鏈接文字](https://google.com)\n![圖片描述](${imgUrl})';
+	@override String get title => '標題';
+	@override String get titleDescription => '使用 # 號創建標題，數量表示級別';
+	@override String get titleSyntax => '# 一級標題\n## 二級標題\n### 三級標題';
+	@override String get separator => '分隔線';
+	@override String get separatorDescription => '使用三個或更多 - 號創建分隔線';
+	@override String get separatorSyntax => '---';
+	@override String get syntax => '語法';
+}
+
 /// Flat map(s) containing all translations.
 /// Only for edge cases! For simple maps, use the map function of this library.
 extension on TranslationsZhTw {
@@ -730,6 +772,7 @@ extension on TranslationsZhTw {
 			case 'common.originalText': return '原文';
 			case 'common.showOriginalText': return '顯示原始文本';
 			case 'common.showProcessedText': return '顯示處理後文本';
+			case 'common.preview': return '預覽';
 			case 'auth.login': return '登入';
 			case 'auth.logout': return '登出';
 			case 'auth.email': return '電子郵件';
@@ -795,6 +838,7 @@ extension on TranslationsZhTw {
 			case 'errors.pleaseLoginAgain': return '請重新登入';
 			case 'errors.invalidLogin': return '登入失敗，請檢查電子郵件和密碼';
 			case 'errors.tooManyRequests': return '請求過多，請稍後再試';
+			case 'errors.exceedsMaxLength': return ({required Object max}) => '超出最大長度: ${max}';
 			case 'friends.clickToRestoreFriend': return '點擊恢復朋友';
 			case 'friends.friendsList': return '朋友列表';
 			case 'friends.friendRequests': return '朋友請求';
@@ -988,6 +1032,36 @@ extension on TranslationsZhTw {
 			case 'share.iReallyLikeThis': return '我真的是太喜歡這個了，你也來看看吧！';
 			case 'share.shareFailed': return '分享失敗，請稍後再試';
 			case 'share.share': return '分享';
+			case 'markdown.markdownSyntax': return 'Markdown 語法';
+			case 'markdown.iwaraSpecialMarkdownSyntax': return 'Iwara 專用語法';
+			case 'markdown.internalLink': return '站內鏈接';
+			case 'markdown.supportAutoConvertLinkBelow': return '支持自動轉換以下類型的鏈接：';
+			case 'markdown.convertLinkExample': return '🎬 影片鏈接\n🖼️ 圖片鏈接\n👤 用戶鏈接\n📌 論壇鏈接\n🎵 播放列表鏈接\n💬 帖子鏈接';
+			case 'markdown.mentionUser': return '提及用戶';
+			case 'markdown.mentionUserDescription': return '輸入@後跟用戶名，將自動轉換為用戶鏈接';
+			case 'markdown.markdownBasicSyntax': return 'Markdown 基本語法';
+			case 'markdown.paragraphAndLineBreak': return '段落與換行';
+			case 'markdown.paragraphAndLineBreakDescription': return '段落之間空一行，行末加兩個空格實現換行';
+			case 'markdown.paragraphAndLineBreakSyntax': return '這是第一段文字\n\n這是第二段文字\n這一行後面加兩個空格  \n就能換行了';
+			case 'markdown.textStyle': return '文本樣式';
+			case 'markdown.textStyleDescription': return '使用特殊符號包圍文本来改變樣式';
+			case 'markdown.textStyleSyntax': return '**粗體文本**\n*斜體文本*\n~~刪除線文本~~\n`代碼文本`';
+			case 'markdown.quote': return '引用';
+			case 'markdown.quoteDescription': return '使用 > 符號創建引用，多個 > 創建多級引用';
+			case 'markdown.quoteSyntax': return '> 這是一級引用\n>> 這是二級引用';
+			case 'markdown.list': return '列表';
+			case 'markdown.listDescription': return '使用數字+點號創建有序列表，使用 - 創建無序列表';
+			case 'markdown.listSyntax': return '1. 第一項\n2. 第二項\n\n- 無序項\n  - 子項\n  - 另一個子項';
+			case 'markdown.linkAndImage': return '鏈接與圖片';
+			case 'markdown.linkAndImageDescription': return '鏈接格式：[文字](URL)\n圖片格式：![描述](URL)';
+			case 'markdown.linkAndImageSyntax': return ({required Object imgUrl}) => '[鏈接文字](https://google.com)\n![圖片描述](${imgUrl})';
+			case 'markdown.title': return '標題';
+			case 'markdown.titleDescription': return '使用 # 號創建標題，數量表示級別';
+			case 'markdown.titleSyntax': return '# 一級標題\n## 二級標題\n### 三級標題';
+			case 'markdown.separator': return '分隔線';
+			case 'markdown.separatorDescription': return '使用三個或更多 - 號創建分隔線';
+			case 'markdown.separatorSyntax': return '---';
+			case 'markdown.syntax': return '語法';
 			default: return null;
 		}
 	}

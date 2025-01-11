@@ -52,6 +52,7 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	late final TranslationsSubscriptionsEn subscriptions = TranslationsSubscriptionsEn._(_root);
 	late final TranslationsVideoDetailEn videoDetail = TranslationsVideoDetailEn._(_root);
 	late final TranslationsShareEn share = TranslationsShareEn._(_root);
+	late final TranslationsMarkdownEn markdown = TranslationsMarkdownEn._(_root);
 }
 
 // Path: common
@@ -202,6 +203,7 @@ class TranslationsCommonEn {
 	String get originalText => 'Original Text';
 	String get showOriginalText => 'Show Original Text';
 	String get showProcessedText => 'Show Processed Text';
+	String get preview => 'Preview';
 }
 
 // Path: auth
@@ -285,6 +287,7 @@ class TranslationsErrorsEn {
 	String get pleaseLoginAgain => 'Please login again';
 	String get invalidLogin => 'Invalid login, Please check your email and password';
 	String get tooManyRequests => 'Too many requests, please try again later';
+	String exceedsMaxLength({required Object max}) => 'Exceeds max length: ${max}';
 }
 
 // Path: friends
@@ -588,6 +591,45 @@ class TranslationsShareEn {
 	String get share => 'Share';
 }
 
+// Path: markdown
+class TranslationsMarkdownEn {
+	TranslationsMarkdownEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get markdownSyntax => 'Markdown Syntax';
+	String get iwaraSpecialMarkdownSyntax => 'Iwara Special Markdown Syntax';
+	String get internalLink => 'Internal Link';
+	String get supportAutoConvertLinkBelow => 'Support auto convert link below:';
+	String get convertLinkExample => '🎬 Video Link\n🖼️ Image Link\n👤 User Link\n📌 Forum Link\n🎵 Playlist Link\n💬 Thread Link';
+	String get mentionUser => 'Mention User';
+	String get mentionUserDescription => 'Input @ followed by username, will be automatically converted to user link';
+	String get markdownBasicSyntax => 'Markdown Basic Syntax';
+	String get paragraphAndLineBreak => 'Paragraph and Line Break';
+	String get paragraphAndLineBreakDescription => 'Paragraphs are separated by a line, and two spaces at the end of the line will be converted to a line break';
+	String get paragraphAndLineBreakSyntax => 'This is the first paragraph\n\nThis is the second paragraph\nThis line ends with two spaces  \nwill be converted to a line break';
+	String get textStyle => 'Text Style';
+	String get textStyleDescription => 'Use special symbols to surround text to change style';
+	String get textStyleSyntax => '**Bold Text**\n*Italic Text*\n~~Strikethrough Text~~\n`Code Text`';
+	String get quote => 'Quote';
+	String get quoteDescription => 'Use > symbol to create quote, multiple > to create multi-level quote';
+	String get quoteSyntax => '> This is a first-level quote\n>> This is a second-level quote';
+	String get list => 'List';
+	String get listDescription => 'Create ordered list with number+dot, create unordered list with -';
+	String get listSyntax => '1. First item\n2. Second item\n\n- Unordered item\n  - Subitem\n  - Another subitem';
+	String get linkAndImage => 'Link and Image';
+	String get linkAndImageDescription => 'Link format: [text](URL)\nImage format: ![description](URL)';
+	String linkAndImageSyntax({required Object imgUrl}) => '[link text](https://google.com)\n![image description](${imgUrl})';
+	String get title => 'Title';
+	String get titleDescription => 'Use # symbol to create title, number to show level';
+	String get titleSyntax => '# First-level title\n## Second-level title\n### Third-level title';
+	String get separator => 'Separator';
+	String get separatorDescription => 'Create separator with three or more - symbols';
+	String get separatorSyntax => '---';
+	String get syntax => 'Syntax';
+}
+
 /// Flat map(s) containing all translations.
 /// Only for edge cases! For simple maps, use the map function of this library.
 extension on Translations {
@@ -734,6 +776,7 @@ extension on Translations {
 			case 'common.originalText': return 'Original Text';
 			case 'common.showOriginalText': return 'Show Original Text';
 			case 'common.showProcessedText': return 'Show Processed Text';
+			case 'common.preview': return 'Preview';
 			case 'auth.login': return 'Login';
 			case 'auth.logout': return 'Logout';
 			case 'auth.email': return 'Email';
@@ -799,6 +842,7 @@ extension on Translations {
 			case 'errors.pleaseLoginAgain': return 'Please login again';
 			case 'errors.invalidLogin': return 'Invalid login, Please check your email and password';
 			case 'errors.tooManyRequests': return 'Too many requests, please try again later';
+			case 'errors.exceedsMaxLength': return ({required Object max}) => 'Exceeds max length: ${max}';
 			case 'friends.clickToRestoreFriend': return 'Click to restore friend';
 			case 'friends.friendsList': return 'Friends List';
 			case 'friends.friendRequests': return 'Friend Requests';
@@ -992,6 +1036,36 @@ extension on Translations {
 			case 'share.iReallyLikeThis': return 'I really like this';
 			case 'share.shareFailed': return 'Share failed, please try again later';
 			case 'share.share': return 'Share';
+			case 'markdown.markdownSyntax': return 'Markdown Syntax';
+			case 'markdown.iwaraSpecialMarkdownSyntax': return 'Iwara Special Markdown Syntax';
+			case 'markdown.internalLink': return 'Internal Link';
+			case 'markdown.supportAutoConvertLinkBelow': return 'Support auto convert link below:';
+			case 'markdown.convertLinkExample': return '🎬 Video Link\n🖼️ Image Link\n👤 User Link\n📌 Forum Link\n🎵 Playlist Link\n💬 Thread Link';
+			case 'markdown.mentionUser': return 'Mention User';
+			case 'markdown.mentionUserDescription': return 'Input @ followed by username, will be automatically converted to user link';
+			case 'markdown.markdownBasicSyntax': return 'Markdown Basic Syntax';
+			case 'markdown.paragraphAndLineBreak': return 'Paragraph and Line Break';
+			case 'markdown.paragraphAndLineBreakDescription': return 'Paragraphs are separated by a line, and two spaces at the end of the line will be converted to a line break';
+			case 'markdown.paragraphAndLineBreakSyntax': return 'This is the first paragraph\n\nThis is the second paragraph\nThis line ends with two spaces  \nwill be converted to a line break';
+			case 'markdown.textStyle': return 'Text Style';
+			case 'markdown.textStyleDescription': return 'Use special symbols to surround text to change style';
+			case 'markdown.textStyleSyntax': return '**Bold Text**\n*Italic Text*\n~~Strikethrough Text~~\n`Code Text`';
+			case 'markdown.quote': return 'Quote';
+			case 'markdown.quoteDescription': return 'Use > symbol to create quote, multiple > to create multi-level quote';
+			case 'markdown.quoteSyntax': return '> This is a first-level quote\n>> This is a second-level quote';
+			case 'markdown.list': return 'List';
+			case 'markdown.listDescription': return 'Create ordered list with number+dot, create unordered list with -';
+			case 'markdown.listSyntax': return '1. First item\n2. Second item\n\n- Unordered item\n  - Subitem\n  - Another subitem';
+			case 'markdown.linkAndImage': return 'Link and Image';
+			case 'markdown.linkAndImageDescription': return 'Link format: [text](URL)\nImage format: ![description](URL)';
+			case 'markdown.linkAndImageSyntax': return ({required Object imgUrl}) => '[link text](https://google.com)\n![image description](${imgUrl})';
+			case 'markdown.title': return 'Title';
+			case 'markdown.titleDescription': return 'Use # symbol to create title, number to show level';
+			case 'markdown.titleSyntax': return '# First-level title\n## Second-level title\n### Third-level title';
+			case 'markdown.separator': return 'Separator';
+			case 'markdown.separatorDescription': return 'Create separator with three or more - symbols';
+			case 'markdown.separatorSyntax': return '---';
+			case 'markdown.syntax': return 'Syntax';
 			default: return null;
 		}
 	}

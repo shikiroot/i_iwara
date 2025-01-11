@@ -42,7 +42,7 @@ common:
   commentDeletedSuccessfully: 评论已删除
   commentUpdatedSuccessfully: 评论已更新
   totalComments: '评论 ${count} 条'
-  writeYourCommentHere: 写下你的评论...
+  writeYourCommentHere: 在此输入评论...
   tmpNoReplies: 暂无回复
   loadMore: 加载更多
   noMoreDatas: 没有更多数据了
@@ -144,6 +144,8 @@ common:
   originalText: 原文
   showOriginalText: 显示原始文本
   showProcessedText: 显示处理后文本
+  preview: 预览
+  markdownSyntax: Markdown 语法
 
 auth:
   login: 登录
@@ -215,6 +217,7 @@ errors:
   pleaseLoginAgain: 请重新登录
   invalidLogin: 登录失败，请检查邮箱和密码
   tooManyRequests: 请求过多，请稍后再试
+  exceedsMaxLength: '超出最大长度: ${max} 个字符'
 friends:
   clickToRestoreFriend: 点击恢复好友
   friendsList: 好友列表
@@ -431,3 +434,35 @@ share:
   iReallyLikeThis: 我真的是太喜欢这个了，你也来看看吧！
   shareFailed: 分享失败，请稍后再试
   share: 分享
+
+markdown:
+  markdownSyntax: Markdown 语法
+  iwaraSpecialMarkdownSyntax: Iwara 专用语法
+  internalLink: 站内链接
+  supportAutoConvertLinkBelow: '支持自动转换以下类型的链接：'
+  convertLinkExample: '🎬 视频链接\n🖼️ 图片链接\n👤 用户链接\n📌 论坛链接\n🎵 播放列表链接\n💬 帖子链接'
+  mentionUser: 提及用户
+  mentionUserDescription: '输入@后跟用户名，将自动转换为用户链接'
+  markdownBasicSyntax: Markdown 基本语法
+  paragraphAndLineBreak: 段落与换行
+  paragraphAndLineBreakDescription: '段落之间空一行，行末加两个空格实现换行'
+  paragraphAndLineBreakSyntax: '这是第一段文字\n\n这是第二段文字\n这一行后面加两个空格  \n就能换行了'
+  textStyle: 文本样式
+  textStyleDescription: '使用特殊符号包围文本来改变样式'
+  textStyleSyntax: '**粗体文本**\n*斜体文本*\n~~删除线文本~~\n`代码文本`'
+  quote: 引用
+  quoteDescription: '使用 > 符号创建引用，多个 > 创建多级引用'
+  quoteSyntax: '> 这是一级引用\n>> 这是二级引用'
+  list: 列表
+  listDescription: '使用数字+点号创建有序列表，使用 - 创建无序列表'
+  listSyntax: '1. 第一项\n2. 第二项\n\n- 无序项\n  - 子项\n  - 另一个子项'
+  linkAndImage: 链接与图片
+  linkAndImageDescription: '链接格式：[文字](URL)\n图片格式：![描述](URL)'
+  linkAndImageSyntax: '[链接文字](https://google.com)\n![图片描述](${imgUrl})'
+  title: 标题
+  titleDescription: '使用 # 号创建标题，数量表示级别'
+  titleSyntax: '# 一级标题\n## 二级标题\n### 三级标题'
+  separator: 分隔线
+  separatorDescription: '使用三个或更多 - 号创建分隔线'
+  separatorSyntax: '---'
+  syntax: 语法

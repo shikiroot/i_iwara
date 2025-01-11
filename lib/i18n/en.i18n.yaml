@@ -141,6 +141,7 @@ common:
   originalText: Original Text
   showOriginalText: Show Original Text
   showProcessedText: Show Processed Text
+  preview: Preview
 auth:
   login: Login
   logout: Logout
@@ -209,6 +210,7 @@ errors:
   pleaseLoginAgain: Please login again
   invalidLogin: Invalid login, Please check your email and password
   tooManyRequests: Too many requests, please try again later
+  exceedsMaxLength: 'Exceeds max length: ${max}'
 friends:
   clickToRestoreFriend: Click to restore friend
   friendsList: Friends List
@@ -424,3 +426,35 @@ share:
   iReallyLikeThis: I really like this
   shareFailed: Share failed, please try again later
   share: Share
+
+markdown:
+  markdownSyntax: Markdown Syntax
+  iwaraSpecialMarkdownSyntax: Iwara Special Markdown Syntax
+  internalLink: Internal Link
+  supportAutoConvertLinkBelow: 'Support auto convert link below:'
+  convertLinkExample: '🎬 Video Link\n🖼️ Image Link\n👤 User Link\n📌 Forum Link\n🎵 Playlist Link\n💬 Thread Link'
+  mentionUser: Mention User
+  mentionUserDescription: 'Input @ followed by username, will be automatically converted to user link'
+  markdownBasicSyntax: Markdown Basic Syntax
+  paragraphAndLineBreak: Paragraph and Line Break
+  paragraphAndLineBreakDescription: 'Paragraphs are separated by a line, and two spaces at the end of the line will be converted to a line break'
+  paragraphAndLineBreakSyntax: 'This is the first paragraph\n\nThis is the second paragraph\nThis line ends with two spaces  \nwill be converted to a line break'
+  textStyle: Text Style
+  textStyleDescription: 'Use special symbols to surround text to change style'
+  textStyleSyntax: '**Bold Text**\n*Italic Text*\n~~Strikethrough Text~~\n`Code Text`'
+  quote: Quote
+  quoteDescription: 'Use > symbol to create quote, multiple > to create multi-level quote'
+  quoteSyntax: '> This is a first-level quote\n>> This is a second-level quote'
+  list: List
+  listDescription: 'Create ordered list with number+dot, create unordered list with -'
+  listSyntax: '1. First item\n2. Second item\n\n- Unordered item\n  - Subitem\n  - Another subitem'
+  linkAndImage: Link and Image
+  linkAndImageDescription: 'Link format: [text](URL)\nImage format: ![description](URL)'
+  linkAndImageSyntax: '[link text](https://google.com)\n![image description](${imgUrl})'
+  title: Title
+  titleDescription: 'Use # symbol to create title, number to show level'
+  titleSyntax: '# First-level title\n## Second-level title\n### Third-level title'
+  separator: Separator
+  separatorDescription: 'Create separator with three or more - symbols'
+  separatorSyntax: '---'
+  syntax: Syntax

@@ -17,11 +17,13 @@ import '../../../common/constants.dart';
 class CustomMarkdownBody extends StatefulWidget {
   final String data;
   final bool? initialShowUnprocessedText;
+  final bool disableLinkClick;
 
   const CustomMarkdownBody({
     super.key, 
     required this.data, 
     this.initialShowUnprocessedText,
+    this.disableLinkClick = false,
   });
 
   @override
@@ -251,7 +253,7 @@ class _CustomMarkdownBodyState extends State<CustomMarkdownBody> {
   }
 
   void _onTapLink(String text, String? href, String title) async {
-    if (href == null) return;
+    if (href == null || widget.disableLinkClick) return;
 
     try {
       Uri uri = Uri.parse(href);

@@ -141,6 +141,7 @@ common:
   originalText: 原文
   showOriginalText: 顯示原始文本
   showProcessedText: 顯示處理後文本
+  preview: 預覽
 
 auth:
   login: 登入
@@ -210,6 +211,7 @@ errors:
   pleaseLoginAgain: 請重新登入
   invalidLogin: 登入失敗，請檢查電子郵件和密碼
   tooManyRequests: 請求過多，請稍後再試
+  exceedsMaxLength: '超出最大長度: ${max}'
 friends:
   clickToRestoreFriend: 點擊恢復朋友
   friendsList: 朋友列表
@@ -427,3 +429,35 @@ share:
   iReallyLikeThis: 我真的是太喜歡這個了，你也來看看吧！
   shareFailed: 分享失敗，請稍後再試
   share: 分享
+
+markdown:
+  markdownSyntax: Markdown 語法
+  iwaraSpecialMarkdownSyntax: Iwara 專用語法
+  internalLink: 站內鏈接
+  supportAutoConvertLinkBelow: '支持自動轉換以下類型的鏈接：'
+  convertLinkExample: '🎬 影片鏈接\n🖼️ 圖片鏈接\n👤 用戶鏈接\n📌 論壇鏈接\n🎵 播放列表鏈接\n💬 帖子鏈接'
+  mentionUser: 提及用戶
+  mentionUserDescription: '輸入@後跟用戶名，將自動轉換為用戶鏈接'
+  markdownBasicSyntax: Markdown 基本語法
+  paragraphAndLineBreak: 段落與換行
+  paragraphAndLineBreakDescription: '段落之間空一行，行末加兩個空格實現換行'
+  paragraphAndLineBreakSyntax: '這是第一段文字\n\n這是第二段文字\n這一行後面加兩個空格  \n就能換行了'
+  textStyle: 文本樣式
+  textStyleDescription: '使用特殊符號包圍文本来改變樣式'
+  textStyleSyntax: '**粗體文本**\n*斜體文本*\n~~刪除線文本~~\n`代碼文本`'
+  quote: 引用
+  quoteDescription: '使用 > 符號創建引用，多個 > 創建多級引用'
+  quoteSyntax: '> 這是一級引用\n>> 這是二級引用'
+  list: 列表
+  listDescription: '使用數字+點號創建有序列表，使用 - 創建無序列表'
+  listSyntax: '1. 第一項\n2. 第二項\n\n- 無序項\n  - 子項\n  - 另一個子項'
+  linkAndImage: 鏈接與圖片
+  linkAndImageDescription: '鏈接格式：[文字](URL)\n圖片格式：![描述](URL)'
+  linkAndImageSyntax: '[鏈接文字](https://google.com)\n![圖片描述](${imgUrl})'
+  title: 標題
+  titleDescription: '使用 # 號創建標題，數量表示級別'
+  titleSyntax: '# 一級標題\n## 二級標題\n### 三級標題'
+  separator: 分隔線
+  separatorDescription: '使用三個或更多 - 號創建分隔線'
+  separatorSyntax: '---'
+  syntax: 語法
