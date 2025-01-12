@@ -84,6 +84,11 @@ Thank you for your understanding and support! If you're also a Flutter beginner,
     - Comment browsing
     - Comment reply
 
+- **🗣️ Forum System**
+    - Post browsing
+    - Post comment
+    - Post reply
+
 - **👤 User System**
     - User authentication
     - Profile management
@@ -99,7 +104,6 @@ Thank you for your understanding and support! If you're also a Flutter beginner,
 - **Download Management**
 - **In-app Message Notification**
 - **Share**
-- **Forum System**
 - **Enhanced User Experience**
 - **Others**
   

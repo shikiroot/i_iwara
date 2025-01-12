@@ -274,6 +274,20 @@ class _CustomMarkdownBodyState extends State<CustomMarkdownBody> {
         } else if (href.startsWith('${CommonConstants.iwaraBaseUrl}/post/')) {
           final postId = uri.pathSegments.last;
           NaviService.navigateToPostDetailPage(postId, null);
+        } else if (href.startsWith('${CommonConstants.iwaraBaseUrl}/forum/')) {
+          // 处理论坛链接
+          final segments = uri.pathSegments;
+          if (segments.length >= 2) {
+            final categoryId = segments[1];
+            if (segments.length == 2) {
+              // 只有一段，跳转到列表页
+              NaviService.navigateToForumThreadListPage(categoryId);
+            } else if (segments.length >= 3) {
+              // 有两段或更多，跳转到详情页
+              final threadId = segments[2];
+              NaviService.navigateToForumThreadDetailPage(categoryId, threadId);
+            }
+          }
         } else {
           await _launchUrl(uri, href);
         }

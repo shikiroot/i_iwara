@@ -84,6 +84,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
     imageSecondaryTC.dispose();
     playlistSecondaryTC.dispose();
     _tabBarScrollController.dispose();
+    Get.delete<AuthorProfileController>(tag: uniqueTag);
     super.dispose();
   }
 

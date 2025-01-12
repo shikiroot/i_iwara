@@ -84,6 +84,10 @@ Love Iwara（又名 i_iwara 或 2i）是一个使用 Flutter 构建的 Iwara 第
     - 评论浏览
     - 评论回复
 
+- **🗣️ 论坛系统**
+    - 发布/编辑帖子
+    - 发表/编辑回复
+
 - **👤 用户系统**
     - 用户认证
     - 个人资料管理
@@ -99,7 +103,6 @@ Love Iwara（又名 i_iwara 或 2i）是一个使用 Flutter 构建的 Iwara 第
 - **下载管理**
 - **站内消息通知**
 - **分享**
-- **论坛系统**
 - **增强用户体验**
 - **其他**
 
@@ -112,6 +115,7 @@ Love Iwara（又名 i_iwara 或 2i）是一个使用 Flutter 构建的 Iwara 第
 |<img src="docs/imgs/shezhi.png" width="300">|<img src="docs/imgs/dingyue.png" width="300">|
 |<img src="docs/imgs/lishi.png" width="300">|<img src="docs/imgs/guanzhu.png" width="300">|
 |<img src="docs/imgs/sousuo.png" width="300">|<img src="docs/imgs/zuiai.png" width="300">|
+|<img src="docs/imgs/forum.png" width="300">|<img src="docs/imgs/thread.png" width="300">|
 
 ### 🛠️ 开发环境设置
 
