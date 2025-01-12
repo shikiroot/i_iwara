@@ -18,9 +18,11 @@ class ForumPostDialog extends StatefulWidget {
   const ForumPostDialog({
     super.key,
     this.onSubmit,
+    this.initCategoryId,
   });
 
   final VoidCallback? onSubmit;
+  final String? initCategoryId;
 
   @override
   State<ForumPostDialog> createState() => _ForumPostDialogState();
@@ -52,6 +54,7 @@ class _ForumPostDialogState extends State<ForumPostDialog> {
     super.initState();
     _titleController = TextEditingController();
     _bodyController = TextEditingController();
+    _selectedCategoryId = widget.initCategoryId;
 
     _titleController.addListener(() {
       if (mounted) {

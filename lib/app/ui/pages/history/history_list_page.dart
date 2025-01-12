@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:i_iwara/app/models/history_record.dart';
 import 'package:i_iwara/app/repositories/history_repository.dart';
 import 'package:i_iwara/app/services/app_service.dart';
+import 'package:i_iwara/app/ui/pages/forum/widgets/thread_list_item_widget.dart';
 import 'package:i_iwara/app/ui/pages/popular_media_list/widgets/image_model_card_list_item_widget.dart';
 import 'package:i_iwara/app/ui/pages/popular_media_list/widgets/video_card_list_item_widget.dart';
 import 'package:i_iwara/app/ui/widgets/my_loading_more_indicator_widget.dart';
@@ -25,11 +26,13 @@ class _HistoryListPageState extends State<HistoryListPage>
   late HistoryListController videoController;
   late HistoryListController imageController;
   late HistoryListController postController;
+  late HistoryListController threadController;
 
   final ScrollController _allScrollController = ScrollController();
   final ScrollController _videoScrollController = ScrollController();
   final ScrollController _imageScrollController = ScrollController();
   final ScrollController _postScrollController = ScrollController();
+  final ScrollController _threadScrollController = ScrollController();
 
   int _lastTappedIndex = 0;
   final RxBool isLoading = false.obs;
@@ -71,7 +74,15 @@ class _HistoryListPageState extends State<HistoryListPage>
       tag: 'post',
     );
 
-    _tabController = TabController(length: 4, vsync: this);
+    threadController = Get.put(
+      HistoryListController(
+        historyRepository: historyRepo,
+        itemType: 'thread',
+      ),
+      tag: 'thread',
+    );
+
+    _tabController = TabController(length: 5, vsync: this);
     _tabController.addListener(_handleTabChange);
 
     _setupScrollControllers();
@@ -83,6 +94,7 @@ class _HistoryListPageState extends State<HistoryListPage>
       _videoScrollController,
       _imageScrollController,
       _postScrollController,
+      _threadScrollController,
     ]) {
       controller.addListener(() {
         if (controller.offset >= 1000) {
@@ -103,6 +115,7 @@ class _HistoryListPageState extends State<HistoryListPage>
     Get.delete<HistoryListController>(tag: 'video');
     Get.delete<HistoryListController>(tag: 'image');
     Get.delete<HistoryListController>(tag: 'post');
+    Get.delete<HistoryListController>(tag: 'thread');
     super.dispose();
   }
 
@@ -111,6 +124,7 @@ class _HistoryListPageState extends State<HistoryListPage>
     _videoScrollController.dispose();
     _imageScrollController.dispose();
     _postScrollController.dispose();
+    _threadScrollController.dispose();
   }
 
   void _handleTabChange() {
@@ -142,6 +156,8 @@ class _HistoryListPageState extends State<HistoryListPage>
         return imageController;
       case 3:
         return postController;
+      case 4:
+        return threadController;
       default:
         return allController;
     }
@@ -157,6 +173,8 @@ class _HistoryListPageState extends State<HistoryListPage>
         return _imageScrollController;
       case 3:
         return _postScrollController;
+      case 4:
+        return _threadScrollController;
       default:
         return _allScrollController;
     }
@@ -236,6 +254,7 @@ class _HistoryListPageState extends State<HistoryListPage>
               _buildHistoryList(videoController, _videoScrollController),
               _buildHistoryList(imageController, _imageScrollController),
               _buildHistoryList(postController, _postScrollController),
+              _buildHistoryList(threadController, _threadScrollController),
             ],
           ),
           // 第一个tab的底部多选栏
@@ -264,6 +283,12 @@ class _HistoryListPageState extends State<HistoryListPage>
             right: 0,
             bottom: 0,
             child: _buildMultiSelectBar(postController),
+          ),
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: _buildMultiSelectBar(threadController),
           ),
         ],
       ),
@@ -320,6 +345,7 @@ class _HistoryListPageState extends State<HistoryListPage>
           Tab(text: slang.t.common.video),
           Tab(text: slang.t.common.gallery),
           Tab(text: slang.t.common.post),
+          Tab(text: slang.t.forum.forum),
         ],
       ),
     );
@@ -387,6 +413,11 @@ class _HistoryListPageState extends State<HistoryListPage>
           else if (record.itemType == 'post')
             PostCardListItemWidget(
               post: originalData,
+            )
+          else if (record.itemType == 'thread')
+            ThreadListItemWidget(
+              thread: originalData,
+              categoryId: originalData.section,
             ),
           if (isMultiSelect)
             Positioned.fill(

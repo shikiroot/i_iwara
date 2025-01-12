@@ -9,11 +9,13 @@ import 'package:i_iwara/utils/common_utils.dart';
 class ThreadListItemWidget extends StatelessWidget {
   final ForumThreadModel thread;
   final String categoryId;
+  final VoidCallback? onTap;
 
   const ThreadListItemWidget({
     super.key,
     required this.thread,
     required this.categoryId,
+    this.onTap,
   });
 
   @override
@@ -21,7 +23,7 @@ class ThreadListItemWidget extends StatelessWidget {
     return Card(
       clipBehavior: Clip.antiAlias,
       child: InkWell(
-        onTap: () {
+        onTap: onTap ?? () {
           NaviService.navigateToForumThreadDetailPage(categoryId, thread.id);
         },
         child: Column(

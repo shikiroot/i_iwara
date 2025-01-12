@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:i_iwara/app/models/forum.model.dart';
+import 'package:i_iwara/app/models/history_record.dart';
+import 'package:i_iwara/app/repositories/history_repository.dart';
+import 'package:i_iwara/app/services/app_service.dart';
 import 'package:i_iwara/app/ui/pages/forum/controllers/thread_list_repository.dart';
 import 'package:i_iwara/app/ui/pages/forum/widgets/forum_post_dialog.dart';
 import 'package:i_iwara/app/ui/pages/forum/widgets/thread_list_item_widget.dart';
@@ -33,6 +36,7 @@ class _ThreadListPageState extends State<ThreadListPage> with SingleTickerProvid
   final RxString _categoryName = ''.obs;
   final RxString _categoryDescription = ''.obs;
   late AnimationController _floatingButtonController;
+  final HistoryRepository _historyRepository = HistoryRepository();
 
   @override
   void initState() {
@@ -145,6 +149,7 @@ class _ThreadListPageState extends State<ThreadListPage> with SingleTickerProvid
               itemBuilder: (context, thread, index) => ThreadListItemWidget(
                 thread: thread,
                 categoryId: widget.categoryId,
+                onTap: () => _navigateToThreadDetail(thread),
               ),
               sourceList: listSourceRepository,
               padding: EdgeInsets.only(
@@ -188,7 +193,15 @@ class _ThreadListPageState extends State<ThreadListPage> with SingleTickerProvid
           // 刷新帖子列表
           listSourceRepository.refresh();
         },
+        initCategoryId: categoryId,
       ),
     );
+  }
+
+  void _navigateToThreadDetail(ForumThreadModel thread) {
+    // 记录浏览历史
+    _historyRepository.addRecord(HistoryRecord.fromThread(thread));
+    // 导航到帖子详情页
+    NaviService.navigateToForumThreadDetailPage(widget.categoryId, thread.id);
   }
 } 
