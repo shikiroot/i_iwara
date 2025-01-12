@@ -218,6 +218,8 @@ class TranslationsCommonEn {
 	String get tagBlacklist => 'Tag Blacklist';
 	String get noData => 'No data';
 	String get tagLimit => 'Tag Limit';
+	String get enableFloatingButtons => 'Enable Floating Buttons';
+	String get disableFloatingButtons => 'Disable Floating Buttons';
 }
 
 // Path: auth
@@ -677,6 +679,8 @@ class TranslationsForumEn {
 	String get reply => 'Reply';
 	String get pendingReview => 'Pending Review';
 	String get editedAt => 'Edited At';
+	String get copySuccess => 'Copied to clipboard';
+	String copySuccessForMessage({required Object str}) => 'Copied to clipboard: ${str}';
 }
 
 // Path: forum.errors
@@ -687,6 +691,7 @@ class TranslationsForumErrorsEn {
 
 	// Translations
 	String get pleaseSelectCategory => 'Please select a category';
+	String get threadLocked => 'This thread is locked, cannot reply';
 }
 
 // Path: forum.groups
@@ -918,6 +923,8 @@ extension on Translations {
 			case 'common.tagBlacklist': return 'Tag Blacklist';
 			case 'common.noData': return 'No data';
 			case 'common.tagLimit': return 'Tag Limit';
+			case 'common.enableFloatingButtons': return 'Enable Floating Buttons';
+			case 'common.disableFloatingButtons': return 'Disable Floating Buttons';
 			case 'auth.login': return 'Login';
 			case 'auth.logout': return 'Logout';
 			case 'auth.email': return 'Email';
@@ -1215,6 +1222,7 @@ extension on Translations {
 			case 'markdown.separatorSyntax': return '---';
 			case 'markdown.syntax': return 'Syntax';
 			case 'forum.errors.pleaseSelectCategory': return 'Please select a category';
+			case 'forum.errors.threadLocked': return 'This thread is locked, cannot reply';
 			case 'forum.createPost': return 'Create Post';
 			case 'forum.title': return 'Title';
 			case 'forum.enterTitle': return 'Enter Title';
@@ -1272,6 +1280,8 @@ extension on Translations {
 			case 'forum.reply': return 'Reply';
 			case 'forum.pendingReview': return 'Pending Review';
 			case 'forum.editedAt': return 'Edited At';
+			case 'forum.copySuccess': return 'Copied to clipboard';
+			case 'forum.copySuccessForMessage': return ({required Object str}) => 'Copied to clipboard: ${str}';
 			default: return null;
 		}
 	}

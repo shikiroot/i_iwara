@@ -316,6 +316,12 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                 ),
               );
             }
+
+            // 如果没有可选项，则不显示
+            if (popupMenuItems.isEmpty) {
+              return const SizedBox.shrink();
+            }
+
             return PopupMenuButton(
               icon: const Icon(Icons.more_vert),
               onSelected: (value) {

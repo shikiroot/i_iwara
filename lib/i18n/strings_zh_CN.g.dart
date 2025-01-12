@@ -216,6 +216,8 @@ class _TranslationsCommonZhCn implements TranslationsCommonEn {
 	@override String get tagBlacklist => '黑名单标签';
 	@override String get noData => '没有数据';
 	@override String get tagLimit => '标签上限';
+	@override String get enableFloatingButtons => '启用浮动按钮';
+	@override String get disableFloatingButtons => '禁用浮动按钮';
 }
 
 // Path: auth
@@ -225,6 +227,7 @@ class _TranslationsAuthZhCn implements TranslationsAuthEn {
 	final TranslationsZhCn _root; // ignore: unused_field
 
 	// Translations
+	@override String get tagLimit => '标签上限';
 	@override String get login => '登录';
 	@override String get logout => '退出登录';
 	@override String get email => '邮箱';
@@ -677,6 +680,8 @@ class _TranslationsForumZhCn implements TranslationsForumEn {
 	@override String get reply => '回覆';
 	@override String get pendingReview => '审核中';
 	@override String get editedAt => '编辑时间';
+	@override String get copySuccess => '已复制到剪贴板';
+	@override String copySuccessForMessage({required Object str}) => '已复制到剪贴板: ${str}';
 }
 
 // Path: forum.errors
@@ -687,6 +692,7 @@ class _TranslationsForumErrorsZhCn implements TranslationsForumErrorsEn {
 
 	// Translations
 	@override String get pleaseSelectCategory => '请选择分类';
+	@override String get threadLocked => '该主题已锁定，无法回复';
 }
 
 // Path: forum.groups
@@ -920,6 +926,9 @@ extension on TranslationsZhCn {
 			case 'common.tagBlacklist': return '黑名单标签';
 			case 'common.noData': return '没有数据';
 			case 'common.tagLimit': return '标签上限';
+			case 'common.enableFloatingButtons': return '启用浮动按钮';
+			case 'common.disableFloatingButtons': return '禁用浮动按钮';
+			case 'auth.tagLimit': return '标签上限';
 			case 'auth.login': return '登录';
 			case 'auth.logout': return '退出登录';
 			case 'auth.email': return '邮箱';
@@ -1219,6 +1228,7 @@ extension on TranslationsZhCn {
 			case 'markdown.separatorSyntax': return '---';
 			case 'markdown.syntax': return '语法';
 			case 'forum.errors.pleaseSelectCategory': return '请选择分类';
+			case 'forum.errors.threadLocked': return '该主题已锁定，无法回复';
 			case 'forum.createPost': return '创建帖子';
 			case 'forum.title': return '标题';
 			case 'forum.enterTitle': return '输入标题';
@@ -1276,6 +1286,8 @@ extension on TranslationsZhCn {
 			case 'forum.reply': return '回覆';
 			case 'forum.pendingReview': return '审核中';
 			case 'forum.editedAt': return '编辑时间';
+			case 'forum.copySuccess': return '已复制到剪贴板';
+			case 'forum.copySuccessForMessage': return ({required Object str}) => '已复制到剪贴板: ${str}';
 			default: return null;
 		}
 	}

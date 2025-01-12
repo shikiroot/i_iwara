@@ -9,6 +9,7 @@ class TagBlacklistController extends GetxController {
   final UserService _userService = Get.find<UserService>();
   
   final RxBool isLoading = false.obs;
+  final RxBool hasError = false.obs;
   final RxList<Tag> blacklistTags = <Tag>[].obs;
   final RxBool isSaving = false.obs;
 
@@ -24,17 +25,20 @@ class TagBlacklistController extends GetxController {
   // 获取黑名单标签
   Future<void> fetchBlacklistTags() async {
     isLoading.value = true;
+    hasError.value = false;
     try {
       final result = await _userService.fetchProfileUser();
       if (result.isSuccess && result.data != null) {
         blacklistTags.value = result.data!.tagBlacklist ?? [];
       } else {
+        hasError.value = true;
         showToastWidget(MDToastWidget(
           message: result.message,
           type: MDToastType.error,
         ));
       }
     } catch (e) {
+      hasError.value = true;
       showToastWidget(MDToastWidget(
         message: t.errors.failedToFetchData,
         type: MDToastType.error,

@@ -9,6 +9,7 @@ import 'package:i_iwara/app/ui/pages/forum/widgets/forum_post_dialog.dart';
 import 'package:i_iwara/app/ui/widgets/avatar_widget.dart';
 import 'package:i_iwara/app/ui/widgets/my_loading_more_indicator_widget.dart';
 import 'package:i_iwara/common/constants.dart';
+import 'package:i_iwara/i18n/strings.g.dart';
 import 'package:i_iwara/utils/common_utils.dart';
 import 'package:i_iwara/utils/widget_extensions.dart';
 import 'package:loading_more_list/loading_more_list.dart';
@@ -27,18 +28,23 @@ class ThreadListPage extends StatefulWidget {
   State<ThreadListPage> createState() => _ThreadListPageState();
 }
 
-class _ThreadListPageState extends State<ThreadListPage> {
+class _ThreadListPageState extends State<ThreadListPage> with SingleTickerProviderStateMixin {
   late ThreadListRepository listSourceRepository;
   final ScrollController _scrollController = ScrollController();
   final RxBool _showBackToTop = false.obs;
-  final ForumService _forumService = Get.find<ForumService>();
-  final RxBool _isCreatingThread = false.obs;
+  final RxBool _enableFloatingButton = true.obs;
   final RxString _categoryName = ''.obs;
   final RxString _categoryDescription = ''.obs;
+  late AnimationController _floatingButtonController;
 
   @override
   void initState() {
     super.initState();
+    _floatingButtonController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 200),
+    );
+
     listSourceRepository = ThreadListRepository(categoryId: widget.categoryId, updateCategoryName: (name, description) {
       _categoryName.value = name;
       _categoryDescription.value = description;
@@ -48,8 +54,19 @@ class _ThreadListPageState extends State<ThreadListPage> {
     _scrollController.addListener(() {
       if (_scrollController.offset >= 300) {
         _showBackToTop.value = true;
+        _floatingButtonController.forward();
       } else {
         _showBackToTop.value = false;
+        _floatingButtonController.reverse();
+      }
+    });
+
+    // 监听启用状态变化
+    ever(_enableFloatingButton, (bool enabled) {
+      if (!enabled) {
+        _floatingButtonController.reverse();
+      } else if (_showBackToTop.value) {
+        _floatingButtonController.forward();
       }
     });
   }
@@ -58,6 +75,7 @@ class _ThreadListPageState extends State<ThreadListPage> {
   void dispose() {
     _scrollController.dispose();
     listSourceRepository.dispose();
+    _floatingButtonController.dispose();
     super.dispose();
   }
 
@@ -87,6 +105,19 @@ class _ThreadListPageState extends State<ThreadListPage> {
         )
         ),
         actions: [
+          Obx(() => IconButton(
+            icon: Icon(_enableFloatingButton.value ? Icons.vertical_align_top : Icons.vertical_align_top_outlined),
+            onPressed: () => _enableFloatingButton.value = !_enableFloatingButton.value,
+            tooltip: _enableFloatingButton.value ? t.common.disableFloatingButtons : t.common.enableFloatingButtons,
+            style: IconButton.styleFrom(
+              backgroundColor: !_enableFloatingButton.value 
+                ? Theme.of(context).colorScheme.primaryContainer.withOpacity(0.5)
+                : null,
+              foregroundColor: !_enableFloatingButton.value 
+                ? Theme.of(context).colorScheme.primary
+                : Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
+          )),
           IconButton(
             icon: const Icon(Icons.refresh),
             onPressed: () => listSourceRepository.refresh(),
@@ -125,18 +156,21 @@ class _ThreadListPageState extends State<ThreadListPage> {
           ),
         ],
       ),
-      floatingActionButton: Obx(() => _showBackToTop.value
-          ? FloatingActionButton(
-              onPressed: () {
-                _scrollController.animateTo(
-                  0,
-                  duration: const Duration(milliseconds: 500),
-                  curve: Curves.easeInOut,
-                );
-              },
-              child: const Icon(Icons.arrow_upward),
-            ).paddingBottom(Get.context != null ? MediaQuery.of(Get.context!).padding.bottom : 0)
-          : const SizedBox()),
+      floatingActionButton: ScaleTransition(
+        scale: _floatingButtonController,
+        child: Obx(() => (_showBackToTop.value && _enableFloatingButton.value)
+            ? FloatingActionButton(
+                onPressed: () {
+                  _scrollController.animateTo(
+                    0,
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.easeInOut,
+                  );
+                },
+                child: const Icon(Icons.arrow_upward),
+              ).paddingBottom(Get.context != null ? MediaQuery.of(Get.context!).padding.bottom : 0)
+            : const SizedBox()),
+      ),
     );
   }
 
@@ -372,7 +406,12 @@ class _ThreadListPageState extends State<ThreadListPage> {
 
   void _showCreateThreadDialog(BuildContext context, String categoryId) {
     Get.dialog(
-      const ForumPostDialog(),
+      ForumPostDialog(
+        onSubmit: () {
+          // 刷新帖子列表
+          listSourceRepository.refresh();
+        },
+      ),
     );
   }
 } 

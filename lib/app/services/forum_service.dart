@@ -63,6 +63,22 @@ final Map<String, String> idDescriptions = {
 class ForumService extends GetxService {
   final ApiService _apiService = Get.find();
 
+  /// 回复帖子
+  /// /forum/:threadId/reply
+  /// @params body
+  Future<ApiResult<void>> postReply(String threadId, String body) async {
+    try {
+      await _apiService.post(ApiConstants.forumThreadReply(threadId), data: {
+        'body': body,
+        'rulesAgreement': true,
+      });
+      return ApiResult.success();
+    } catch (e) {
+      LogUtils.e('回复帖子失败', tag: 'ForumService', error: e);
+      return ApiResult.fail(slang.t.errors.failedToFetchData);
+    }
+  }
+
   /// 获取帖子详情
   ///  /forum/:categoryId/:threadId
   /// @params page
@@ -235,18 +251,4 @@ class ForumService extends GetxService {
     }
   }
 
-  /// 发送评论
-  Future<ApiResult<ThreadCommentModel>> postReply(
-      String threadId, String body) async {
-    try {
-      var response = await _apiService
-          .post(ApiConstants.forumThreadReply(threadId), data: {
-        'body': body,
-      });
-      return ApiResult.success(data: ThreadCommentModel.fromJson(response.data));
-    } catch (e) {
-      LogUtils.e('发送评论失败', tag: 'ForumService', error: e);
-      return ApiResult.fail(slang.t.errors.failedToFetchData);
-    }
-  }
 }

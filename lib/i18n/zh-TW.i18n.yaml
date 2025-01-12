@@ -155,6 +155,8 @@ common:
   tagBlacklist: 黑名單標籤
   noData: 沒有資料
   tagLimit: 標籤上限
+  enableFloatingButtons: 啟用浮動按鈕
+  disableFloatingButtons: 禁用浮動按鈕
 
 auth:
   login: 登入
@@ -485,6 +487,7 @@ markdown:
 forum:
   errors:
     pleaseSelectCategory: 請選擇分類
+    threadLocked: 該主題已鎖定，無法回覆
   createPost: 創建帖子
   title: 標題
   enterTitle: 輸入標題
@@ -545,3 +548,5 @@ forum:
   reply: 回覆
   pendingReview: 審核中
   editedAt: 編輯時間
+  copySuccess: 已複製到剪貼簿
+  copySuccessForMessage: '已複製到剪貼簿: ${str}'

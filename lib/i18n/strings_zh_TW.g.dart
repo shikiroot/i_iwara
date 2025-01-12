@@ -214,6 +214,8 @@ class _TranslationsCommonZhTw implements TranslationsCommonEn {
 	@override String get tagBlacklist => '黑名單標籤';
 	@override String get noData => '沒有資料';
 	@override String get tagLimit => '標籤上限';
+	@override String get enableFloatingButtons => '啟用浮動按鈕';
+	@override String get disableFloatingButtons => '禁用浮動按鈕';
 }
 
 // Path: auth
@@ -673,6 +675,8 @@ class _TranslationsForumZhTw implements TranslationsForumEn {
 	@override String get reply => '回覆';
 	@override String get pendingReview => '審核中';
 	@override String get editedAt => '編輯時間';
+	@override String get copySuccess => '已複製到剪貼簿';
+	@override String copySuccessForMessage({required Object str}) => '已複製到剪貼簿: ${str}';
 }
 
 // Path: forum.errors
@@ -683,6 +687,7 @@ class _TranslationsForumErrorsZhTw implements TranslationsForumErrorsEn {
 
 	// Translations
 	@override String get pleaseSelectCategory => '請選擇分類';
+	@override String get threadLocked => '該主題已鎖定，無法回覆';
 }
 
 // Path: forum.groups
@@ -914,6 +919,8 @@ extension on TranslationsZhTw {
 			case 'common.tagBlacklist': return '黑名單標籤';
 			case 'common.noData': return '沒有資料';
 			case 'common.tagLimit': return '標籤上限';
+			case 'common.enableFloatingButtons': return '啟用浮動按鈕';
+			case 'common.disableFloatingButtons': return '禁用浮動按鈕';
 			case 'auth.login': return '登入';
 			case 'auth.logout': return '登出';
 			case 'auth.email': return '電子郵件';
@@ -1211,6 +1218,7 @@ extension on TranslationsZhTw {
 			case 'markdown.separatorSyntax': return '---';
 			case 'markdown.syntax': return '語法';
 			case 'forum.errors.pleaseSelectCategory': return '請選擇分類';
+			case 'forum.errors.threadLocked': return '該主題已鎖定，無法回覆';
 			case 'forum.createPost': return '創建帖子';
 			case 'forum.title': return '標題';
 			case 'forum.enterTitle': return '輸入標題';
@@ -1268,6 +1276,8 @@ extension on TranslationsZhTw {
 			case 'forum.reply': return '回覆';
 			case 'forum.pendingReview': return '審核中';
 			case 'forum.editedAt': return '編輯時間';
+			case 'forum.copySuccess': return '已複製到剪貼簿';
+			case 'forum.copySuccessForMessage': return ({required Object str}) => '已複製到剪貼簿: ${str}';
 			default: return null;
 		}
 	}

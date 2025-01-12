@@ -156,6 +156,8 @@ common:
   tagBlacklist: ブラックリストタグ
   noData: データがありません
   tagLimit: タグ上限
+  enableFloatingButtons: フローティングボタンを有効
+  disableFloatingButtons: フローティングボタンを無効
 auth:
   login: ログイン
   logout: ログアウト
@@ -483,8 +485,9 @@ markdown:
 forum:
   errors:
     pleaseSelectCategory: カテゴリを選択してください
-  createPost: 投稿を作成
+    threadLocked: このスレッドはロックされています。
   title: タイトル
+  createPost: 投稿を作成
   enterTitle: タイトルを入力してください
   content: コンテンツ
   enterContent: コンテンツを入力してください
@@ -543,3 +546,5 @@ forum:
   reply: 回覆
   pendingReview: 審査中
   editedAt: 編集日時
+  copySuccess: クリップボードにコピーされました
+  copySuccessForMessage: 'クリップボードにコピーされました: ${str}'

@@ -35,9 +35,10 @@ class _TagBlacklistPageState extends State<TagBlacklistPage> {
         return Shimmer.fromColors(
           baseColor: Theme.of(context).colorScheme.primary.withOpacity(0.5),
           highlightColor: Theme.of(context).colorScheme.primary,
-          child: TextButton(
+          child: TextButton.icon(
             onPressed: null,
-            child: Text(
+            icon: const Icon(Icons.save),
+            label: Text(
               t.common.save,
               style: TextStyle(
                 color: Theme.of(context).colorScheme.primary,
@@ -46,9 +47,10 @@ class _TagBlacklistPageState extends State<TagBlacklistPage> {
           ),
         );
       }
-      return TextButton(
+      return TextButton.icon(
         onPressed: controller.saveBlacklistTags,
-        child: Text(t.common.save),
+        icon: const Icon(Icons.save),
+        label: Text(t.common.save),
       );
     });
   }
@@ -58,33 +60,99 @@ class _TagBlacklistPageState extends State<TagBlacklistPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(t.common.tagBlacklist),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.add),
-            onPressed: () async {
-              Get.dialog(
-                BlackListTagSearchDialog(
-                  onSave: (tags) {
-                    // 要去重
-                    final currentTagIds = controller.blacklistTags.map((tag) => tag.id).toList();
-                    final newTags = tags.where((tag) => !currentTagIds.contains(tag.id)).toList();
-                    controller.addTags(newTags);
-                  },
-                ),
-              );
-            },
-          ),
-          _buildSaveButton(),
-        ],
       ),
       body: Obx(() {
         if (controller.isLoading.value && controller.blacklistTags.isEmpty) {
-          return const Center(child: CircularProgressIndicator());
+          return Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Shimmer.fromColors(
+                  baseColor: Theme.of(context).colorScheme.surfaceVariant,
+                  highlightColor: Theme.of(context).colorScheme.surface,
+                  child: Container(
+                    width: 150,
+                    height: 16,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 24),
+                Wrap(
+                  spacing: 8.0,
+                  runSpacing: 8.0,
+                  children: List.generate(6, (index) => Shimmer.fromColors(
+                    baseColor: Theme.of(context).colorScheme.surfaceVariant,
+                    highlightColor: Theme.of(context).colorScheme.surface,
+                    child: Container(
+                      width: 80 + (index % 2) * 20,
+                      height: 32,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                    ),
+                  )),
+                ),
+              ],
+            ),
+          );
+        }
+
+        if (controller.hasError.value) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(t.errors.failedToFetchData),
+                const SizedBox(height: 16),
+                ElevatedButton.icon(
+                  onPressed: controller.fetchBlacklistTags,
+                  icon: const Icon(Icons.refresh),
+                  label: Text(t.common.refresh),
+                ),
+              ],
+            ),
+          );
         }
 
         if (controller.blacklistTags.isEmpty) {
-          return MyEmptyWidget(
-            message: t.common.noData,
+          return Column(
+            children: [
+              Expanded(
+                child: MyEmptyWidget(
+                  message: t.common.noData,
+                ),
+              ),
+              const Divider(height: 32),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.add),
+                      onPressed: () async {
+                        Get.dialog(
+                          BlackListTagSearchDialog(
+                            onSave: (tags) {
+                              final currentTagIds = controller.blacklistTags.map((tag) => tag.id).toList();
+                              final newTags = tags.where((tag) => !currentTagIds.contains(tag.id)).toList();
+                              controller.addTags(newTags);
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                    const SizedBox(width: 8),
+                    _buildSaveButton(),
+                  ],
+                ),
+              ),
+            ],
           );
         }
 
@@ -95,7 +163,7 @@ class _TagBlacklistPageState extends State<TagBlacklistPage> {
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Text(
                     '${t.common.tagLimit}: ${controller.blacklistTags.length}/${controller.tagLimit}',
@@ -116,6 +184,28 @@ class _TagBlacklistPageState extends State<TagBlacklistPage> {
                         ),
                       );
                     }).toList(),
+                  ),
+                  const Divider(height: 32),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.add),
+                        onPressed: () async {
+                          Get.dialog(
+                            BlackListTagSearchDialog(
+                              onSave: (tags) {
+                                final currentTagIds = controller.blacklistTags.map((tag) => tag.id).toList();
+                                final newTags = tags.where((tag) => !currentTagIds.contains(tag.id)).toList();
+                                controller.addTags(newTags);
+                              },
+                            ),
+                          );
+                        },
+                      ),
+                      const SizedBox(width: 8),
+                      _buildSaveButton(),
+                    ],
                   ),
                 ],
               ),

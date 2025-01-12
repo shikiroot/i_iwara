@@ -1,7 +1,5 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:i_iwara/app/models/forum.model.dart';
 import 'package:i_iwara/app/models/user.model.dart';
@@ -57,7 +55,12 @@ class _ForumPageState extends State<ForumPage> {
 
   void _showPostDialog() {
     Get.dialog(
-      const ForumPostDialog(),
+      ForumPostDialog(
+        onSubmit: () {
+          // 刷新帖子列表
+          _loadCategories();
+        },
+      ),
     );
   }
 
@@ -175,7 +178,7 @@ class _ForumPageState extends State<ForumPage> {
             child: Row(
               children: [
                 Icon(
-                  _getCategoryIcon(category.name, context),
+                  _getCategoryIcon(category.name),
                   color: Theme.of(context).colorScheme.primary,
                 ),
                 const SizedBox(width: 8),
@@ -605,7 +608,7 @@ class _ForumPageState extends State<ForumPage> {
     );
   }
 
-  IconData _getCategoryIcon(String categoryName, BuildContext context) {
+  IconData _getCategoryIcon(String categoryName) {
     final t = slang.Translations.of(context);
     if (categoryName == t.forum.groups.administration) {
       return Icons.admin_panel_settings;

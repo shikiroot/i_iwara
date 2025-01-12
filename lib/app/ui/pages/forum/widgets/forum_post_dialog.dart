@@ -163,7 +163,7 @@ class _ForumPostDialogState extends State<ForumPostDialog> {
                     ),
                   ),
                   IconButton(
-                    onPressed: () => AppService.tryPop(),
+                    onPressed: () => Navigator.pop(context),
                     icon: const Icon(Icons.close),
                   ),
                 ],

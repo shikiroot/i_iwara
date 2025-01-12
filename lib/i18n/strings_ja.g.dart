@@ -214,6 +214,8 @@ class _TranslationsCommonJa implements TranslationsCommonEn {
 	@override String get tagBlacklist => 'ブラックリストタグ';
 	@override String get noData => 'データがありません';
 	@override String get tagLimit => 'タグ上限';
+	@override String get enableFloatingButtons => 'フローティングボタンを有効';
+	@override String get disableFloatingButtons => 'フローティングボタンを無効';
 }
 
 // Path: auth
@@ -655,8 +657,8 @@ class _TranslationsForumJa implements TranslationsForumEn {
 
 	// Translations
 	@override late final _TranslationsForumErrorsJa errors = _TranslationsForumErrorsJa._(_root);
-	@override String get createPost => '投稿を作成';
 	@override String get title => 'タイトル';
+	@override String get createPost => '投稿を作成';
 	@override String get enterTitle => 'タイトルを入力してください';
 	@override String get content => 'コンテンツ';
 	@override String get enterContent => 'コンテンツを入力してください';
@@ -673,6 +675,8 @@ class _TranslationsForumJa implements TranslationsForumEn {
 	@override String get reply => '回覆';
 	@override String get pendingReview => '審査中';
 	@override String get editedAt => '編集日時';
+	@override String get copySuccess => 'クリップボードにコピーされました';
+	@override String copySuccessForMessage({required Object str}) => 'クリップボードにコピーされました: ${str}';
 }
 
 // Path: forum.errors
@@ -683,6 +687,7 @@ class _TranslationsForumErrorsJa implements TranslationsForumErrorsEn {
 
 	// Translations
 	@override String get pleaseSelectCategory => 'カテゴリを選択してください';
+	@override String get threadLocked => 'このスレッドはロックされています。';
 }
 
 // Path: forum.groups
@@ -914,6 +919,8 @@ extension on TranslationsJa {
 			case 'common.tagBlacklist': return 'ブラックリストタグ';
 			case 'common.noData': return 'データがありません';
 			case 'common.tagLimit': return 'タグ上限';
+			case 'common.enableFloatingButtons': return 'フローティングボタンを有効';
+			case 'common.disableFloatingButtons': return 'フローティングボタンを無効';
 			case 'auth.login': return 'ログイン';
 			case 'auth.logout': return 'ログアウト';
 			case 'auth.email': return 'メールアドレス';
@@ -1211,8 +1218,9 @@ extension on TranslationsJa {
 			case 'markdown.separatorSyntax': return '---';
 			case 'markdown.syntax': return '語法';
 			case 'forum.errors.pleaseSelectCategory': return 'カテゴリを選択してください';
-			case 'forum.createPost': return '投稿を作成';
+			case 'forum.errors.threadLocked': return 'このスレッドはロックされています。';
 			case 'forum.title': return 'タイトル';
+			case 'forum.createPost': return '投稿を作成';
 			case 'forum.enterTitle': return 'タイトルを入力してください';
 			case 'forum.content': return 'コンテンツ';
 			case 'forum.enterContent': return 'コンテンツを入力してください';
@@ -1268,6 +1276,8 @@ extension on TranslationsJa {
 			case 'forum.reply': return '回覆';
 			case 'forum.pendingReview': return '審査中';
 			case 'forum.editedAt': return '編集日時';
+			case 'forum.copySuccess': return 'クリップボードにコピーされました';
+			case 'forum.copySuccessForMessage': return ({required Object str}) => 'クリップボードにコピーされました: ${str}';
 			default: return null;
 		}
 	}

@@ -159,7 +159,10 @@ common:
   tagBlacklist: 黑名单标签
   noData: 没有数据
   tagLimit: 标签上限
+  enableFloatingButtons: 启用浮动按钮
+  disableFloatingButtons: 禁用浮动按钮
 auth:
+  tagLimit: 标签上限
   login: 登录
   logout: 退出登录
   email: 邮箱
@@ -489,6 +492,7 @@ markdown:
 forum:
   errors:
     pleaseSelectCategory: 请选择分类
+    threadLocked: 该主题已锁定，无法回复
   createPost: 创建帖子
   title: 标题
   enterTitle: 输入标题
@@ -549,3 +553,5 @@ forum:
   reply: 回覆
   pendingReview: 审核中
   editedAt: 编辑时间
+  copySuccess: 已复制到剪贴板
+  copySuccessForMessage: '已复制到剪贴板: ${str}'
