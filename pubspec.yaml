@@ -19,7 +19,7 @@ dependencies:
   dio: ^5.7.0
   win32: ^5.9.0
   logger: ^2.5.0
-  flutter_secure_storage: ^9.2.2
+  flutter_secure_storage: ^9.2.4
   get_storage: ^2.1.1
   media_kit: ^1.1.11
   media_kit_video: ^1.2.5
