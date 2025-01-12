@@ -514,6 +514,9 @@ class _TranslationsSettingsZhCn implements TranslationsSettingsEn {
 	@override String get showUnprocessedMarkdownText => '显示未处理文本';
 	@override String get showUnprocessedMarkdownTextDesc => '显示Markdown的原始文本';
 	@override String get markdown => 'Markdown';
+	@override String get activeBackgroundPrivacyMode => '激活后台隐私模式';
+	@override String get activeBackgroundPrivacyModeDesc => '激活后台隐私模式';
+	@override String get privacy => '隐私';
 }
 
 // Path: signIn
@@ -1147,6 +1150,9 @@ extension on TranslationsZhCn {
 			case 'settings.showUnprocessedMarkdownText': return '显示未处理文本';
 			case 'settings.showUnprocessedMarkdownTextDesc': return '显示Markdown的原始文本';
 			case 'settings.markdown': return 'Markdown';
+			case 'settings.activeBackgroundPrivacyMode': return '激活后台隐私模式';
+			case 'settings.activeBackgroundPrivacyModeDesc': return '激活后台隐私模式';
+			case 'settings.privacy': return '隐私';
 			case 'signIn.pleaseLoginFirst': return '请先登录后再签到';
 			case 'signIn.alreadySignedInToday': return '您今天已经签到过了！';
 			case 'signIn.youDidNotStickToTheSignIn': return '您未能坚持签到。';

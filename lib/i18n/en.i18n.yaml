@@ -377,6 +377,9 @@ settings:
   showUnprocessedMarkdownText: Show Unprocessed Markdown Text
   showUnprocessedMarkdownTextDesc: Show the original text of the markdown
   markdown: Markdown
+  activeBackgroundPrivacyMode: Active Background Privacy Mode
+  activeBackgroundPrivacyModeDesc: Active background privacy mode
+  privacy: Privacy
 
 signIn:
   pleaseLoginFirst: Please login first

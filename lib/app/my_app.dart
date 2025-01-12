@@ -15,6 +15,7 @@ import 'package:i_iwara/app/ui/pages/settings/settings_page.dart';
 import 'package:i_iwara/app/ui/pages/settings/theme_settings_page.dart';
 import 'package:i_iwara/app/ui/pages/sign_in/sing_in_page.dart';
 import 'package:i_iwara/app/ui/widgets/global_drawer_content_widget.dart';
+import 'package:i_iwara/app/ui/widgets/privacy_over_lay_widget.dart';
 import 'package:i_iwara/app/ui/widgets/window_layout_widget.dart';
 import 'package:i_iwara/i18n/strings.g.dart';
 import 'package:dynamic_color/dynamic_color.dart';
@@ -104,28 +105,6 @@ class _MyAppState extends State<MyApp> {
           ),
         );
       },
-    );
-  }
-}
-
-class PrivacyOverlay extends StatelessWidget {
-  const PrivacyOverlay({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      child: Container(
-        color: Colors.white, // 白色背景
-        child: Center(
-          child: Text(
-            t.common.privacyHint,
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-      ),
     );
   }
 }

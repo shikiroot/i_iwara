@@ -379,6 +379,9 @@ settings:
   showUnprocessedMarkdownText: 顯示未處理文本
   showUnprocessedMarkdownTextDesc: 顯示Markdown的原始文本
   markdown: Markdown
+  activeBackgroundPrivacyMode: 激活後台隱私模式
+  activeBackgroundPrivacyModeDesc: 激活後台隱私模式
+  privacy: 隱私
 
 
 signIn:

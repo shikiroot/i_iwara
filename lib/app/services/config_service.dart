@@ -60,7 +60,7 @@ class ConfigService extends GetxService {
     USE_PROXY: false.obs,
     PROXY_URL: ''.obs,
     RENDER_VERTICAL_VIDEO_IN_VERTICAL_SCREEN: true.obs,
-    ACTIVE_BACKGROUND_PRIVACY_MODE: false.obs,
+    ACTIVE_BACKGROUND_PRIVACY_MODE: true.obs,
     DEFAULT_LANGUAGE_KEY: 'zh-CN'.obs,
     THEME_MODE_KEY: 4.obs, // 添加主题模式配置，默认为0(system)
     REMOTE_REPO_RELEASE_URL: 'https://github.com/FoxSensei001/i_iwara/releases'.obs,

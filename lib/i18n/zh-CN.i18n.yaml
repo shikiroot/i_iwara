@@ -385,6 +385,9 @@ settings:
   showUnprocessedMarkdownText: 显示未处理文本
   showUnprocessedMarkdownTextDesc: 显示Markdown的原始文本
   markdown: Markdown
+  activeBackgroundPrivacyMode: 激活后台隐私模式
+  activeBackgroundPrivacyModeDesc: 激活后台隐私模式
+  privacy: 隐私
 
 signIn:
   pleaseLoginFirst: 请先登录后再签到

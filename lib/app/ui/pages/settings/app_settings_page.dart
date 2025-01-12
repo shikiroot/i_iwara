@@ -77,6 +77,44 @@ class AppSettingsPage extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(16),
                   child: Text(
+                    slang.t.settings.privacy,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                ),
+                const Divider(height: 1),
+                Obx(
+                  () => SwitchListTile(
+                    title: Text(slang.t.settings.activeBackgroundPrivacyMode),
+                    subtitle: Text(slang.t.settings.activeBackgroundPrivacyModeDesc),
+                    value: configService[ConfigService.ACTIVE_BACKGROUND_PRIVACY_MODE],
+                    onChanged: (value) {
+                      configService[ConfigService.ACTIVE_BACKGROUND_PRIVACY_MODE] = value;
+                    },
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(16),
+                        bottomRight: Radius.circular(16),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 16),
+          Card(
+            elevation: 2,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Text(
                     slang.t.settings.markdown,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,

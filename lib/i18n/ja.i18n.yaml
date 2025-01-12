@@ -378,6 +378,9 @@ settings:
   showUnprocessedMarkdownText: 未処理のMarkdownテキストを表示
   showUnprocessedMarkdownTextDesc: Markdownの元のテキストを表示
   markdown: Markdown
+  activeBackgroundPrivacyMode: バックグラウンドプライバシーモードを有効にする
+  activeBackgroundPrivacyModeDesc: バックグラウンドプライバシーモードを有効にする
+  privacy: プライバシー
 
 signIn:
   pleaseLoginFirst: サインインする前にログインしてください

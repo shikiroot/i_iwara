@@ -509,6 +509,9 @@ class _TranslationsSettingsZhTw implements TranslationsSettingsEn {
 	@override String get showUnprocessedMarkdownText => '顯示未處理文本';
 	@override String get showUnprocessedMarkdownTextDesc => '顯示Markdown的原始文本';
 	@override String get markdown => 'Markdown';
+	@override String get activeBackgroundPrivacyMode => '激活後台隱私模式';
+	@override String get activeBackgroundPrivacyModeDesc => '激活後台隱私模式';
+	@override String get privacy => '隱私';
 }
 
 // Path: signIn
@@ -1137,6 +1140,9 @@ extension on TranslationsZhTw {
 			case 'settings.showUnprocessedMarkdownText': return '顯示未處理文本';
 			case 'settings.showUnprocessedMarkdownTextDesc': return '顯示Markdown的原始文本';
 			case 'settings.markdown': return 'Markdown';
+			case 'settings.activeBackgroundPrivacyMode': return '激活後台隱私模式';
+			case 'settings.activeBackgroundPrivacyModeDesc': return '激活後台隱私模式';
+			case 'settings.privacy': return '隱私';
 			case 'signIn.pleaseLoginFirst': return '請先登入後再簽到';
 			case 'signIn.alreadySignedInToday': return '您今天已經簽到過了！';
 			case 'signIn.youDidNotStickToTheSignIn': return '您未能持續簽到。';

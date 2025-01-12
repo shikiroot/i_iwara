@@ -509,6 +509,9 @@ class _TranslationsSettingsJa implements TranslationsSettingsEn {
 	@override String get showUnprocessedMarkdownText => '未処理のMarkdownテキストを表示';
 	@override String get showUnprocessedMarkdownTextDesc => 'Markdownの元のテキストを表示';
 	@override String get markdown => 'Markdown';
+	@override String get activeBackgroundPrivacyMode => 'バックグラウンドプライバシーモードを有効にする';
+	@override String get activeBackgroundPrivacyModeDesc => 'バックグラウンドプライバシーモードを有効にする';
+	@override String get privacy => 'プライバシー';
 }
 
 // Path: signIn
@@ -1137,6 +1140,9 @@ extension on TranslationsJa {
 			case 'settings.showUnprocessedMarkdownText': return '未処理のMarkdownテキストを表示';
 			case 'settings.showUnprocessedMarkdownTextDesc': return 'Markdownの元のテキストを表示';
 			case 'settings.markdown': return 'Markdown';
+			case 'settings.activeBackgroundPrivacyMode': return 'バックグラウンドプライバシーモードを有効にする';
+			case 'settings.activeBackgroundPrivacyModeDesc': return 'バックグラウンドプライバシーモードを有効にする';
+			case 'settings.privacy': return 'プライバシー';
 			case 'signIn.pleaseLoginFirst': return 'サインインする前にログインしてください';
 			case 'signIn.alreadySignedInToday': return '今日は既にサインインしています！';
 			case 'signIn.youDidNotStickToTheSignIn': return 'サインインを続けることができませんでした。';
