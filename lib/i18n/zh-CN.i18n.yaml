@@ -557,3 +557,4 @@ forum:
   editedAt: 编辑时间
   copySuccess: 已复制到剪贴板
   copySuccessForMessage: '已复制到剪贴板: ${str}'
+  editReply: 编辑回覆

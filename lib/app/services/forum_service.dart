@@ -63,6 +63,47 @@ final Map<String, String> idDescriptions = {
 class ForumService extends GetxService {
   final ApiService _apiService = Get.find();
 
+  /// 编辑帖子标题
+  /// 参数很离谱，是把请求的body改了改title字段，然后发过来了，
+  /// 所以调用这个接口前，最好
+  /// /forum/:id
+  Future<ApiResult<void>> editThreadTitle(String categoryId, String threadId, String title) async {
+    late Map<String, dynamic> jsonBody;
+
+    try {
+      // 获取帖子详情
+      var response = await _apiService.get(ApiConstants.forumThreadDetail(categoryId, threadId));
+      jsonBody = response.data;
+
+      // 修改title
+      jsonBody['title'] = title;
+    } catch (e) {
+      LogUtils.e('在编辑帖子标题时，获取帖子详情失败', tag: 'ForumService', error: e);
+      return ApiResult.fail(slang.t.errors.failedToFetchData);
+    }
+
+    try {
+      await _apiService.put(ApiConstants.forumThreads(threadId), data: jsonBody);
+      return ApiResult.success();
+    } catch (e) {
+      LogUtils.e('在编辑帖子标题时，编辑帖子标题失败', tag: 'ForumService', error: e);
+      return ApiResult.fail(slang.t.errors.failedToFetchData);
+    }
+  }
+
+  /// 编辑帖子回复
+  /// /forum/post/:postId
+  /// 这个也是一样的，不过不能偷懒了，必须参数里接一下 转换成Map<String, dynamic>了
+  Future<ApiResult<void>> editPost(String postId, Map<String, dynamic> jsonBody) async {
+    try {
+      await _apiService.put(ApiConstants.forumPosts(postId), data: jsonBody);
+      return ApiResult.success();
+    } catch (e) {
+      LogUtils.e('在编辑帖子回复时，编辑帖子回复失败', tag: 'ForumService', error: e);
+      return ApiResult.fail(slang.t.errors.failedToFetchData);
+    }
+  }
+
   /// 回复帖子
   /// /forum/:threadId/reply
   /// @params body

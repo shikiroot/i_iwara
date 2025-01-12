@@ -683,6 +683,7 @@ class TranslationsForumEn {
 	String get editedAt => 'Edited At';
 	String get copySuccess => 'Copied to clipboard';
 	String copySuccessForMessage({required Object str}) => 'Copied to clipboard: ${str}';
+	String get editReply => 'Edit Reply';
 }
 
 // Path: forum.errors
@@ -1286,6 +1287,7 @@ extension on Translations {
 			case 'forum.editedAt': return 'Edited At';
 			case 'forum.copySuccess': return 'Copied to clipboard';
 			case 'forum.copySuccessForMessage': return ({required Object str}) => 'Copied to clipboard: ${str}';
+			case 'forum.editReply': return 'Edit Reply';
 			default: return null;
 		}
 	}

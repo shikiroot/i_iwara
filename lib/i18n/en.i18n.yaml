@@ -549,3 +549,4 @@ forum:
   editedAt: Edited At
   copySuccess: Copied to clipboard
   copySuccessForMessage: 'Copied to clipboard: ${str}'
+  editReply: Edit Reply

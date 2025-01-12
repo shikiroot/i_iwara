@@ -222,6 +222,9 @@ class ApiConstants {
   // 论坛帖子列表
   static String forumThreads(String categoryId) => '/forum/$categoryId';
 
+  // 论坛帖子回复
+  static String forumPosts(String postId) => '/forum/post/$postId';
+
   // 论坛帖子详情
   static String forumThreadDetail(String categoryId, String threadId) => '/forum/$categoryId/$threadId';
 }

@@ -137,7 +137,7 @@ class AuthService extends GetxService {
   bool get isTokenValid {
     final valid = !isAuthTokenExpired && !isAccessTokenExpired;
     assert(() {
-      LogUtils.d('$_tag Token 有效性检查: authToken=${!isAuthTokenExpired}, accessToken=${!isAccessTokenExpired}');
+      // LogUtils.d('$_tag Token 有效性检查: authToken=${!isAuthTokenExpired}, accessToken=${!isAccessTokenExpired}');
       return true;
     }());
     return valid;

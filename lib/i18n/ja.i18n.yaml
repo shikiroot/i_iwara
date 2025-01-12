@@ -550,3 +550,4 @@ forum:
   editedAt: 編集日時
   copySuccess: クリップボードにコピーされました
   copySuccessForMessage: 'クリップボードにコピーされました: ${str}'
+  editReply: 編集回覆

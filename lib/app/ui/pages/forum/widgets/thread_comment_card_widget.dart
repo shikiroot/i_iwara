@@ -8,6 +8,7 @@ import 'package:i_iwara/app/services/translation_service.dart';
 import 'package:i_iwara/app/services/config_service.dart';
 import 'package:i_iwara/app/ui/pages/forum/controllers/thread_detail_repository.dart';
 import 'package:i_iwara/app/ui/pages/forum/widgets/forum_reply_dialog.dart';
+import 'package:i_iwara/app/ui/pages/forum/widgets/forum_edit_reply_dialog.dart';
 import 'package:i_iwara/app/ui/widgets/MDToastWidget.dart';
 import 'package:i_iwara/app/ui/widgets/avatar_widget.dart';
 import 'package:i_iwara/app/ui/widgets/custom_markdown_body_widget.dart';
@@ -528,26 +529,47 @@ class _ThreadCommentCardWidgetState extends State<ThreadCommentCardWidget> {
                   data: widget.comment.body,
                 ),
                 if (_translatedText != null) _buildTranslatedContent(context),
-                // 添加回复按钮
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: IconButton(
-                    icon: const Icon(Icons.reply),
-                    onPressed: () {
-                      // 生成回复模板文本
-                      final replyTemplate = 'Reply #${widget.comment.replyNum + 1}: @${widget.comment.user.username}\n---\n';
-                      
-                      // 打开回复对话框
-                      Get.dialog(ForumReplyDialog(
-                        threadId: widget.comment.threadId,
-                        initialContent: replyTemplate,
-                        onSubmit: () {
-                          // 刷新评论列表
-                          widget.listSourceRepository.refresh();
+                // 操作按钮行
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    // 编辑按钮
+                    if (isCurrentUser)
+                      IconButton(
+                        icon: const Icon(Icons.edit),
+                        tooltip: slang.t.common.edit,
+                        onPressed: () {
+                          Get.dialog(ForumEditReplyDialog(
+                            postId: widget.comment.id,
+                            initialContent: widget.comment.body,
+                            repository: widget.listSourceRepository,
+                            onSubmit: () {
+                              // 刷新评论列表
+                              widget.listSourceRepository.refresh();
+                            },
+                          ));
                         },
-                      ));
-                    },
-                  ),
+                      ),
+                    // 回复按钮
+                    IconButton(
+                      icon: const Icon(Icons.reply),
+                      tooltip: slang.t.forum.reply,
+                      onPressed: () {
+                        // 生成回复模板文本
+                        final replyTemplate = 'Reply #${widget.comment.replyNum + 1}: @${widget.comment.user.username}\n---\n';
+                        
+                        // 打开回复对话框
+                        Get.dialog(ForumReplyDialog(
+                          threadId: widget.comment.threadId,
+                          initialContent: replyTemplate,
+                          onSubmit: () {
+                            // 刷新评论列表
+                            widget.listSourceRepository.refresh();
+                          },
+                        ));
+                      },
+                    ),
+                  ],
                 ),
               ],
             ),
