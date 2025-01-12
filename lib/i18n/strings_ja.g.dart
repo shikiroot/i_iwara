@@ -216,6 +216,8 @@ class _TranslationsCommonJa implements TranslationsCommonEn {
 	@override String get tagLimit => 'タグ上限';
 	@override String get enableFloatingButtons => 'フローティングボタンを有効';
 	@override String get disableFloatingButtons => 'フローティングボタンを無効';
+	@override String get enabledFloatingButtons => 'フローティングボタンが有効';
+	@override String get disabledFloatingButtons => 'フローティングボタンが無効';
 }
 
 // Path: auth
@@ -921,6 +923,8 @@ extension on TranslationsJa {
 			case 'common.tagLimit': return 'タグ上限';
 			case 'common.enableFloatingButtons': return 'フローティングボタンを有効';
 			case 'common.disableFloatingButtons': return 'フローティングボタンを無効';
+			case 'common.enabledFloatingButtons': return 'フローティングボタンが有効';
+			case 'common.disabledFloatingButtons': return 'フローティングボタンが無効';
 			case 'auth.login': return 'ログイン';
 			case 'auth.logout': return 'ログアウト';
 			case 'auth.email': return 'メールアドレス';

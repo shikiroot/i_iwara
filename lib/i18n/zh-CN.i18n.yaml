@@ -161,6 +161,8 @@ common:
   tagLimit: 标签上限
   enableFloatingButtons: 启用浮动按钮
   disableFloatingButtons: 禁用浮动按钮
+  enabledFloatingButtons: 已启用浮动按钮
+  disabledFloatingButtons: 已禁用浮动按钮
 auth:
   tagLimit: 标签上限
   login: 登录

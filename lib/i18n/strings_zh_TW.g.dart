@@ -216,6 +216,8 @@ class _TranslationsCommonZhTw implements TranslationsCommonEn {
 	@override String get tagLimit => '標籤上限';
 	@override String get enableFloatingButtons => '啟用浮動按鈕';
 	@override String get disableFloatingButtons => '禁用浮動按鈕';
+	@override String get enabledFloatingButtons => '已啟用浮動按鈕';
+	@override String get disabledFloatingButtons => '已禁用浮動按鈕';
 }
 
 // Path: auth
@@ -921,6 +923,8 @@ extension on TranslationsZhTw {
 			case 'common.tagLimit': return '標籤上限';
 			case 'common.enableFloatingButtons': return '啟用浮動按鈕';
 			case 'common.disableFloatingButtons': return '禁用浮動按鈕';
+			case 'common.enabledFloatingButtons': return '已啟用浮動按鈕';
+			case 'common.disabledFloatingButtons': return '已禁用浮動按鈕';
 			case 'auth.login': return '登入';
 			case 'auth.logout': return '登出';
 			case 'auth.email': return '電子郵件';

@@ -157,6 +157,8 @@ common:
   tagLimit: 標籤上限
   enableFloatingButtons: 啟用浮動按鈕
   disableFloatingButtons: 禁用浮動按鈕
+  enabledFloatingButtons: 已啟用浮動按鈕
+  disabledFloatingButtons: 已禁用浮動按鈕
 
 auth:
   login: 登入

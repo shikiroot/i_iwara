@@ -11,6 +11,7 @@ import 'package:i_iwara/i18n/strings.g.dart' as slang;
 
 import 'search_dialog.dart';
 import 'package:i_iwara/app/ui/pages/popular_media_list/widgets/post_card_list_item_widget.dart';
+import 'package:i_iwara/app/ui/pages/forum/widgets/thread_list_item_widget.dart';
 
 class SearchResult extends StatefulWidget {
   const SearchResult({super.key});
@@ -81,6 +82,9 @@ class _SearchResultState extends State<SearchResult> {
           break;
         case 'post':
           child = _buildPostResult();
+          break;
+        case 'forum':
+          child = _buildForumResult();
           break;
         default:
           child = Text(
@@ -358,6 +362,71 @@ class _SearchResultState extends State<SearchResult> {
     });
   }
 
+  Widget _buildForumResult() {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final int columns = _calculateColumns(constraints.maxWidth);
+        final itemCount = (globalSearchService.searchForumResult.length / columns).ceil() + 1;
+
+        return NotificationListener<ScrollNotification>(
+          onNotification: (scrollInfo) {
+            if (!globalSearchService.isLoading.value &&
+                scrollInfo.metrics.pixels >= scrollInfo.metrics.maxScrollExtent - 100 &&
+                globalSearchService.hasMore) {
+              globalSearchService.fetchSearchResult();
+            }
+            return false;
+          },
+          child: ListView.builder(
+            controller: _scrollController,
+            padding: EdgeInsets.zero,
+            physics: const AlwaysScrollableScrollPhysics(),
+            itemCount: itemCount,
+            itemBuilder: (context, index) {
+              if (index < itemCount - 1) {
+                return _buildForumRow(index, columns, constraints.maxWidth);
+              } else {
+                return _buildLoadMoreIndicator(context);
+              }
+            },
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildForumRow(int index, int columns, double maxWidth) {
+    return Obx(() {
+      final startIndex = index * columns;
+      final endIndex = (startIndex + columns)
+          .clamp(0, globalSearchService.searchForumResult.length);
+      final rowItems = globalSearchService.searchForumResult.sublist(startIndex, endIndex);
+      final remainingColumns = columns - rowItems.length;
+
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 4.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            ...rowItems.map((thread) => Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                    child: ThreadListItemWidget(
+                      thread: thread,
+                      categoryId: thread.section,
+                    ),
+                  ),
+                )),
+            ...List.generate(
+              remainingColumns,
+              (index) => Expanded(child: Container()),
+            ),
+          ],
+        ),
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final t = slang.Translations.of(context);
@@ -453,6 +522,10 @@ class _SearchResultState extends State<SearchResult> {
                               value: 'user',
                               icon: Icon(Icons.person),
                             ),
+                            ButtonSegment(
+                              value: 'forum',
+                              icon: Icon(Icons.forum),
+                            )
                           ],
                           selected: {globalSearchService.selectedSegment.value},
                           onSelectionChanged: (Set<String> selection) {

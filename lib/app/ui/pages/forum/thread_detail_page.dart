@@ -141,7 +141,14 @@ class _ThreadDetailPageState extends State<ThreadDetailPage> with SingleTickerPr
         actions: [
           Obx(() => IconButton(
             icon: Icon(_enableFloatingButtons.value ? Icons.vertical_align_top : Icons.vertical_align_top_outlined),
-            onPressed: () => _enableFloatingButtons.value = !_enableFloatingButtons.value,
+            onPressed: () {
+              _enableFloatingButtons.value = !_enableFloatingButtons.value;
+
+              showToastWidget(MDToastWidget(
+                message: _enableFloatingButtons.value ? t.common.disabledFloatingButtons : t.common.enabledFloatingButtons,
+                type: MDToastType.success
+              ));
+            },
             tooltip: _enableFloatingButtons.value ? t.common.disableFloatingButtons : t.common.enableFloatingButtons,
             style: IconButton.styleFrom(
               backgroundColor: !_enableFloatingButtons.value 
@@ -515,7 +522,7 @@ class _ThreadDetailPageState extends State<ThreadDetailPage> with SingleTickerPr
                   padding: EdgeInsets.only(
                     left: isWideScreen ? 16.0 : 8.0,
                     right: isWideScreen ? 16.0 : 8.0,
-                    bottom: MediaQuery.of(context).padding.bottom,
+                    bottom: Get.context != null ? MediaQuery.of(Get.context!).padding.bottom : 0,
                   ),
                   indicatorBuilder: (context, status) => myLoadingMoreIndicator(
                     context,
@@ -529,9 +536,7 @@ class _ThreadDetailPageState extends State<ThreadDetailPage> with SingleTickerPr
           );
         },
       ),
-      floatingActionButton: Obx(() => _enableFloatingButtons.value ? ScaleTransition(
-        scale: _floatingButtonController,
-        child: Column(
+      floatingActionButton: Obx(() => _enableFloatingButtons.value ? Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             // 发帖按钮
@@ -568,19 +573,22 @@ class _ThreadDetailPageState extends State<ThreadDetailPage> with SingleTickerPr
               ).paddingOnly(bottom: 8),
             // 回到顶部按钮
             if (_showBackToTop.value)
-              FloatingActionButton(
-                onPressed: () {
-                  _scrollController.animateTo(
-                    0,
-                    duration: const Duration(milliseconds: 500),
-                    curve: Curves.easeInOut,
-                  );
-                },
-                child: const Icon(Icons.arrow_upward),
+              ScaleTransition(
+                scale: _floatingButtonController,
+                child: FloatingActionButton(
+                  onPressed: () {
+                    _scrollController.animateTo(
+                      0,
+                      duration: const Duration(milliseconds: 500),
+                      curve: Curves.easeInOut,
+                    );
+                  },
+                  child: const Icon(Icons.arrow_upward),
+                ),
               ),
+            const SafeArea(child: SizedBox()),
           ],
-        ),
-      ).paddingBottom(MediaQuery.of(context).padding.bottom) : const SizedBox()),
+        ).paddingBottom(MediaQuery.of(context).padding.bottom) : const SizedBox()),
     );
   }
 

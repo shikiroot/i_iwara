@@ -198,106 +198,108 @@ class _ForumReplyDialogState extends State<ForumReplyDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Text(
-                    t.forum.reply,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Text(
+                      t.forum.reply,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                ),
-                Row(
-                  children: [
-                    IconButton(
-                      onPressed: _showMarkdownHelp,
-                      icon: const Icon(Icons.help_outline),
-                      tooltip: t.markdown.markdownSyntax,
-                    ),
-                    IconButton(
-                      onPressed: _showPreview,
-                      icon: const Icon(Icons.preview),
-                      tooltip: t.common.preview,
-                    ),
-                    IconButton(
-                      onPressed: () => AppService.tryPop(),
-                      icon: const Icon(Icons.close),
-                      tooltip: t.common.close,
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            // 内容输入框
-            TextField(
-              controller: _bodyController,
-              focusNode: _focusNode,
-              maxLines: 5,
-              maxLength: widget.maxBodyInputLimit,
-              decoration: InputDecoration(
-                labelText: t.common.content,
-                hintText: t.common.writeYourContentHere,
-                border: const OutlineInputBorder(),
-                counterText: '$_currentBodyLength/${widget.maxBodyInputLimit}',
-                errorText: _currentBodyLength > widget.maxBodyInputLimit
-                    ? t.errors.exceedsMaxLength(max: widget.maxBodyInputLimit.toString())
-                    : null,
+                  Row(
+                    children: [
+                      IconButton(
+                        onPressed: _showMarkdownHelp,
+                        icon: const Icon(Icons.help_outline),
+                        tooltip: t.markdown.markdownSyntax,
+                      ),
+                      IconButton(
+                        onPressed: _showPreview,
+                        icon: const Icon(Icons.preview),
+                        tooltip: t.common.preview,
+                      ),
+                      IconButton(
+                        onPressed: () => AppService.tryPop(),
+                        icon: const Icon(Icons.close),
+                        tooltip: t.common.close,
+                      ),
+                    ],
+                  ),
+                ],
               ),
-            ),
-            const SizedBox(height: 16),
-            Wrap(
-              alignment: WrapAlignment.end,
-              crossAxisAlignment: WrapCrossAlignment.center,
-              spacing: 8,
-              runSpacing: 8,
-              children: [
-                Obx(() {
-                  final bool hasAgreed =
-                      _configService[ConfigService.RULES_AGREEMENT_KEY];
-                  return TextButton.icon(
-                    onPressed: () => _showRulesDialog(),
-                    icon: Icon(
-                      hasAgreed
-                          ? Icons.check_box
-                          : Icons.check_box_outline_blank,
-                      size: 20,
-                    ),
-                    label: Text(t.common.agreeToRules),
-                    style: TextButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                    ),
-                  );
-                }),
-                TextButton(
-                  onPressed: () => AppService.tryPop(),
-                  child: Text(t.common.cancel),
+              const SizedBox(height: 16),
+              // 内容输入框
+              TextField(
+                controller: _bodyController,
+                focusNode: _focusNode,
+                maxLines: 5,
+                maxLength: widget.maxBodyInputLimit,
+                decoration: InputDecoration(
+                  labelText: t.common.content,
+                  hintText: t.common.writeYourContentHere,
+                  border: const OutlineInputBorder(),
+                  counterText: '$_currentBodyLength/${widget.maxBodyInputLimit}',
+                  errorText: _currentBodyLength > widget.maxBodyInputLimit
+                      ? t.errors.exceedsMaxLength(max: widget.maxBodyInputLimit.toString())
+                      : null,
                 ),
-                ElevatedButton(
-                  onPressed: (_currentBodyLength > widget.maxBodyInputLimit ||
-                          _currentBodyLength == 0)
-                      ? null
-                      : _handleSubmit,
-                  child: _isLoading
-                      ? const SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(strokeWidth: 2),
-                        )
-                      : Text(t.common.send),
-                ),
-              ],
-            ),
-          ],
+              ),
+              const SizedBox(height: 16),
+              Wrap(
+                alignment: WrapAlignment.end,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                spacing: 8,
+                runSpacing: 8,
+                children: [
+                  Obx(() {
+                    final bool hasAgreed =
+                        _configService[ConfigService.RULES_AGREEMENT_KEY];
+                    return TextButton.icon(
+                      onPressed: () => _showRulesDialog(),
+                      icon: Icon(
+                        hasAgreed
+                            ? Icons.check_box
+                            : Icons.check_box_outline_blank,
+                        size: 20,
+                      ),
+                      label: Text(t.common.agreeToRules),
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                      ),
+                    );
+                  }),
+                  TextButton(
+                    onPressed: () => AppService.tryPop(),
+                    child: Text(t.common.cancel),
+                  ),
+                  ElevatedButton(
+                    onPressed: (_currentBodyLength > widget.maxBodyInputLimit ||
+                            _currentBodyLength == 0)
+                        ? null
+                        : _handleSubmit,
+                    child: _isLoading
+                        ? const SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                        : Text(t.common.send),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

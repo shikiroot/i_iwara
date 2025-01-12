@@ -220,6 +220,8 @@ class TranslationsCommonEn {
 	String get tagLimit => 'Tag Limit';
 	String get enableFloatingButtons => 'Enable Floating Buttons';
 	String get disableFloatingButtons => 'Disable Floating Buttons';
+	String get enabledFloatingButtons => 'Enabled Floating Buttons';
+	String get disabledFloatingButtons => 'Disabled Floating Buttons';
 }
 
 // Path: auth
@@ -925,6 +927,8 @@ extension on Translations {
 			case 'common.tagLimit': return 'Tag Limit';
 			case 'common.enableFloatingButtons': return 'Enable Floating Buttons';
 			case 'common.disableFloatingButtons': return 'Disable Floating Buttons';
+			case 'common.enabledFloatingButtons': return 'Enabled Floating Buttons';
+			case 'common.disabledFloatingButtons': return 'Disabled Floating Buttons';
 			case 'auth.login': return 'Login';
 			case 'auth.logout': return 'Logout';
 			case 'auth.email': return 'Email';

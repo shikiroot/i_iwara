@@ -281,74 +281,36 @@ class _ForumPostDialogState extends State<ForumPostDialog> {
 
     print('senko 发送的参数: $_selectedCategoryId, ${_titleController.text}, ${_bodyController.text}');
 
-    final result = await _forumService.postThread(
-      _selectedCategoryId!,
-      _titleController.text,
-      _bodyController.text,
-    );
+    showToastWidget(MDToastWidget(
+      message: 'senko 发送的参数: $_selectedCategoryId, ${_titleController.text}, ${_bodyController.text}',
+      type: MDToastType.success
+    ));
 
-    if (mounted) {
-      setState(() {
-        _isLoading = false;
-      });
-    }
+    // final result = await _forumService.postThread(
+    //   _selectedCategoryId!,
+    //   _titleController.text,
+    //   _bodyController.text,
+    // );
 
-    if (result.isSuccess) {
-      widget.onSubmit?.call();
-      if (mounted) {
-        AppService.tryPop();
-      }
-    } else {
-      showToastWidget(
-        MDToastWidget(
-          message: result.message,
-          type: MDToastType.error,
-        ),
-      );
-    }
-  }
+    // if (mounted) {
+    //   setState(() {
+    //     _isLoading = false;
+    //   });
+    // }
 
-  List<DropdownMenuItem<String>> _buildCategoryItems() {
-    final List<DropdownMenuItem<String>> items = [];
-
-    if (_categories != null) {
-      for (var category in _categories!) {
-        // 添加分类组标题
-        items.add(DropdownMenuItem<String>(
-          enabled: false,
-          value: 'group_${category.name}', // 添加一个唯一的值
-          child: Text(
-            category.name,
-            style: const TextStyle(
-              color: Colors.grey,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ));
-
-        // 添加子分类
-        for (var subCategory in category.children) {
-          if (!subCategory.locked) {
-            items.add(DropdownMenuItem<String>(
-              value: subCategory.id,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 16.0),
-                child: Text(
-                  '${subCategory.label} - ${subCategory.description}',
-                  style: const TextStyle(
-                    fontSize: 15,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-            ));
-          }
-        }
-      }
-    }
-
-    return items;
+    // if (result.isSuccess) {
+    //   widget.onSubmit?.call();
+    //   if (mounted) {
+    //     AppService.tryPop();
+    //   }
+    // } else {
+    //   showToastWidget(
+    //     MDToastWidget(
+    //       message: result.message,
+    //       type: MDToastType.error,
+    //     ),
+    //   );
+    // }
   }
 
   Widget _buildLoadingDropdown() {
@@ -422,171 +384,294 @@ class _ForumPostDialogState extends State<ForumPostDialog> {
         _cooldown?.limited == true && _remainingSeconds > 0;
 
     return Dialog(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Text(
-                    t.forum.createThread,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Text(
+                      t.forum.createThread,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      IconButton(
+                        onPressed: _showMarkdownHelp,
+                        icon: const Icon(Icons.help_outline),
+                        tooltip: t.markdown.markdownSyntax,
+                      ),
+                      IconButton(
+                        onPressed: _showPreview,
+                        icon: const Icon(Icons.preview),
+                        tooltip: t.common.preview,
+                      ),
+                      IconButton(
+                        onPressed: () => AppService.tryPop(),
+                        icon: const Icon(Icons.close),
+                        tooltip: t.common.close,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              if (isCoolingDown) ...[
+                const SizedBox(height: 8),
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Colors.orange.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.timer, color: Colors.orange),
+                      const SizedBox(width: 8),
+                      Text(
+                        t.forum.cooldownRemaining(
+                          minutes: (_remainingSeconds ~/ 60).toString(),
+                          seconds: (_remainingSeconds % 60).toString(),
+                        ),
+                        style: const TextStyle(color: Colors.orange),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+              const SizedBox(height: 16),
+              // 分类选择
+              if (_isLoadingCategories)
+                _buildLoadingDropdown()
+              else if (_loadError != null)
+                _buildErrorWidget()
+              else
+                InkWell(
+                  onTap: () {
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+                      ),
+                      builder: (context) => DraggableScrollableSheet(
+                        initialChildSize: 0.6,
+                        minChildSize: 0.3,
+                        maxChildSize: 0.9,
+                        expand: false,
+                        builder: (context, scrollController) => Column(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(16),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      t.forum.selectCategory,
+                                      style: const TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                  IconButton(
+                                    onPressed: () => Navigator.pop(context),
+                                    icon: const Icon(Icons.close),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const Divider(height: 1),
+                            Expanded(
+                              child: ListView.builder(
+                                controller: scrollController,
+                                itemCount: _categories?.length ?? 0,
+                                itemBuilder: (context, index) {
+                                  final category = _categories![index];
+                                  return Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+                                        child: Text(
+                                          category.name,
+                                          style: const TextStyle(
+                                            color: Colors.grey,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                      ...category.children.where((sub) => !sub.locked).map((sub) => 
+                                        ListTile(
+                                          selected: _selectedCategoryId == sub.id,
+                                          selectedTileColor: Theme.of(context).colorScheme.primaryContainer.withOpacity(0.1),
+                                          contentPadding: const EdgeInsets.fromLTRB(32, 4, 16, 4),
+                                          title: Text(
+                                            sub.label,
+                                            style: const TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                          subtitle: sub.description.isNotEmpty ? Text(
+                                            sub.description,
+                                            style: TextStyle(
+                                              fontSize: 13,
+                                              color: Colors.grey[600],
+                                            ),
+                                          ) : null,
+                                          onTap: () {
+                                            setState(() {
+                                              _selectedCategoryId = sub.id;
+                                            });
+                                            Navigator.pop(context);
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey[400]!),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          t.forum.selectCategory,
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                _selectedCategoryId != null
+                                  ? _categories!
+                                      .expand((cat) => cat.children)
+                                      .firstWhere((sub) => sub.id == _selectedCategoryId)
+                                      .label
+                                  : t.forum.selectCategory,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: _selectedCategoryId != null
+                                      ? Colors.black
+                                      : Colors.grey[600],
+                                ),
+                              ),
+                            ),
+                            Icon(
+                              Icons.arrow_drop_down,
+                              color: Colors.grey[600],
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 ),
-                Row(
-                  children: [
-                    IconButton(
-                      onPressed: _showMarkdownHelp,
-                      icon: const Icon(Icons.help_outline),
-                      tooltip: t.markdown.markdownSyntax,
-                    ),
-                    IconButton(
-                      onPressed: _showPreview,
-                      icon: const Icon(Icons.preview),
-                      tooltip: t.common.preview,
-                    ),
-                    IconButton(
-                      onPressed: () => AppService.tryPop(),
-                      icon: const Icon(Icons.close),
-                      tooltip: t.common.close,
-                    ),
-                  ],
+              const SizedBox(height: 16),
+              // 标题输入框
+              TextField(
+                controller: _titleController,
+                maxLines: 1,
+                maxLength: maxTitleLength,
+                decoration: InputDecoration(
+                  labelText: t.common.title,
+                  hintText: t.common.enterTitle,
+                  border: const OutlineInputBorder(),
+                  counterText: '$_currentTitleLength/$maxTitleLength',
+                  errorText: _currentTitleLength > maxTitleLength
+                      ? t.errors.exceedsMaxLength(max: maxTitleLength.toString())
+                      : null,
                 ),
-              ],
-            ),
-            if (isCoolingDown) ...[
-              const SizedBox(height: 8),
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: Colors.orange.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(4),
+              ),
+              const SizedBox(height: 16),
+              // 内容输入框
+              TextField(
+                controller: _bodyController,
+                maxLines: 5,
+                maxLength: maxBodyLength,
+                decoration: InputDecoration(
+                  labelText: t.common.content,
+                  hintText: t.common.writeYourContentHere,
+                  border: const OutlineInputBorder(),
+                  counterText: '$_currentBodyLength/$maxBodyLength',
+                  errorText: _currentBodyLength > maxBodyLength
+                      ? t.errors.exceedsMaxLength(max: maxBodyLength.toString())
+                      : null,
                 ),
-                child: Row(
-                  children: [
-                    const Icon(Icons.timer, color: Colors.orange),
-                    const SizedBox(width: 8),
-                    Text(
-                      t.forum.cooldownRemaining(
-                        minutes: (_remainingSeconds ~/ 60).toString(),
-                        seconds: (_remainingSeconds % 60).toString(),
+              ),
+              const SizedBox(height: 16),
+              Wrap(
+                alignment: WrapAlignment.end,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                spacing: 8,
+                runSpacing: 8,
+                children: [
+                  Obx(() {
+                    final bool hasAgreed =
+                        _configService[ConfigService.RULES_AGREEMENT_KEY];
+                    return TextButton.icon(
+                      onPressed: () => _showRulesDialog(),
+                      icon: Icon(
+                        hasAgreed
+                            ? Icons.check_box
+                            : Icons.check_box_outline_blank,
+                        size: 20,
                       ),
-                      style: const TextStyle(color: Colors.orange),
-                    ),
-                  ],
-                ),
+                      label: Text(t.common.agreeToRules),
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                      ),
+                    );
+                  }),
+                  TextButton(
+                    onPressed: () => AppService.tryPop(),
+                    child: Text(t.common.cancel),
+                  ),
+                  ElevatedButton(
+                    onPressed: isCoolingDown ||
+                            (_currentTitleLength > maxTitleLength ||
+                                _currentTitleLength == 0) ||
+                            (_currentBodyLength > maxBodyLength ||
+                                _currentBodyLength == 0) ||
+                            _selectedCategoryId == null
+                        ? null
+                        : _handleSubmit,
+                    child: _isLoading
+                        ? const SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                        : Text(t.common.send),
+                  ),
+                ],
               ),
             ],
-            const SizedBox(height: 16),
-            // 分类选择
-            if (_isLoadingCategories)
-              _buildLoadingDropdown()
-            else if (_loadError != null)
-              _buildErrorWidget()
-            else
-              DropdownButtonFormField<String>(
-                value: _selectedCategoryId,
-                decoration: InputDecoration(
-                  labelText: t.forum.selectCategory,
-                  border: const OutlineInputBorder(),
-                ),
-                items: _buildCategoryItems(),
-                onChanged: (String? value) {
-                  // 检查是否是分组标题
-                  if (value != null && !value.startsWith('group_')) {
-                    setState(() {
-                      _selectedCategoryId = value;
-                    });
-                  }
-                },
-              ),
-            const SizedBox(height: 16),
-            // 标题输入框
-            TextField(
-              controller: _titleController,
-              maxLines: 1,
-              maxLength: maxTitleLength,
-              decoration: InputDecoration(
-                labelText: t.common.title,
-                hintText: t.common.enterTitle,
-                border: const OutlineInputBorder(),
-                counterText: '$_currentTitleLength/$maxTitleLength',
-                errorText: _currentTitleLength > maxTitleLength
-                    ? t.errors.exceedsMaxLength(max: maxTitleLength.toString())
-                    : null,
-              ),
-            ),
-            const SizedBox(height: 16),
-            // 内容输入框
-            TextField(
-              controller: _bodyController,
-              maxLines: 5,
-              maxLength: maxBodyLength,
-              decoration: InputDecoration(
-                labelText: t.common.content,
-                hintText: t.common.writeYourContentHere,
-                border: const OutlineInputBorder(),
-                counterText: '$_currentBodyLength/$maxBodyLength',
-                errorText: _currentBodyLength > maxBodyLength
-                    ? t.errors.exceedsMaxLength(max: maxBodyLength.toString())
-                    : null,
-              ),
-            ),
-            const SizedBox(height: 16),
-            Wrap(
-              alignment: WrapAlignment.end,
-              crossAxisAlignment: WrapCrossAlignment.center,
-              spacing: 8,
-              runSpacing: 8,
-              children: [
-                Obx(() {
-                  final bool hasAgreed =
-                      _configService[ConfigService.RULES_AGREEMENT_KEY];
-                  return TextButton.icon(
-                    onPressed: () => _showRulesDialog(),
-                    icon: Icon(
-                      hasAgreed
-                          ? Icons.check_box
-                          : Icons.check_box_outline_blank,
-                      size: 20,
-                    ),
-                    label: Text(t.common.agreeToRules),
-                    style: TextButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                    ),
-                  );
-                }),
-                TextButton(
-                  onPressed: () => AppService.tryPop(),
-                  child: Text(t.common.cancel),
-                ),
-                ElevatedButton(
-                  onPressed: isCoolingDown ||
-                          (_currentTitleLength > maxTitleLength ||
-                              _currentTitleLength == 0) ||
-                          (_currentBodyLength > maxBodyLength ||
-                              _currentBodyLength == 0) ||
-                          _selectedCategoryId == null
-                      ? null
-                      : _handleSubmit,
-                  child: _isLoading
-                      ? const SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(strokeWidth: 2),
-                        )
-                      : Text(t.common.send),
-                ),
-              ],
-            ),
-          ],
+          ),
         ),
       ),
     );

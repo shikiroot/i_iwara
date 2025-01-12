@@ -157,6 +157,8 @@ common:
   tagLimit: Tag Limit
   enableFloatingButtons: Enable Floating Buttons
   disableFloatingButtons: Disable Floating Buttons
+  enabledFloatingButtons: Enabled Floating Buttons
+  disabledFloatingButtons: Disabled Floating Buttons
 auth:
   login: Login
   logout: Logout

@@ -158,6 +158,8 @@ common:
   tagLimit: タグ上限
   enableFloatingButtons: フローティングボタンを有効
   disableFloatingButtons: フローティングボタンを無効
+  enabledFloatingButtons: フローティングボタンが有効
+  disabledFloatingButtons: フローティングボタンが無効
 auth:
   login: ログイン
   logout: ログアウト
