@@ -506,6 +506,9 @@ class _TranslationsSettingsJa implements TranslationsSettingsEn {
 	@override String get history => '履歴';
 	@override String get autoRecordHistory => '自動記録履歴';
 	@override String get autoRecordHistoryDesc => '自動記録您觀看過的影片和圖庫等信息';
+	@override String get showUnprocessedMarkdownText => '未処理のMarkdownテキストを表示';
+	@override String get showUnprocessedMarkdownTextDesc => 'Markdownの元のテキストを表示';
+	@override String get markdown => 'Markdown';
 }
 
 // Path: signIn
@@ -1131,6 +1134,9 @@ extension on TranslationsJa {
 			case 'settings.history': return '履歴';
 			case 'settings.autoRecordHistory': return '自動記録履歴';
 			case 'settings.autoRecordHistoryDesc': return '自動記録您觀看過的影片和圖庫等信息';
+			case 'settings.showUnprocessedMarkdownText': return '未処理のMarkdownテキストを表示';
+			case 'settings.showUnprocessedMarkdownTextDesc': return 'Markdownの元のテキストを表示';
+			case 'settings.markdown': return 'Markdown';
 			case 'signIn.pleaseLoginFirst': return 'サインインする前にログインしてください';
 			case 'signIn.alreadySignedInToday': return '今日は既にサインインしています！';
 			case 'signIn.youDidNotStickToTheSignIn': return 'サインインを続けることができませんでした。';

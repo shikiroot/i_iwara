@@ -41,6 +41,7 @@ class ConfigService extends GetxService {
   static const String AUTO_CHECK_UPDATE = 'auto_check_update';
   static const String RULES_AGREEMENT_KEY = 'rules_agreement'; // 规则同意
   static const String AUTO_RECORD_HISTORY_KEY = 'auto_record_history'; // 自动记录历史记录
+  static const String SHOW_UNPROCESSED_MARKDOWN_TEXT_KEY = 'show_unprocessed_markdown_text'; // 显示未处理的markdown文本
 
   // 所有配置项的 Map
   final settings = <String, dynamic>{
@@ -71,6 +72,7 @@ class ConfigService extends GetxService {
     AUTO_CHECK_UPDATE: true.obs,
     RULES_AGREEMENT_KEY: false.obs,
     AUTO_RECORD_HISTORY_KEY: true.obs,
+    SHOW_UNPROCESSED_MARKDOWN_TEXT_KEY: true.obs,
   }.obs;
 
   late final Rx<Sort> _currentTranslationSort;

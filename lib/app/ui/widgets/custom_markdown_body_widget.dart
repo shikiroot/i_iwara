@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:i_iwara/app/models/api_result.model.dart';
 import 'package:i_iwara/app/services/app_service.dart';
 import 'package:i_iwara/app/services/light_service.dart';
+import 'package:i_iwara/app/services/config_service.dart';
 import 'package:i_iwara/app/ui/widgets/MDToastWidget.dart';
 import 'package:i_iwara/i18n/strings.g.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
@@ -34,6 +35,7 @@ class _CustomMarkdownBodyState extends State<CustomMarkdownBody> {
   String _displayData = "";
   bool _isProcessing = false;
   bool _showOriginal = false;
+  late final ConfigService _configService;
 
   @override
   void dispose() {
@@ -44,8 +46,9 @@ class _CustomMarkdownBodyState extends State<CustomMarkdownBody> {
   @override
   void initState() {
     super.initState();
+    _configService = Get.find<ConfigService>();
     _displayData = widget.data;
-    _showOriginal = widget.initialShowUnprocessedText ?? false;
+    _showOriginal = widget.initialShowUnprocessedText ?? _configService[ConfigService.SHOW_UNPROCESSED_MARKDOWN_TEXT_KEY];
     _processMarkdown(widget.data);
   }
 

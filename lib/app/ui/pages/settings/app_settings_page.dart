@@ -54,6 +54,50 @@ class AppSettingsPage extends StatelessWidget {
                       configService[ConfigService.AUTO_RECORD_HISTORY_KEY] = value;
                       CommonConstants.enableHistory = value;
                     },
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(16),
+                        bottomRight: Radius.circular(16),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 16),
+          Card(
+            elevation: 2,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Text(
+                    slang.t.settings.markdown,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                ),
+                const Divider(height: 1),
+                Obx(
+                  () => SwitchListTile(
+                    title: Text(slang.t.settings.showUnprocessedMarkdownText),
+                    subtitle: Text(slang.t.settings.showUnprocessedMarkdownTextDesc),
+                    value: configService[ConfigService.SHOW_UNPROCESSED_MARKDOWN_TEXT_KEY],
+                    onChanged: (value) {
+                      configService[ConfigService.SHOW_UNPROCESSED_MARKDOWN_TEXT_KEY] = value;
+                    },
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(16),
+                        bottomRight: Radius.circular(16),
+                      ),
+                    ),
                   ),
                 ),
               ],

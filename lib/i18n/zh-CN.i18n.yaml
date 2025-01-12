@@ -382,6 +382,9 @@ settings:
   history: 历史记录
   autoRecordHistory: 自动记录历史记录
   autoRecordHistoryDesc: 自动记录您观看过的视频和图库等信息
+  showUnprocessedMarkdownText: 显示未处理文本
+  showUnprocessedMarkdownTextDesc: 显示Markdown的原始文本
+  markdown: Markdown
 
 signIn:
   pleaseLoginFirst: 请先登录后再签到

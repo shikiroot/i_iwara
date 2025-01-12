@@ -511,6 +511,9 @@ class _TranslationsSettingsZhCn implements TranslationsSettingsEn {
 	@override String get history => '历史记录';
 	@override String get autoRecordHistory => '自动记录历史记录';
 	@override String get autoRecordHistoryDesc => '自动记录您观看过的视频和图库等信息';
+	@override String get showUnprocessedMarkdownText => '显示未处理文本';
+	@override String get showUnprocessedMarkdownTextDesc => '显示Markdown的原始文本';
+	@override String get markdown => 'Markdown';
 }
 
 // Path: signIn
@@ -1141,6 +1144,9 @@ extension on TranslationsZhCn {
 			case 'settings.history': return '历史记录';
 			case 'settings.autoRecordHistory': return '自动记录历史记录';
 			case 'settings.autoRecordHistoryDesc': return '自动记录您观看过的视频和图库等信息';
+			case 'settings.showUnprocessedMarkdownText': return '显示未处理文本';
+			case 'settings.showUnprocessedMarkdownTextDesc': return '显示Markdown的原始文本';
+			case 'settings.markdown': return 'Markdown';
 			case 'signIn.pleaseLoginFirst': return '请先登录后再签到';
 			case 'signIn.alreadySignedInToday': return '您今天已经签到过了！';
 			case 'signIn.youDidNotStickToTheSignIn': return '您未能坚持签到。';

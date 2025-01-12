@@ -510,6 +510,9 @@ class TranslationsSettingsEn {
 	String get history => 'History';
 	String get autoRecordHistory => 'Auto Record History';
 	String get autoRecordHistoryDesc => 'Auto record the videos and images you have watched';
+	String get showUnprocessedMarkdownText => 'Show Unprocessed Markdown Text';
+	String get showUnprocessedMarkdownTextDesc => 'Show the original text of the markdown';
+	String get markdown => 'Markdown';
 }
 
 // Path: signIn
@@ -1135,6 +1138,9 @@ extension on Translations {
 			case 'settings.history': return 'History';
 			case 'settings.autoRecordHistory': return 'Auto Record History';
 			case 'settings.autoRecordHistoryDesc': return 'Auto record the videos and images you have watched';
+			case 'settings.showUnprocessedMarkdownText': return 'Show Unprocessed Markdown Text';
+			case 'settings.showUnprocessedMarkdownTextDesc': return 'Show the original text of the markdown';
+			case 'settings.markdown': return 'Markdown';
 			case 'signIn.pleaseLoginFirst': return 'Please login first';
 			case 'signIn.alreadySignedInToday': return 'You have already signed in today!';
 			case 'signIn.youDidNotStickToTheSignIn': return 'You did not stick to the sign in.';

@@ -375,6 +375,9 @@ settings:
   history: 履歴
   autoRecordHistory: 自動記録履歴
   autoRecordHistoryDesc: 自動記録您觀看過的影片和圖庫等信息
+  showUnprocessedMarkdownText: 未処理のMarkdownテキストを表示
+  showUnprocessedMarkdownTextDesc: Markdownの元のテキストを表示
+  markdown: Markdown
 
 signIn:
   pleaseLoginFirst: サインインする前にログインしてください

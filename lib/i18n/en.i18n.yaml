@@ -374,7 +374,9 @@ settings:
   history: History
   autoRecordHistory: Auto Record History
   autoRecordHistoryDesc: Auto record the videos and images you have watched
-
+  showUnprocessedMarkdownText: Show Unprocessed Markdown Text
+  showUnprocessedMarkdownTextDesc: Show the original text of the markdown
+  markdown: Markdown
 
 signIn:
   pleaseLoginFirst: Please login first
