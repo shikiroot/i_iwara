@@ -92,7 +92,7 @@ class ForumThreadModel {
   final String title; // 标题
   final bool locked; // 是否锁定 决定是否可以发评论
   final bool sticky; // 是否置顶
-  final ForumPostModel? lastPost; // 最后回复的帖子
+  final ThreadCommentModel? lastPost; // 最后回复的帖子
   final int numViews; // 浏览数
   final int numPosts; // 评论数
   final DateTime createdAt; // 创建时间
@@ -124,7 +124,7 @@ class ForumThreadModel {
       title: json['title'],
       locked: json['locked'],
       sticky: json['sticky'],
-      lastPost: json['lastPost'] != null ? ForumPostModel.fromJson(json['lastPost']) : null,
+      lastPost: json['lastPost'] != null ? ThreadCommentModel.fromJson(json['lastPost']) : null,
       numViews: json['numViews'],
       numPosts: json['numPosts'],
       createdAt: DateTime.parse(json['createdAt']),
@@ -153,18 +153,18 @@ class ForumThreadModel {
 }
 
 /// 论坛帖子评论
-class ForumPostModel {
+class ThreadCommentModel {
   final String id;
   final bool approved; // 是否审核通过
   final String body; // 评论内容
-  final int replyNum; // 回复数
+  final int replyNum; // 回复数，其实是楼层号，从0开始
   final User user; // 评论者
-  final dynamic thread; // 帖子
+  final dynamic thread; // 帖子 nullable
   final DateTime createdAt; // 创建时间
   final DateTime updatedAt; // 更新时间
   final String threadId; // 帖子ID
 
-  ForumPostModel({
+  ThreadCommentModel({
     required this.id,
     required this.approved,
     required this.body,
@@ -176,8 +176,8 @@ class ForumPostModel {
     required this.threadId,
   });
 
-  factory ForumPostModel.fromJson(Map<String, dynamic> json) {
-    return ForumPostModel(
+  factory ThreadCommentModel.fromJson(Map<String, dynamic> json) {
+    return ThreadCommentModel(
       id: json['id'],
       approved: json['approved'],
       body: json['body'],

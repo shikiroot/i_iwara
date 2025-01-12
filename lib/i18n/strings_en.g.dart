@@ -674,6 +674,7 @@ class TranslationsForumEn {
 	late final TranslationsForumGroupsEn groups = TranslationsForumGroupsEn._(_root);
 	late final TranslationsForumLeafNamesEn leafNames = TranslationsForumLeafNamesEn._(_root);
 	late final TranslationsForumLeafDescriptionsEn leafDescriptions = TranslationsForumLeafDescriptionsEn._(_root);
+	String get reply => 'Reply';
 }
 
 // Path: forum.errors
@@ -1266,6 +1267,7 @@ extension on Translations {
 			case 'forum.leafDescriptions.support_ja': return 'Help to resolve website-related issues';
 			case 'forum.leafDescriptions.korean': return 'Discussions related to Korean';
 			case 'forum.leafDescriptions.other': return 'Other unclassified content';
+			case 'forum.reply': return 'Reply';
 			default: return null;
 		}
 	}

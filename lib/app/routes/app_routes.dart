@@ -51,6 +51,8 @@ abstract class Routes {
   static String POST_DETAIL(String id) => '/post/$id';
 
   static FORUM_THREAD_LIST(String categoryId) => '/forum/$categoryId';
+
+  static FORUM_THREAD_DETAIL(String categoryId, String threadId) => '/forum/$categoryId/$threadId';
 }
 
 abstract class _Paths {

@@ -7,7 +7,6 @@ import 'package:i_iwara/app/services/api_service.dart';
 import 'package:i_iwara/common/constants.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
 import 'package:i_iwara/i18n/strings.g.dart' as slang;
-import 'package:i_iwara/app/models/page_data.model.dart';
 
 // 分类名称映射
 final Map<String, String> groupNames = {
@@ -63,6 +62,35 @@ final Map<String, String> idDescriptions = {
 
 class ForumService extends GetxService {
   final ApiService _apiService = Get.find();
+
+  /// 获取帖子详情
+  ///  /forum/:categoryId/:threadId
+  /// @params page
+  /// @params limit
+  Future<ApiResult<Map<String, dynamic>>> fetchForumThread(
+      String categoryId, String threadId, {int page = 0, int limit = 20}) async {
+    try {
+      var response = await _apiService.get(ApiConstants.forumThreadDetail(categoryId, threadId), queryParameters: {
+        'page': page,
+        'limit': limit,
+      });
+
+      final ForumThreadModel thread = ForumThreadModel.fromJson(response.data['thread']);
+      final List<ThreadCommentModel> posts = (response.data['results'] as List)
+          .map((post) => ThreadCommentModel.fromJson(post))
+          .toList();
+      return ApiResult.success(data: {
+        'thread': thread,
+        'posts': posts,
+        'page': response.data['page'],
+        'limit': response.data['limit'],
+        'count': response.data['count'],
+      });
+    } catch (e) {
+      LogUtils.e('获取帖子详情失败', tag: 'ForumService', error: e);
+      return ApiResult.fail(slang.t.errors.failedToFetchData);
+    }
+  }
 
   /// 获取论坛帖子列表
   Future<ApiResult<Map<String, dynamic>>> fetchForumThreads(
@@ -208,14 +236,14 @@ class ForumService extends GetxService {
   }
 
   /// 发送评论
-  Future<ApiResult<ForumPostModel>> postReply(
+  Future<ApiResult<ThreadCommentModel>> postReply(
       String threadId, String body) async {
     try {
       var response = await _apiService
           .post(ApiConstants.forumThreadReply(threadId), data: {
         'body': body,
       });
-      return ApiResult.success(data: ForumPostModel.fromJson(response.data));
+      return ApiResult.success(data: ThreadCommentModel.fromJson(response.data));
     } catch (e) {
       LogUtils.e('发送评论失败', tag: 'ForumService', error: e);
       return ApiResult.fail(slang.t.errors.failedToFetchData);

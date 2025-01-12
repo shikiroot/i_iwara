@@ -670,6 +670,7 @@ class _TranslationsForumJa implements TranslationsForumEn {
 	@override late final _TranslationsForumGroupsJa groups = _TranslationsForumGroupsJa._(_root);
 	@override late final _TranslationsForumLeafNamesJa leafNames = _TranslationsForumLeafNamesJa._(_root);
 	@override late final _TranslationsForumLeafDescriptionsJa leafDescriptions = _TranslationsForumLeafDescriptionsJa._(_root);
+	@override String get reply => '回覆';
 }
 
 // Path: forum.errors
@@ -1262,6 +1263,7 @@ extension on TranslationsJa {
 			case 'forum.leafDescriptions.support_ja': return 'サイト関連の問題を解決する手助け';
 			case 'forum.leafDescriptions.korean': return '韓国語に関する議論';
 			case 'forum.leafDescriptions.other': return 'その他の未分類のコンテンツ';
+			case 'forum.reply': return '回覆';
 			default: return null;
 		}
 	}

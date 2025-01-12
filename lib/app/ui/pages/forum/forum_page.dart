@@ -55,11 +55,9 @@ class _ForumPageState extends State<ForumPage> {
     }
   }
 
-  void _showPostDialog([String? initialCategoryId]) {
+  void _showPostDialog() {
     Get.dialog(
-      ForumPostDialog(
-        initialCategoryId: initialCategoryId,
-      ),
+      const ForumPostDialog(),
     );
   }
 
@@ -363,7 +361,7 @@ class _ForumPageState extends State<ForumPage> {
                                   Expanded(
                                     child: GestureDetector(
                                       onTap: () {
-                                        NaviService.navigateToForumThreadDetailPage(subCategory.lastThread!.id);
+                                        NaviService.navigateToForumThreadDetailPage(subCategory.id, subCategory.lastThread!.id);
                                       },
                                       child: Text(
                                         subCategory.lastThread!.title,
@@ -518,7 +516,7 @@ class _ForumPageState extends State<ForumPage> {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            NaviService.navigateToForumThreadDetailPage(subCategory.lastThread!.id);
+                            NaviService.navigateToForumThreadDetailPage(subCategory.id, subCategory.lastThread!.id);
                           },
                           child: Text(
                             subCategory.lastThread!.title,

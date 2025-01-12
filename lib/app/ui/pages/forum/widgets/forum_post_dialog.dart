@@ -15,12 +15,12 @@ import 'package:i_iwara/i18n/strings.g.dart';
 import 'package:oktoast/oktoast.dart';
 
 class ForumPostDialog extends StatefulWidget {
-  final String? initialCategoryId;
-
   const ForumPostDialog({
     super.key,
-    this.initialCategoryId,
+    this.onSubmit,
   });
+
+  final VoidCallback? onSubmit;
 
   @override
   State<ForumPostDialog> createState() => _ForumPostDialogState();
@@ -52,18 +52,21 @@ class _ForumPostDialogState extends State<ForumPostDialog> {
     super.initState();
     _titleController = TextEditingController();
     _bodyController = TextEditingController();
-    _selectedCategoryId = widget.initialCategoryId;
-    
+
     _titleController.addListener(() {
-      setState(() {
-        _currentTitleLength = _titleController.text.length;
-      });
+      if (mounted) {
+        setState(() {
+          _currentTitleLength = _titleController.text.length;
+        });
+      }
     });
-    
+
     _bodyController.addListener(() {
-      setState(() {
-        _currentBodyLength = _bodyController.text.length;
-      });
+      if (mounted) {
+        setState(() {
+          _currentBodyLength = _bodyController.text.length;
+        });
+      }
     });
 
     _loadInitialData();
@@ -78,15 +81,19 @@ class _ForumPostDialogState extends State<ForumPostDialog> {
     // 加载分类树
     final categoryResult = await _forumService.getForumCategoryTree();
     if (categoryResult.isSuccess) {
-      setState(() {
-        _categories = categoryResult.data;
-        _isLoadingCategories = false;
-      });
+      if (mounted) {
+        setState(() {
+          _categories = categoryResult.data;
+          _isLoadingCategories = false;
+        });
+      }
     } else {
-      setState(() {
-        _loadError = categoryResult.message;
-        _isLoadingCategories = false;
-      });
+      if (mounted) {
+        setState(() {
+          _loadError = categoryResult.message;
+          _isLoadingCategories = false;
+        });
+      }
     }
 
     // 检查冷却时间
@@ -96,27 +103,31 @@ class _ForumPostDialogState extends State<ForumPostDialog> {
   Future<void> _checkCooldown() async {
     final cooldownResult = await _forumService.fetchPostCollingInfo();
     if (cooldownResult.isSuccess && cooldownResult.data != null) {
-      setState(() {
-        _cooldown = cooldownResult.data;
-        if (_cooldown!.limited) {
-          _remainingSeconds = _cooldown!.remaining;
-          _startCooldownTimer();
-        }
-      });
+      if (mounted) {
+        setState(() {
+          _cooldown = cooldownResult.data;
+          if (_cooldown!.limited) {
+            _remainingSeconds = _cooldown!.remaining;
+            _startCooldownTimer();
+          }
+        });
+      }
     }
   }
 
   void _startCooldownTimer() {
     _cooldownTimer?.cancel();
     _cooldownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      setState(() {
-        if (_remainingSeconds > 0) {
-          _remainingSeconds--;
-        } else {
-          timer.cancel();
-          _checkCooldown();
-        }
-      });
+      if (mounted) {
+        setState(() {
+          if (_remainingSeconds > 0) {
+            _remainingSeconds--;
+          } else {
+            timer.cancel();
+            _checkCooldown();
+          }
+        });
+      }
     });
   }
 
@@ -220,7 +231,9 @@ class _ForumPostDialogState extends State<ForumPostDialog> {
   }
 
   void _handleSubmit() async {
-    if (_currentTitleLength > maxTitleLength || _currentTitleLength == 0) return;
+    if (_currentTitleLength > maxTitleLength || _currentTitleLength == 0) {
+      return;
+    }
     if (_currentBodyLength > maxBodyLength || _currentBodyLength == 0) return;
     if (_selectedCategoryId == null) {
       showToastWidget(
@@ -260,9 +273,13 @@ class _ForumPostDialogState extends State<ForumPostDialog> {
       return;
     }
 
-    setState(() {
-      _isLoading = true;
-    });
+    if (mounted) {
+      setState(() {
+        _isLoading = true;
+      });
+    }
+
+    print('senko 发送的参数: $_selectedCategoryId, ${_titleController.text}, ${_bodyController.text}');
 
     final result = await _forumService.postThread(
       _selectedCategoryId!,
@@ -270,11 +287,14 @@ class _ForumPostDialogState extends State<ForumPostDialog> {
       _bodyController.text,
     );
 
-    setState(() {
-      _isLoading = false;
-    });
+    if (mounted) {
+      setState(() {
+        _isLoading = false;
+      });
+    }
 
     if (result.isSuccess) {
+      widget.onSubmit?.call();
       if (mounted) {
         AppService.tryPop();
       }
@@ -290,12 +310,13 @@ class _ForumPostDialogState extends State<ForumPostDialog> {
 
   List<DropdownMenuItem<String>> _buildCategoryItems() {
     final List<DropdownMenuItem<String>> items = [];
-    
+
     if (_categories != null) {
       for (var category in _categories!) {
         // 添加分类组标题
         items.add(DropdownMenuItem<String>(
           enabled: false,
+          value: 'group_${category.name}', // 添加一个唯一的值
           child: Text(
             category.name,
             style: const TextStyle(
@@ -304,7 +325,7 @@ class _ForumPostDialogState extends State<ForumPostDialog> {
             ),
           ),
         ));
-        
+
         // 添加子分类
         for (var subCategory in category.children) {
           if (!subCategory.locked) {
@@ -312,14 +333,21 @@ class _ForumPostDialogState extends State<ForumPostDialog> {
               value: subCategory.id,
               child: Padding(
                 padding: const EdgeInsets.only(left: 16.0),
-                child: Text(subCategory.label),
+                child: Text(
+                  '${subCategory.label} - ${subCategory.description}',
+                  style: const TextStyle(
+                    fontSize: 15,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
             ));
           }
         }
       }
     }
-    
+
     return items;
   }
 
@@ -390,8 +418,9 @@ class _ForumPostDialogState extends State<ForumPostDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final bool isCoolingDown = _cooldown?.limited == true && _remainingSeconds > 0;
-    
+    final bool isCoolingDown =
+        _cooldown?.limited == true && _remainingSeconds > 0;
+
     return Dialog(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -470,9 +499,12 @@ class _ForumPostDialogState extends State<ForumPostDialog> {
                 ),
                 items: _buildCategoryItems(),
                 onChanged: (String? value) {
-                  setState(() {
-                    _selectedCategoryId = value;
-                  });
+                  // 检查是否是分组标题
+                  if (value != null && !value.startsWith('group_')) {
+                    setState(() {
+                      _selectedCategoryId = value;
+                    });
+                  }
                 },
               ),
             const SizedBox(height: 16),
@@ -486,7 +518,7 @@ class _ForumPostDialogState extends State<ForumPostDialog> {
                 hintText: t.common.enterTitle,
                 border: const OutlineInputBorder(),
                 counterText: '$_currentTitleLength/$maxTitleLength',
-                errorText: _currentTitleLength > maxTitleLength 
+                errorText: _currentTitleLength > maxTitleLength
                     ? t.errors.exceedsMaxLength(max: maxTitleLength.toString())
                     : null,
               ),
@@ -502,7 +534,7 @@ class _ForumPostDialogState extends State<ForumPostDialog> {
                 hintText: t.common.writeYourContentHere,
                 border: const OutlineInputBorder(),
                 counterText: '$_currentBodyLength/$maxBodyLength',
-                errorText: _currentBodyLength > maxBodyLength 
+                errorText: _currentBodyLength > maxBodyLength
                     ? t.errors.exceedsMaxLength(max: maxBodyLength.toString())
                     : null,
               ),
@@ -515,11 +547,14 @@ class _ForumPostDialogState extends State<ForumPostDialog> {
               runSpacing: 8,
               children: [
                 Obx(() {
-                  final bool hasAgreed = _configService[ConfigService.RULES_AGREEMENT_KEY];
+                  final bool hasAgreed =
+                      _configService[ConfigService.RULES_AGREEMENT_KEY];
                   return TextButton.icon(
                     onPressed: () => _showRulesDialog(),
                     icon: Icon(
-                      hasAgreed ? Icons.check_box : Icons.check_box_outline_blank,
+                      hasAgreed
+                          ? Icons.check_box
+                          : Icons.check_box_outline_blank,
                       size: 20,
                     ),
                     label: Text(t.common.agreeToRules),
@@ -534,9 +569,11 @@ class _ForumPostDialogState extends State<ForumPostDialog> {
                 ),
                 ElevatedButton(
                   onPressed: isCoolingDown ||
-                           (_currentTitleLength > maxTitleLength || _currentTitleLength == 0) ||
-                           (_currentBodyLength > maxBodyLength || _currentBodyLength == 0) ||
-                           _selectedCategoryId == null
+                          (_currentTitleLength > maxTitleLength ||
+                              _currentTitleLength == 0) ||
+                          (_currentBodyLength > maxBodyLength ||
+                              _currentBodyLength == 0) ||
+                          _selectedCategoryId == null
                       ? null
                       : _handleSubmit,
                   child: _isLoading
@@ -554,4 +591,4 @@ class _ForumPostDialogState extends State<ForumPostDialog> {
       ),
     );
   }
-} 
+}

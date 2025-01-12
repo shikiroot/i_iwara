@@ -5,13 +5,13 @@ import 'package:i_iwara/app/models/user.model.dart';
 import 'package:i_iwara/app/services/app_service.dart';
 import 'package:i_iwara/app/services/forum_service.dart';
 import 'package:i_iwara/app/ui/pages/forum/controllers/thread_list_repository.dart';
+import 'package:i_iwara/app/ui/pages/forum/widgets/forum_post_dialog.dart';
 import 'package:i_iwara/app/ui/widgets/avatar_widget.dart';
 import 'package:i_iwara/app/ui/widgets/my_loading_more_indicator_widget.dart';
 import 'package:i_iwara/common/constants.dart';
 import 'package:i_iwara/utils/common_utils.dart';
 import 'package:i_iwara/utils/widget_extensions.dart';
 import 'package:loading_more_list/loading_more_list.dart';
-import 'package:i_iwara/i18n/strings.g.dart' as slang;
 
 class ThreadListPage extends StatefulWidget {
   final String categoryId;
@@ -93,7 +93,7 @@ class _ThreadListPageState extends State<ThreadListPage> {
           ),
           IconButton(
             icon: const Icon(Icons.add),
-            onPressed: () => _showCreateThreadDialog(context),
+            onPressed: () => _showCreateThreadDialog(context, widget.categoryId),
           ),
         ],
       ),
@@ -145,7 +145,7 @@ class _ThreadListPageState extends State<ThreadListPage> {
       clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: () {
-          NaviService.navigateToForumThreadDetailPage(thread.id);
+          NaviService.navigateToForumThreadDetailPage(widget.categoryId, thread.id);
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -370,7 +370,9 @@ class _ThreadListPageState extends State<ThreadListPage> {
     );
   }
 
-  void _showCreateThreadDialog(BuildContext context) {
-    // TODO: 显示创建帖子对话框
+  void _showCreateThreadDialog(BuildContext context, String categoryId) {
+    Get.dialog(
+      const ForumPostDialog(),
+    );
   }
 } 
