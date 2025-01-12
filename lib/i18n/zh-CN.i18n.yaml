@@ -558,3 +558,5 @@ forum:
   copySuccess: 已复制到剪贴板
   copySuccessForMessage: '已复制到剪贴板: ${str}'
   editReply: 编辑回覆
+  editTitle: 编辑标题
+  submit: 提交

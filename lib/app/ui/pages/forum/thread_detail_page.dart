@@ -19,6 +19,7 @@ import 'package:shimmer/shimmer.dart';
 import 'package:i_iwara/i18n/strings.g.dart' as slang;
 import 'widgets/thread_comment_card_widget.dart';
 import 'package:flutter/services.dart';
+import 'package:i_iwara/app/ui/pages/forum/widgets/forum_edit_title_dialog.dart';
 
 class ThreadDetailPage extends StatefulWidget {
   final String threadId;
@@ -421,18 +422,16 @@ class _ThreadDetailPageState extends State<ThreadDetailPage> with SingleTickerPr
                               Row(
                                 children: [
                                   Expanded(
-                                    child: SelectableText(
+                                    child: Text(
                                       _thread.value!.title,
                                       style: const TextStyle(
-                                        fontSize: 18,
+                                        fontSize: 20,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                   ),
                                   IconButton(
-                                    icon: const Icon(Icons.translate, size: 24),
-                                    padding: EdgeInsets.zero,
-                                    constraints: const BoxConstraints(),
+                                    icon: const Icon(Icons.translate),
                                     onPressed: () {
                                       Get.dialog(
                                         TranslationDialog(
@@ -440,7 +439,25 @@ class _ThreadDetailPageState extends State<ThreadDetailPage> with SingleTickerPr
                                         ),
                                       );
                                     },
+                                    tooltip: t.common.translate,
                                   ),
+                                  if (_userService.currentUser.value?.id == _thread.value!.user.id)
+                                    IconButton(
+                                      icon: const Icon(Icons.edit),
+                                      onPressed: () {
+                                        Get.dialog(
+                                          ForumEditTitleDialog(
+                                            postId: _thread.value!.id,
+                                            initialTitle: _thread.value!.title,
+                                            repository: listSourceRepository,
+                                            onSubmit: () {
+                                              listSourceRepository.refresh();
+                                            },
+                                          ),
+                                        );
+                                      },
+                                      tooltip: t.forum.editTitle,
+                                    ),
                                 ],
                               ),
                             ],

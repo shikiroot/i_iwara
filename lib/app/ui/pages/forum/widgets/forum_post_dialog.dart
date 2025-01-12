@@ -279,38 +279,36 @@ class _ForumPostDialogState extends State<ForumPostDialog> {
       });
     }
 
-    print('senko 发送的参数: $_selectedCategoryId, ${_titleController.text}, ${_bodyController.text}');
+    final result = await _forumService.postThread(
+      _selectedCategoryId!,
+      _titleController.text,
+      _bodyController.text,
+    );
 
-    showToastWidget(MDToastWidget(
-      message: 'senko 发送的参数: $_selectedCategoryId, ${_titleController.text}, ${_bodyController.text}',
-      type: MDToastType.success
-    ));
+    if (mounted) {
+      setState(() {
+        _isLoading = false;
+      });
+    }
 
-    // final result = await _forumService.postThread(
-    //   _selectedCategoryId!,
-    //   _titleController.text,
-    //   _bodyController.text,
-    // );
-
-    // if (mounted) {
-    //   setState(() {
-    //     _isLoading = false;
-    //   });
-    // }
-
-    // if (result.isSuccess) {
-    //   widget.onSubmit?.call();
-    //   if (mounted) {
-    //     AppService.tryPop();
-    //   }
-    // } else {
-    //   showToastWidget(
-    //     MDToastWidget(
-    //       message: result.message,
-    //       type: MDToastType.error,
-    //     ),
-    //   );
-    // }
+    if (result.isSuccess) {
+      widget.onSubmit?.call();
+      if (mounted) {
+        AppService.tryPop();
+        // 跳转到帖子详情页
+        NaviService.navigateToForumThreadDetailPage(
+          result.data!.section,
+          result.data!.id,
+        );
+      }
+    } else {
+      showToastWidget(
+        MDToastWidget(
+          message: result.message,
+          type: MDToastType.error,
+        ),
+      );
+    }
   }
 
   Widget _buildLoadingDropdown() {

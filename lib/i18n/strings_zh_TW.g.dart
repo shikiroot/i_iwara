@@ -680,6 +680,8 @@ class _TranslationsForumZhTw implements TranslationsForumEn {
 	@override String get copySuccess => '已複製到剪貼簿';
 	@override String copySuccessForMessage({required Object str}) => '已複製到剪貼簿: ${str}';
 	@override String get editReply => '編輯回覆';
+	@override String get editTitle => '編輯標題';
+	@override String get submit => '提交';
 }
 
 // Path: forum.errors
@@ -1284,6 +1286,8 @@ extension on TranslationsZhTw {
 			case 'forum.copySuccess': return '已複製到剪貼簿';
 			case 'forum.copySuccessForMessage': return ({required Object str}) => '已複製到剪貼簿: ${str}';
 			case 'forum.editReply': return '編輯回覆';
+			case 'forum.editTitle': return '編輯標題';
+			case 'forum.submit': return '提交';
 			default: return null;
 		}
 	}

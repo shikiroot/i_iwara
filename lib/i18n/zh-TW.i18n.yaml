@@ -553,3 +553,5 @@ forum:
   copySuccess: 已複製到剪貼簿
   copySuccessForMessage: '已複製到剪貼簿: ${str}'
   editReply: 編輯回覆
+  editTitle: 編輯標題
+  submit: 提交

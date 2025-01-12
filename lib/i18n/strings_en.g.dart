@@ -684,6 +684,8 @@ class TranslationsForumEn {
 	String get copySuccess => 'Copied to clipboard';
 	String copySuccessForMessage({required Object str}) => 'Copied to clipboard: ${str}';
 	String get editReply => 'Edit Reply';
+	String get editTitle => 'Edit Title';
+	String get submit => 'Submit';
 }
 
 // Path: forum.errors
@@ -1288,6 +1290,8 @@ extension on Translations {
 			case 'forum.copySuccess': return 'Copied to clipboard';
 			case 'forum.copySuccessForMessage': return ({required Object str}) => 'Copied to clipboard: ${str}';
 			case 'forum.editReply': return 'Edit Reply';
+			case 'forum.editTitle': return 'Edit Title';
+			case 'forum.submit': return 'Submit';
 			default: return null;
 		}
 	}

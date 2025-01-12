@@ -551,3 +551,6 @@ forum:
   copySuccess: クリップボードにコピーされました
   copySuccessForMessage: 'クリップボードにコピーされました: ${str}'
   editReply: 編集回覆
+  editTitle: 編集タイトル
+  submit: 提出
+

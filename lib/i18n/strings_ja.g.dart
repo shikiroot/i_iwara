@@ -680,6 +680,8 @@ class _TranslationsForumJa implements TranslationsForumEn {
 	@override String get copySuccess => 'クリップボードにコピーされました';
 	@override String copySuccessForMessage({required Object str}) => 'クリップボードにコピーされました: ${str}';
 	@override String get editReply => '編集回覆';
+	@override String get editTitle => '編集タイトル';
+	@override String get submit => '提出';
 }
 
 // Path: forum.errors
@@ -1284,6 +1286,8 @@ extension on TranslationsJa {
 			case 'forum.copySuccess': return 'クリップボードにコピーされました';
 			case 'forum.copySuccessForMessage': return ({required Object str}) => 'クリップボードにコピーされました: ${str}';
 			case 'forum.editReply': return '編集回覆';
+			case 'forum.editTitle': return '編集タイトル';
+			case 'forum.submit': return '提出';
 			default: return null;
 		}
 	}

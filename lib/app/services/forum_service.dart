@@ -87,7 +87,7 @@ class ForumService extends GetxService {
       return ApiResult.success();
     } catch (e) {
       LogUtils.e('在编辑帖子标题时，编辑帖子标题失败', tag: 'ForumService', error: e);
-      return ApiResult.fail(slang.t.errors.failedToFetchData);
+      return ApiResult.fail(slang.t.errors.failedToOperate);
     }
   }
 
@@ -100,7 +100,7 @@ class ForumService extends GetxService {
       return ApiResult.success();
     } catch (e) {
       LogUtils.e('在编辑帖子回复时，编辑帖子回复失败', tag: 'ForumService', error: e);
-      return ApiResult.fail(slang.t.errors.failedToFetchData);
+      return ApiResult.fail(slang.t.errors.failedToOperate);
     }
   }
 
@@ -116,7 +116,7 @@ class ForumService extends GetxService {
       return ApiResult.success();
     } catch (e) {
       LogUtils.e('回复帖子失败', tag: 'ForumService', error: e);
-      return ApiResult.fail(slang.t.errors.failedToFetchData);
+      return ApiResult.fail(slang.t.errors.failedToOperate);
     }
   }
 
@@ -288,7 +288,7 @@ class ForumService extends GetxService {
       return ApiResult.success(data: ForumThreadModel.fromJson(response.data));
     } catch (e) {
       LogUtils.e('发布帖子失败', tag: 'ForumService', error: e);
-      return ApiResult.fail(slang.t.errors.failedToFetchData);
+      return ApiResult.fail(slang.t.errors.failedToOperate);
     }
   }
 
