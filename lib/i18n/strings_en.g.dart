@@ -675,6 +675,8 @@ class TranslationsForumEn {
 	late final TranslationsForumLeafNamesEn leafNames = TranslationsForumLeafNamesEn._(_root);
 	late final TranslationsForumLeafDescriptionsEn leafDescriptions = TranslationsForumLeafDescriptionsEn._(_root);
 	String get reply => 'Reply';
+	String get pendingReview => 'Pending Review';
+	String get editedAt => 'Edited At';
 }
 
 // Path: forum.errors
@@ -1268,6 +1270,8 @@ extension on Translations {
 			case 'forum.leafDescriptions.korean': return 'Discussions related to Korean';
 			case 'forum.leafDescriptions.other': return 'Other unclassified content';
 			case 'forum.reply': return 'Reply';
+			case 'forum.pendingReview': return 'Pending Review';
+			case 'forum.editedAt': return 'Edited At';
 			default: return null;
 		}
 	}

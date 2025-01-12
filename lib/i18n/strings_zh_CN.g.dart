@@ -675,6 +675,8 @@ class _TranslationsForumZhCn implements TranslationsForumEn {
 	@override late final _TranslationsForumLeafNamesZhCn leafNames = _TranslationsForumLeafNamesZhCn._(_root);
 	@override late final _TranslationsForumLeafDescriptionsZhCn leafDescriptions = _TranslationsForumLeafDescriptionsZhCn._(_root);
 	@override String get reply => '回覆';
+	@override String get pendingReview => '审核中';
+	@override String get editedAt => '编辑时间';
 }
 
 // Path: forum.errors
@@ -1272,6 +1274,8 @@ extension on TranslationsZhCn {
 			case 'forum.leafDescriptions.korean': return '韩语相关讨论';
 			case 'forum.leafDescriptions.other': return '其他未分类的内容';
 			case 'forum.reply': return '回覆';
+			case 'forum.pendingReview': return '审核中';
+			case 'forum.editedAt': return '编辑时间';
 			default: return null;
 		}
 	}

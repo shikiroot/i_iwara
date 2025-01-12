@@ -671,6 +671,8 @@ class _TranslationsForumJa implements TranslationsForumEn {
 	@override late final _TranslationsForumLeafNamesJa leafNames = _TranslationsForumLeafNamesJa._(_root);
 	@override late final _TranslationsForumLeafDescriptionsJa leafDescriptions = _TranslationsForumLeafDescriptionsJa._(_root);
 	@override String get reply => '回覆';
+	@override String get pendingReview => '審査中';
+	@override String get editedAt => '編集日時';
 }
 
 // Path: forum.errors
@@ -1264,6 +1266,8 @@ extension on TranslationsJa {
 			case 'forum.leafDescriptions.korean': return '韓国語に関する議論';
 			case 'forum.leafDescriptions.other': return 'その他の未分類のコンテンツ';
 			case 'forum.reply': return '回覆';
+			case 'forum.pendingReview': return '審査中';
+			case 'forum.editedAt': return '編集日時';
 			default: return null;
 		}
 	}
