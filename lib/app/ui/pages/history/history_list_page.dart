@@ -442,51 +442,70 @@ class _HistoryListPageState extends State<HistoryListPage>
 
   Widget _buildMultiSelectBar(HistoryListController controller) {
     return Obx(() => controller.isMultiSelect.value
-        ? BottomAppBar(
-            child: SafeArea(
-              minimum: const EdgeInsets.only(bottom: 8.0),
-              child: IntrinsicHeight(
-                child: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 16.0),
-                        child: Text(
-                          slang.t.common.selectedRecords(
-                              num: controller.selectedRecords.length),
-                          style: const TextStyle(fontSize: 16),
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          TextButton(
-                            onPressed: controller.selectAll,
-                            child: Text(controller.isAllSelected
-                                ? slang.t.common.cancelSelectAll
-                                : slang.t.common.selectAll),
-                          ),
-                          const SizedBox(width: 16),
-                          TextButton(
-                            onPressed: controller.toggleMultiSelect,
-                            child: Text(slang.t.common.exitEditMode),
-                          ),
-                          const SizedBox(width: 16),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 16.0),
-                            child: ElevatedButton(
-                              onPressed: () => _showDeleteConfirmDialog(controller),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.red,
+        ? BottomSheet(
+            enableDrag: false,
+            backgroundColor: Theme.of(context).bottomSheetTheme.backgroundColor,
+            onClosing: () {},
+            builder: (context) => SafeArea(
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16.0,
+                  vertical: 16.0,
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Obx(() => Text(
+                              slang.t.common.selectedRecords(
+                                  num: controller.selectedRecords.length),
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
                               ),
-                              child: Text(slang.t.common.delete),
+                            )),
+                        const Spacer(),
+                        IconButton(
+                          onPressed: controller.toggleMultiSelect,
+                          icon: const Icon(Icons.close),
+                          tooltip: slang.t.common.exitEditMode,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: OutlinedButton.icon(
+                            onPressed: controller.selectAll,
+                            icon: Icon(
+                              controller.isAllSelected
+                                  ? Icons.deselect
+                                  : Icons.select_all,
+                            ),
+                            label: Text(
+                              controller.isAllSelected
+                                  ? slang.t.common.cancelSelectAll
+                                  : slang.t.common.selectAll,
                             ),
                           ),
-                        ],
-                      ),
-                    ],
-                  ),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: FilledButton.icon(
+                            onPressed: () => _showDeleteConfirmDialog(controller),
+                            icon: const Icon(Icons.delete),
+                            label: Text(slang.t.common.delete),
+                            style: FilledButton.styleFrom(
+                              backgroundColor: Colors.red,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
             ),

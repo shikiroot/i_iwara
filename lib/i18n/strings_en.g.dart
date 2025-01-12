@@ -505,6 +505,11 @@ class TranslationsSettingsEn {
 	String get forceUpdateTip => 'This is a mandatory update. Please update to the latest version as soon as possible';
 	String get viewChangelog => 'View Changelog';
 	String get alreadyLatestVersion => 'Already the latest version';
+	String get appSettings => 'App Settings';
+	String get configureYourAppSettings => 'Configure Your App Settings';
+	String get history => 'History';
+	String get autoRecordHistory => 'Auto Record History';
+	String get autoRecordHistoryDesc => 'Auto record the videos and images you have watched';
 }
 
 // Path: signIn
@@ -1125,6 +1130,11 @@ extension on Translations {
 			case 'settings.forceUpdateTip': return 'This is a mandatory update. Please update to the latest version as soon as possible';
 			case 'settings.viewChangelog': return 'View Changelog';
 			case 'settings.alreadyLatestVersion': return 'Already the latest version';
+			case 'settings.appSettings': return 'App Settings';
+			case 'settings.configureYourAppSettings': return 'Configure Your App Settings';
+			case 'settings.history': return 'History';
+			case 'settings.autoRecordHistory': return 'Auto Record History';
+			case 'settings.autoRecordHistoryDesc': return 'Auto record the videos and images you have watched';
 			case 'signIn.pleaseLoginFirst': return 'Please login first';
 			case 'signIn.alreadySignedInToday': return 'You have already signed in today!';
 			case 'signIn.youDidNotStickToTheSignIn': return 'You did not stick to the sign in.';

@@ -53,6 +53,8 @@ abstract class Routes {
   static FORUM_THREAD_LIST(String categoryId) => '/forum/$categoryId';
 
   static FORUM_THREAD_DETAIL(String categoryId, String threadId) => '/forum/$categoryId/$threadId';
+
+  static const APP_SETTINGS_PAGE = '/app_settings_page';
 }
 
 abstract class _Paths {

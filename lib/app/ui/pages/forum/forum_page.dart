@@ -4,6 +4,7 @@ import 'package:i_iwara/app/models/forum.model.dart';
 import 'package:i_iwara/app/models/user.model.dart';
 import 'package:i_iwara/app/services/forum_service.dart';
 import 'package:i_iwara/app/services/app_service.dart';
+import 'package:i_iwara/app/services/user_service.dart';
 import 'package:i_iwara/app/ui/pages/forum/widgets/forum_post_dialog.dart';
 import 'package:i_iwara/app/ui/pages/forum/widgets/forum_shimmer_widget.dart';
 import 'package:i_iwara/app/ui/widgets/empty_widget.dart';
@@ -24,7 +25,7 @@ class _ForumPageState extends State<ForumPage> {
   List<ForumCategoryTreeModel>? _categories;
   bool _isLoading = true;
   String? _error;
-
+  final UserService userService = Get.find<UserService>();
   @override
   void initState() {
     super.initState();
@@ -69,7 +70,29 @@ class _ForumPageState extends State<ForumPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(t.forum.forum),
+        title: Row(
+          children: [
+            IconButton(
+              icon: Obx(() {
+                if (userService.isLogin) {
+                  return AvatarWidget(
+                    avatarUrl: userService.userAvatar,
+                    radius: 14,
+                    defaultAvatarUrl: CommonConstants.defaultAvatarUrl,
+                    isPremium: userService.currentUser.value?.premium ?? false,
+                    isAdmin: userService.currentUser.value?.isAdmin ?? false,
+                  );
+                } else {
+                  return const Icon(Icons.account_circle);
+                }
+              }),
+              onPressed: () {
+                AppService.switchGlobalDrawer();
+              },
+            ),
+            Text(t.forum.forum),
+          ],
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),

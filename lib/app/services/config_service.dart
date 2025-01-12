@@ -40,6 +40,7 @@ class ConfigService extends GetxService {
   static const String LAST_CHECK_UPDATE_TIME = 'last_check_update_time';
   static const String AUTO_CHECK_UPDATE = 'auto_check_update';
   static const String RULES_AGREEMENT_KEY = 'rules_agreement'; // 规则同意
+  static const String AUTO_RECORD_HISTORY_KEY = 'auto_record_history'; // 自动记录历史记录
 
   // 所有配置项的 Map
   final settings = <String, dynamic>{
@@ -68,7 +69,8 @@ class ConfigService extends GetxService {
     IGNORED_VERSION: ''.obs,
     LAST_CHECK_UPDATE_TIME: 0.obs,
     AUTO_CHECK_UPDATE: true.obs,
-    RULES_AGREEMENT_KEY: false.obs, // 添加规则同意配置
+    RULES_AGREEMENT_KEY: false.obs,
+    AUTO_RECORD_HISTORY_KEY: true.obs,
   }.obs;
 
   late final Rx<Sort> _currentTranslationSort;
@@ -87,6 +89,11 @@ class ConfigService extends GetxService {
       (sort) => sort.extData == savedLanguage,
       orElse: () => CommonConstants.translationSorts.first,
     )).obs;
+
+    // 单独初始化是否记录历史记录
+    final savedAutoRecordHistory = storage.readData(AUTO_RECORD_HISTORY_KEY) ?? settings[AUTO_RECORD_HISTORY_KEY]!.value;
+    CommonConstants.enableHistory = savedAutoRecordHistory;
+
     return this;
   }
 

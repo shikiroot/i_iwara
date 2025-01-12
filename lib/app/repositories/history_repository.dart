@@ -1,3 +1,4 @@
+import 'package:i_iwara/common/constants.dart';
 import 'package:i_iwara/db/database_service.dart';
 import 'package:sqlite3/common.dart';
 import 'package:i_iwara/app/models/history_record.dart';
@@ -11,6 +12,7 @@ class HistoryRepository {
 
   // 添加单条记录
   Future<void> addRecord(HistoryRecord record) async {
+    if (!CommonConstants.enableHistory) return;
     _db.prepare(
       '''
       INSERT OR REPLACE INTO history_records 

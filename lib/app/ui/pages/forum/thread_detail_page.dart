@@ -467,46 +467,58 @@ class _ThreadDetailPageState extends State<ThreadDetailPage> with SingleTickerPr
                             spacing: 16,
                             children: [
                               Expanded(
-                                child: Row(
-                                  spacing: 4,
+                                child: Wrap(
+                                  spacing: 12,
                                   children: [
-                                    Icon(
-                                      Icons.remove_red_eye,
-                                      size: 16,
-                                      color: Theme.of(context)
-                                          .textTheme
-                                          .bodySmall
-                                          ?.color,
+                                    Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      spacing: 4,
+                                      children: [
+                                        Icon(
+                                          Icons.remove_red_eye,
+                                          size: 16,
+                                          color: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall
+                                              ?.color,
+                                        ),
+                                        Text(
+                                          CommonUtils.formatFriendlyNumber(
+                                              _thread.value!.numViews),
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            color: Theme.of(context)
+                                                .textTheme
+                                                .bodySmall
+                                                ?.color,
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                    Text(
-                                      CommonUtils.formatFriendlyNumber(
-                                          _thread.value!.numViews),
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Theme.of(context)
-                                            .textTheme
-                                            .bodySmall
-                                            ?.color,
-                                      ),
-                                    ),
-                                    Icon(
-                                      Icons.comment,
-                                      size: 16,
-                                      color: Theme.of(context)
-                                          .textTheme
-                                          .bodySmall
-                                          ?.color,
-                                    ),
-                                    Text(
-                                      CommonUtils.formatFriendlyNumber(
-                                          _thread.value!.numPosts),
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Theme.of(context)
-                                            .textTheme
-                                            .bodySmall
-                                            ?.color,
-                                      ),
+                                    Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      spacing: 4,
+                                      children: [
+                                        Icon(
+                                          Icons.comment,
+                                          size: 16,
+                                          color: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall
+                                              ?.color,
+                                        ),
+                                        Text(
+                                          CommonUtils.formatFriendlyNumber(
+                                              _thread.value!.numPosts),
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            color: Theme.of(context)
+                                                .textTheme
+                                                .bodySmall
+                                                ?.color,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
@@ -615,6 +627,7 @@ class _ThreadDetailPageState extends State<ThreadDetailPage> with SingleTickerPr
       comment: comment,
       threadAuthorId: _thread.value?.user.id ?? '',
       threadId: widget.threadId,
+      lockedThread: _thread.value?.locked ?? false,
       listSourceRepository: listSourceRepository,
     );
   }

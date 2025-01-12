@@ -501,6 +501,11 @@ class _TranslationsSettingsZhTw implements TranslationsSettingsEn {
 	@override String get forceUpdateTip => '此版本為強制更新，請盡快更新到最新版本';
 	@override String get viewChangelog => '查看更新日誌';
 	@override String get alreadyLatestVersion => '已是最新版本';
+	@override String get appSettings => '應用設定';
+	@override String get configureYourAppSettings => '配置您的應用程式設定';
+	@override String get history => '歷史記錄';
+	@override String get autoRecordHistory => '自動記錄歷史記錄';
+	@override String get autoRecordHistoryDesc => '自動記錄您觀看過的影片和圖庫等信息';
 }
 
 // Path: signIn
@@ -1121,6 +1126,11 @@ extension on TranslationsZhTw {
 			case 'settings.forceUpdateTip': return '此版本為強制更新，請盡快更新到最新版本';
 			case 'settings.viewChangelog': return '查看更新日誌';
 			case 'settings.alreadyLatestVersion': return '已是最新版本';
+			case 'settings.appSettings': return '應用設定';
+			case 'settings.configureYourAppSettings': return '配置您的應用程式設定';
+			case 'settings.history': return '歷史記錄';
+			case 'settings.autoRecordHistory': return '自動記錄歷史記錄';
+			case 'settings.autoRecordHistoryDesc': return '自動記錄您觀看過的影片和圖庫等信息';
 			case 'signIn.pleaseLoginFirst': return '請先登入後再簽到';
 			case 'signIn.alreadySignedInToday': return '您今天已經簽到過了！';
 			case 'signIn.youDidNotStickToTheSignIn': return '您未能持續簽到。';

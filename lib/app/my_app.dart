@@ -8,12 +8,12 @@ import 'package:i_iwara/app/services/version_service.dart';
 import 'package:i_iwara/app/ui/pages/home/home_navigation_layout.dart';
 import 'package:i_iwara/app/ui/pages/login/login_page.dart';
 import 'package:i_iwara/app/ui/pages/settings/about_page.dart';
+import 'package:i_iwara/app/ui/pages/settings/app_settings_page.dart';
 import 'package:i_iwara/app/ui/pages/settings/player_settings_page.dart';
 import 'package:i_iwara/app/ui/pages/settings/proxy_settings_page.dart';
 import 'package:i_iwara/app/ui/pages/settings/settings_page.dart';
 import 'package:i_iwara/app/ui/pages/settings/theme_settings_page.dart';
 import 'package:i_iwara/app/ui/pages/sign_in/sing_in_page.dart';
-import 'package:i_iwara/app/ui/pages/forum/forum_page.dart';
 import 'package:i_iwara/app/ui/widgets/global_drawer_content_widget.dart';
 import 'package:i_iwara/app/ui/widgets/window_layout_widget.dart';
 import 'package:i_iwara/i18n/strings.g.dart';
@@ -75,6 +75,10 @@ class _MyAppState extends State<MyApp> {
                   name: Routes.THEME_SETTINGS_PAGE,
                   page: () => const ThemeSettingsPage(),
                   transition: Transition.rightToLeft),
+              GetPage(
+                  name: Routes.APP_SETTINGS_PAGE,
+                  page: () => const AppSettingsPage(),
+                  transition: Transition.rightToLeft),  
               GetPage(
                   name: Routes.ABOUT_PAGE,
                   page: () => const AboutPage(),

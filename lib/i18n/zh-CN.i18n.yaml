@@ -377,6 +377,11 @@ settings:
   forceUpdateTip: "此版本为强制更新，请尽快更新到最新版本"
   viewChangelog: 查看更新日志
   alreadyLatestVersion: 已是最新版本
+  appSettings: 应用设置
+  configureYourAppSettings: 配置您的应用程序设置
+  history: 历史记录
+  autoRecordHistory: 自动记录历史记录
+  autoRecordHistoryDesc: 自动记录您观看过的视频和图库等信息
 
 signIn:
   pleaseLoginFirst: 请先登录后再签到

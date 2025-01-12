@@ -45,67 +45,73 @@ class HomeNavigationLayout extends StatelessWidget {
                   if (!appService.showRailNavi) return const SizedBox.shrink();
                   if (!isWide) return const SizedBox.shrink();
 
-                  return NavigationRail(
-                    labelType: NavigationRailLabelType.all,
-                    selectedIndex: appService.currentIndex,
-                    trailing: Expanded(
-                      child: Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            IconButton(
-                              icon: const Icon(Icons.settings),
-                              tooltip: t.common.settings,
-                              onPressed: () {
-                                AppService.switchGlobalDrawer();
-                              },
+                  return SingleChildScrollView(
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        minHeight: MediaQuery.of(context).size.height,
+                      ),
+                      child: IntrinsicHeight(
+                        child: NavigationRail(
+                          labelType: NavigationRailLabelType.all,
+                          selectedIndex: appService.currentIndex,
+                          trailing: Padding(
+                            padding: const EdgeInsets.only(bottom: 16),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                  icon: const Icon(Icons.settings),
+                                  tooltip: t.common.settings,
+                                  onPressed: () {
+                                    AppService.switchGlobalDrawer();
+                                  },
+                                ),
+                                IconButton(
+                                  icon: const Icon(Icons.exit_to_app),
+                                  tooltip: t.common.back,
+                                  onPressed: () {
+                                    AppService.tryPop();
+                                  },
+                                ),
+                              ],
                             ),
-                            IconButton(
-                              icon: const Icon(Icons.exit_to_app),
-                              tooltip: t.common.back,
-                              onPressed: () {
-                                AppService.tryPop();
-                              },
+                          ),
+                          onDestinationSelected: (value) {
+                            if (appService.currentIndex == value) return;
+                            appService.currentIndex = value;
+                            final routes = [
+                              Routes.POPULAR_VIDEOS,
+                              Routes.GALLERY,
+                              Routes.SUBSCRIPTIONS,
+                              Routes.FORUM,
+                            ];
+                            AppService.homeNavigatorKey.currentState!
+                                .pushNamedAndRemoveUntil(
+                              routes[value],
+                              (route) => false,
+                            );
+                          },
+                          destinations: [
+                            NavigationRailDestination(
+                              icon: const Icon(Icons.video_library),
+                              label: Text(t.common.video),
                             ),
-                            const SizedBox(height: 16),
+                            NavigationRailDestination(
+                              icon: const Icon(Icons.photo),
+                              label: Text(t.common.gallery),
+                            ),
+                            NavigationRailDestination(
+                              icon: const Icon(Icons.subscriptions),
+                              label: Text(t.common.subscriptions),
+                            ),
+                            NavigationRailDestination(
+                              icon: const Icon(Icons.forum),
+                              label: Text(t.forum.forum),
+                            ),
                           ],
                         ),
                       ),
                     ),
-                    onDestinationSelected: (value) {
-                      if (appService.currentIndex == value) return;
-                      appService.currentIndex = value;
-                      final routes = [
-                        Routes.POPULAR_VIDEOS,
-                        Routes.GALLERY,
-                        Routes.SUBSCRIPTIONS,
-                        Routes.FORUM,
-                      ];
-                      AppService.homeNavigatorKey.currentState!
-                          .pushNamedAndRemoveUntil(
-                        routes[value],
-                        (route) => false,
-                      );
-                    },
-                    destinations: [
-                      NavigationRailDestination(
-                        icon: const Icon(Icons.video_library),
-                        label: Text(t.common.video),
-                      ),
-                      NavigationRailDestination(
-                        icon: const Icon(Icons.photo),
-                        label: Text(t.common.gallery),
-                      ),
-                      NavigationRailDestination(
-                        icon: const Icon(Icons.subscriptions),
-                        label: Text(t.common.subscriptions),
-                      ),
-                      NavigationRailDestination(
-                        icon: const Icon(Icons.forum),
-                        label: Text(t.forum.forum),
-                      ),
-                    ],
                   );
                 }),
                 // 主要内容

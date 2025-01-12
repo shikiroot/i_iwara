@@ -22,6 +22,7 @@ class ThreadCommentCardWidget extends StatefulWidget {
   final ThreadCommentModel comment;
   final String threadAuthorId;
   final String threadId;
+  final bool lockedThread;
   // repo
   final ThreadDetailRepository listSourceRepository;
 
@@ -30,6 +31,7 @@ class ThreadCommentCardWidget extends StatefulWidget {
     required this.comment,
     required this.threadAuthorId,
     required this.threadId,
+    required this.lockedThread,
     required this.listSourceRepository,
   });
 
@@ -550,9 +552,11 @@ class _ThreadCommentCardWidgetState extends State<ThreadCommentCardWidget> {
                           ));
                         },
                       ),
-                    // 回复按钮
-                    IconButton(
-                      icon: const Icon(Icons.reply),
+                    // 如果thread没有lock
+                    if (!widget.lockedThread)
+                      // 回复按钮
+                      IconButton(
+                        icon: const Icon(Icons.reply),
                       tooltip: slang.t.forum.reply,
                       onPressed: () {
                         // 生成回复模板文本

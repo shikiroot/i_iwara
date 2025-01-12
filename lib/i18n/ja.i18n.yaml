@@ -370,6 +370,11 @@ settings:
   forceUpdateTip: "これは必須アップデートです。できるだけ早く最新バージョンにアップデートしてください"
   viewChangelog: 更新内容を表示
   alreadyLatestVersion: すでに最新バージョンです
+  appSettings: アプリ設定
+  configureYourAppSettings: アプリ設定を設定
+  history: 履歴
+  autoRecordHistory: 自動記録履歴
+  autoRecordHistoryDesc: 自動記録您觀看過的影片和圖庫等信息
 
 signIn:
   pleaseLoginFirst: サインインする前にログインしてください

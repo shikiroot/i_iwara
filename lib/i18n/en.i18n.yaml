@@ -369,6 +369,12 @@ settings:
   forceUpdateTip: "This is a mandatory update. Please update to the latest version as soon as possible"
   viewChangelog: View Changelog
   alreadyLatestVersion: Already the latest version
+  appSettings: App Settings
+  configureYourAppSettings: Configure Your App Settings
+  history: History
+  autoRecordHistory: Auto Record History
+  autoRecordHistoryDesc: Auto record the videos and images you have watched
+
 
 signIn:
   pleaseLoginFirst: Please login first

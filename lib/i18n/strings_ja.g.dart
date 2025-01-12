@@ -501,6 +501,11 @@ class _TranslationsSettingsJa implements TranslationsSettingsEn {
 	@override String get forceUpdateTip => 'これは必須アップデートです。できるだけ早く最新バージョンにアップデートしてください';
 	@override String get viewChangelog => '更新内容を表示';
 	@override String get alreadyLatestVersion => 'すでに最新バージョンです';
+	@override String get appSettings => 'アプリ設定';
+	@override String get configureYourAppSettings => 'アプリ設定を設定';
+	@override String get history => '履歴';
+	@override String get autoRecordHistory => '自動記録履歴';
+	@override String get autoRecordHistoryDesc => '自動記録您觀看過的影片和圖庫等信息';
 }
 
 // Path: signIn
@@ -1121,6 +1126,11 @@ extension on TranslationsJa {
 			case 'settings.forceUpdateTip': return 'これは必須アップデートです。できるだけ早く最新バージョンにアップデートしてください';
 			case 'settings.viewChangelog': return '更新内容を表示';
 			case 'settings.alreadyLatestVersion': return 'すでに最新バージョンです';
+			case 'settings.appSettings': return 'アプリ設定';
+			case 'settings.configureYourAppSettings': return 'アプリ設定を設定';
+			case 'settings.history': return '履歴';
+			case 'settings.autoRecordHistory': return '自動記録履歴';
+			case 'settings.autoRecordHistoryDesc': return '自動記録您觀看過的影片和圖庫等信息';
 			case 'signIn.pleaseLoginFirst': return 'サインインする前にログインしてください';
 			case 'signIn.alreadySignedInToday': return '今日は既にサインインしています！';
 			case 'signIn.youDidNotStickToTheSignIn': return 'サインインを続けることができませんでした。';

@@ -69,7 +69,11 @@ class CommonConstants {
   static String defaultThumbnailUrl =
       '$iwaraBaseUrl/images/default-thumbnail.jpg';
 
+  // 是否启用R18内容
   static bool enableR18 = true;
+
+  // 是否记录历史记录
+  static bool enableHistory = true;
 
   static String? applicationName = 'i_iwara';
 
