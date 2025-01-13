@@ -163,6 +163,7 @@ common:
   disableFloatingButtons: 禁用浮动按钮
   enabledFloatingButtons: 已启用浮动按钮
   disabledFloatingButtons: 已禁用浮动按钮
+  pendingCommentCount: 待审核评论
 auth:
   tagLimit: 标签上限
   login: 登录

@@ -12,6 +12,12 @@ class CommentService extends GetxService {
   final ApiService _apiService = Get.find<ApiService>();
 
   /// 获取评论
+  /// [type]: 评论类型
+  /// [id]: 评论对象的ID
+  /// [parentId]: 父评论ID
+  /// [page]: 页码
+  /// [limit]: 每页数量
+  /// return: 评论列表、分页数据、pendingCount我未审核通过的评论数量
   Future<ApiResult<PageData<Comment>>> getComments({
     required String type,
     required String id,
@@ -29,15 +35,9 @@ class CommentService extends GetxService {
         },
       );
 
-      final List<Comment> results = (response.data['results'] as List)
-          .map((comment) => Comment.fromJson(comment))
-          .toList();
-
-      final PageData<Comment> pageData = PageData(
-        page: response.data['page'],
-        limit: response.data['limit'],
-        count: response.data['count'],
-        results: results,
+      final PageData<Comment> pageData = PageData.fromJsonWithConverter(
+        response.data,
+        Comment.fromJson,
       );
 
       return ApiResult.success(data: pageData);

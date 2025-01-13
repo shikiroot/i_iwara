@@ -219,6 +219,7 @@ class _TranslationsCommonZhTw implements TranslationsCommonEn {
 	@override String get disableFloatingButtons => '禁用浮動按鈕';
 	@override String get enabledFloatingButtons => '已啟用浮動按鈕';
 	@override String get disabledFloatingButtons => '已禁用浮動按鈕';
+	@override String get pendingCommentCount => '待審核評論';
 }
 
 // Path: auth
@@ -993,6 +994,7 @@ extension on TranslationsZhTw {
 			case 'common.disableFloatingButtons': return '禁用浮動按鈕';
 			case 'common.enabledFloatingButtons': return '已啟用浮動按鈕';
 			case 'common.disabledFloatingButtons': return '已禁用浮動按鈕';
+			case 'common.pendingCommentCount': return '待審核評論';
 			case 'auth.login': return '登入';
 			case 'auth.logout': return '登出';
 			case 'auth.email': return '電子郵件';

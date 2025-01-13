@@ -159,6 +159,7 @@ common:
   disableFloatingButtons: 禁用浮動按鈕
   enabledFloatingButtons: 已啟用浮動按鈕
   disabledFloatingButtons: 已禁用浮動按鈕
+  pendingCommentCount: 待審核評論
 
 auth:
   login: 登入

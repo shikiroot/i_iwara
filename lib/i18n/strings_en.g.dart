@@ -223,6 +223,7 @@ class TranslationsCommonEn {
 	String get disableFloatingButtons => 'Disable Floating Buttons';
 	String get enabledFloatingButtons => 'Enabled Floating Buttons';
 	String get disabledFloatingButtons => 'Disabled Floating Buttons';
+	String get pendingCommentCount => 'Pending Comment Count';
 }
 
 // Path: auth
@@ -994,6 +995,7 @@ extension on Translations {
 			case 'common.disableFloatingButtons': return 'Disable Floating Buttons';
 			case 'common.enabledFloatingButtons': return 'Enabled Floating Buttons';
 			case 'common.disabledFloatingButtons': return 'Disabled Floating Buttons';
+			case 'common.pendingCommentCount': return 'Pending Comment Count';
 			case 'auth.login': return 'Login';
 			case 'auth.logout': return 'Logout';
 			case 'auth.email': return 'Email';

@@ -159,6 +159,7 @@ common:
   disableFloatingButtons: Disable Floating Buttons
   enabledFloatingButtons: Enabled Floating Buttons
   disabledFloatingButtons: Disabled Floating Buttons
+  pendingCommentCount: Pending Comment Count
 auth:
   login: Login
   logout: Logout

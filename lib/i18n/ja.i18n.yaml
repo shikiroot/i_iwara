@@ -160,6 +160,7 @@ common:
   disableFloatingButtons: フローティングボタンを無効
   enabledFloatingButtons: フローティングボタンが有効
   disabledFloatingButtons: フローティングボタンが無効
+  pendingCommentCount: 未審核コメント
 auth:
   login: ログイン
   logout: ログアウト
