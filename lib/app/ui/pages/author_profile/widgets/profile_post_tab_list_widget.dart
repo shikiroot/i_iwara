@@ -92,7 +92,6 @@ class _ProfilePostTabListWidgetState extends State<ProfilePostTabListWidget>
             final cooldownResult = await _postService.fetchPostCollingInfo();
             if (cooldownResult.isSuccess && cooldownResult.data != null) {
               final cooldown = cooldownResult.data!;
-              print('senko cooldown: ${cooldown.toJson()}');
               if (cooldown.limited) {
                 // 计算剩余时间，小数点后二位
                 final remaining = cooldown.remaining; // 秒

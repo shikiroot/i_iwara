@@ -50,6 +50,7 @@ class TranslationsJa implements Translations {
 	@override late final _TranslationsShareJa share = _TranslationsShareJa._(_root);
 	@override late final _TranslationsMarkdownJa markdown = _TranslationsMarkdownJa._(_root);
 	@override late final _TranslationsForumJa forum = _TranslationsForumJa._(_root);
+	@override late final _TranslationsNotificationsJa notifications = _TranslationsNotificationsJa._(_root);
 }
 
 // Path: common
@@ -309,6 +310,7 @@ class _TranslationsErrorsJa implements TranslationsErrorsEn {
 	@override String remainingMinutes({required Object num}) => '${num}分';
 	@override String remainingSeconds({required Object num}) => '${num}秒';
 	@override String tagLimitExceeded({required Object limit}) => 'タグの上限を超えています。上限: ${limit}';
+	@override String get failedToRefresh => '更新に失敗しました';
 }
 
 // Path: friends
@@ -695,6 +697,40 @@ class _TranslationsForumJa implements TranslationsForumEn {
 	@override String get submit => '提出';
 }
 
+// Path: notifications
+class _TranslationsNotificationsJa implements TranslationsNotificationsEn {
+	_TranslationsNotificationsJa._(this._root);
+
+	final TranslationsJa _root; // ignore: unused_field
+
+	// Translations
+	@override late final _TranslationsNotificationsErrorsJa errors = _TranslationsNotificationsErrorsJa._(_root);
+	@override String get notifications => '通知';
+	@override String get profile => '個人主頁';
+	@override String get postedNewComment => '新しいコメントを投稿';
+	@override String get inYour => 'あなたの';
+	@override String get video => 'ビデオ';
+	@override String get repliedYourVideoComment => 'あなたのビデオコメントに返信しました';
+	@override String get copyInfoToClipboard => '通知情報をクリップボードにコピー';
+	@override String get copySuccess => 'クリップボードにコピーされました';
+	@override String copySuccessForMessage({required Object str}) => 'クリップボードにコピーされました: ${str}';
+	@override String get markAllAsRead => '全てを既読にする';
+	@override String get markAllAsReadSuccess => '全ての通知が既読になりました';
+	@override String get markAllAsReadFailed => '全てを既読にするに失敗しました';
+	@override String get markSelectedAsRead => '選択した通知を既読にする';
+	@override String get markSelectedAsReadSuccess => '選択した通知が既読になりました';
+	@override String get markSelectedAsReadFailed => '選択した通知を既読にするに失敗しました';
+	@override String get markAsRead => '既読にする';
+	@override String get markAsReadSuccess => '通知が既読になりました';
+	@override String get markAsReadFailed => '通知を既読にするに失敗しました';
+	@override String get notificationTypeHelp => '通知タイプのヘルプ';
+	@override String get dueToLackOfNotificationTypeDetails => '通知タイプの詳細情報が不足しているため、現在サポートされているタイプが受信したメッセージをカバーしていない可能性があります';
+	@override String get helpUsImproveNotificationTypeSupport => '通知タイプのサポート改善にご協力いただける場合';
+	@override String get helpUsImproveNotificationTypeSupportLongText => '1. 📋 通知情報をコピー\n2. 🐞 プロジェクトリポジトリに issue を提出\n\n⚠️ 注意：通知情報には個人情報が含まれている場合があります。公開したくない場合は、プロジェクト作者にメールで送信することもできます。';
+	@override String get goToRepository => 'リポジトリに移動';
+	@override String get copy => 'コピー';
+}
+
 // Path: forum.errors
 class _TranslationsForumErrorsJa implements TranslationsForumErrorsEn {
 	_TranslationsForumErrorsJa._(this._root);
@@ -773,6 +809,19 @@ class _TranslationsForumLeafDescriptionsJa implements TranslationsForumLeafDescr
 	@override String get support_ja => 'サイト関連の問題を解決する手助け';
 	@override String get korean => '韓国語に関する議論';
 	@override String get other => 'その他の未分類のコンテンツ';
+}
+
+// Path: notifications.errors
+class _TranslationsNotificationsErrorsJa implements TranslationsNotificationsErrorsEn {
+	_TranslationsNotificationsErrorsJa._(this._root);
+
+	final TranslationsJa _root; // ignore: unused_field
+
+	// Translations
+	@override String get unsupportedNotificationType => 'サポートされていない通知タイプ';
+	@override String get unknownUser => '未知ユーザー';
+	@override String unsupportedNotificationTypeWithType({required Object type}) => 'サポートされていない通知タイプ: ${type}';
+	@override String get unknownNotificationType => '未知通知タイプ';
 }
 
 /// Flat map(s) containing all translations.
@@ -1012,6 +1061,7 @@ extension on TranslationsJa {
 			case 'errors.remainingMinutes': return ({required Object num}) => '${num}分';
 			case 'errors.remainingSeconds': return ({required Object num}) => '${num}秒';
 			case 'errors.tagLimitExceeded': return ({required Object limit}) => 'タグの上限を超えています。上限: ${limit}';
+			case 'errors.failedToRefresh': return '更新に失敗しました';
 			case 'friends.clickToRestoreFriend': return '友達を復元するにはクリックしてください';
 			case 'friends.friendsList': return '友達リスト';
 			case 'friends.friendRequests': return '友達リクエスト';
@@ -1310,6 +1360,34 @@ extension on TranslationsJa {
 			case 'forum.editReply': return '編集回覆';
 			case 'forum.editTitle': return '編集タイトル';
 			case 'forum.submit': return '提出';
+			case 'notifications.errors.unsupportedNotificationType': return 'サポートされていない通知タイプ';
+			case 'notifications.errors.unknownUser': return '未知ユーザー';
+			case 'notifications.errors.unsupportedNotificationTypeWithType': return ({required Object type}) => 'サポートされていない通知タイプ: ${type}';
+			case 'notifications.errors.unknownNotificationType': return '未知通知タイプ';
+			case 'notifications.notifications': return '通知';
+			case 'notifications.profile': return '個人主頁';
+			case 'notifications.postedNewComment': return '新しいコメントを投稿';
+			case 'notifications.inYour': return 'あなたの';
+			case 'notifications.video': return 'ビデオ';
+			case 'notifications.repliedYourVideoComment': return 'あなたのビデオコメントに返信しました';
+			case 'notifications.copyInfoToClipboard': return '通知情報をクリップボードにコピー';
+			case 'notifications.copySuccess': return 'クリップボードにコピーされました';
+			case 'notifications.copySuccessForMessage': return ({required Object str}) => 'クリップボードにコピーされました: ${str}';
+			case 'notifications.markAllAsRead': return '全てを既読にする';
+			case 'notifications.markAllAsReadSuccess': return '全ての通知が既読になりました';
+			case 'notifications.markAllAsReadFailed': return '全てを既読にするに失敗しました';
+			case 'notifications.markSelectedAsRead': return '選択した通知を既読にする';
+			case 'notifications.markSelectedAsReadSuccess': return '選択した通知が既読になりました';
+			case 'notifications.markSelectedAsReadFailed': return '選択した通知を既読にするに失敗しました';
+			case 'notifications.markAsRead': return '既読にする';
+			case 'notifications.markAsReadSuccess': return '通知が既読になりました';
+			case 'notifications.markAsReadFailed': return '通知を既読にするに失敗しました';
+			case 'notifications.notificationTypeHelp': return '通知タイプのヘルプ';
+			case 'notifications.dueToLackOfNotificationTypeDetails': return '通知タイプの詳細情報が不足しているため、現在サポートされているタイプが受信したメッセージをカバーしていない可能性があります';
+			case 'notifications.helpUsImproveNotificationTypeSupport': return '通知タイプのサポート改善にご協力いただける場合';
+			case 'notifications.helpUsImproveNotificationTypeSupportLongText': return '1. 📋 通知情報をコピー\n2. 🐞 プロジェクトリポジトリに issue を提出\n\n⚠️ 注意：通知情報には個人情報が含まれている場合があります。公開したくない場合は、プロジェクト作者にメールで送信することもできます。';
+			case 'notifications.goToRepository': return 'リポジトリに移動';
+			case 'notifications.copy': return 'コピー';
 			default: return null;
 		}
 	}

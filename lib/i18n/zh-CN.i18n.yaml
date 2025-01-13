@@ -242,6 +242,7 @@ errors:
   remainingMinutes: "${num}分钟"
   remainingSeconds: "${num}秒"
   tagLimitExceeded: '标签上限超出，上限: ${limit}'
+  failedToRefresh: 更新失败
 friends:
   clickToRestoreFriend: 点击恢复好友
   friendsList: 好友列表
@@ -571,3 +572,34 @@ forum:
   editReply: 编辑回覆
   editTitle: 编辑标题
   submit: 提交
+
+notifications:
+  errors:
+    unsupportedNotificationType: 暂不支持的通知类型
+    unknownUser: 未知用户
+    unsupportedNotificationTypeWithType: '暂不支持的通知类型: ${type}'
+    unknownNotificationType: 未知通知类型
+  notifications: 通知
+  video: 视频
+  repliedYourVideoComment: 回覆了您的视频评论
+  profile: 个人主页
+  postedNewComment: 发表了评论
+  inYour: 在您的
+  copyInfoToClipboard: 复制通知信息到剪贴簿
+  copySuccess: 已复制到剪贴板
+  copySuccessForMessage: '已复制到剪贴板: ${str}'
+  markAllAsRead: 全部标记已读
+  markAllAsReadSuccess: 所有通知已标记为已读
+  markAllAsReadFailed: 全部标记已读失败
+  markSelectedAsRead: 标记选中项为已读
+  markSelectedAsReadSuccess: 选中的通知已标记为已读
+  markSelectedAsReadFailed: 标记选中项为已读失败
+  markAsRead: 标记已读
+  markAsReadSuccess: 已标记为已读
+  markAsReadFailed: 标记已读失败
+  notificationTypeHelp: 通知类型帮助
+  dueToLackOfNotificationTypeDetails: 通知类型的详细信息不足，目前支持的类型可能没有覆盖到您当前收到的消息
+  helpUsImproveNotificationTypeSupport: 如果您愿意帮助我们完善通知类型的支持
+  helpUsImproveNotificationTypeSupportLongText: '1. 📋 复制通知信息\n2. 🐞 前往项目仓库提交 issue\n\n⚠️ 注意：通知信息可能包含个人隐私，如果你不想公开，也可以通过邮件发送给项目作者。'
+  goToRepository: 前往项目仓库
+  copy: 复制

@@ -236,6 +236,7 @@ errors:
   remainingMinutes: "${num}分"
   remainingSeconds: "${num}秒"
   tagLimitExceeded: '標籤上限超出，上限: ${limit}'
+  failedToRefresh: 更新失敗
 friends:
   clickToRestoreFriend: 點擊恢復朋友
   friendsList: 朋友列表
@@ -566,3 +567,37 @@ forum:
   editReply: 編輯回覆
   editTitle: 編輯標題
   submit: 提交
+
+notifications:
+  errors:
+    unsupportedNotificationType: 暫不支持的通知類型
+    unknownUser: 未知用戶
+    unsupportedNotificationTypeWithType: '暫不支持的通知類型: ${type}'
+    unknownNotificationType: 未知通知類型
+  notifications: 通知
+  profile: 個人主頁
+  postedNewComment: 發表了評論
+  notifiedOn: 在您的個人主頁上發表了評論
+  inYour: 在您的
+  video: 影片
+  repliedYourVideoComment: 回覆了您的影片評論
+  copyInfoToClipboard: 複製通知信息到剪貼簿
+  copySuccess: 已複製到剪貼簿
+  copySuccessForMessage: '已複製到剪貼簿: ${str}'
+  markAllAsRead: 全部標記已讀
+  markAllAsReadSuccess: 所有通知已標記為已讀
+  markAllAsReadFailed: 全部標記已讀失敗
+  markAllAsReadFailedWithException: '全部標記已讀失敗: ${exception}'
+  markSelectedAsRead: 標記已讀
+  markSelectedAsReadSuccess: 已標記為已讀
+  markSelectedAsReadFailed: 標記已讀失敗
+  markSelectedAsReadFailedWithException: '標記已讀失敗: ${exception}'
+  markAsRead: 標記已讀
+  markAsReadSuccess: 已標記為已讀
+  markAsReadFailed: 標記已讀失敗
+  notificationTypeHelp: 通知類型幫助
+  dueToLackOfNotificationTypeDetails: 通知類型的詳細信息不足，目前支持的類型可能沒有覆蓋到您當前收到的消息
+  helpUsImproveNotificationTypeSupport: 如果您願意幫助我們完善通知類型的支持：
+  helpUsImproveNotificationTypeSupportLongText: '1. 📋 複製通知信息\n2. 🐞 前往項目倉庫提交 issue\n\n⚠️ 注意：通知信息可能包含個人隱私，如果你不想公開，也可以通過郵件發送給項目作者。'
+  goToRepository: 前往項目倉庫
+  copy: 複製

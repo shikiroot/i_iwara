@@ -235,6 +235,7 @@ errors:
   remainingMinutes: "${num} minutes"
   remainingSeconds: "${num} seconds"
   tagLimitExceeded: 'Tag limit exceeded, limit: ${limit}'
+  failedToRefresh: Failed to refresh
 friends:
   clickToRestoreFriend: Click to restore friend
   friendsList: Friends List
@@ -564,3 +565,33 @@ forum:
   editTitle: Edit Title
   submit: Submit
 
+notifications:
+  errors:
+    unsupportedNotificationType: Unsupported notification type
+    unknownUser: Unknown user
+    unsupportedNotificationTypeWithType: 'Unsupported notification type: ${type}'
+    unknownNotificationType: Unknown notification type
+  notifications: Notifications
+  profile: Profile
+  postedNewComment: Posted new comment
+  inYour: In your
+  video: Video
+  repliedYourVideoComment: Replied your video comment
+  copyInfoToClipboard: Copy notification info to clipboard
+  copySuccess: Copied to clipboard
+  copySuccessForMessage: 'Copied to clipboard: ${str}'
+  markAllAsRead: Mark all as read
+  markAllAsReadSuccess: All notifications have been marked as read
+  markAllAsReadFailed: Mark all as read failed
+  markSelectedAsRead: Mark selected as read
+  markSelectedAsReadSuccess: Selected notifications have been marked as read
+  markSelectedAsReadFailed: Mark selected as read failed
+  markAsRead: Mark as read
+  markAsReadSuccess: Notification has been marked as read
+  markAsReadFailed: Notification marked as read failed
+  notificationTypeHelp: Notification Type Help
+  dueToLackOfNotificationTypeDetails: Due to the lack of notification type details, the supported types may not cover the messages you currently receive
+  helpUsImproveNotificationTypeSupport: If you are willing to help us improve the support for notification types
+  helpUsImproveNotificationTypeSupportLongText: '1. 📋 Copy the notification information\n2. 🐞 Submit an issue to the project repository\n\n⚠️ Note: Notification information may contain personal privacy, if you do not want to public, you can also send it to the project author by email.'
+  goToRepository: Go to Repository
+  copy: Copy

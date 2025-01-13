@@ -416,6 +416,7 @@ class _LoginPageState extends State<LoginPage>
       if (result.isSuccess) {
         await _userService.fetchUserProfile();
         showToastWidget(MDToastWidget(message: slang.t.auth.loginSuccess, type: MDToastType.success));
+        _userService.startNotificationTimer();
         if (Get.previousRoute == Routes.LOGIN) {
           Get.offAllNamed(Routes.HOME);
         } else {

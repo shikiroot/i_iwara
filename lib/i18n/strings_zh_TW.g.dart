@@ -50,6 +50,7 @@ class TranslationsZhTw implements Translations {
 	@override late final _TranslationsShareZhTw share = _TranslationsShareZhTw._(_root);
 	@override late final _TranslationsMarkdownZhTw markdown = _TranslationsMarkdownZhTw._(_root);
 	@override late final _TranslationsForumZhTw forum = _TranslationsForumZhTw._(_root);
+	@override late final _TranslationsNotificationsZhTw notifications = _TranslationsNotificationsZhTw._(_root);
 }
 
 // Path: common
@@ -309,6 +310,7 @@ class _TranslationsErrorsZhTw implements TranslationsErrorsEn {
 	@override String remainingMinutes({required Object num}) => '${num}分';
 	@override String remainingSeconds({required Object num}) => '${num}秒';
 	@override String tagLimitExceeded({required Object limit}) => '標籤上限超出，上限: ${limit}';
+	@override String get failedToRefresh => '更新失敗';
 }
 
 // Path: friends
@@ -695,6 +697,43 @@ class _TranslationsForumZhTw implements TranslationsForumEn {
 	@override String get submit => '提交';
 }
 
+// Path: notifications
+class _TranslationsNotificationsZhTw implements TranslationsNotificationsEn {
+	_TranslationsNotificationsZhTw._(this._root);
+
+	final TranslationsZhTw _root; // ignore: unused_field
+
+	// Translations
+	@override late final _TranslationsNotificationsErrorsZhTw errors = _TranslationsNotificationsErrorsZhTw._(_root);
+	@override String get notifications => '通知';
+	@override String get profile => '個人主頁';
+	@override String get postedNewComment => '發表了評論';
+	@override String get notifiedOn => '在您的個人主頁上發表了評論';
+	@override String get inYour => '在您的';
+	@override String get video => '影片';
+	@override String get repliedYourVideoComment => '回覆了您的影片評論';
+	@override String get copyInfoToClipboard => '複製通知信息到剪貼簿';
+	@override String get copySuccess => '已複製到剪貼簿';
+	@override String copySuccessForMessage({required Object str}) => '已複製到剪貼簿: ${str}';
+	@override String get markAllAsRead => '全部標記已讀';
+	@override String get markAllAsReadSuccess => '所有通知已標記為已讀';
+	@override String get markAllAsReadFailed => '全部標記已讀失敗';
+	@override String markAllAsReadFailedWithException({required Object exception}) => '全部標記已讀失敗: ${exception}';
+	@override String get markSelectedAsRead => '標記已讀';
+	@override String get markSelectedAsReadSuccess => '已標記為已讀';
+	@override String get markSelectedAsReadFailed => '標記已讀失敗';
+	@override String markSelectedAsReadFailedWithException({required Object exception}) => '標記已讀失敗: ${exception}';
+	@override String get markAsRead => '標記已讀';
+	@override String get markAsReadSuccess => '已標記為已讀';
+	@override String get markAsReadFailed => '標記已讀失敗';
+	@override String get notificationTypeHelp => '通知類型幫助';
+	@override String get dueToLackOfNotificationTypeDetails => '通知類型的詳細信息不足，目前支持的類型可能沒有覆蓋到您當前收到的消息';
+	@override String get helpUsImproveNotificationTypeSupport => '如果您願意幫助我們完善通知類型的支持：';
+	@override String get helpUsImproveNotificationTypeSupportLongText => '1. 📋 複製通知信息\n2. 🐞 前往項目倉庫提交 issue\n\n⚠️ 注意：通知信息可能包含個人隱私，如果你不想公開，也可以通過郵件發送給項目作者。';
+	@override String get goToRepository => '前往項目倉庫';
+	@override String get copy => '複製';
+}
+
 // Path: forum.errors
 class _TranslationsForumErrorsZhTw implements TranslationsForumErrorsEn {
 	_TranslationsForumErrorsZhTw._(this._root);
@@ -773,6 +812,19 @@ class _TranslationsForumLeafDescriptionsZhTw implements TranslationsForumLeafDes
 	@override String get support_ja => '幫助解決網站相關問題';
 	@override String get korean => '韓語相關討論';
 	@override String get other => '其他未分類的內容';
+}
+
+// Path: notifications.errors
+class _TranslationsNotificationsErrorsZhTw implements TranslationsNotificationsErrorsEn {
+	_TranslationsNotificationsErrorsZhTw._(this._root);
+
+	final TranslationsZhTw _root; // ignore: unused_field
+
+	// Translations
+	@override String get unsupportedNotificationType => '暫不支持的通知類型';
+	@override String get unknownUser => '未知用戶';
+	@override String unsupportedNotificationTypeWithType({required Object type}) => '暫不支持的通知類型: ${type}';
+	@override String get unknownNotificationType => '未知通知類型';
 }
 
 /// Flat map(s) containing all translations.
@@ -1012,6 +1064,7 @@ extension on TranslationsZhTw {
 			case 'errors.remainingMinutes': return ({required Object num}) => '${num}分';
 			case 'errors.remainingSeconds': return ({required Object num}) => '${num}秒';
 			case 'errors.tagLimitExceeded': return ({required Object limit}) => '標籤上限超出，上限: ${limit}';
+			case 'errors.failedToRefresh': return '更新失敗';
 			case 'friends.clickToRestoreFriend': return '點擊恢復朋友';
 			case 'friends.friendsList': return '朋友列表';
 			case 'friends.friendRequests': return '朋友請求';
@@ -1310,6 +1363,37 @@ extension on TranslationsZhTw {
 			case 'forum.editReply': return '編輯回覆';
 			case 'forum.editTitle': return '編輯標題';
 			case 'forum.submit': return '提交';
+			case 'notifications.errors.unsupportedNotificationType': return '暫不支持的通知類型';
+			case 'notifications.errors.unknownUser': return '未知用戶';
+			case 'notifications.errors.unsupportedNotificationTypeWithType': return ({required Object type}) => '暫不支持的通知類型: ${type}';
+			case 'notifications.errors.unknownNotificationType': return '未知通知類型';
+			case 'notifications.notifications': return '通知';
+			case 'notifications.profile': return '個人主頁';
+			case 'notifications.postedNewComment': return '發表了評論';
+			case 'notifications.notifiedOn': return '在您的個人主頁上發表了評論';
+			case 'notifications.inYour': return '在您的';
+			case 'notifications.video': return '影片';
+			case 'notifications.repliedYourVideoComment': return '回覆了您的影片評論';
+			case 'notifications.copyInfoToClipboard': return '複製通知信息到剪貼簿';
+			case 'notifications.copySuccess': return '已複製到剪貼簿';
+			case 'notifications.copySuccessForMessage': return ({required Object str}) => '已複製到剪貼簿: ${str}';
+			case 'notifications.markAllAsRead': return '全部標記已讀';
+			case 'notifications.markAllAsReadSuccess': return '所有通知已標記為已讀';
+			case 'notifications.markAllAsReadFailed': return '全部標記已讀失敗';
+			case 'notifications.markAllAsReadFailedWithException': return ({required Object exception}) => '全部標記已讀失敗: ${exception}';
+			case 'notifications.markSelectedAsRead': return '標記已讀';
+			case 'notifications.markSelectedAsReadSuccess': return '已標記為已讀';
+			case 'notifications.markSelectedAsReadFailed': return '標記已讀失敗';
+			case 'notifications.markSelectedAsReadFailedWithException': return ({required Object exception}) => '標記已讀失敗: ${exception}';
+			case 'notifications.markAsRead': return '標記已讀';
+			case 'notifications.markAsReadSuccess': return '已標記為已讀';
+			case 'notifications.markAsReadFailed': return '標記已讀失敗';
+			case 'notifications.notificationTypeHelp': return '通知類型幫助';
+			case 'notifications.dueToLackOfNotificationTypeDetails': return '通知類型的詳細信息不足，目前支持的類型可能沒有覆蓋到您當前收到的消息';
+			case 'notifications.helpUsImproveNotificationTypeSupport': return '如果您願意幫助我們完善通知類型的支持：';
+			case 'notifications.helpUsImproveNotificationTypeSupportLongText': return '1. 📋 複製通知信息\n2. 🐞 前往項目倉庫提交 issue\n\n⚠️ 注意：通知信息可能包含個人隱私，如果你不想公開，也可以通過郵件發送給項目作者。';
+			case 'notifications.goToRepository': return '前往項目倉庫';
+			case 'notifications.copy': return '複製';
 			default: return null;
 		}
 	}

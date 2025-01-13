@@ -10,6 +10,7 @@ import 'package:i_iwara/app/ui/pages/friends/friends_page.dart';
 import 'package:i_iwara/app/ui/pages/gallery_detail/widgets/horizontial_image_list.dart';
 import 'package:i_iwara/app/ui/pages/gallery_detail/widgets/my_gallery_photo_view_wrapper.dart';
 import 'package:i_iwara/app/ui/pages/history/history_list_page.dart';
+import 'package:i_iwara/app/ui/pages/notifications/notification_list_page.dart';
 import 'package:i_iwara/app/ui/pages/play_list/play_list.dart';
 import 'package:i_iwara/app/ui/pages/play_list/play_list_detail.dart';
 import 'package:i_iwara/app/ui/pages/tag_blacklist/tag_blacklist_page.dart';
@@ -465,6 +466,24 @@ class NaviService {
       settings: RouteSettings(name: Routes.FORUM_THREAD_DETAIL(categoryId, threadId)),
       pageBuilder: (context, animation, secondaryAnimation) {
         return ThreadDetailPage(categoryId: categoryId, threadId: threadId);
+      },
+      transitionDuration: const Duration(milliseconds: 200),
+      // 从右到左的原生动画
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        return SlideTransition(
+          position: Tween<Offset>(begin: const Offset(1, 0), end: Offset.zero).animate(animation),
+          child: child,
+        );
+      },
+    ));
+  }
+
+  /// 跳转到通知列表页
+  static void navigateToNotificationListPage() {
+    AppService.homeNavigatorKey.currentState?.push(PageRouteBuilder(
+      settings: const RouteSettings(name: Routes.NOTIFICATION_LIST),
+      pageBuilder: (context, animation, secondaryAnimation) {
+        return const NotificationListPage();
       },
       transitionDuration: const Duration(milliseconds: 200),
       // 从右到左的原生动画

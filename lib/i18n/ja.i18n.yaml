@@ -236,6 +236,7 @@ errors:
   remainingMinutes: "${num}分"
   remainingSeconds: "${num}秒"
   tagLimitExceeded: 'タグの上限を超えています。上限: ${limit}'
+  failedToRefresh: 更新に失敗しました
 friends:
   clickToRestoreFriend: 友達を復元するにはクリックしてください
   friendsList: 友達リスト
@@ -565,3 +566,33 @@ forum:
   editTitle: 編集タイトル
   submit: 提出
 
+notifications:
+  errors:
+    unsupportedNotificationType: サポートされていない通知タイプ
+    unknownUser: 未知ユーザー
+    unsupportedNotificationTypeWithType: 'サポートされていない通知タイプ: ${type}'
+    unknownNotificationType: 未知通知タイプ
+  notifications: 通知
+  profile: 個人主頁
+  postedNewComment: 新しいコメントを投稿
+  inYour: あなたの
+  video: ビデオ
+  repliedYourVideoComment: あなたのビデオコメントに返信しました
+  copyInfoToClipboard: 通知情報をクリップボードにコピー
+  copySuccess: クリップボードにコピーされました
+  copySuccessForMessage: 'クリップボードにコピーされました: ${str}'
+  markAllAsRead: 全てを既読にする
+  markAllAsReadSuccess: 全ての通知が既読になりました
+  markAllAsReadFailed: 全てを既読にするに失敗しました
+  markSelectedAsRead: 選択した通知を既読にする
+  markSelectedAsReadSuccess: 選択した通知が既読になりました
+  markSelectedAsReadFailed: 選択した通知を既読にするに失敗しました
+  markAsRead: 既読にする
+  markAsReadSuccess: 通知が既読になりました
+  markAsReadFailed: 通知を既読にするに失敗しました
+  notificationTypeHelp: 通知タイプのヘルプ
+  dueToLackOfNotificationTypeDetails: 通知タイプの詳細情報が不足しているため、現在サポートされているタイプが受信したメッセージをカバーしていない可能性があります
+  helpUsImproveNotificationTypeSupport: 通知タイプのサポート改善にご協力いただける場合
+  helpUsImproveNotificationTypeSupportLongText: '1. 📋 通知情報をコピー\n2. 🐞 プロジェクトリポジトリに issue を提出\n\n⚠️ 注意：通知情報には個人情報が含まれている場合があります。公開したくない場合は、プロジェクト作者にメールで送信することもできます。'
+  goToRepository: リポジトリに移動
+  copy: コピー

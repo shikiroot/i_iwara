@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'package:get/get.dart';
 import 'package:i_iwara/app/models/dto/profile_user_dto.dart';
 import 'package:i_iwara/app/models/dto/user_request_dto.dart';
 import 'package:i_iwara/app/models/page_data.model.dart';
+import 'package:i_iwara/app/models/user_notification_count.model.dart';
 import 'package:i_iwara/i18n/strings.g.dart';
 
 import '../../common/constants.dart';
@@ -19,11 +21,64 @@ class UserService extends GetxService {
   final String _tag = '[UserService]';
 
   Rxn<User> currentUser = Rxn<User>();
+  RxInt notificationCount = RxInt(0);
+  RxInt friendRequestsCount = RxInt(0);
+  RxInt messagesCount = RxInt(0);
+  Timer? _notificationTimer;
 
   bool get isLogin => currentUser.value != null;
 
   String get userAvatar =>
       currentUser.value?.avatar?.avatarUrl ?? CommonConstants.defaultAvatarUrl;
+
+  // 开始通知计数定时任务
+  void startNotificationTimer() {
+    print('senko startNotificationTimer');
+    if (_notificationTimer == null) {
+      _notificationTimer = Timer.periodic(const Duration(minutes: 15), (timer) async {
+        if (_authService.hasToken) {
+          await _fetchNotificationCount();
+        }
+      });
+      // 立即执行一次
+      if (_authService.hasToken) {
+        _fetchNotificationCount();
+      }
+    }
+  }
+
+  // 停止通知计数定时任务
+  void stopNotificationTimer() {
+    _notificationTimer?.cancel();
+    _notificationTimer = null;
+  }
+
+  void clearAllNotificationCounts() {
+    stopNotificationTimer();
+    notificationCount.value = 0;
+    friendRequestsCount.value = 0;
+    messagesCount.value = 0;
+  }
+
+  // 获取通知计数
+  Future<void> _fetchNotificationCount() async {
+    try {
+      final result = await fetchUserNotificationCount();
+      if (result.data != null) {
+        notificationCount.value = result.data?.notifications ?? 0;
+        friendRequestsCount.value = result.data?.friendRequests ?? 0;
+        messagesCount.value = result.data?.messages ?? 0;
+      }
+    } catch (e) {
+      LogUtils.e('获取通知计数失败', tag: _tag, error: e);
+    }
+  }
+
+  @override
+  void onClose() {
+    stopNotificationTimer();
+    super.onClose();
+  }
 
   Future<UserService> init() async {
     LogUtils.d('$_tag 初始化用户服务');
@@ -314,6 +369,79 @@ class UserService extends GetxService {
     return ApiResult.fail(t.errors.invalidParameter);
   }
 
+
+  /// 标记消息已读(单个)
+  /// /notifications/:id/read
+  Future<ApiResult<void>> markNotificationAsRead(String notificationId) async {
+    try {
+      await _apiService.post(ApiConstants.userNotificationWithId(notificationId));
+      return ApiResult.success();
+    } catch (e) {
+      LogUtils.e('标记消息已读失败', error: e);
+      return ApiResult.fail(t.errors.failedToOperate);
+    }
+  }
+
+  /// 标记消息已读(全部)
+  /// /notifications/all/read
+  Future<ApiResult<void>> markAllNotificationAsRead() async {
+    try {
+      await _apiService.post(ApiConstants.userNotificationAllRead);
+      return ApiResult.success();
+    } catch (e) {
+      LogUtils.e('标记消息已读失败', error: e);
+      return ApiResult.fail(t.errors.failedToOperate);
+    }
+  }
+
+  /// 获取消息 count
+  /// /user/counts
+  Future<ApiResult<UserNotificationCount>> fetchUserNotificationCount() async {
+    try {
+      final response = await _apiService.get(ApiConstants.userCounts);
+      return ApiResult.success(data: UserNotificationCount.fromJson(response.data));
+    } catch (e) {
+      LogUtils.e('获取消息 count 失败', error: e);
+      return ApiResult.fail(t.errors.failedToFetchData);
+    }
+  }
+
+  /// 获取通知信息
+  /// /user/:id/notifications
+  /// 结构体
+  /// {
+  ///   /// 必须存在的字段 notNull
+  ///   id, // notNull
+  ///   type, // notNull 操作，比如 newComment有新的评论，newReply有新的回复
+  ///   createdAt, // notNull 创建时间
+  ///   updatedAt, // notNull 更新时间
+  ///   read, // notNull 是否已读
+  ///   
+  ///   /// 目前我就找到了这两种情况，所以后面在实现列表渲染时，还要记录报错 （未设计的情况，然后给个提示UI和复制按钮，可以复制该JSON）
+  ///   /// 特殊情况1: type: newReply 并且有 comment、vide，此时表示有视频的回复
+  ///   /// 特殊情况2: type: newComment 并且有 comment、profile (对应user.model.dart)，此时表示有人在作者详情页给自己发了评论
+  /// }
+  Future<ApiResult<PageData<Map<String, dynamic>>>> fetchUserNotifications(String userId, {int page = 0, int limit = 20}) async {
+    try {
+      final response = await _apiService.get(ApiConstants.userNotifications(userId), queryParameters: {
+        'page': page,
+        'limit': limit,
+      });
+      final List<Map<String, dynamic>> results = (response.data['results'] as List)
+          .map((item) => item as Map<String, dynamic>)
+          .toList();
+      final PageData<Map<String, dynamic>> pageData = PageData(
+        page: response.data['page'],
+        limit: response.data['limit'],
+        count: response.data['count'],
+        results: results,
+      );
+      return ApiResult.success(data: pageData);
+    } catch (e) {
+      LogUtils.e('获取通知信息失败', error: e);
+      return ApiResult.fail(t.errors.failedToFetchData);
+    }
+  }
 
   // 添加处理登出的方法
   void handleLogout() {

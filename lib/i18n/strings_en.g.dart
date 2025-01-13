@@ -54,6 +54,7 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	late final TranslationsShareEn share = TranslationsShareEn._(_root);
 	late final TranslationsMarkdownEn markdown = TranslationsMarkdownEn._(_root);
 	late final TranslationsForumEn forum = TranslationsForumEn._(_root);
+	late final TranslationsNotificationsEn notifications = TranslationsNotificationsEn._(_root);
 }
 
 // Path: common
@@ -313,6 +314,7 @@ class TranslationsErrorsEn {
 	String remainingMinutes({required Object num}) => '${num} minutes';
 	String remainingSeconds({required Object num}) => '${num} seconds';
 	String tagLimitExceeded({required Object limit}) => 'Tag limit exceeded, limit: ${limit}';
+	String get failedToRefresh => 'Failed to refresh';
 }
 
 // Path: friends
@@ -699,6 +701,40 @@ class TranslationsForumEn {
 	String get submit => 'Submit';
 }
 
+// Path: notifications
+class TranslationsNotificationsEn {
+	TranslationsNotificationsEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	late final TranslationsNotificationsErrorsEn errors = TranslationsNotificationsErrorsEn._(_root);
+	String get notifications => 'Notifications';
+	String get profile => 'Profile';
+	String get postedNewComment => 'Posted new comment';
+	String get inYour => 'In your';
+	String get video => 'Video';
+	String get repliedYourVideoComment => 'Replied your video comment';
+	String get copyInfoToClipboard => 'Copy notification info to clipboard';
+	String get copySuccess => 'Copied to clipboard';
+	String copySuccessForMessage({required Object str}) => 'Copied to clipboard: ${str}';
+	String get markAllAsRead => 'Mark all as read';
+	String get markAllAsReadSuccess => 'All notifications have been marked as read';
+	String get markAllAsReadFailed => 'Mark all as read failed';
+	String get markSelectedAsRead => 'Mark selected as read';
+	String get markSelectedAsReadSuccess => 'Selected notifications have been marked as read';
+	String get markSelectedAsReadFailed => 'Mark selected as read failed';
+	String get markAsRead => 'Mark as read';
+	String get markAsReadSuccess => 'Notification has been marked as read';
+	String get markAsReadFailed => 'Notification marked as read failed';
+	String get notificationTypeHelp => 'Notification Type Help';
+	String get dueToLackOfNotificationTypeDetails => 'Due to the lack of notification type details, the supported types may not cover the messages you currently receive';
+	String get helpUsImproveNotificationTypeSupport => 'If you are willing to help us improve the support for notification types';
+	String get helpUsImproveNotificationTypeSupportLongText => '1. 📋 Copy the notification information\n2. 🐞 Submit an issue to the project repository\n\n⚠️ Note: Notification information may contain personal privacy, if you do not want to public, you can also send it to the project author by email.';
+	String get goToRepository => 'Go to Repository';
+	String get copy => 'Copy';
+}
+
 // Path: forum.errors
 class TranslationsForumErrorsEn {
 	TranslationsForumErrorsEn._(this._root);
@@ -777,6 +813,19 @@ class TranslationsForumLeafDescriptionsEn {
 	String get support_ja => 'Help to resolve website-related issues';
 	String get korean => 'Discussions related to Korean';
 	String get other => 'Other unclassified content';
+}
+
+// Path: notifications.errors
+class TranslationsNotificationsErrorsEn {
+	TranslationsNotificationsErrorsEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get unsupportedNotificationType => 'Unsupported notification type';
+	String get unknownUser => 'Unknown user';
+	String unsupportedNotificationTypeWithType({required Object type}) => 'Unsupported notification type: ${type}';
+	String get unknownNotificationType => 'Unknown notification type';
 }
 
 /// Flat map(s) containing all translations.
@@ -1016,6 +1065,7 @@ extension on Translations {
 			case 'errors.remainingMinutes': return ({required Object num}) => '${num} minutes';
 			case 'errors.remainingSeconds': return ({required Object num}) => '${num} seconds';
 			case 'errors.tagLimitExceeded': return ({required Object limit}) => 'Tag limit exceeded, limit: ${limit}';
+			case 'errors.failedToRefresh': return 'Failed to refresh';
 			case 'friends.clickToRestoreFriend': return 'Click to restore friend';
 			case 'friends.friendsList': return 'Friends List';
 			case 'friends.friendRequests': return 'Friend Requests';
@@ -1314,6 +1364,34 @@ extension on Translations {
 			case 'forum.editReply': return 'Edit Reply';
 			case 'forum.editTitle': return 'Edit Title';
 			case 'forum.submit': return 'Submit';
+			case 'notifications.errors.unsupportedNotificationType': return 'Unsupported notification type';
+			case 'notifications.errors.unknownUser': return 'Unknown user';
+			case 'notifications.errors.unsupportedNotificationTypeWithType': return ({required Object type}) => 'Unsupported notification type: ${type}';
+			case 'notifications.errors.unknownNotificationType': return 'Unknown notification type';
+			case 'notifications.notifications': return 'Notifications';
+			case 'notifications.profile': return 'Profile';
+			case 'notifications.postedNewComment': return 'Posted new comment';
+			case 'notifications.inYour': return 'In your';
+			case 'notifications.video': return 'Video';
+			case 'notifications.repliedYourVideoComment': return 'Replied your video comment';
+			case 'notifications.copyInfoToClipboard': return 'Copy notification info to clipboard';
+			case 'notifications.copySuccess': return 'Copied to clipboard';
+			case 'notifications.copySuccessForMessage': return ({required Object str}) => 'Copied to clipboard: ${str}';
+			case 'notifications.markAllAsRead': return 'Mark all as read';
+			case 'notifications.markAllAsReadSuccess': return 'All notifications have been marked as read';
+			case 'notifications.markAllAsReadFailed': return 'Mark all as read failed';
+			case 'notifications.markSelectedAsRead': return 'Mark selected as read';
+			case 'notifications.markSelectedAsReadSuccess': return 'Selected notifications have been marked as read';
+			case 'notifications.markSelectedAsReadFailed': return 'Mark selected as read failed';
+			case 'notifications.markAsRead': return 'Mark as read';
+			case 'notifications.markAsReadSuccess': return 'Notification has been marked as read';
+			case 'notifications.markAsReadFailed': return 'Notification marked as read failed';
+			case 'notifications.notificationTypeHelp': return 'Notification Type Help';
+			case 'notifications.dueToLackOfNotificationTypeDetails': return 'Due to the lack of notification type details, the supported types may not cover the messages you currently receive';
+			case 'notifications.helpUsImproveNotificationTypeSupport': return 'If you are willing to help us improve the support for notification types';
+			case 'notifications.helpUsImproveNotificationTypeSupportLongText': return '1. 📋 Copy the notification information\n2. 🐞 Submit an issue to the project repository\n\n⚠️ Note: Notification information may contain personal privacy, if you do not want to public, you can also send it to the project author by email.';
+			case 'notifications.goToRepository': return 'Go to Repository';
+			case 'notifications.copy': return 'Copy';
 			default: return null;
 		}
 	}

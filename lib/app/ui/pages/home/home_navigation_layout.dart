@@ -8,16 +8,39 @@ import 'package:i_iwara/utils/logger_utils.dart';
 
 import '../../../routes/app_routes.dart';
 import '../../../services/app_service.dart';
+import '../../../services/user_service.dart';
 import '../popular_media_list/popular_gallery_list_page.dart';
 import '../popular_media_list/popular_video_list_page.dart';
 import '../subscriptions/subscriptions_page.dart';
-import 'package:i_iwara/i18n/strings.g.dart' as slang;  
-/// 侧边栏、底部导航栏、主要内容
-class HomeNavigationLayout extends StatelessWidget {
-  HomeNavigationLayout({super.key});
+import 'package:i_iwara/i18n/strings.g.dart' as slang;
 
-  final AppService appService = Get.find<AppService>();
+/// 侧边栏、底部导航栏、主要内容
+class HomeNavigationLayout extends StatefulWidget {
+  const HomeNavigationLayout({super.key});
+
   static final HomeNavigatorObserver homeNavigatorObserver = HomeNavigatorObserver();
+
+  @override
+  State<HomeNavigationLayout> createState() => _HomeNavigationLayoutState();
+}
+
+class _HomeNavigationLayoutState extends State<HomeNavigationLayout> {
+  final AppService appService = Get.find<AppService>();
+  final UserService userService = Get.find<UserService>();
+
+  @override
+  void initState() {
+    super.initState();
+    // 启动通知计数定时任务
+    userService.startNotificationTimer();
+  }
+
+  @override
+  void dispose() {
+    // 停止通知计数定时任务
+    userService.stopNotificationTimer();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,12 +82,45 @@ class HomeNavigationLayout extends StatelessWidget {
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                IconButton(
-                                  icon: const Icon(Icons.settings),
-                                  tooltip: t.common.settings,
-                                  onPressed: () {
-                                    AppService.switchGlobalDrawer();
-                                  },
+                                Stack(
+                                  children: [
+                                    IconButton(
+                                      icon: const Icon(Icons.settings),
+                                      tooltip: t.common.settings,
+                                      onPressed: () {
+                                        AppService.switchGlobalDrawer();
+                                      },
+                                    ),
+                                    Obx(() {
+                                      final count = userService.notificationCount.value + userService.friendRequestsCount.value + userService.messagesCount.value;
+                                      if (count > 0) {
+                                        return Positioned(
+                                          right: 0,
+                                          top: 0,
+                                          child: Container(
+                                            padding: const EdgeInsets.all(2),
+                                            decoration: BoxDecoration(
+                                              color: Theme.of(context).colorScheme.error,
+                                              borderRadius: BorderRadius.circular(10),
+                                            ),
+                                            constraints: const BoxConstraints(
+                                              minWidth: 20,
+                                              minHeight: 20,
+                                            ),
+                                            child: Text(
+                                              count.toString(),
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 12,
+                                              ),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                      return const SizedBox.shrink();
+                                    }),
+                                  ],
                                 ),
                                 IconButton(
                                   icon: const Icon(Icons.exit_to_app),
@@ -120,7 +176,7 @@ class HomeNavigationLayout extends StatelessWidget {
                     body: Navigator(
                       key: AppService.homeNavigatorKey,
                       observers: [
-                        homeNavigatorObserver,
+                        HomeNavigationLayout.homeNavigatorObserver,
                       ],
                       onGenerateRoute: (RouteSettings settings) {
                         WidgetBuilder builder;

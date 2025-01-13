@@ -104,6 +104,12 @@ class ApiConstants {
   // 用户
   static String user = '/user';
 
+  // 用户消息 count
+  static String userCounts = '/user/counts';
+
+  // 用户消息全部已读
+  static String userNotificationAllRead = '/notifications/all/read';
+
   // 用户WithId
   static String userWithId(String userId) => '/user/$userId';
 
@@ -231,6 +237,12 @@ class ApiConstants {
 
   // 论坛帖子详情
   static String forumThreadDetail(String categoryId, String threadId) => '/forum/$categoryId/$threadId';
+
+  // 用户通知
+  static String userNotifications(String userId) => '/user/$userId/notifications';
+
+  // 标记消息已读
+  static String userNotificationWithId(String notificationId) => '/notifications/$notificationId/read';
 }
 
 // 视频接口的排序方式
