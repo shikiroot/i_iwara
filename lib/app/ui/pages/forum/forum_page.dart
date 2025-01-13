@@ -75,12 +75,46 @@ class _ForumPageState extends State<ForumPage> {
             IconButton(
               icon: Obx(() {
                 if (userService.isLogin) {
-                  return AvatarWidget(
-                    avatarUrl: userService.userAvatar,
-                    radius: 14,
-                    defaultAvatarUrl: CommonConstants.defaultAvatarUrl,
-                    isPremium: userService.currentUser.value?.premium ?? false,
-                    isAdmin: userService.currentUser.value?.isAdmin ?? false,
+                  return Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      AvatarWidget(
+                        avatarUrl: userService.userAvatar,
+                        radius: 14,
+                        defaultAvatarUrl: CommonConstants.defaultAvatarUrl,
+                        isPremium: userService.currentUser.value?.premium ?? false,
+                        isAdmin: userService.currentUser.value?.isAdmin ?? false,
+                      ),
+                      Positioned(
+                        right: -5,
+                        top: -5,
+                        child: Obx(() {
+                          final count = userService.notificationCount.value + userService.friendRequestsCount.value + userService.messagesCount.value;
+                          if (count > 0) {
+                            return Container(
+                              padding: const EdgeInsets.all(2),
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).colorScheme.error,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              constraints: const BoxConstraints(
+                                minWidth: 16,
+                                minHeight: 16,
+                              ),
+                              child: Text(
+                                count.toString(),
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 10,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            );
+                          }
+                          return const SizedBox.shrink();
+                        }),
+                      ),
+                    ],
                   );
                 } else {
                   return const Icon(Icons.account_circle);

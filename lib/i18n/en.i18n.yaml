@@ -595,3 +595,5 @@ notifications:
   helpUsImproveNotificationTypeSupportLongText: '1. 📋 Copy the notification information\n2. 🐞 Submit an issue to the project repository\n\n⚠️ Note: Notification information may contain personal privacy, if you do not want to public, you can also send it to the project author by email.'
   goToRepository: Go to Repository
   copy: Copy
+  commentApproved: Comment Approved
+  repliedYourProfileComment: Replied your profile comment

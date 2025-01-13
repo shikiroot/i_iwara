@@ -601,3 +601,5 @@ notifications:
   helpUsImproveNotificationTypeSupportLongText: '1. 📋 複製通知信息\n2. 🐞 前往項目倉庫提交 issue\n\n⚠️ 注意：通知信息可能包含個人隱私，如果你不想公開，也可以通過郵件發送給項目作者。'
   goToRepository: 前往項目倉庫
   copy: 複製
+  commentApproved: 評論已通過
+  repliedYourProfileComment: 回覆了您的個人主頁評論

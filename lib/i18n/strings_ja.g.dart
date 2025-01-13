@@ -729,6 +729,8 @@ class _TranslationsNotificationsJa implements TranslationsNotificationsEn {
 	@override String get helpUsImproveNotificationTypeSupportLongText => '1. 📋 通知情報をコピー\n2. 🐞 プロジェクトリポジトリに issue を提出\n\n⚠️ 注意：通知情報には個人情報が含まれている場合があります。公開したくない場合は、プロジェクト作者にメールで送信することもできます。';
 	@override String get goToRepository => 'リポジトリに移動';
 	@override String get copy => 'コピー';
+	@override String get commentApproved => 'コメントが承認されました';
+	@override String get repliedYourProfileComment => 'あなたの個人主頁コメントに返信しました';
 }
 
 // Path: forum.errors
@@ -1388,6 +1390,8 @@ extension on TranslationsJa {
 			case 'notifications.helpUsImproveNotificationTypeSupportLongText': return '1. 📋 通知情報をコピー\n2. 🐞 プロジェクトリポジトリに issue を提出\n\n⚠️ 注意：通知情報には個人情報が含まれている場合があります。公開したくない場合は、プロジェクト作者にメールで送信することもできます。';
 			case 'notifications.goToRepository': return 'リポジトリに移動';
 			case 'notifications.copy': return 'コピー';
+			case 'notifications.commentApproved': return 'コメントが承認されました';
+			case 'notifications.repliedYourProfileComment': return 'あなたの個人主頁コメントに返信しました';
 			default: return null;
 		}
 	}

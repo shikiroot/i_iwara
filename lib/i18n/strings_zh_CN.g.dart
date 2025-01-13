@@ -712,7 +712,6 @@ class _TranslationsNotificationsZhCn implements TranslationsNotificationsEn {
 	@override late final _TranslationsNotificationsErrorsZhCn errors = _TranslationsNotificationsErrorsZhCn._(_root);
 	@override String get notifications => '通知';
 	@override String get video => '视频';
-	@override String get repliedYourVideoComment => '回覆了您的视频评论';
 	@override String get profile => '个人主页';
 	@override String get postedNewComment => '发表了评论';
 	@override String get inYour => '在您的';
@@ -734,6 +733,9 @@ class _TranslationsNotificationsZhCn implements TranslationsNotificationsEn {
 	@override String get helpUsImproveNotificationTypeSupportLongText => '1. 📋 复制通知信息\n2. 🐞 前往项目仓库提交 issue\n\n⚠️ 注意：通知信息可能包含个人隐私，如果你不想公开，也可以通过邮件发送给项目作者。';
 	@override String get goToRepository => '前往项目仓库';
 	@override String get copy => '复制';
+	@override String get commentApproved => '评论已通过审核';
+	@override String get repliedYourProfileComment => '回复了您的个人主页评论';
+	@override String get repliedYourVideoComment => '回复了您的视频评论';
 }
 
 // Path: forum.errors
@@ -1376,7 +1378,6 @@ extension on TranslationsZhCn {
 			case 'notifications.errors.unknownNotificationType': return '未知通知类型';
 			case 'notifications.notifications': return '通知';
 			case 'notifications.video': return '视频';
-			case 'notifications.repliedYourVideoComment': return '回覆了您的视频评论';
 			case 'notifications.profile': return '个人主页';
 			case 'notifications.postedNewComment': return '发表了评论';
 			case 'notifications.inYour': return '在您的';
@@ -1398,6 +1399,9 @@ extension on TranslationsZhCn {
 			case 'notifications.helpUsImproveNotificationTypeSupportLongText': return '1. 📋 复制通知信息\n2. 🐞 前往项目仓库提交 issue\n\n⚠️ 注意：通知信息可能包含个人隐私，如果你不想公开，也可以通过邮件发送给项目作者。';
 			case 'notifications.goToRepository': return '前往项目仓库';
 			case 'notifications.copy': return '复制';
+			case 'notifications.commentApproved': return '评论已通过审核';
+			case 'notifications.repliedYourProfileComment': return '回复了您的个人主页评论';
+			case 'notifications.repliedYourVideoComment': return '回复了您的视频评论';
 			default: return null;
 		}
 	}

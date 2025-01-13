@@ -185,17 +185,50 @@ class _PopularVideoListPageState extends State<PopularVideoListPage>
               // 用户头像
               Obx(() {
                     if (userService.isLogin) {
-                      return IconButton(
-                        icon: AvatarWidget(
-                          avatarUrl: userService.userAvatar,
-                          radius: 14,
-                          defaultAvatarUrl: CommonConstants.defaultAvatarUrl,
-                          isPremium: userService.currentUser.value?.premium ?? false,
-                          isAdmin: userService.currentUser.value?.isAdmin ?? false,
-                        ),
-                        onPressed: () {
-                          AppService.switchGlobalDrawer();
-                        },
+                      return Stack(
+                        children: [
+                          IconButton(
+                            icon: AvatarWidget(
+                              avatarUrl: userService.userAvatar,
+                              radius: 14,
+                              defaultAvatarUrl: CommonConstants.defaultAvatarUrl,
+                              isPremium: userService.currentUser.value?.premium ?? false,
+                              isAdmin: userService.currentUser.value?.isAdmin ?? false,
+                            ),
+                            onPressed: () {
+                              AppService.switchGlobalDrawer();
+                            },
+                          ),
+                          Positioned(
+                            right: 0,
+                            top: 0,
+                            child: Obx(() {
+                              final count = userService.notificationCount.value + userService.friendRequestsCount.value + userService.messagesCount.value;
+                              if (count > 0) {
+                                return Container(
+                                  padding: const EdgeInsets.all(2),
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context).colorScheme.error,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  constraints: const BoxConstraints(
+                                    minWidth: 20,
+                                    minHeight: 20,
+                                  ),
+                                  child: Text(
+                                    count.toString(),
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                );
+                              }
+                              return const SizedBox.shrink();
+                            }),
+                          ),
+                        ],
                       );
                     } else {
                       return IconButton(

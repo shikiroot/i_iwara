@@ -733,6 +733,8 @@ class TranslationsNotificationsEn {
 	String get helpUsImproveNotificationTypeSupportLongText => '1. 📋 Copy the notification information\n2. 🐞 Submit an issue to the project repository\n\n⚠️ Note: Notification information may contain personal privacy, if you do not want to public, you can also send it to the project author by email.';
 	String get goToRepository => 'Go to Repository';
 	String get copy => 'Copy';
+	String get commentApproved => 'Comment Approved';
+	String get repliedYourProfileComment => 'Replied your profile comment';
 }
 
 // Path: forum.errors
@@ -1392,6 +1394,8 @@ extension on Translations {
 			case 'notifications.helpUsImproveNotificationTypeSupportLongText': return '1. 📋 Copy the notification information\n2. 🐞 Submit an issue to the project repository\n\n⚠️ Note: Notification information may contain personal privacy, if you do not want to public, you can also send it to the project author by email.';
 			case 'notifications.goToRepository': return 'Go to Repository';
 			case 'notifications.copy': return 'Copy';
+			case 'notifications.commentApproved': return 'Comment Approved';
+			case 'notifications.repliedYourProfileComment': return 'Replied your profile comment';
 			default: return null;
 		}
 	}

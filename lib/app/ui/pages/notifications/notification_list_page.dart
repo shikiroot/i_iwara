@@ -99,7 +99,18 @@ class _NotificationListPageState extends State<NotificationListPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
-        title: Text(translations.notifications.notifications),
+        title: Row(
+          children: [
+            Text(translations.notifications.notifications),
+            Obx(() {
+              final count = _userService.notificationCount.value + _userService.friendRequestsCount.value + _userService.messagesCount.value;
+              if (count > 0) {
+                return Text('($count)');
+              }
+              return const SizedBox.shrink();
+            }),
+          ],
+        ),
         actions: [
           Row(
             children: [

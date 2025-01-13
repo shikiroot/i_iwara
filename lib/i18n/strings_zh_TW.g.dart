@@ -732,6 +732,8 @@ class _TranslationsNotificationsZhTw implements TranslationsNotificationsEn {
 	@override String get helpUsImproveNotificationTypeSupportLongText => '1. 📋 複製通知信息\n2. 🐞 前往項目倉庫提交 issue\n\n⚠️ 注意：通知信息可能包含個人隱私，如果你不想公開，也可以通過郵件發送給項目作者。';
 	@override String get goToRepository => '前往項目倉庫';
 	@override String get copy => '複製';
+	@override String get commentApproved => '評論已通過';
+	@override String get repliedYourProfileComment => '回覆了您的個人主頁評論';
 }
 
 // Path: forum.errors
@@ -1394,6 +1396,8 @@ extension on TranslationsZhTw {
 			case 'notifications.helpUsImproveNotificationTypeSupportLongText': return '1. 📋 複製通知信息\n2. 🐞 前往項目倉庫提交 issue\n\n⚠️ 注意：通知信息可能包含個人隱私，如果你不想公開，也可以通過郵件發送給項目作者。';
 			case 'notifications.goToRepository': return '前往項目倉庫';
 			case 'notifications.copy': return '複製';
+			case 'notifications.commentApproved': return '評論已通過';
+			case 'notifications.repliedYourProfileComment': return '回覆了您的個人主頁評論';
 			default: return null;
 		}
 	}

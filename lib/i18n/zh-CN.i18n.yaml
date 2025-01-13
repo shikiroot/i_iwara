@@ -581,7 +581,6 @@ notifications:
     unknownNotificationType: 未知通知类型
   notifications: 通知
   video: 视频
-  repliedYourVideoComment: 回覆了您的视频评论
   profile: 个人主页
   postedNewComment: 发表了评论
   inYour: 在您的
@@ -603,3 +602,6 @@ notifications:
   helpUsImproveNotificationTypeSupportLongText: '1. 📋 复制通知信息\n2. 🐞 前往项目仓库提交 issue\n\n⚠️ 注意：通知信息可能包含个人隐私，如果你不想公开，也可以通过邮件发送给项目作者。'
   goToRepository: 前往项目仓库
   copy: 复制
+  commentApproved: 评论已通过审核
+  repliedYourProfileComment: 回复了您的个人主页评论
+  repliedYourVideoComment: 回复了您的视频评论

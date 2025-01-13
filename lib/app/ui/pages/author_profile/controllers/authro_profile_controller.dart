@@ -52,7 +52,9 @@ class AuthorProfileController extends GetxController {
 
   @override
   void onClose() {
-    Get.delete<CommentController>(tag: author.value!.id);
+    if (author.value != null) {
+      Get.delete<CommentController>(tag: author.value!.id);
+    }
     worker?.dispose();
     super.onClose();
   }

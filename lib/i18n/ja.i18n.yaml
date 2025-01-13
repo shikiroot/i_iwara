@@ -596,3 +596,5 @@ notifications:
   helpUsImproveNotificationTypeSupportLongText: '1. 📋 通知情報をコピー\n2. 🐞 プロジェクトリポジトリに issue を提出\n\n⚠️ 注意：通知情報には個人情報が含まれている場合があります。公開したくない場合は、プロジェクト作者にメールで送信することもできます。'
   goToRepository: リポジトリに移動
   copy: コピー
+  commentApproved: コメントが承認されました
+  repliedYourProfileComment: あなたの個人主頁コメントに返信しました

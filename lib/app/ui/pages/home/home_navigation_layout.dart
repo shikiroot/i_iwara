@@ -82,45 +82,12 @@ class _HomeNavigationLayoutState extends State<HomeNavigationLayout> {
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Stack(
-                                  children: [
-                                    IconButton(
-                                      icon: const Icon(Icons.settings),
-                                      tooltip: t.common.settings,
-                                      onPressed: () {
-                                        AppService.switchGlobalDrawer();
-                                      },
-                                    ),
-                                    Obx(() {
-                                      final count = userService.notificationCount.value + userService.friendRequestsCount.value + userService.messagesCount.value;
-                                      if (count > 0) {
-                                        return Positioned(
-                                          right: 0,
-                                          top: 0,
-                                          child: Container(
-                                            padding: const EdgeInsets.all(2),
-                                            decoration: BoxDecoration(
-                                              color: Theme.of(context).colorScheme.error,
-                                              borderRadius: BorderRadius.circular(10),
-                                            ),
-                                            constraints: const BoxConstraints(
-                                              minWidth: 20,
-                                              minHeight: 20,
-                                            ),
-                                            child: Text(
-                                              count.toString(),
-                                              style: const TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 12,
-                                              ),
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          ),
-                                        );
-                                      }
-                                      return const SizedBox.shrink();
-                                    }),
-                                  ],
+                               IconButton(
+                                  icon: const Icon(Icons.settings),
+                                  tooltip: t.common.settings,
+                                  onPressed: () {
+                                    AppService.switchGlobalDrawer();
+                                  },
                                 ),
                                 IconButton(
                                   icon: const Icon(Icons.exit_to_app),

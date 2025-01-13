@@ -3,11 +3,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:i_iwara/app/models/comment.model.dart';
-import 'package:i_iwara/app/models/user.model.dart';
-import 'package:i_iwara/app/models/video.model.dart';
 import 'package:i_iwara/app/services/app_service.dart';
 import 'package:i_iwara/app/services/user_service.dart';
+import 'package:i_iwara/app/ui/pages/notifications/widgets/notification_content_items.dart';
 import 'package:i_iwara/app/ui/widgets/MDToastWidget.dart';
 import 'package:i_iwara/i18n/strings.g.dart';
 import 'package:i_iwara/utils/common_utils.dart';
@@ -32,17 +30,121 @@ class NotificationListItemWidget extends StatelessWidget {
 
     return Obx(() => _isMarkingAsRead.value
         ? Shimmer.fromColors(
-            baseColor: Theme.of(context).colorScheme.surfaceContainerHighest.withOpacity(0.3),
-            highlightColor: Theme.of(context).colorScheme.surfaceContainerHighest.withOpacity(0.6),
+            baseColor: Theme.of(context)
+                .colorScheme
+                .surfaceContainerHighest
+                .withOpacity(0.3),
+            highlightColor: Theme.of(context)
+                .colorScheme
+                .surfaceContainerHighest
+                .withOpacity(0.6),
             child: _buildCard(context, type, createdAt, read),
           )
         : _buildCard(context, type, createdAt, read));
   }
 
-  Widget _buildCard(BuildContext context, String type, DateTime createdAt, bool read) {
+  /// 通知点击事件
+  void _handleNotificationTap(String type) {
+    try {
+      switch (type) {
+        case 'newReply':
+        case 'newComment':
+          if (notification['comment'] != null) {
+            // 视频评论
+            if (notification['video'] != null) {
+              final videoId = notification['video']['id'];
+              NaviService.navigateToVideoDetailPage(videoId);
+              return;
+            }
+            // 图库评论
+            if (notification['image'] != null) {
+              final imageId = notification['image']['id'];
+              NaviService.navigateToGalleryDetailPage(imageId);
+              return;
+            }
+            // 用户主页评论
+            if (notification['profile'] != null) {
+              final profileUserName = notification['profile']['username'];
+              NaviService.navigateToAuthorProfilePage(profileUserName);
+              return;
+            }
+            // 论坛帖子评论
+            if (notification['thread'] != null) {
+              final threadId = notification['thread']['id'];
+              final categoryId = notification['thread']['section'];
+              NaviService.navigateToForumThreadDetailPage(categoryId, threadId);
+              return;
+            }
+            // 投稿评论
+            if (notification['post'] != null) {
+              final postId = notification['post']['id'];
+              NaviService.navigateToPostDetailPage(postId, null);
+              return;
+            }
+          }
+          break;
+        case 'reviewApproved':
+          // 视频审核通过
+          if (notification['video'] != null) {
+            final videoId = notification['video']['id'];
+            NaviService.navigateToVideoDetailPage(videoId);
+            return;
+          }
+          // 图库审核通过
+          if (notification['image'] != null) {
+            final imageId = notification['image']['id'];
+            NaviService.navigateToGalleryDetailPage(imageId);
+            return;
+          }
+          // 论坛帖子审核通过
+          if (notification['thread'] != null) {
+            final threadId = notification['thread']['id'];
+            final categoryId = notification['thread']['section'];
+            NaviService.navigateToForumThreadDetailPage(categoryId, threadId);
+            return;
+          }
+          // 投稿审核通过
+          if (notification['post'] != null) {
+            final postId = notification['post']['id'];
+            NaviService.navigateToPostDetailPage(postId, null);
+            return;
+          }
+          break;
+      }
+    } catch (e) {
+      // 如果解析失败，不进行任何跳转
+    }
+  }
+
+  /// 是否是已知类型
+  bool _isKnownType(String type) {
+    const knownTypes = {
+      'newReply',    // 回复通知
+      'newComment',  // 评论通知
+      'reviewApproved', // 审核通过通知
+    };
+    return knownTypes.contains(type);
+  }
+
+  /// 复制通知数据
+  void _copyNotificationData() {
+    final jsonStr = const JsonEncoder.withIndent('  ').convert(notification);
+    Clipboard.setData(ClipboardData(text: jsonStr));
+    showToastWidget(
+      MDToastWidget(
+        message: t.notifications.copySuccess,
+        type: MDToastType.success,
+      ),
+    );
+  }
+
+  /// 通知卡片
+  Widget _buildCard(
+      BuildContext context, String type, DateTime createdAt, bool read) {
     return Card(
       clipBehavior: Clip.hardEdge,
       child: InkWell(
+        // 卡片点击事件
         onTap: () => _handleNotificationTap(type),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
@@ -51,8 +153,10 @@ class NotificationListItemWidget extends StatelessWidget {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // 通知内容
                   _buildNotificationContent(type, context, constraints),
                   const SizedBox(height: 12),
+                  // 通知时间 & 通知操作按钮
                   constraints.maxWidth < 300
                       ? Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -60,7 +164,9 @@ class NotificationListItemWidget extends StatelessWidget {
                             Text(
                               CommonUtils.formatFriendlyTimestamp(createdAt),
                               style: TextStyle(
-                                color: Theme.of(context).colorScheme.onSurfaceVariant,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onSurfaceVariant,
                                 fontSize: 12,
                               ),
                             ),
@@ -71,13 +177,17 @@ class NotificationListItemWidget extends StatelessWidget {
                       : Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
+                            // 通知时间
                             Text(
                               CommonUtils.formatFriendlyTimestamp(createdAt),
                               style: TextStyle(
-                                color: Theme.of(context).colorScheme.onSurfaceVariant,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onSurfaceVariant,
                                 fontSize: 12,
                               ),
                             ),
+                            // 通知操作按钮
                             _buildActionButtons(read, type, context),
                           ],
                         ),
@@ -90,6 +200,7 @@ class NotificationListItemWidget extends StatelessWidget {
     );
   }
 
+  /// 通知操作按钮
   Widget _buildActionButtons(bool read, String type, BuildContext context) {
     return Wrap(
       spacing: 8,
@@ -106,26 +217,27 @@ class NotificationListItemWidget extends StatelessWidget {
             ),
             onPressed: _markAsRead,
           ),
-        if (!_isKnownType(type))
-          OutlinedButton.icon(
-            icon: const Icon(Icons.copy, size: 16),
-            label: Text(t.notifications.copy,
-                style: const TextStyle(fontSize: 12)),
-            style: OutlinedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-              minimumSize: Size.zero,
-              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            ),
-            onPressed: () => _copyNotificationData(),
+        OutlinedButton.icon(
+          icon: const Icon(Icons.copy, size: 16),
+          label: Text(t.notifications.copy,
+              style: const TextStyle(fontSize: 12)),
+          style: OutlinedButton.styleFrom(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+            minimumSize: Size.zero,
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           ),
+          onPressed: () => _copyNotificationData(),
+        ),
       ],
     );
   }
 
+  /// 标记已读
   Future<void> _markAsRead() async {
     try {
       _isMarkingAsRead.value = true;
-      final result = await _userService.markNotificationAsRead(notification['id']);
+      final result =
+          await _userService.markNotificationAsRead(notification['id']);
       if (result.isSuccess) {
         notification['read'] = true;
         await _userService.fetchUserNotificationCount();
@@ -148,156 +260,40 @@ class NotificationListItemWidget extends StatelessWidget {
     }
   }
 
-  Widget _buildNotificationContent(String type, BuildContext context, BoxConstraints constraints) {
-    switch (type) {
-      case 'newReply':
-        if (notification['comment'] != null && notification['video'] != null) {
-          final comment = Comment.fromJson(notification['comment']);
-          final video = Video.fromJson(notification['video']);
-          return _buildVideoReplyNotification(comment, video, context, constraints);
-        }
-        break;
-      case 'newComment':
-        if (notification['comment'] != null && notification['profile'] != null) {
-          final comment = Comment.fromJson(notification['comment']);
-          final commentUser = comment.user!;
-          final profile = User.fromJson(notification['profile']);
-          return _buildProfileCommentNotification(comment, commentUser, profile, context, constraints);
-        }
-        break;
+  /// 通知内容
+  /// 由于接口信息被简化，所以可能如果直接fromJson，会报错
+  /// profiel -> {@link User}
+  /// image -> {@link ImageModel}
+  /// thread -> {@link ForumThreadModel}
+  /// video -> {@link Video}
+  /// comment -> {@link Comment}
+  Widget _buildNotificationContent(
+      String type, BuildContext context, BoxConstraints constraints) {
+    try {
+      switch (type) {
+        case 'newReply':
+          if (notification['comment'] != null) {
+            return NotificationContentItems.buildReplyNotification(context, notification);
+          }
+          break;
+        case 'newComment':
+          if (notification['comment'] != null) {
+            return NotificationContentItems.buildCommentNotification(context, notification);
+          }
+          break;
+        case 'reviewApproved':
+          return NotificationContentItems.buildReviewApprovedNotification(context, notification);
+      }
+    } catch (e) {
+      // 如果解析失败，返回不支持的通知类型
+      return _buildUnsupportedNotification(type, context, constraints);
     }
     return _buildUnsupportedNotification(type, context, constraints);
   }
 
-  Widget _buildVideoReplyNotification(
-      Comment comment, Video video, BuildContext context, BoxConstraints constraints) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Wrap(
-          crossAxisAlignment: WrapCrossAlignment.center,
-          children: [
-            InkWell(
-              onTap: () {
-                if (comment.user?.username != null) {
-                  NaviService.navigateToAuthorProfilePage(comment.user!.username);
-                }
-              },
-              child: Text(
-                comment.user?.name ?? t.notifications.errors.unknownUser,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            Text(' ${t.notifications.repliedYourVideoComment}'),
-          ],
-        ),
-        const SizedBox(height: 8),
-        InkWell(
-          onTap: () {
-            if (video.id.isNotEmpty) {
-              NaviService.navigateToVideoDetailPage(video.id);
-            }
-          },
-          child: Container(
-            constraints: BoxConstraints(maxWidth: constraints.maxWidth * 0.95),
-            child: Text(
-              '${t.notifications.video}: ${video.title}',
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.primary,
-              ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-        ),
-        const SizedBox(height: 8),
-        Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surfaceContainerHighest.withOpacity(0.5),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Text(
-            comment.body,
-            maxLines: 3,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              height: 1.4,
-              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.9),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildProfileCommentNotification(
-      Comment comment, User commentUser, User profile, BuildContext context, BoxConstraints constraints) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          constraints: BoxConstraints(maxWidth: constraints.maxWidth * 0.95),
-          child: Wrap(
-            crossAxisAlignment: WrapCrossAlignment.center,
-            children: [
-              InkWell(
-                onTap: () {
-                  NaviService.navigateToAuthorProfilePage(commentUser.username);
-                },
-                child: Text(
-                  commentUser.name,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              Text(' ${t.notifications.inYour} '),
-              InkWell(
-                onTap: () {
-                  NaviService.navigateToAuthorProfilePage(profile.username);
-                },
-                child: Text(
-                  t.notifications.profile,
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                ),
-              ),
-              Text(' ${t.notifications.postedNewComment}'),
-            ],
-          ),
-        ),
-        const SizedBox(height: 8),
-        Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surfaceContainerHighest.withOpacity(0.5),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Text(
-            comment.body,
-            maxLines: 3,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              height: 1.4,
-              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.9),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildUnsupportedNotification(String type, BuildContext context, BoxConstraints constraints) {
+  /// 不支持的通知类型, 如果渲染时遇到空指针啊, 则也需要渲染这个
+  Widget _buildUnsupportedNotification(
+      String type, BuildContext context, BoxConstraints constraints) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(16),
@@ -332,52 +328,17 @@ class NotificationListItemWidget extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Text(
-            t.notifications.errors.unsupportedNotificationTypeWithType(type: type),
+            t.notifications.errors
+                .unsupportedNotificationTypeWithType(type: type),
             style: TextStyle(
-              color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.8),
+              color: Theme.of(context)
+                  .colorScheme
+                  .onSurfaceVariant
+                  .withOpacity(0.8),
               height: 1.4,
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  void _handleNotificationTap(String type) {
-    switch (type) {
-      case 'newReply':
-        if (notification['video'] != null) {
-          final video = Video.fromJson(notification['video']);
-          if (video.id.isNotEmpty) {
-            NaviService.navigateToVideoDetailPage(video.id);
-          }
-        }
-        break;
-      case 'newComment':
-        if (_userService.currentUser.value?.username != null) {
-          NaviService.navigateToAuthorProfilePage(
-              _userService.currentUser.value!.username);
-        }
-        break;
-    }
-  }
-
-  bool _isKnownType(String type) {
-    if (type == 'newReply') {
-      return notification['comment'] != null && notification['video'] != null;
-    } else if (type == 'newComment') {
-      return notification['comment'] != null && notification['profile'] != null;
-    }
-    return false;
-  }
-
-  void _copyNotificationData() {
-    final jsonStr = const JsonEncoder.withIndent('  ').convert(notification);
-    Clipboard.setData(ClipboardData(text: jsonStr));
-    showToastWidget(
-      MDToastWidget(
-        message: t.notifications.copySuccess,
-        type: MDToastType.success,
       ),
     );
   }
