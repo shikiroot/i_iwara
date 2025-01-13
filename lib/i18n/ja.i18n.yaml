@@ -599,3 +599,17 @@ notifications:
   copy: コピー
   commentApproved: コメントが承認されました
   repliedYourProfileComment: あなたの個人主頁コメントに返信しました
+  kReplied: さんが
+  kCommented: さんが
+  kVideo: ビデオ
+  kGallery: ギャラリー
+  kProfile: プロフィール
+  kThread: スレッド
+  kPost: 投稿
+  kCommentSection: ''
+  kApprovedComment: コメントが承認されました
+  kApprovedVideo: 動画が承認されました
+  kApprovedGallery: ギャラリーが承認されました
+  kApprovedThread: スレッドが承認されました
+  kApprovedPost: 投稿が承認されました
+  kUnknownType: 不明な通知タイプ

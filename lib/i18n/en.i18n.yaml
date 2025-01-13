@@ -598,3 +598,17 @@ notifications:
   copy: Copy
   commentApproved: Comment Approved
   repliedYourProfileComment: Replied your profile comment
+  kReplied: replied to your comment on
+  kCommented: commented on your
+  kVideo: video
+  kGallery: gallery
+  kProfile: profile
+  kThread: thread
+  kPost: post
+  kCommentSection: comment section
+  kApprovedComment: Comment approved
+  kApprovedVideo: Video approved
+  kApprovedGallery: Gallery approved
+  kApprovedThread: Thread approved
+  kApprovedPost: Post approved
+  kUnknownType: Unknown notification type

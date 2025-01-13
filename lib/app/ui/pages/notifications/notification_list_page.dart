@@ -12,7 +12,6 @@ import 'package:loading_more_list/loading_more_list.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:i_iwara/i18n/strings.g.dart' as slang;
-import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class NotificationListPage extends StatefulWidget {

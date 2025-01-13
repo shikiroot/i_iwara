@@ -1,7 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:i_iwara/app/models/comment.model.dart';
 import 'package:i_iwara/app/services/app_service.dart';
+import 'package:i_iwara/i18n/strings.g.dart';
 import 'package:i_iwara/utils/widget_extensions.dart';
 
 /// 通知内容项组件
@@ -25,9 +27,9 @@ class NotificationContentItems {
             context: context,
             children: [
               _buildUserLink(commentUser.name, commentUser.username),
-              const TextSpan(text: ' 回复了您在视频 '),
+              TextSpan(text: ' ${t.notifications.kReplied} ${t.notifications.kVideo} '),
               _buildVideoLink(videoTitle, videoId),
-              const TextSpan(text: ' 下的评论'),
+              TextSpan(text: t.notifications.kCommentSection),
             ],
           ),
           if (comment.body.isNotEmpty) _buildCommentBody(context, comment.body),
@@ -46,14 +48,14 @@ class NotificationContentItems {
             context: context,
             children: [
               _buildUserLink(commentUser.name, commentUser.username),
-              const TextSpan(text: ' 回复了您在 '),
+              TextSpan(text: ' ${t.notifications.kReplied} '),
               TextSpan(
                 text: profileUserName,
                 style: const TextStyle(color: Colors.blue),
                 recognizer: TapGestureRecognizer()
                   ..onTap = () => NaviService.navigateToAuthorProfilePage(profileUsername),
               ),
-              const TextSpan(text: ' 主页下的评论'),
+              TextSpan(text: ' ${t.notifications.kProfile}${t.notifications.kCommentSection}'),
             ],
           ),
           if (comment.body.isNotEmpty) _buildCommentBody(context, comment.body),
@@ -72,9 +74,9 @@ class NotificationContentItems {
             context: context,
             children: [
               _buildUserLink(commentUser.name, commentUser.username),
-              const TextSpan(text: ' 回复了您在图库 '),
+              TextSpan(text: ' ${t.notifications.kReplied} ${t.notifications.kGallery} '),
               _buildGalleryLink(imageTitle, imageId),
-              const TextSpan(text: ' 下的评论'),
+              TextSpan(text: t.notifications.kCommentSection),
             ],
           ),
           if (comment.body.isNotEmpty) _buildCommentBody(context, comment.body),
@@ -94,9 +96,9 @@ class NotificationContentItems {
             context: context,
             children: [
               _buildUserLink(commentUser.name, commentUser.username),
-              const TextSpan(text: ' 回复了您在帖子 '),
+              TextSpan(text: ' ${t.notifications.kReplied} ${t.notifications.kThread} '),
               _buildThreadLink(threadTitle, categoryId, threadId),
-              const TextSpan(text: ' 下的评论'),
+              TextSpan(text: t.notifications.kCommentSection),
             ],
           ),
           if (comment.body.isNotEmpty) _buildCommentBody(context, comment.body),
@@ -115,9 +117,9 @@ class NotificationContentItems {
             context: context,
             children: [
               _buildUserLink(commentUser.name, commentUser.username),
-              const TextSpan(text: ' 回复了您在投稿 '),
+              TextSpan(text: ' ${t.notifications.kReplied} ${t.notifications.kPost} '),
               _buildPostLink(postTitle, postId),
-              const TextSpan(text: ' 下的评论'),
+              TextSpan(text: t.notifications.kCommentSection),
             ],
           ),
           if (comment.body.isNotEmpty) _buildCommentBody(context, comment.body),
@@ -125,7 +127,7 @@ class NotificationContentItems {
       );
     }
 
-    return const Text('未知的回复通知类型');
+    return Text(t.notifications.kUnknownType);
   }
 
   /// 构建评论通知内容
@@ -145,7 +147,7 @@ class NotificationContentItems {
             context: context,
             children: [
               _buildUserLink(commentUser.name, commentUser.username),
-              const TextSpan(text: ' 评论了您的主页'),
+              TextSpan(text: ' ${t.notifications.kCommented} ${t.notifications.kProfile}'),
             ],
           ),
           if (comment.body.isNotEmpty) _buildCommentBody(context, comment.body),
@@ -164,7 +166,7 @@ class NotificationContentItems {
             context: context,
             children: [
               _buildUserLink(commentUser.name, commentUser.username),
-              const TextSpan(text: ' 评论了您的图库 '),
+              TextSpan(text: ' ${t.notifications.kCommented} ${t.notifications.kGallery} '),
               _buildGalleryLink(imageTitle, imageId),
             ],
           ),
@@ -185,7 +187,7 @@ class NotificationContentItems {
             context: context,
             children: [
               _buildUserLink(commentUser.name, commentUser.username),
-              const TextSpan(text: ' 评论了您的帖子 '),
+              TextSpan(text: ' ${t.notifications.kCommented} ${t.notifications.kThread} '),
               _buildThreadLink(threadTitle, categoryId, threadId),
             ],
           ),
@@ -205,7 +207,7 @@ class NotificationContentItems {
             context: context,
             children: [
               _buildUserLink(commentUser.name, commentUser.username),
-              const TextSpan(text: ' 评论了您的视频 '),
+              TextSpan(text: ' ${t.notifications.kCommented} ${t.notifications.kVideo} '),
               _buildVideoLink(videoTitle, videoId),
             ],
           ),
@@ -225,7 +227,7 @@ class NotificationContentItems {
             context: context,
             children: [
               _buildUserLink(commentUser.name, commentUser.username),
-              const TextSpan(text: ' 评论了您的投稿 '),
+              TextSpan(text: ' ${t.notifications.kCommented} ${t.notifications.kPost} '),
               _buildPostLink(postTitle, postId),
             ],
           ),
@@ -234,7 +236,7 @@ class NotificationContentItems {
       );
     }
 
-    return const Text('未知的评论通知类型');
+    return Text(t.notifications.kUnknownType);
   }
 
   /// 构建审核通过通知内容
@@ -258,7 +260,7 @@ class NotificationContentItems {
               ),
               const SizedBox(width: 8),
               Text(
-                '评论审核通过',
+                t.notifications.kApprovedComment,
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.primary,
                   fontWeight: FontWeight.w500,
@@ -323,7 +325,7 @@ class NotificationContentItems {
               ),
               const SizedBox(width: 8),
               Text(
-                '图库审核通过',
+                t.notifications.kApprovedGallery,
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.primary,
                   fontWeight: FontWeight.w500,
@@ -386,7 +388,7 @@ class NotificationContentItems {
               ),
               const SizedBox(width: 8),
               Text(
-                '帖子审核通过',
+                t.notifications.kApprovedThread,
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.primary,
                   fontWeight: FontWeight.w500,
@@ -448,7 +450,7 @@ class NotificationContentItems {
               ),
               const SizedBox(width: 8),
               Text(
-                '视频审核通过',
+                t.notifications.kApprovedVideo,
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.primary,
                   fontWeight: FontWeight.w500,
@@ -510,7 +512,7 @@ class NotificationContentItems {
               ),
               const SizedBox(width: 8),
               Text(
-                '投稿审核通过',
+                t.notifications.kApprovedPost,
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.primary,
                   fontWeight: FontWeight.w500,
@@ -555,7 +557,7 @@ class NotificationContentItems {
       );
     }
 
-    return const Text('未知的审核通过通知类型');
+    return Text(t.notifications.kUnknownType);
   }
 
   /// 构建可点击的文本

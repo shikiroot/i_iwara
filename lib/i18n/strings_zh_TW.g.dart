@@ -735,6 +735,20 @@ class _TranslationsNotificationsZhTw implements TranslationsNotificationsEn {
 	@override String get copy => '複製';
 	@override String get commentApproved => '評論已通過';
 	@override String get repliedYourProfileComment => '回覆了您的個人主頁評論';
+	@override String get kReplied => '回覆了您在';
+	@override String get kCommented => '評論了您的';
+	@override String get kVideo => '影片';
+	@override String get kGallery => '圖庫';
+	@override String get kProfile => '主頁';
+	@override String get kThread => '主題';
+	@override String get kPost => '投稿';
+	@override String get kCommentSection => '下的評論';
+	@override String get kApprovedComment => '評論已通過';
+	@override String get kApprovedVideo => '影片已通過';
+	@override String get kApprovedGallery => '圖庫已通過';
+	@override String get kApprovedThread => '主題已審核';
+	@override String get kApprovedPost => '投稿已審核';
+	@override String get kUnknownType => '未知通知類型';
 }
 
 // Path: forum.errors
@@ -1400,6 +1414,20 @@ extension on TranslationsZhTw {
 			case 'notifications.copy': return '複製';
 			case 'notifications.commentApproved': return '評論已通過';
 			case 'notifications.repliedYourProfileComment': return '回覆了您的個人主頁評論';
+			case 'notifications.kReplied': return '回覆了您在';
+			case 'notifications.kCommented': return '評論了您的';
+			case 'notifications.kVideo': return '影片';
+			case 'notifications.kGallery': return '圖庫';
+			case 'notifications.kProfile': return '主頁';
+			case 'notifications.kThread': return '主題';
+			case 'notifications.kPost': return '投稿';
+			case 'notifications.kCommentSection': return '下的評論';
+			case 'notifications.kApprovedComment': return '評論已通過';
+			case 'notifications.kApprovedVideo': return '影片已通過';
+			case 'notifications.kApprovedGallery': return '圖庫已通過';
+			case 'notifications.kApprovedThread': return '主題已審核';
+			case 'notifications.kApprovedPost': return '投稿已審核';
+			case 'notifications.kUnknownType': return '未知通知類型';
 			default: return null;
 		}
 	}

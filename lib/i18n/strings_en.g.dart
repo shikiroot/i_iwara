@@ -736,6 +736,20 @@ class TranslationsNotificationsEn {
 	String get copy => 'Copy';
 	String get commentApproved => 'Comment Approved';
 	String get repliedYourProfileComment => 'Replied your profile comment';
+	String get kReplied => 'replied to your comment on';
+	String get kCommented => 'commented on your';
+	String get kVideo => 'video';
+	String get kGallery => 'gallery';
+	String get kProfile => 'profile';
+	String get kThread => 'thread';
+	String get kPost => 'post';
+	String get kCommentSection => 'comment section';
+	String get kApprovedComment => 'Comment approved';
+	String get kApprovedVideo => 'Video approved';
+	String get kApprovedGallery => 'Gallery approved';
+	String get kApprovedThread => 'Thread approved';
+	String get kApprovedPost => 'Post approved';
+	String get kUnknownType => 'Unknown notification type';
 }
 
 // Path: forum.errors
@@ -1398,6 +1412,20 @@ extension on Translations {
 			case 'notifications.copy': return 'Copy';
 			case 'notifications.commentApproved': return 'Comment Approved';
 			case 'notifications.repliedYourProfileComment': return 'Replied your profile comment';
+			case 'notifications.kReplied': return 'replied to your comment on';
+			case 'notifications.kCommented': return 'commented on your';
+			case 'notifications.kVideo': return 'video';
+			case 'notifications.kGallery': return 'gallery';
+			case 'notifications.kProfile': return 'profile';
+			case 'notifications.kThread': return 'thread';
+			case 'notifications.kPost': return 'post';
+			case 'notifications.kCommentSection': return 'comment section';
+			case 'notifications.kApprovedComment': return 'Comment approved';
+			case 'notifications.kApprovedVideo': return 'Video approved';
+			case 'notifications.kApprovedGallery': return 'Gallery approved';
+			case 'notifications.kApprovedThread': return 'Thread approved';
+			case 'notifications.kApprovedPost': return 'Post approved';
+			case 'notifications.kUnknownType': return 'Unknown notification type';
 			default: return null;
 		}
 	}

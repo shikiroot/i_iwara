@@ -604,3 +604,18 @@ notifications:
   copy: 複製
   commentApproved: 評論已通過
   repliedYourProfileComment: 回覆了您的個人主頁評論
+  kReplied: 回覆了您在
+  kCommented: 評論了您的
+  kVideo: 影片
+  kGallery: 圖庫
+  kProfile: 主頁
+  kThread: 主題
+  kPost: 投稿
+  kCommentSection: 下的評論
+  kApprovedComment: 評論已通過
+  kApprovedVideo: 影片已通過
+  kApprovedGallery: 圖庫已通過
+  kApprovedThread: 主題已審核
+  kApprovedPost: 投稿已審核
+  kUnknownType: 未知通知類型
+  

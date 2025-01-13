@@ -606,3 +606,17 @@ notifications:
   commentApproved: 评论已通过审核
   repliedYourProfileComment: 回复了您的个人主页评论
   repliedYourVideoComment: 回复了您的视频评论
+  kReplied: 回复了您在
+  kCommented: 评论了您的
+  kVideo: 视频
+  kGallery: 图库
+  kProfile: 主页
+  kThread: 主题
+  kPost: 投稿
+  kCommentSection: 下的评论
+  kApprovedComment: 评论审核通过
+  kApprovedVideo: 视频审核通过
+  kApprovedGallery: 图库审核通过
+  kApprovedThread: 帖子审核通过
+  kApprovedPost: 投稿审核通过
+  kUnknownType: 未知通知类型

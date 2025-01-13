@@ -732,6 +732,20 @@ class _TranslationsNotificationsJa implements TranslationsNotificationsEn {
 	@override String get copy => 'コピー';
 	@override String get commentApproved => 'コメントが承認されました';
 	@override String get repliedYourProfileComment => 'あなたの個人主頁コメントに返信しました';
+	@override String get kReplied => 'さんが';
+	@override String get kCommented => 'さんが';
+	@override String get kVideo => 'ビデオ';
+	@override String get kGallery => 'ギャラリー';
+	@override String get kProfile => 'プロフィール';
+	@override String get kThread => 'スレッド';
+	@override String get kPost => '投稿';
+	@override String get kCommentSection => '';
+	@override String get kApprovedComment => 'コメントが承認されました';
+	@override String get kApprovedVideo => '動画が承認されました';
+	@override String get kApprovedGallery => 'ギャラリーが承認されました';
+	@override String get kApprovedThread => 'スレッドが承認されました';
+	@override String get kApprovedPost => '投稿が承認されました';
+	@override String get kUnknownType => '不明な通知タイプ';
 }
 
 // Path: forum.errors
@@ -1394,6 +1408,20 @@ extension on TranslationsJa {
 			case 'notifications.copy': return 'コピー';
 			case 'notifications.commentApproved': return 'コメントが承認されました';
 			case 'notifications.repliedYourProfileComment': return 'あなたの個人主頁コメントに返信しました';
+			case 'notifications.kReplied': return 'さんが';
+			case 'notifications.kCommented': return 'さんが';
+			case 'notifications.kVideo': return 'ビデオ';
+			case 'notifications.kGallery': return 'ギャラリー';
+			case 'notifications.kProfile': return 'プロフィール';
+			case 'notifications.kThread': return 'スレッド';
+			case 'notifications.kPost': return '投稿';
+			case 'notifications.kCommentSection': return '';
+			case 'notifications.kApprovedComment': return 'コメントが承認されました';
+			case 'notifications.kApprovedVideo': return '動画が承認されました';
+			case 'notifications.kApprovedGallery': return 'ギャラリーが承認されました';
+			case 'notifications.kApprovedThread': return 'スレッドが承認されました';
+			case 'notifications.kApprovedPost': return '投稿が承認されました';
+			case 'notifications.kUnknownType': return '不明な通知タイプ';
 			default: return null;
 		}
 	}

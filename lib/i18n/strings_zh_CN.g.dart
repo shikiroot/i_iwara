@@ -737,6 +737,20 @@ class _TranslationsNotificationsZhCn implements TranslationsNotificationsEn {
 	@override String get commentApproved => '评论已通过审核';
 	@override String get repliedYourProfileComment => '回复了您的个人主页评论';
 	@override String get repliedYourVideoComment => '回复了您的视频评论';
+	@override String get kReplied => '回复了您在';
+	@override String get kCommented => '评论了您的';
+	@override String get kVideo => '视频';
+	@override String get kGallery => '图库';
+	@override String get kProfile => '主页';
+	@override String get kThread => '主题';
+	@override String get kPost => '投稿';
+	@override String get kCommentSection => '下的评论';
+	@override String get kApprovedComment => '评论审核通过';
+	@override String get kApprovedVideo => '视频审核通过';
+	@override String get kApprovedGallery => '图库审核通过';
+	@override String get kApprovedThread => '帖子审核通过';
+	@override String get kApprovedPost => '投稿审核通过';
+	@override String get kUnknownType => '未知通知类型';
 }
 
 // Path: forum.errors
@@ -1404,6 +1418,20 @@ extension on TranslationsZhCn {
 			case 'notifications.commentApproved': return '评论已通过审核';
 			case 'notifications.repliedYourProfileComment': return '回复了您的个人主页评论';
 			case 'notifications.repliedYourVideoComment': return '回复了您的视频评论';
+			case 'notifications.kReplied': return '回复了您在';
+			case 'notifications.kCommented': return '评论了您的';
+			case 'notifications.kVideo': return '视频';
+			case 'notifications.kGallery': return '图库';
+			case 'notifications.kProfile': return '主页';
+			case 'notifications.kThread': return '主题';
+			case 'notifications.kPost': return '投稿';
+			case 'notifications.kCommentSection': return '下的评论';
+			case 'notifications.kApprovedComment': return '评论审核通过';
+			case 'notifications.kApprovedVideo': return '视频审核通过';
+			case 'notifications.kApprovedGallery': return '图库审核通过';
+			case 'notifications.kApprovedThread': return '帖子审核通过';
+			case 'notifications.kApprovedPost': return '投稿审核通过';
+			case 'notifications.kUnknownType': return '未知通知类型';
 			default: return null;
 		}
 	}
