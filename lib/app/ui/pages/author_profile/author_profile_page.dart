@@ -313,7 +313,13 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
               popupMenuItems.add(
                 PopupMenuItem(
                   value: 'create',
-                  child: Text(t.common.createPost),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.article),
+                      const SizedBox(width: 8),
+                      Text(t.common.createPost),
+                    ],
+                  ),
                 ),
               );
             }

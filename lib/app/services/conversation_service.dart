@@ -136,4 +136,19 @@ class ConversationService extends GetxService {
       return ApiResult.fail(t.errors.failedToOperate);
     }
   }
+
+  /// 发送消息
+  /// POST conversation/:conversationId/messages
+  /// @params
+  /// `conversationId` 会话ID
+  /// `message` 消息内容
+  Future<ApiResult<void>> sendMessage(String conversationId, String message) async {
+    try {
+      await apiService.post(ApiConstants.conversationMessages(conversationId), data: {'body': message});
+      return ApiResult.success();
+    } catch (e) {
+      LogUtils.e('发送消息失败', tag: 'ConversationService', error: e);
+      return ApiResult.fail(t.errors.failedToOperate);
+    }
+  }
 }

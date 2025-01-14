@@ -150,7 +150,7 @@ common:
   agree: 同意
   disagree: 不同意
   agreeToRules: 同意规则
-  createPost: 创建帖子
+  createPost: 创建投稿
   title: 标题
   enterTitle: 请输入标题
   content: 内容
@@ -477,7 +477,7 @@ markdown:
   iwaraSpecialMarkdownSyntax: Iwara 专用语法
   internalLink: 站内链接
   supportAutoConvertLinkBelow: '支持自动转换以下类型的链接：'
-  convertLinkExample: '🎬 视频链接\n🖼️ 图片链接\n👤 用户链接\n📌 论坛链接\n🎵 播放列表链接\n💬 帖子链接'
+  convertLinkExample: '🎬 视频链接\n🖼️ 图片链接\n👤 用户链接\n📌 论坛链接\n🎵 播放列表链接\n💬 投稿链接'
   mentionUser: 提及用户
   mentionUserDescription: '输入@后跟用户名，将自动转换为用户链接'
   markdownBasicSyntax: Markdown 基本语法

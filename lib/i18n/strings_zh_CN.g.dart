@@ -209,7 +209,7 @@ class _TranslationsCommonZhCn implements TranslationsCommonEn {
 	@override String get agree => '同意';
 	@override String get disagree => '不同意';
 	@override String get agreeToRules => '同意规则';
-	@override String get createPost => '创建帖子';
+	@override String get createPost => '创建投稿';
 	@override String get title => '标题';
 	@override String get enterTitle => '请输入标题';
 	@override String get content => '内容';
@@ -643,7 +643,7 @@ class _TranslationsMarkdownZhCn implements TranslationsMarkdownEn {
 	@override String get iwaraSpecialMarkdownSyntax => 'Iwara 专用语法';
 	@override String get internalLink => '站内链接';
 	@override String get supportAutoConvertLinkBelow => '支持自动转换以下类型的链接：';
-	@override String get convertLinkExample => '🎬 视频链接\n🖼️ 图片链接\n👤 用户链接\n📌 论坛链接\n🎵 播放列表链接\n💬 帖子链接';
+	@override String get convertLinkExample => '🎬 视频链接\n🖼️ 图片链接\n👤 用户链接\n📌 论坛链接\n🎵 播放列表链接\n💬 投稿链接';
 	@override String get mentionUser => '提及用户';
 	@override String get mentionUserDescription => '输入@后跟用户名，将自动转换为用户链接';
 	@override String get markdownBasicSyntax => 'Markdown 基本语法';
@@ -1010,7 +1010,7 @@ extension on TranslationsZhCn {
 			case 'common.agree': return '同意';
 			case 'common.disagree': return '不同意';
 			case 'common.agreeToRules': return '同意规则';
-			case 'common.createPost': return '创建帖子';
+			case 'common.createPost': return '创建投稿';
 			case 'common.title': return '标题';
 			case 'common.enterTitle': return '请输入标题';
 			case 'common.content': return '内容';
@@ -1309,7 +1309,7 @@ extension on TranslationsZhCn {
 			case 'markdown.iwaraSpecialMarkdownSyntax': return 'Iwara 专用语法';
 			case 'markdown.internalLink': return '站内链接';
 			case 'markdown.supportAutoConvertLinkBelow': return '支持自动转换以下类型的链接：';
-			case 'markdown.convertLinkExample': return '🎬 视频链接\n🖼️ 图片链接\n👤 用户链接\n📌 论坛链接\n🎵 播放列表链接\n💬 帖子链接';
+			case 'markdown.convertLinkExample': return '🎬 视频链接\n🖼️ 图片链接\n👤 用户链接\n📌 论坛链接\n🎵 播放列表链接\n💬 投稿链接';
 			case 'markdown.mentionUser': return '提及用户';
 			case 'markdown.mentionUserDescription': return '输入@后跟用户名，将自动转换为用户链接';
 			case 'markdown.markdownBasicSyntax': return 'Markdown 基本语法';

@@ -5,6 +5,7 @@ import 'package:i_iwara/app/models/user.model.dart';
 import 'package:i_iwara/app/services/app_service.dart';
 import 'package:i_iwara/app/services/conversation_service.dart';
 import 'package:i_iwara/app/services/user_service.dart';
+import 'package:i_iwara/app/ui/pages/conversation/widgets/conversation_message_dialog.dart';
 import 'package:i_iwara/app/ui/widgets/avatar_widget.dart';
 import 'package:i_iwara/app/ui/widgets/custom_markdown_body_widget.dart';
 import 'package:i_iwara/app/ui/widgets/translation_dialog_widget.dart';
@@ -51,21 +52,28 @@ class _MessageListWidgetState extends State<MessageListWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(),
-      body: LoadingMoreCustomScrollView(
-        controller: _scrollController,
-        reverse: true,
-        physics: const AlwaysScrollableScrollPhysics(),
-        slivers: [
-          LoadingMoreSliverList<MessageModel>(
-            SliverListConfig<MessageModel>(
-              sourceList: _messageListRepository,
-              itemBuilder: (context, message, index) {
-                return _buildMessageItem(context, message);
-              },
-              indicatorBuilder: _buildIndicator,
-              padding: const EdgeInsets.all(8.0),
+      body: Column(
+        children: [
+          Expanded(
+            child: LoadingMoreCustomScrollView(
+              controller: _scrollController,
+              reverse: true,
+              physics: const AlwaysScrollableScrollPhysics(),
+              slivers: [
+                LoadingMoreSliverList<MessageModel>(
+                  SliverListConfig<MessageModel>(
+                    sourceList: _messageListRepository,
+                    itemBuilder: (context, message, index) {
+                      return _buildMessageItem(context, message);
+                    },
+                    indicatorBuilder: _buildIndicator,
+                    padding: const EdgeInsets.all(8.0),
+                  ),
+                ),
+              ],
             ),
           ),
+          _buildBottomBar(),
         ],
       ),
     );
@@ -509,6 +517,49 @@ class _MessageListWidgetState extends State<MessageListWidget> {
       isPremium: user.premium,
       isAdmin: user.isAdmin,
       role: user.role,
+    );
+  }
+
+  Widget _buildBottomBar() {
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+        child: Row(
+          children: [
+            Expanded(
+              child: TextButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => ConversationMessageDialog(
+                      conversationId: widget.conversation.id,
+                      onSubmit: () {
+                        _messageListRepository.refresh(true);
+                      },
+                    ),
+                  );
+                },
+                style: TextButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(24),
+                    side: BorderSide(
+                      color: Theme.of(context).dividerColor,
+                    ),
+                  ),
+                  alignment: Alignment.centerLeft,
+                ),
+                child: Text(
+                  '在此处输入消息',
+                  style: TextStyle(
+                    color: Theme.of(context).hintColor,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

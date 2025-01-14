@@ -207,7 +207,7 @@ class _TranslationsCommonZhTw implements TranslationsCommonEn {
 	@override String get agree => '同意';
 	@override String get disagree => '不同意';
 	@override String get agreeToRules => '同意規則';
-	@override String get createPost => '創建帖子';
+	@override String get createPost => '創建投稿';
 	@override String get title => '標題';
 	@override String get enterTitle => '請輸入標題';
 	@override String get content => '內容';
@@ -1006,7 +1006,7 @@ extension on TranslationsZhTw {
 			case 'common.agree': return '同意';
 			case 'common.disagree': return '不同意';
 			case 'common.agreeToRules': return '同意規則';
-			case 'common.createPost': return '創建帖子';
+			case 'common.createPost': return '創建投稿';
 			case 'common.title': return '標題';
 			case 'common.enterTitle': return '請輸入標題';
 			case 'common.content': return '內容';
