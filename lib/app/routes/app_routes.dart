@@ -57,6 +57,10 @@ abstract class Routes {
   static const APP_SETTINGS_PAGE = '/app_settings_page';
 
   static const NOTIFICATION_LIST = '/notification_list';
+
+  static const CONVERSATION = '/conversation';
+
+  static MESSAGE_DETAIL(String conversationId) => '/message_detail/$conversationId';
 }
 
 abstract class _Paths {

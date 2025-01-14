@@ -59,13 +59,13 @@ class _NotificationListPageState extends State<NotificationListPage> {
       _isMarkingAllAsRead.value = true;
       final result = await _userService.markAllNotificationAsRead();
       if (result.isSuccess) {
+        _userService.refreshNotificationCount();
         showToastWidget(MDToastWidget(
           message: translations.notifications.markAllAsReadSuccess,
           type: MDToastType.success,
         ));
         // 刷新列表和计数
         await listSourceRepository.refresh();
-        await _userService.fetchUserNotificationCount();
       } else {
         showToastWidget(MDToastWidget(
           message: result.message,

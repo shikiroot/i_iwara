@@ -612,3 +612,6 @@ notifications:
   kApprovedThread: Thread approved
   kApprovedPost: Post approved
   kUnknownType: Unknown notification type
+
+conversation:
+  conversation: Conversation

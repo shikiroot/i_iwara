@@ -55,6 +55,7 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	late final TranslationsMarkdownEn markdown = TranslationsMarkdownEn._(_root);
 	late final TranslationsForumEn forum = TranslationsForumEn._(_root);
 	late final TranslationsNotificationsEn notifications = TranslationsNotificationsEn._(_root);
+	late final TranslationsConversationEn conversation = TranslationsConversationEn._(_root);
 }
 
 // Path: common
@@ -752,6 +753,16 @@ class TranslationsNotificationsEn {
 	String get kUnknownType => 'Unknown notification type';
 }
 
+// Path: conversation
+class TranslationsConversationEn {
+	TranslationsConversationEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get conversation => 'Conversation';
+}
+
 // Path: forum.errors
 class TranslationsForumErrorsEn {
 	TranslationsForumErrorsEn._(this._root);
@@ -1426,6 +1437,7 @@ extension on Translations {
 			case 'notifications.kApprovedThread': return 'Thread approved';
 			case 'notifications.kApprovedPost': return 'Post approved';
 			case 'notifications.kUnknownType': return 'Unknown notification type';
+			case 'conversation.conversation': return 'Conversation';
 			default: return null;
 		}
 	}

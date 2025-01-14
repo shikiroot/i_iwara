@@ -199,28 +199,17 @@ class _PopularGalleryListPageState extends State<PopularGalleryListPage>
                             },
                           ),
                           Positioned(
-                            right: 0,
-                            top: 0,
+                            right: 8,
+                            top: 8,
                             child: Obx(() {
-                              final count = userService.notificationCount.value + userService.friendRequestsCount.value + userService.messagesCount.value;
+                              final count = userService.notificationCount.value + userService.messagesCount.value;
                               if (count > 0) {
                                 return Container(
-                                  padding: const EdgeInsets.all(2),
+                                  width: 8,
+                                  height: 8,
                                   decoration: BoxDecoration(
                                     color: Theme.of(context).colorScheme.error,
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  constraints: const BoxConstraints(
-                                    minWidth: 20,
-                                    minHeight: 20,
-                                  ),
-                                  child: Text(
-                                    count.toString(),
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 12,
-                                    ),
-                                    textAlign: TextAlign.center,
+                                    shape: BoxShape.circle,
                                   ),
                                 );
                               }

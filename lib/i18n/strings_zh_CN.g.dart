@@ -51,6 +51,7 @@ class TranslationsZhCn implements Translations {
 	@override late final _TranslationsMarkdownZhCn markdown = _TranslationsMarkdownZhCn._(_root);
 	@override late final _TranslationsForumZhCn forum = _TranslationsForumZhCn._(_root);
 	@override late final _TranslationsNotificationsZhCn notifications = _TranslationsNotificationsZhCn._(_root);
+	@override late final _TranslationsConversationZhCn conversation = _TranslationsConversationZhCn._(_root);
 }
 
 // Path: common
@@ -753,6 +754,16 @@ class _TranslationsNotificationsZhCn implements TranslationsNotificationsEn {
 	@override String get kUnknownType => '未知通知类型';
 }
 
+// Path: conversation
+class _TranslationsConversationZhCn implements TranslationsConversationEn {
+	_TranslationsConversationZhCn._(this._root);
+
+	final TranslationsZhCn _root; // ignore: unused_field
+
+	// Translations
+	@override String get conversation => '会话';
+}
+
 // Path: forum.errors
 class _TranslationsForumErrorsZhCn implements TranslationsForumErrorsEn {
 	_TranslationsForumErrorsZhCn._(this._root);
@@ -1432,6 +1443,7 @@ extension on TranslationsZhCn {
 			case 'notifications.kApprovedThread': return '帖子审核通过';
 			case 'notifications.kApprovedPost': return '投稿审核通过';
 			case 'notifications.kUnknownType': return '未知通知类型';
+			case 'conversation.conversation': return '会话';
 			default: return null;
 		}
 	}

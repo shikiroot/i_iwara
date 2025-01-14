@@ -86,28 +86,17 @@ class _ForumPageState extends State<ForumPage> {
                         isAdmin: userService.currentUser.value?.isAdmin ?? false,
                       ),
                       Positioned(
-                        right: -5,
-                        top: -5,
+                        right: 0,
+                        top: 0,
                         child: Obx(() {
-                          final count = userService.notificationCount.value + userService.friendRequestsCount.value + userService.messagesCount.value;
+                          final count = userService.notificationCount.value + userService.messagesCount.value;
                           if (count > 0) {
                             return Container(
-                              padding: const EdgeInsets.all(2),
+                              width: 8,
+                              height: 8,
                               decoration: BoxDecoration(
                                 color: Theme.of(context).colorScheme.error,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              constraints: const BoxConstraints(
-                                minWidth: 16,
-                                minHeight: 16,
-                              ),
-                              child: Text(
-                                count.toString(),
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 10,
-                                ),
-                                textAlign: TextAlign.center,
+                                shape: BoxShape.circle,
                               ),
                             );
                           }

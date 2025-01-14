@@ -39,6 +39,16 @@ class GlobalDrawerColumns extends StatelessWidget {
                   showToastWidget(MDToastWidget(message: t.errors.pleaseLoginFirst, type: MDToastType.error));
                 }
               }),
+              // 会话
+              _buildMenuItem(Icons.message, t.conversation.conversation, () {
+                if (userService.isLogin) {
+                  NaviService.navigateToConversationPage();
+                  AppService.switchGlobalDrawer();
+                } else {
+                  AppService.switchGlobalDrawer();
+                  showToastWidget(MDToastWidget(message: t.errors.pleaseLoginFirst, type: MDToastType.error));
+                }
+              }),
               // Tag黑名单
               _buildMenuItem(Icons.block, t.common.tagBlacklist, () {
                 if (userService.isLogin) {
@@ -333,6 +343,18 @@ class GlobalDrawerColumns extends StatelessWidget {
                 fontWeight: FontWeight.w500,
               ),
             ),
+            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+          );
+        }
+        return const SizedBox.shrink();
+      });
+    } else if (title == t.conversation.conversation) {
+      return Obx(() {
+        final count = userService.messagesCount.value;
+        if (count > 0) {
+          return Badge(
+            backgroundColor: Theme.of(Get.context!).colorScheme.error,
+            label: Text(count.toString(), style: TextStyle(color: Theme.of(Get.context!).colorScheme.onError, fontSize: 12, fontWeight: FontWeight.w500)),
             padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
           );
         }

@@ -619,3 +619,5 @@ notifications:
   kApprovedPost: 投稿已審核
   kUnknownType: 未知通知類型
   
+conversation:
+  conversation: 會話

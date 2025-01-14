@@ -613,3 +613,6 @@ notifications:
   kApprovedThread: スレッドが承認されました
   kApprovedPost: 投稿が承認されました
   kUnknownType: 不明な通知タイプ
+
+conversation:
+  conversation: 会話

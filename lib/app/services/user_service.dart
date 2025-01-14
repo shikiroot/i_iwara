@@ -33,16 +33,15 @@ class UserService extends GetxService {
 
   // 开始通知计数定时任务
   void startNotificationTimer() {
-    print('senko startNotificationTimer');
     if (_notificationTimer == null) {
       _notificationTimer = Timer.periodic(const Duration(minutes: 15), (timer) async {
         if (_authService.hasToken) {
-          await _fetchNotificationCount();
+          await refreshNotificationCount();
         }
       });
       // 立即执行一次
       if (_authService.hasToken) {
-        _fetchNotificationCount();
+        refreshNotificationCount();
       }
     }
   }
@@ -61,7 +60,7 @@ class UserService extends GetxService {
   }
 
   // 获取通知计数
-  Future<void> _fetchNotificationCount() async {
+  Future<void> refreshNotificationCount() async {
     try {
       final result = await fetchUserNotificationCount();
       if (result.data != null) {

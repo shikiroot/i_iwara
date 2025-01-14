@@ -620,3 +620,6 @@ notifications:
   kApprovedThread: 帖子审核通过
   kApprovedPost: 投稿审核通过
   kUnknownType: 未知通知类型
+
+conversation:
+  conversation: 会话

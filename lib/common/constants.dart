@@ -243,6 +243,12 @@ class ApiConstants {
 
   // 标记消息已读
   static String userNotificationWithId(String notificationId) => '/notifications/$notificationId/read';
+
+  // 用户会话列表
+  static String userConversations(String userId) => '/user/$userId/conversations';
+
+  // 会话消息
+  static String conversationMessages(String conversationId) => '/conversation/$conversationId/messages';
 }
 
 // 视频接口的排序方式

@@ -51,6 +51,7 @@ class TranslationsJa implements Translations {
 	@override late final _TranslationsMarkdownJa markdown = _TranslationsMarkdownJa._(_root);
 	@override late final _TranslationsForumJa forum = _TranslationsForumJa._(_root);
 	@override late final _TranslationsNotificationsJa notifications = _TranslationsNotificationsJa._(_root);
+	@override late final _TranslationsConversationJa conversation = _TranslationsConversationJa._(_root);
 }
 
 // Path: common
@@ -748,6 +749,16 @@ class _TranslationsNotificationsJa implements TranslationsNotificationsEn {
 	@override String get kUnknownType => '不明な通知タイプ';
 }
 
+// Path: conversation
+class _TranslationsConversationJa implements TranslationsConversationEn {
+	_TranslationsConversationJa._(this._root);
+
+	final TranslationsJa _root; // ignore: unused_field
+
+	// Translations
+	@override String get conversation => '会話';
+}
+
 // Path: forum.errors
 class _TranslationsForumErrorsJa implements TranslationsForumErrorsEn {
 	_TranslationsForumErrorsJa._(this._root);
@@ -1422,6 +1433,7 @@ extension on TranslationsJa {
 			case 'notifications.kApprovedThread': return 'スレッドが承認されました';
 			case 'notifications.kApprovedPost': return '投稿が承認されました';
 			case 'notifications.kUnknownType': return '不明な通知タイプ';
+			case 'conversation.conversation': return '会話';
 			default: return null;
 		}
 	}

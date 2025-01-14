@@ -240,7 +240,7 @@ class NotificationListItemWidget extends StatelessWidget {
           await _userService.markNotificationAsRead(notification['id']);
       if (result.isSuccess) {
         notification['read'] = true;
-        await _userService.fetchUserNotificationCount();
+        await _userService.refreshNotificationCount();
         showToastWidget(
           MDToastWidget(
             message: t.notifications.markAsReadSuccess,

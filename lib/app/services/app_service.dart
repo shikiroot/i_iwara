@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:i_iwara/app/models/message_and_conversation.model.dart';
 import 'package:i_iwara/app/models/post.model.dart';
+import 'package:i_iwara/app/ui/pages/conversation/conversation_page.dart';
+import 'package:i_iwara/app/ui/pages/conversation/widgets/message_list_widget.dart';
 import 'package:i_iwara/app/ui/pages/favorites/my_favorites.dart';
 import 'package:i_iwara/app/ui/pages/follows/follows_page.dart';
 import 'package:i_iwara/app/ui/pages/forum/thread_detail_page.dart';
@@ -490,6 +493,49 @@ class NaviService {
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         return SlideTransition(
           position: Tween<Offset>(begin: const Offset(1, 0), end: Offset.zero).animate(animation),
+          child: child,
+        );
+      },
+    ));
+  }
+
+  /// 跳转到会话列表页
+  static void navigateToConversationPage() {
+    AppService.homeNavigatorKey.currentState?.push(PageRouteBuilder(
+      settings: const RouteSettings(name: Routes.CONVERSATION),
+      pageBuilder: (context, animation, secondaryAnimation) {
+        return const ConversationPage();
+      },
+      transitionDuration: const Duration(milliseconds: 200),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        return SlideTransition(
+          position: Tween<Offset>(
+            begin: const Offset(1, 0),
+            end: Offset.zero,
+          ).animate(animation),
+          child: child,
+        );
+      },
+    ));
+  }
+
+  /// 跳转到消息详情页
+  static void navigateToMessagePage(ConversationModel conversation) {
+    AppService.homeNavigatorKey.currentState?.push(PageRouteBuilder(
+      settings: RouteSettings(name: Routes.MESSAGE_DETAIL(conversation.id)),
+      pageBuilder: (context, animation, secondaryAnimation) {
+        return MessageListWidget(
+          conversation: conversation,
+          fromNarrowScreen: true,
+        );
+      },
+      transitionDuration: const Duration(milliseconds: 200),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        return SlideTransition(
+          position: Tween<Offset>(
+            begin: const Offset(1, 0),
+            end: Offset.zero,
+          ).animate(animation),
           child: child,
         );
       },
