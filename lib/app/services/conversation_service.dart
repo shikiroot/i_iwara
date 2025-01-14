@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:i_iwara/app/models/api_result.model.dart';
 import 'package:i_iwara/app/models/message_and_conversation.model.dart';
 import 'package:i_iwara/app/models/page_data.model.dart';
+import 'package:i_iwara/app/models/user.model.dart';
 import 'package:i_iwara/app/services/api_service.dart';
 import 'package:i_iwara/common/constants.dart';
 import 'package:i_iwara/i18n/strings.g.dart';
@@ -148,6 +149,50 @@ class ConversationService extends GetxService {
       return ApiResult.success();
     } catch (e) {
       LogUtils.e('发送消息失败', tag: 'ConversationService', error: e);
+      return ApiResult.fail(t.errors.failedToOperate);
+    }
+  }
+
+  /// 查找用户(接口性能慢，最好是用户手动回车或点击按钮来触发查询)
+  /// 此接口会一次性返回所有的用户，前端需要自己做分页，防止一次性返回太多数据页面卡顿
+  /// /autocomplete/users
+  /// @param:
+  /// `query` 查询关键字
+  /// `id` 用户ID
+  /// @return:
+  /// `count` 用户数量
+  /// `results` 用户列表 {@link UserModel} 数组里越靠前的数据，越旧
+  Future<ApiResult<PageData<User>>> searchUsers({String? id, String? query}) async {
+    try {
+      var response = await apiService.get(ApiConstants.autocompleteUsers, queryParameters: {
+        'query': query,
+        'id': id,
+      });
+      return ApiResult.success(data: PageData.fromJsonWithConverter(response.data, User.fromJson));
+    } catch (e) {
+      LogUtils.e('查找用户失败', tag: 'ConversationService', error: e);
+      return ApiResult.fail(t.errors.failedToFetchData);
+    }
+  }
+
+  /// 给某用户开启对话
+  /// /user/:userId/conversations
+  /// @params
+  /// {
+  ///   "user": "xxx",
+  ///   "title": "来了",
+  ///   "body": "xxx"
+  /// }
+  /// @body:
+  /// `user` 用户ID
+  /// `title` 对话标题
+  /// `body` 对话内容
+  Future<ApiResult<void>> createConversation(String userId, String title, String body) async {
+    try {
+      await apiService.post(ApiConstants.userConversations(userId), data: {'title': title, 'body': body});
+      return ApiResult.success();
+    } catch (e) {
+      LogUtils.e('开启对话失败', tag: 'ConversationService', error: e);
       return ApiResult.fail(t.errors.failedToOperate);
     }
   }

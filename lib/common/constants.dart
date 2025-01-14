@@ -110,6 +110,9 @@ class ApiConstants {
   // 用户消息全部已读
   static String userNotificationAllRead = '/notifications/all/read';
 
+  // 查找用户
+  static String autocompleteUsers = '/autocomplete/users';
+
   // 用户WithId
   static String userWithId(String userId) => '/user/$userId';
 

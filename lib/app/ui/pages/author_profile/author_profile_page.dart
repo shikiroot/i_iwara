@@ -33,6 +33,7 @@ import 'controllers/authro_profile_controller.dart';
 import 'package:i_iwara/i18n/strings.g.dart' as slang;
 import 'package:i_iwara/app/ui/widgets/follow_button_widget.dart';
 import 'package:i_iwara/app/ui/pages/author_profile/widgets/post_input_dialog.dart';
+import 'package:i_iwara/app/ui/pages/conversation/widgets/new_conversation_dialog.dart';
 
 class AuthorProfilePage extends StatefulWidget {
   final String username;
@@ -322,6 +323,20 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                   ),
                 ),
               );
+            } else if (userService.currentUser.value?.id != null) {
+              // 如果不是本人且已登录，显示发起对话选项
+              popupMenuItems.add(
+                PopupMenuItem(
+                  value: 'message',
+                  child: Row(
+                    children: [
+                      const Icon(Icons.message),
+                      const SizedBox(width: 8),
+                      const Text('发起对话'),
+                    ],
+                  ),
+                ),
+              );
             }
 
             // 如果没有可选项，则不显示
@@ -334,6 +349,16 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
               onSelected: (value) {
                 if (value == 'create') {
                   _showCreatePostDialog();
+                } else if (value == 'message') {
+                  Get.dialog(
+                    NewConversationDialog(
+                      initUserId: profileController.author.value?.id,
+                      onSubmit: () {
+                        NaviService.navigateToConversationPage();
+                      },
+                    ),
+                    barrierDismissible: true,
+                  );
                 }
               },
               itemBuilder: (context) => popupMenuItems,

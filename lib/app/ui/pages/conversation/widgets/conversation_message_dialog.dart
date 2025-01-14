@@ -28,7 +28,7 @@ class _ConversationMessageDialogState extends State<ConversationMessageDialog> {
   int _currentBodyLength = 0;
 
   // 内容最大长度
-  static const int maxBodyLength = 20000;
+  static const int maxBodyLength = 1000;
 
   @override
   void initState() {

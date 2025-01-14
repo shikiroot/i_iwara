@@ -4,8 +4,8 @@ import 'package:i_iwara/app/models/message_and_conversation.model.dart';
 import 'package:i_iwara/app/services/app_service.dart';
 import 'package:i_iwara/app/services/user_service.dart';
 import 'package:i_iwara/app/ui/pages/conversation/controllers/conversation_list_repository.dart';
+import 'package:i_iwara/app/ui/pages/conversation/widgets/new_conversation_dialog.dart';
 import 'package:i_iwara/app/ui/widgets/avatar_widget.dart';
-import 'package:i_iwara/app/ui/widgets/my_loading_more_indicator_widget.dart';
 import 'package:i_iwara/app/ui/widgets/user_name_widget.dart';
 import 'package:i_iwara/common/constants.dart';
 import 'package:i_iwara/utils/common_utils.dart';
@@ -73,10 +73,24 @@ class _ConversationListWidgetState extends State<ConversationListWidget> {
       centerTitle: false,
       title: const Text('消息'),
       actions: [
+        IconButton(
+          onPressed: () {
+            Get.dialog(
+              NewConversationDialog(
+                onSubmit: () {
+                  listSourceRepository.refresh(true);
+                },
+              ),
+              barrierDismissible: true,
+            );
+          },
+          icon: const Icon(Icons.add_comment),
+          tooltip: '发起新对话',
+        ),
         StreamBuilder<Iterable<ConversationModel>>(
           stream: listSourceRepository.rebuild,
           builder: (context, snapshot) {
-            final isLoading = listSourceRepository.isLoading && listSourceRepository.length == 0;
+            final isLoading = listSourceRepository.isLoading && listSourceRepository.isEmpty;
             return IconButton(
               onPressed: isLoading ? null : () => listSourceRepository.refresh(true),
               icon: isLoading
