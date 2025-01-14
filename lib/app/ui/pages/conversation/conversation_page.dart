@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:i_iwara/app/models/message_and_conversation.model.dart';
 import 'package:i_iwara/app/services/app_service.dart';
-import 'package:i_iwara/app/ui/pages/conversation/controllers/conversation_controller.dart';
 import 'package:i_iwara/app/ui/pages/conversation/widgets/conversation_list_widget.dart';
 import 'package:i_iwara/app/ui/pages/conversation/widgets/message_list_widget.dart';
+import 'package:i_iwara/common/constants.dart';
 
 class ConversationPage extends StatefulWidget {
   const ConversationPage({super.key});
@@ -14,19 +14,12 @@ class ConversationPage extends StatefulWidget {
 }
 
 class _ConversationPageState extends State<ConversationPage> {
-  late ConversationController _conversationController;
+  final Rxn<ConversationModel> _selectedConversation = Rxn<ConversationModel>();
   bool _previousIsWideScreen = false;
 
   @override
-  void initState() {
-    super.initState();
-    _conversationController = Get.put(ConversationController());
-  }
-
-  @override
   void dispose() {
-    _conversationController.setSelectedConversation(null);
-    Get.delete<ConversationController>();
+    _selectedConversation.value = null;
     super.dispose();
   }
 
@@ -40,7 +33,7 @@ class _ConversationPageState extends State<ConversationPage> {
           // 如果从宽屏切换到小屏，清除选中的对话
           if (_previousIsWideScreen && !isWideScreen) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
-              _conversationController.setSelectedConversation(null);
+              _selectedConversation.value = null;
             });
           }
           _previousIsWideScreen = isWideScreen;
@@ -57,7 +50,7 @@ class _ConversationPageState extends State<ConversationPage> {
                       NaviService.navigateToMessagePage(conversation);
                     } else {
                       // 宽屏时更新选中的对话
-                      _conversationController.setSelectedConversation(conversation);
+                      _selectedConversation.value = conversation;
                     }
                   },
                 ),
@@ -65,21 +58,67 @@ class _ConversationPageState extends State<ConversationPage> {
               // 消息列表部分 - 仅在宽屏时显示
               if (isWideScreen)
                 Expanded(
-                  child: GetX<ConversationController>(
-                    builder: (controller) {
-                      final selectedConversation = controller.selectedConversation.value;
-                      if (selectedConversation == null) {
-                        return const Center(
-                          child: Text('请选择一个对话'),
-                        );
-                      }
-                      return MessageListWidget(
-                        conversation: selectedConversation,
-                        key: ValueKey(selectedConversation.id),
-                        fromNarrowScreen: false,
+                  child: Obx(() {
+                    final selectedConversation = _selectedConversation.value;
+                    if (selectedConversation == null) {
+                      return Container(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.surface,
+                          border: Border(
+                            left: BorderSide(
+                              color: Theme.of(context).dividerColor,
+                              width: 1,
+                            ),
+                          ),
+                        ),
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ClipRRect(
+                                  borderRadius: BorderRadius.circular(16),
+                                  child: Image.asset(
+                                    CommonConstants.launcherIconPath,
+                                    width: 80,
+                                    height: 80,
+                                  )),
+                              const SizedBox(height: 24),
+                              Text(
+                                '暂无对话',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleMedium
+                                    ?.copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSurfaceVariant,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                '从左侧列表选择一个对话开始聊天',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSurfaceVariant
+                                          .withOpacity(0.7),
+                                    ),
+                              ),
+                            ],
+                          ),
+                        ),
                       );
-                    },
-                  ),
+                    }
+                    return MessageListWidget(
+                      conversation: selectedConversation,
+                      key: ValueKey(selectedConversation.id),
+                      fromNarrowScreen: false,
+                    );
+                  }),
                 ),
             ],
           );
@@ -87,4 +126,4 @@ class _ConversationPageState extends State<ConversationPage> {
       ),
     );
   }
-} 
+}

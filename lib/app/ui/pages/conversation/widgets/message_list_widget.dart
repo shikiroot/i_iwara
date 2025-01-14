@@ -320,9 +320,9 @@ class _MessageListWidgetState extends State<MessageListWidget> {
 
   Widget _buildMessageItem(BuildContext context, MessageModel message) {
     final bool isMe = message.user.id == _userService.currentUser.value?.id;
-    final ConversationService _conversationService = Get.find<ConversationService>();
+    final ConversationService conversationService = Get.find<ConversationService>();
 
-    Future<void> _showDeleteConfirmation() async {
+    Future<void> showDeleteConfirmation() async {
       await showModalBottomSheet(
         context: context,
         builder: (BuildContext context) {
@@ -339,7 +339,7 @@ class _MessageListWidgetState extends State<MessageListWidget> {
                   subtitle: const Text('此操作不可撤销'),
                   onTap: () async {
                     Navigator.pop(context);
-                    final result = await _conversationService.deleteMessage(message.id);
+                    final result = await conversationService.deleteMessage(message.id);
                     if (result.isSuccess) {
                       _messageListRepository.refresh(true);
                     }
@@ -357,7 +357,7 @@ class _MessageListWidgetState extends State<MessageListWidget> {
       );
     }
 
-    void _showTranslationDialog() {
+    void showTranslationDialog() {
       Get.dialog(
         TranslationDialog(text: message.body),
         barrierDismissible: true,
@@ -370,7 +370,13 @@ class _MessageListWidgetState extends State<MessageListWidget> {
         mainAxisAlignment: isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (!isMe) _buildAvatar(message.user),
+          if (!isMe) MouseRegion(
+            cursor: SystemMouseCursors.click,
+            child: GestureDetector(
+              onTap: () => NaviService.navigateToAuthorProfilePage(message.user.username),
+              child: _buildAvatar(message.user),
+            ),
+          ),
           const SizedBox(width: 8),
           Flexible(
             child: Column(
@@ -382,7 +388,13 @@ class _MessageListWidgetState extends State<MessageListWidget> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       if (!isMe) Flexible(
-                        child: buildUserName(context, message.user, fontSize: 13),
+                        child: MouseRegion(
+                          cursor: SystemMouseCursors.click,
+                          child: GestureDetector(
+                            onTap: () => NaviService.navigateToAuthorProfilePage(message.user.username),
+                            child: buildUserName(context, message.user, fontSize: 13),
+                          ),
+                        ),
                       ),
                       if (!isMe) const SizedBox(width: 8),
                       Text(
@@ -394,7 +406,13 @@ class _MessageListWidgetState extends State<MessageListWidget> {
                       ),
                       if (isMe) const SizedBox(width: 8),
                       if (isMe) Flexible(
-                        child: buildUserName(context, message.user, fontSize: 13),
+                        child: MouseRegion(
+                          cursor: SystemMouseCursors.click,
+                          child: GestureDetector(
+                            onTap: () => NaviService.navigateToAuthorProfilePage(message.user.username),
+                            child: buildUserName(context, message.user, fontSize: 13),
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -411,7 +429,7 @@ class _MessageListWidgetState extends State<MessageListWidget> {
                           size: 18,
                           color: Theme.of(context).hintColor,
                         ),
-                        onPressed: _showDeleteConfirmation,
+                        onPressed: showDeleteConfirmation,
                         padding: EdgeInsets.zero,
                         constraints: const BoxConstraints(
                           minWidth: 24,
@@ -424,7 +442,7 @@ class _MessageListWidgetState extends State<MessageListWidget> {
                           size: 18,
                           color: Theme.of(context).hintColor,
                         ),
-                        onPressed: _showTranslationDialog,
+                        onPressed: showTranslationDialog,
                         padding: EdgeInsets.zero,
                         constraints: const BoxConstraints(
                           minWidth: 24,
@@ -458,7 +476,7 @@ class _MessageListWidgetState extends State<MessageListWidget> {
                         size: 18,
                         color: Theme.of(context).hintColor,
                       ),
-                      onPressed: _showTranslationDialog,
+                      onPressed: showTranslationDialog,
                       padding: EdgeInsets.zero,
                       constraints: const BoxConstraints(
                         minWidth: 24,
@@ -471,7 +489,13 @@ class _MessageListWidgetState extends State<MessageListWidget> {
             ),
           ),
           const SizedBox(width: 8),
-          if (isMe) _buildAvatar(message.user),
+          if (isMe) MouseRegion(
+            cursor: SystemMouseCursors.click,
+            child: GestureDetector(
+              onTap: () => NaviService.navigateToAuthorProfilePage(message.user.username),
+              child: _buildAvatar(message.user),
+            ),
+          ),
         ],
       ),
     );
