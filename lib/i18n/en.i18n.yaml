@@ -382,6 +382,9 @@ settings:
   activeBackgroundPrivacyMode: Active Background Privacy Mode
   activeBackgroundPrivacyModeDesc: Active background privacy mode
   privacy: Privacy
+  forum: Forum
+  disableForumReplyQuote: Disable Forum Reply Quote
+  disableForumReplyQuoteDesc: Disable carrying replied floor information when replying in forum
 
 signIn:
   pleaseLoginFirst: Please login first
@@ -614,4 +617,24 @@ notifications:
   kUnknownType: Unknown notification type
 
 conversation:
+  errors:
+    pleaseSelectAUser: Please select a user
+    pleaseEnterATitle: Please enter a title
+    clickToSelectAUser: Click to select a user
+    loadFailedClickToRetry: Load failed, click to retry
+    loadFailed: Load failed
+    clickToRetry: Click to retry
+    noMoreConversations: No more conversations
   conversation: Conversation
+  startConversation: Start Conversation
+  noConversation: No conversation
+  selectFromLeftListAndStartConversation: Select from left list and start conversation
+  title: Title
+  body: Body
+  selectAUser: Select a user
+  searchUsers: Search users...
+  tmpNoConversions: No conversions
+  deleteThisMessage: Delete this message
+  deleteThisMessageSubtitle: This operation cannot be undone
+  writeMessageHere: Write message here...
+  sendMessage: Send message

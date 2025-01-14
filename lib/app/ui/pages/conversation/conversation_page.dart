@@ -5,6 +5,7 @@ import 'package:i_iwara/app/services/app_service.dart';
 import 'package:i_iwara/app/ui/pages/conversation/widgets/conversation_list_widget.dart';
 import 'package:i_iwara/app/ui/pages/conversation/widgets/message_list_widget.dart';
 import 'package:i_iwara/common/constants.dart';
+import 'package:i_iwara/i18n/strings.g.dart';
 
 class ConversationPage extends StatefulWidget {
   const ConversationPage({super.key});
@@ -84,7 +85,7 @@ class _ConversationPageState extends State<ConversationPage> {
                                   )),
                               const SizedBox(height: 24),
                               Text(
-                                '暂无对话',
+                                t.conversation.noConversation,
                                 style: Theme.of(context)
                                     .textTheme
                                     .titleMedium
@@ -97,7 +98,7 @@ class _ConversationPageState extends State<ConversationPage> {
                               ),
                               const SizedBox(height: 8),
                               Text(
-                                '从左侧列表选择一个对话开始聊天',
+                                t.conversation.selectFromLeftListAndStartConversation,
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodyMedium

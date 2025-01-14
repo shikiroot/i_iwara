@@ -384,6 +384,9 @@ settings:
   activeBackgroundPrivacyMode: 激活後台隱私模式
   activeBackgroundPrivacyModeDesc: 激活後台隱私模式
   privacy: 隱私
+  forum: 論壇
+  disableForumReplyQuote: 禁用論壇回覆引用
+  disableForumReplyQuoteDesc: 禁用論壇回覆時攜帶被回覆樓層資訊
 
 
 signIn:
@@ -620,4 +623,24 @@ notifications:
   kUnknownType: 未知通知類型
   
 conversation:
+  errors:
+    pleaseSelectAUser: 請選擇一個用戶
+    pleaseEnterATitle: 請輸入標題
+    clickToSelectAUser: 點擊選擇用戶
+    loadFailedClickToRetry: 加載失敗,點擊重試
+    loadFailed: 加載失敗
+    clickToRetry: 點擊重試
+    noMoreConversations: 沒有更多消息了
   conversation: 會話
+  startConversation: 發起會話
+  noConversation: 暫無會話
+  selectFromLeftListAndStartConversation: 從左側列表選擇一個會話開始聊天
+  title: 標題
+  body: 內容
+  selectAUser: 選擇用戶
+  searchUsers: 搜索用戶...
+  tmpNoConversions: 暫無會話
+  deleteThisMessage: 刪除此消息
+  deleteThisMessageSubtitle: 此操作不可撤銷
+  writeMessageHere: 在此處輸入消息
+  sendMessage: 發送消息

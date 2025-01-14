@@ -171,7 +171,7 @@ class _ConversationMessageDialogState extends State<ConversationMessageDialog> {
                 children: [
                   Expanded(
                     child: Text(
-                      '发送消息',
+                      t.conversation.sendMessage,
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,

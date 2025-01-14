@@ -11,6 +11,7 @@ import 'package:i_iwara/app/ui/widgets/custom_markdown_body_widget.dart';
 import 'package:i_iwara/app/ui/widgets/translation_dialog_widget.dart';
 import 'package:i_iwara/app/ui/widgets/user_name_widget.dart';
 import 'package:i_iwara/common/constants.dart';
+import 'package:i_iwara/i18n/strings.g.dart';
 import 'package:i_iwara/utils/common_utils.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
 import 'package:loading_more_list/loading_more_list.dart';
@@ -173,7 +174,7 @@ class _MessageListWidgetState extends State<MessageListWidget> {
                     ),
                     const SizedBox(width: 8),
                     Text(
-                      '加载失败,点击重试',
+                      t.conversation.errors.loadFailedClickToRetry,
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.error,
                       ),
@@ -204,7 +205,7 @@ class _MessageListWidgetState extends State<MessageListWidget> {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    '加载失败',
+                    t.conversation.errors.loadFailed,
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.error,
                       fontSize: 16,
@@ -213,7 +214,7 @@ class _MessageListWidgetState extends State<MessageListWidget> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    '点击重试',
+                    t.conversation.errors.clickToRetry,
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.onErrorContainer,
                       fontSize: 14,
@@ -238,7 +239,7 @@ class _MessageListWidgetState extends State<MessageListWidget> {
           padding: const EdgeInsets.all(8.0),
           child: Center(
             child: Text(
-              '没有更多消息了',
+              t.conversation.errors.noMoreConversations,
               style: TextStyle(
                 color: Theme.of(context).textTheme.bodySmall?.color,
               ),
@@ -258,7 +259,7 @@ class _MessageListWidgetState extends State<MessageListWidget> {
               ),
               const SizedBox(height: 16),
               Text(
-                '暂无消息',
+                t.conversation.tmpNoConversions,
                 style: TextStyle(
                   color: Theme.of(context).hintColor,
                   fontSize: 16,
@@ -343,8 +344,8 @@ class _MessageListWidgetState extends State<MessageListWidget> {
                     Icons.delete_outline,
                     color: Theme.of(context).colorScheme.error,
                   ),
-                  title: const Text('删除此消息'),
-                  subtitle: const Text('此操作不可撤销'),
+                  title: Text(t.conversation.deleteThisMessage),
+                  subtitle: Text(t.conversation.deleteThisMessageSubtitle),
                   onTap: () async {
                     Navigator.pop(context);
                     final result = await conversationService.deleteMessage(message.id);
@@ -355,7 +356,7 @@ class _MessageListWidgetState extends State<MessageListWidget> {
                 ),
                 ListTile(
                   leading: const Icon(Icons.close),
-                  title: const Text('取消'),
+                  title: Text(t.common.cancel),
                   onTap: () => Navigator.pop(context),
                 ),
               ],
@@ -550,7 +551,7 @@ class _MessageListWidgetState extends State<MessageListWidget> {
                   alignment: Alignment.centerLeft,
                 ),
                 child: Text(
-                  '在此处输入消息',
+                  t.conversation.writeMessageHere,
                   style: TextStyle(
                     color: Theme.of(context).hintColor,
                   ),

@@ -163,7 +163,7 @@ class _NewConversationDialogState extends State<NewConversationDialog> {
     if (_selectedUser == null) {
       showToastWidget(
         MDToastWidget(
-          message: '请选择一个用户',
+          message: t.conversation.errors.pleaseSelectAUser,
           type: MDToastType.error,
         ),
       );
@@ -174,7 +174,7 @@ class _NewConversationDialogState extends State<NewConversationDialog> {
     if (_titleController.text.trim().isEmpty) {
       showToastWidget(
         MDToastWidget(
-          message: '请输入标题',
+          message: t.conversation.errors.pleaseEnterATitle,
           type: MDToastType.error,
         ),
       );
@@ -249,10 +249,10 @@ class _NewConversationDialogState extends State<NewConversationDialog> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Expanded(
+                  Expanded(
                     child: Text(
-                      '发起对话',
-                      style: TextStyle(
+                      t.conversation.startConversation,
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
@@ -294,7 +294,7 @@ class _NewConversationDialogState extends State<NewConversationDialog> {
                       Expanded(
                         child: _selectedUser == null
                             ? Text(
-                                '点击选择用户',
+                                t.conversation.errors.clickToSelectAUser,
                                 style: TextStyle(
                                   color: Theme.of(context).hintColor,
                                 ),
@@ -339,8 +339,8 @@ class _NewConversationDialogState extends State<NewConversationDialog> {
                 controller: _titleController,
                 maxLength: maxTitleLength,
                 decoration: InputDecoration(
-                  labelText: '标题',
-                  hintText: '请输入对话标题',
+                  labelText: t.conversation.title,
+                  hintText: t.conversation.errors.pleaseEnterATitle,
                   border: const OutlineInputBorder(),
                   counterText: '${_titleController.text.length}/$maxTitleLength',
                 ),
@@ -472,9 +472,9 @@ class _UserSearchSheetState extends State<_UserSearchSheet> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                '选择用户',
-                style: TextStyle(
+              Text(
+                t.conversation.selectAUser,
+                style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
@@ -494,7 +494,7 @@ class _UserSearchSheetState extends State<_UserSearchSheet> {
             focusNode: _searchFocusNode,
             onChanged: _onSearchChanged,
             decoration: InputDecoration(
-              hintText: '搜索用户...',
+              hintText: t.conversation.searchUsers,
               prefixIcon: const Icon(Icons.search),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),

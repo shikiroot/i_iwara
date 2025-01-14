@@ -521,6 +521,9 @@ class _TranslationsSettingsZhCn implements TranslationsSettingsEn {
 	@override String get activeBackgroundPrivacyMode => '激活后台隐私模式';
 	@override String get activeBackgroundPrivacyModeDesc => '激活后台隐私模式';
 	@override String get privacy => '隐私';
+	@override String get forum => '论坛';
+	@override String get disableForumReplyQuote => '禁用论坛回复引用';
+	@override String get disableForumReplyQuoteDesc => '禁用论坛回复时携带被回复楼层信息';
 }
 
 // Path: signIn
@@ -761,7 +764,20 @@ class _TranslationsConversationZhCn implements TranslationsConversationEn {
 	final TranslationsZhCn _root; // ignore: unused_field
 
 	// Translations
+	@override late final _TranslationsConversationErrorsZhCn errors = _TranslationsConversationErrorsZhCn._(_root);
 	@override String get conversation => '会话';
+	@override String get startConversation => '发起会话';
+	@override String get noConversation => '暂无会话';
+	@override String get selectFromLeftListAndStartConversation => '从左侧的会话列表选择一个对话开始聊天';
+	@override String get title => '标题';
+	@override String get body => '内容';
+	@override String get selectAUser => '选择用户';
+	@override String get searchUsers => '搜索用户...';
+	@override String get tmpNoConversions => '暂无会话';
+	@override String get deleteThisMessage => '删除此消息';
+	@override String get deleteThisMessageSubtitle => '此操作不可撤销';
+	@override String get writeMessageHere => '在此处输入消息';
+	@override String get sendMessage => '发送消息';
 }
 
 // Path: forum.errors
@@ -855,6 +871,22 @@ class _TranslationsNotificationsErrorsZhCn implements TranslationsNotificationsE
 	@override String get unknownUser => '未知用户';
 	@override String unsupportedNotificationTypeWithType({required Object type}) => '暂不支持的通知类型: ${type}';
 	@override String get unknownNotificationType => '未知通知类型';
+}
+
+// Path: conversation.errors
+class _TranslationsConversationErrorsZhCn implements TranslationsConversationErrorsEn {
+	_TranslationsConversationErrorsZhCn._(this._root);
+
+	final TranslationsZhCn _root; // ignore: unused_field
+
+	// Translations
+	@override String get pleaseSelectAUser => '请选择一个用户';
+	@override String get pleaseEnterATitle => '请输入标题';
+	@override String get clickToSelectAUser => '点击选择用户';
+	@override String get loadFailedClickToRetry => '加载失败,点击重试';
+	@override String get loadFailed => '加载失败';
+	@override String get clickToRetry => '点击重试';
+	@override String get noMoreConversations => '没有更多消息了';
 }
 
 /// Flat map(s) containing all translations.
@@ -1232,6 +1264,9 @@ extension on TranslationsZhCn {
 			case 'settings.activeBackgroundPrivacyMode': return '激活后台隐私模式';
 			case 'settings.activeBackgroundPrivacyModeDesc': return '激活后台隐私模式';
 			case 'settings.privacy': return '隐私';
+			case 'settings.forum': return '论坛';
+			case 'settings.disableForumReplyQuote': return '禁用论坛回复引用';
+			case 'settings.disableForumReplyQuoteDesc': return '禁用论坛回复时携带被回复楼层信息';
 			case 'signIn.pleaseLoginFirst': return '请先登录后再签到';
 			case 'signIn.alreadySignedInToday': return '您今天已经签到过了！';
 			case 'signIn.youDidNotStickToTheSignIn': return '您未能坚持签到。';
@@ -1443,7 +1478,26 @@ extension on TranslationsZhCn {
 			case 'notifications.kApprovedThread': return '帖子审核通过';
 			case 'notifications.kApprovedPost': return '投稿审核通过';
 			case 'notifications.kUnknownType': return '未知通知类型';
+			case 'conversation.errors.pleaseSelectAUser': return '请选择一个用户';
+			case 'conversation.errors.pleaseEnterATitle': return '请输入标题';
+			case 'conversation.errors.clickToSelectAUser': return '点击选择用户';
+			case 'conversation.errors.loadFailedClickToRetry': return '加载失败,点击重试';
+			case 'conversation.errors.loadFailed': return '加载失败';
+			case 'conversation.errors.clickToRetry': return '点击重试';
+			case 'conversation.errors.noMoreConversations': return '没有更多消息了';
 			case 'conversation.conversation': return '会话';
+			case 'conversation.startConversation': return '发起会话';
+			case 'conversation.noConversation': return '暂无会话';
+			case 'conversation.selectFromLeftListAndStartConversation': return '从左侧的会话列表选择一个对话开始聊天';
+			case 'conversation.title': return '标题';
+			case 'conversation.body': return '内容';
+			case 'conversation.selectAUser': return '选择用户';
+			case 'conversation.searchUsers': return '搜索用户...';
+			case 'conversation.tmpNoConversions': return '暂无会话';
+			case 'conversation.deleteThisMessage': return '删除此消息';
+			case 'conversation.deleteThisMessageSubtitle': return '此操作不可撤销';
+			case 'conversation.writeMessageHere': return '在此处输入消息';
+			case 'conversation.sendMessage': return '发送消息';
 			default: return null;
 		}
 	}

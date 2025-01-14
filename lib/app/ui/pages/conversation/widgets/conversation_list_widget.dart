@@ -8,6 +8,7 @@ import 'package:i_iwara/app/ui/pages/conversation/widgets/new_conversation_dialo
 import 'package:i_iwara/app/ui/widgets/avatar_widget.dart';
 import 'package:i_iwara/app/ui/widgets/user_name_widget.dart';
 import 'package:i_iwara/common/constants.dart';
+import 'package:i_iwara/i18n/strings.g.dart';
 import 'package:i_iwara/utils/common_utils.dart';
 import 'package:loading_more_list/loading_more_list.dart';
 import 'package:shimmer/shimmer.dart';
@@ -71,7 +72,7 @@ class _ConversationListWidgetState extends State<ConversationListWidget> {
   PreferredSizeWidget _buildAppBar() {
     return AppBar(
       centerTitle: false,
-      title: const Text('消息'),
+      title: Text(t.conversation.conversation),
       actions: [
         IconButton(
           onPressed: () {
@@ -85,7 +86,7 @@ class _ConversationListWidgetState extends State<ConversationListWidget> {
             );
           },
           icon: const Icon(Icons.add_comment),
-          tooltip: '发起新对话',
+          tooltip: t.conversation.startConversation,
         ),
         StreamBuilder<Iterable<ConversationModel>>(
           stream: listSourceRepository.rebuild,
@@ -153,7 +154,7 @@ class _ConversationListWidgetState extends State<ConversationListWidget> {
                     ),
                     const SizedBox(width: 8),
                     Text(
-                      '加载失败,点击重试',
+                      t.conversation.errors.loadFailedClickToRetry,
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.error,
                       ),
@@ -184,7 +185,7 @@ class _ConversationListWidgetState extends State<ConversationListWidget> {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    '加载失败',
+                    t.conversation.errors.loadFailed,
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.error,
                       fontSize: 16,
@@ -193,7 +194,7 @@ class _ConversationListWidgetState extends State<ConversationListWidget> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    '点击重试',
+                    t.conversation.errors.clickToRetry,
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.onErrorContainer,
                       fontSize: 14,
@@ -218,7 +219,7 @@ class _ConversationListWidgetState extends State<ConversationListWidget> {
           padding: const EdgeInsets.all(8.0),
           child: Center(
             child: Text(
-              '没有更多会话了',
+              t.conversation.errors.noMoreConversations,
               style: TextStyle(
                 color: Theme.of(context).textTheme.bodySmall?.color,
               ),
@@ -238,7 +239,7 @@ class _ConversationListWidgetState extends State<ConversationListWidget> {
               ),
               const SizedBox(height: 16),
               Text(
-                '暂无会话',
+                t.conversation.noConversation,
                 style: TextStyle(
                   color: Theme.of(context).hintColor,
                   fontSize: 16,
@@ -316,7 +317,17 @@ class _ConversationListWidgetState extends State<ConversationListWidget> {
     );
 
     return InkWell(
-      onTap: () => widget.onConversationSelected(conversation),
+      onTap: () {
+        widget.onConversationSelected(conversation);
+        // 去除红点
+        if (conversation.unread) {
+          conversation.unread = false;
+          if (userService.messagesCount.value > 0) {
+            userService.messagesCount.value = userService.messagesCount.value - 1;
+          }
+          setState(() {});
+        }
+      },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(

@@ -383,6 +383,9 @@ settings:
   activeBackgroundPrivacyMode: バックグラウンドプライバシーモードを有効にする
   activeBackgroundPrivacyModeDesc: バックグラウンドプライバシーモードを有効にする
   privacy: プライバシー
+  forum: フォーラム
+  disableForumReplyQuote: フォーラム返信引用を無効にする
+  disableForumReplyQuoteDesc: フォーラム返信時の返信階層情報の携帯を無効にする
 
 signIn:
   pleaseLoginFirst: サインインする前にログインしてください
@@ -615,4 +618,24 @@ notifications:
   kUnknownType: 不明な通知タイプ
 
 conversation:
+  errors:
+    pleaseSelectAUser: ユーザーを選択してください
+    pleaseEnterATitle: タイトルを入力してください
+    clickToSelectAUser: ユーザーを選択してください
+    loadFailedClickToRetry: 読み込みに失敗しました。クリックして再試行
+    loadFailed: 読み込みに失敗しました
+    clickToRetry: クリックして再試行
+    noMoreConversations: もう会話がありません
   conversation: 会話
+  startConversation: 会話を開始
+  noConversation: 会話がありません
+  selectFromLeftListAndStartConversation: 左側の会話リストから会話を選択して開始
+  title: タイトル
+  body: 内容
+  selectAUser: ユーザーを選択
+  searchUsers: ユーザーを検索...
+  tmpNoConversions: 会話がありません
+  deleteThisMessage: このメッセージを削除
+  deleteThisMessageSubtitle: この操作は取り消せません
+  writeMessageHere: ここにメッセージを入力...
+  sendMessage: メッセージを送信

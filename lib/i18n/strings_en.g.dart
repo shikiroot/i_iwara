@@ -520,6 +520,9 @@ class TranslationsSettingsEn {
 	String get activeBackgroundPrivacyMode => 'Active Background Privacy Mode';
 	String get activeBackgroundPrivacyModeDesc => 'Active background privacy mode';
 	String get privacy => 'Privacy';
+	String get forum => 'Forum';
+	String get disableForumReplyQuote => 'Disable Forum Reply Quote';
+	String get disableForumReplyQuoteDesc => 'Disable carrying replied floor information when replying in forum';
 }
 
 // Path: signIn
@@ -760,7 +763,20 @@ class TranslationsConversationEn {
 	final Translations _root; // ignore: unused_field
 
 	// Translations
+	late final TranslationsConversationErrorsEn errors = TranslationsConversationErrorsEn._(_root);
 	String get conversation => 'Conversation';
+	String get startConversation => 'Start Conversation';
+	String get noConversation => 'No conversation';
+	String get selectFromLeftListAndStartConversation => 'Select from left list and start conversation';
+	String get title => 'Title';
+	String get body => 'Body';
+	String get selectAUser => 'Select a user';
+	String get searchUsers => 'Search users...';
+	String get tmpNoConversions => 'No conversions';
+	String get deleteThisMessage => 'Delete this message';
+	String get deleteThisMessageSubtitle => 'This operation cannot be undone';
+	String get writeMessageHere => 'Write message here...';
+	String get sendMessage => 'Send message';
 }
 
 // Path: forum.errors
@@ -854,6 +870,22 @@ class TranslationsNotificationsErrorsEn {
 	String get unknownUser => 'Unknown user';
 	String unsupportedNotificationTypeWithType({required Object type}) => 'Unsupported notification type: ${type}';
 	String get unknownNotificationType => 'Unknown notification type';
+}
+
+// Path: conversation.errors
+class TranslationsConversationErrorsEn {
+	TranslationsConversationErrorsEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get pleaseSelectAUser => 'Please select a user';
+	String get pleaseEnterATitle => 'Please enter a title';
+	String get clickToSelectAUser => 'Click to select a user';
+	String get loadFailedClickToRetry => 'Load failed, click to retry';
+	String get loadFailed => 'Load failed';
+	String get clickToRetry => 'Click to retry';
+	String get noMoreConversations => 'No more conversations';
 }
 
 /// Flat map(s) containing all translations.
@@ -1226,6 +1258,9 @@ extension on Translations {
 			case 'settings.activeBackgroundPrivacyMode': return 'Active Background Privacy Mode';
 			case 'settings.activeBackgroundPrivacyModeDesc': return 'Active background privacy mode';
 			case 'settings.privacy': return 'Privacy';
+			case 'settings.forum': return 'Forum';
+			case 'settings.disableForumReplyQuote': return 'Disable Forum Reply Quote';
+			case 'settings.disableForumReplyQuoteDesc': return 'Disable carrying replied floor information when replying in forum';
 			case 'signIn.pleaseLoginFirst': return 'Please login first';
 			case 'signIn.alreadySignedInToday': return 'You have already signed in today!';
 			case 'signIn.youDidNotStickToTheSignIn': return 'You did not stick to the sign in.';
@@ -1437,7 +1472,26 @@ extension on Translations {
 			case 'notifications.kApprovedThread': return 'Thread approved';
 			case 'notifications.kApprovedPost': return 'Post approved';
 			case 'notifications.kUnknownType': return 'Unknown notification type';
+			case 'conversation.errors.pleaseSelectAUser': return 'Please select a user';
+			case 'conversation.errors.pleaseEnterATitle': return 'Please enter a title';
+			case 'conversation.errors.clickToSelectAUser': return 'Click to select a user';
+			case 'conversation.errors.loadFailedClickToRetry': return 'Load failed, click to retry';
+			case 'conversation.errors.loadFailed': return 'Load failed';
+			case 'conversation.errors.clickToRetry': return 'Click to retry';
+			case 'conversation.errors.noMoreConversations': return 'No more conversations';
 			case 'conversation.conversation': return 'Conversation';
+			case 'conversation.startConversation': return 'Start Conversation';
+			case 'conversation.noConversation': return 'No conversation';
+			case 'conversation.selectFromLeftListAndStartConversation': return 'Select from left list and start conversation';
+			case 'conversation.title': return 'Title';
+			case 'conversation.body': return 'Body';
+			case 'conversation.selectAUser': return 'Select a user';
+			case 'conversation.searchUsers': return 'Search users...';
+			case 'conversation.tmpNoConversions': return 'No conversions';
+			case 'conversation.deleteThisMessage': return 'Delete this message';
+			case 'conversation.deleteThisMessageSubtitle': return 'This operation cannot be undone';
+			case 'conversation.writeMessageHere': return 'Write message here...';
+			case 'conversation.sendMessage': return 'Send message';
 			default: return null;
 		}
 	}

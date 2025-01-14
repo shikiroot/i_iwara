@@ -42,6 +42,7 @@ class ConfigService extends GetxService {
   static const String RULES_AGREEMENT_KEY = 'rules_agreement'; // 规则同意
   static const String AUTO_RECORD_HISTORY_KEY = 'auto_record_history'; // 自动记录历史记录
   static const String SHOW_UNPROCESSED_MARKDOWN_TEXT_KEY = 'show_unprocessed_markdown_text'; // 显示未处理的markdown文本
+  static const String DISABLE_FORUM_REPLY_QUOTE_KEY = 'disable_forum_reply_quote'; // 禁用论坛回复引用
 
   // 所有配置项的 Map
   final settings = <String, dynamic>{
@@ -73,6 +74,7 @@ class ConfigService extends GetxService {
     RULES_AGREEMENT_KEY: false.obs,
     AUTO_RECORD_HISTORY_KEY: true.obs,
     SHOW_UNPROCESSED_MARKDOWN_TEXT_KEY: true.obs,
+    DISABLE_FORUM_REPLY_QUOTE_KEY: false.obs,
   }.obs;
 
   late final Rx<Sort> _currentTranslationSort;

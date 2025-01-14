@@ -516,6 +516,9 @@ class _TranslationsSettingsJa implements TranslationsSettingsEn {
 	@override String get activeBackgroundPrivacyMode => 'バックグラウンドプライバシーモードを有効にする';
 	@override String get activeBackgroundPrivacyModeDesc => 'バックグラウンドプライバシーモードを有効にする';
 	@override String get privacy => 'プライバシー';
+	@override String get forum => 'フォーラム';
+	@override String get disableForumReplyQuote => 'フォーラム返信引用を無効にする';
+	@override String get disableForumReplyQuoteDesc => 'フォーラム返信時の返信階層情報の携帯を無効にする';
 }
 
 // Path: signIn
@@ -756,7 +759,20 @@ class _TranslationsConversationJa implements TranslationsConversationEn {
 	final TranslationsJa _root; // ignore: unused_field
 
 	// Translations
+	@override late final _TranslationsConversationErrorsJa errors = _TranslationsConversationErrorsJa._(_root);
 	@override String get conversation => '会話';
+	@override String get startConversation => '会話を開始';
+	@override String get noConversation => '会話がありません';
+	@override String get selectFromLeftListAndStartConversation => '左側の会話リストから会話を選択して開始';
+	@override String get title => 'タイトル';
+	@override String get body => '内容';
+	@override String get selectAUser => 'ユーザーを選択';
+	@override String get searchUsers => 'ユーザーを検索...';
+	@override String get tmpNoConversions => '会話がありません';
+	@override String get deleteThisMessage => 'このメッセージを削除';
+	@override String get deleteThisMessageSubtitle => 'この操作は取り消せません';
+	@override String get writeMessageHere => 'ここにメッセージを入力...';
+	@override String get sendMessage => 'メッセージを送信';
 }
 
 // Path: forum.errors
@@ -850,6 +866,22 @@ class _TranslationsNotificationsErrorsJa implements TranslationsNotificationsErr
 	@override String get unknownUser => '未知ユーザー';
 	@override String unsupportedNotificationTypeWithType({required Object type}) => 'サポートされていない通知タイプ: ${type}';
 	@override String get unknownNotificationType => '未知通知タイプ';
+}
+
+// Path: conversation.errors
+class _TranslationsConversationErrorsJa implements TranslationsConversationErrorsEn {
+	_TranslationsConversationErrorsJa._(this._root);
+
+	final TranslationsJa _root; // ignore: unused_field
+
+	// Translations
+	@override String get pleaseSelectAUser => 'ユーザーを選択してください';
+	@override String get pleaseEnterATitle => 'タイトルを入力してください';
+	@override String get clickToSelectAUser => 'ユーザーを選択してください';
+	@override String get loadFailedClickToRetry => '読み込みに失敗しました。クリックして再試行';
+	@override String get loadFailed => '読み込みに失敗しました';
+	@override String get clickToRetry => 'クリックして再試行';
+	@override String get noMoreConversations => 'もう会話がありません';
 }
 
 /// Flat map(s) containing all translations.
@@ -1222,6 +1254,9 @@ extension on TranslationsJa {
 			case 'settings.activeBackgroundPrivacyMode': return 'バックグラウンドプライバシーモードを有効にする';
 			case 'settings.activeBackgroundPrivacyModeDesc': return 'バックグラウンドプライバシーモードを有効にする';
 			case 'settings.privacy': return 'プライバシー';
+			case 'settings.forum': return 'フォーラム';
+			case 'settings.disableForumReplyQuote': return 'フォーラム返信引用を無効にする';
+			case 'settings.disableForumReplyQuoteDesc': return 'フォーラム返信時の返信階層情報の携帯を無効にする';
 			case 'signIn.pleaseLoginFirst': return 'サインインする前にログインしてください';
 			case 'signIn.alreadySignedInToday': return '今日は既にサインインしています！';
 			case 'signIn.youDidNotStickToTheSignIn': return 'サインインを続けることができませんでした。';
@@ -1433,7 +1468,26 @@ extension on TranslationsJa {
 			case 'notifications.kApprovedThread': return 'スレッドが承認されました';
 			case 'notifications.kApprovedPost': return '投稿が承認されました';
 			case 'notifications.kUnknownType': return '不明な通知タイプ';
+			case 'conversation.errors.pleaseSelectAUser': return 'ユーザーを選択してください';
+			case 'conversation.errors.pleaseEnterATitle': return 'タイトルを入力してください';
+			case 'conversation.errors.clickToSelectAUser': return 'ユーザーを選択してください';
+			case 'conversation.errors.loadFailedClickToRetry': return '読み込みに失敗しました。クリックして再試行';
+			case 'conversation.errors.loadFailed': return '読み込みに失敗しました';
+			case 'conversation.errors.clickToRetry': return 'クリックして再試行';
+			case 'conversation.errors.noMoreConversations': return 'もう会話がありません';
 			case 'conversation.conversation': return '会話';
+			case 'conversation.startConversation': return '会話を開始';
+			case 'conversation.noConversation': return '会話がありません';
+			case 'conversation.selectFromLeftListAndStartConversation': return '左側の会話リストから会話を選択して開始';
+			case 'conversation.title': return 'タイトル';
+			case 'conversation.body': return '内容';
+			case 'conversation.selectAUser': return 'ユーザーを選択';
+			case 'conversation.searchUsers': return 'ユーザーを検索...';
+			case 'conversation.tmpNoConversions': return '会話がありません';
+			case 'conversation.deleteThisMessage': return 'このメッセージを削除';
+			case 'conversation.deleteThisMessageSubtitle': return 'この操作は取り消せません';
+			case 'conversation.writeMessageHere': return 'ここにメッセージを入力...';
+			case 'conversation.sendMessage': return 'メッセージを送信';
 			default: return null;
 		}
 	}

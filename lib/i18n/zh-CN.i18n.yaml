@@ -390,6 +390,9 @@ settings:
   activeBackgroundPrivacyMode: 激活后台隐私模式
   activeBackgroundPrivacyModeDesc: 激活后台隐私模式
   privacy: 隐私
+  forum: 论坛
+  disableForumReplyQuote: 禁用论坛回复引用
+  disableForumReplyQuoteDesc: 禁用论坛回复时携带被回复楼层信息
 
 signIn:
   pleaseLoginFirst: 请先登录后再签到
@@ -622,4 +625,24 @@ notifications:
   kUnknownType: 未知通知类型
 
 conversation:
+  errors:
+    pleaseSelectAUser: 请选择一个用户
+    pleaseEnterATitle: 请输入标题
+    clickToSelectAUser: 点击选择用户
+    loadFailedClickToRetry: 加载失败,点击重试
+    loadFailed: 加载失败
+    clickToRetry: 点击重试
+    noMoreConversations: 没有更多消息了
   conversation: 会话
+  startConversation: 发起会话
+  noConversation: 暂无会话
+  selectFromLeftListAndStartConversation: 从左侧的会话列表选择一个对话开始聊天
+  title: 标题
+  body: 内容
+  selectAUser: 选择用户
+  searchUsers: 搜索用户...
+  tmpNoConversions: 暂无会话
+  deleteThisMessage: 删除此消息
+  deleteThisMessageSubtitle: 此操作不可撤销
+  writeMessageHere: 在此处输入消息
+  sendMessage: 发送消息

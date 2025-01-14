@@ -332,7 +332,7 @@ class _AuthorProfilePageState extends State<AuthorProfilePage>
                     children: [
                       const Icon(Icons.message),
                       const SizedBox(width: 8),
-                      const Text('发起对话'),
+                      Text(t.conversation.startConversation),
                     ],
                   ),
                 ),

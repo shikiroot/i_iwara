@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:i_iwara/app/models/message_and_conversation.model.dart';
 import 'package:i_iwara/app/services/conversation_service.dart';
 import 'package:i_iwara/app/services/user_service.dart';
+import 'package:i_iwara/i18n/strings.g.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
 import 'package:loading_more_list/loading_more_list.dart';
 
@@ -34,7 +35,7 @@ class ConversationListRepository extends LoadingMoreBase<ConversationModel> {
     try {
       final userId = _userService.currentUser.value?.id;
       if (userId == null) {
-        throw Exception('用户未登录');
+        throw Exception(t.errors.pleaseLoginFirst);
       }
 
       final result = await _conversationService.getConversations(
