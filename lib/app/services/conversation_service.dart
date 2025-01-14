@@ -25,14 +25,26 @@ class MessageListModel {
 
   factory MessageListModel.fromJson(Map<String, dynamic> json) {
     return MessageListModel(
-      count: json['count'] as int,
-      first: DateTime.parse(json['first'] as String),
-      last: DateTime.parse(json['last'] as String),
-      limit: json['limit'] as int,
-      results: (json['results'] as List<dynamic>)
-          .map((e) => MessageModel.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      count: json['count'] as int? ?? 0,
+      first: json['first'] != null ? DateTime.parse(json['first'] as String) : DateTime.now(),
+      last: json['last'] != null ? DateTime.parse(json['last'] as String) : DateTime.now(),
+      limit: json['limit'] as int? ?? 20,
+      results: json['results'] != null
+          ? (json['results'] as List<dynamic>)
+              .map((e) => MessageModel.fromJson(e as Map<String, dynamic>))
+              .toList()
+          : [],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'count': count,
+      'first': first.toIso8601String(),
+      'last': last.toIso8601String(),
+      'limit': limit,
+      'results': results.map((e) => e.toJson()).toList(),
+    };
   }
 }
 
@@ -77,14 +89,14 @@ class ConversationService extends GetxService {
   /// conversation/:conversationId/messages
   /// @params
   /// `conversationId` 会话ID
-  /// `before` 消息ID
+  /// `before` 消息时间戳, 当请求时，第第一次要请求当前时间，之后就拿第一次接口的last
   /// `limit` 每页数量
   /// @return
   /// `count` 消息数量
   /// `first` 当前返回结果里最新的日期
   /// `last` 当前返回结果里最旧的日期
   /// `limit` 每页数量
-  /// `results` 消息列表 {@link MessageModel}
+  /// `results` 消息列表 {@link MessageModel} 数组里越靠前的数据，越旧
   Future<ApiResult<MessageListModel>> getMessages(
     String conversationId,
     {
@@ -106,6 +118,20 @@ class ConversationService extends GetxService {
     } catch (e) {
       LogUtils.e('获取消息列表失败', tag: 'ConversationService', error: e);
       return ApiResult.fail(t.errors.failedToFetchData);
+    }
+  }
+
+  /// 撤销消息（删除)
+  /// DELETE message/:messageId
+  /// @params
+  /// `messageId` 消息ID
+  Future<ApiResult<void>> deleteMessage(String messageId) async {
+    try {
+      await apiService.delete(ApiConstants.messageWithId(messageId));
+      return ApiResult.success();
+    } catch (e) {
+      LogUtils.e('撤销消息失败', tag: 'ConversationService', error: e);
+      return ApiResult.fail(t.errors.failedToOperate);
     }
   }
 }

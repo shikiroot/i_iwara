@@ -249,6 +249,9 @@ class ApiConstants {
 
   // 会话消息
   static String conversationMessages(String conversationId) => '/conversation/$conversationId/messages';
+
+  // 消息
+  static String messageWithId(String messageId) => '/message/$messageId';
 }
 
 // 视频接口的排序方式

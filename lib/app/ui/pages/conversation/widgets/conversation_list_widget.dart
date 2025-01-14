@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:i_iwara/app/models/message_and_conversation.model.dart';
+import 'package:i_iwara/app/services/app_service.dart';
 import 'package:i_iwara/app/services/user_service.dart';
 import 'package:i_iwara/app/ui/pages/conversation/controllers/conversation_controller.dart';
 import 'package:i_iwara/app/ui/widgets/avatar_widget.dart';
+import 'package:i_iwara/app/ui/widgets/user_name_widget.dart';
 import 'package:i_iwara/common/constants.dart';
 import 'package:i_iwara/utils/common_utils.dart';
 import 'package:shimmer/shimmer.dart';
@@ -156,7 +158,7 @@ class ConversationListWidget extends GetView<ConversationController> {
     return InkWell(
       onTap: () => onConversationSelected(conversation),
       child: Container(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
           border: Border(
             bottom: BorderSide(
@@ -167,15 +169,20 @@ class ConversationListWidget extends GetView<ConversationController> {
         ),
         child: Row(
           children: [
-            AvatarWidget(
-              avatarUrl: otherParticipant.avatar?.avatarUrl,
-              defaultAvatarUrl: CommonConstants.defaultAvatarUrl,
-              radius: 25,
-              isPremium: otherParticipant.premium,
-              isAdmin: otherParticipant.isAdmin,
-              role: otherParticipant.role,
+            GestureDetector(
+              onTap: () {
+                NaviService.navigateToAuthorProfilePage(otherParticipant.username);
+              },
+              child: AvatarWidget(
+                avatarUrl: otherParticipant.avatar?.avatarUrl,
+                defaultAvatarUrl: CommonConstants.defaultAvatarUrl,
+                radius: 25,
+                isPremium: otherParticipant.premium,
+                isAdmin: otherParticipant.isAdmin,
+                role: otherParticipant.role,
+              ),
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: 6),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -184,15 +191,7 @@ class ConversationListWidget extends GetView<ConversationController> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
-                        child: Text(
-                          otherParticipant.name,
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
+                        child: buildUserName(context, otherParticipant, fontSize: 16, overflowLines: 1),
                       ),
                       Text(
                         CommonUtils.formatFriendlyTimestamp(conversation.lastMessage.createdAt),
@@ -202,6 +201,13 @@ class ConversationListWidget extends GetView<ConversationController> {
                         ),
                       ),
                     ],
+                  ),
+                  Text(
+                    '@${otherParticipant.username}',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Theme.of(context).hintColor,
+                    ),
                   ),
                   const SizedBox(height: 4),
                   Row(
