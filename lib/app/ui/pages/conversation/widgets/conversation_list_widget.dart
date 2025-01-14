@@ -33,20 +33,19 @@ class ConversationListWidget extends GetView<ConversationController> {
       centerTitle: false,
       title: const Text('消息'),
       actions: [
-        Obx(() => IconButton(
-          icon: controller.isLoading.value 
-            ? const SizedBox(
-                width: 24,
-                height: 24,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
+        Obx(() => controller.isLoading.value
+            ? Shimmer.fromColors(
+                baseColor: Colors.grey[300]!,
+                highlightColor: Colors.grey[100]!,
+                child: IconButton(
+                  icon: const Icon(Icons.refresh),
+                  onPressed: null,
                 ),
               )
-            : const Icon(Icons.refresh),
-          onPressed: controller.isLoading.value 
-            ? null 
-            : () => controller.refreshConversations(),
-        )),
+            : IconButton(
+                icon: const Icon(Icons.refresh),
+                onPressed: () => controller.refreshConversations(),
+              )),
       ],
     );
   }

@@ -6,11 +6,14 @@ import 'package:i_iwara/app/services/app_service.dart';
 import 'package:i_iwara/app/services/conversation_service.dart';
 import 'package:i_iwara/app/services/user_service.dart';
 import 'package:i_iwara/app/ui/widgets/avatar_widget.dart';
+import 'package:i_iwara/app/ui/widgets/custom_markdown_body_widget.dart';
+import 'package:i_iwara/app/ui/widgets/translation_dialog_widget.dart';
 import 'package:i_iwara/app/ui/widgets/user_name_widget.dart';
 import 'package:i_iwara/common/constants.dart';
 import 'package:i_iwara/utils/common_utils.dart';
 import 'package:i_iwara/utils/logger_utils.dart';
 import 'package:loading_more_list/loading_more_list.dart';
+import 'package:shimmer/shimmer.dart';
 
 class MessageListWidget extends StatefulWidget {
   final ConversationModel conversation;
@@ -95,45 +98,271 @@ class _MessageListWidgetState extends State<MessageListWidget> {
           ),
         ],
       ),
+      actions: [
+        StreamBuilder<Iterable<MessageModel>>(
+          stream: _messageListRepository.rebuild,
+          builder: (context, snapshot) {
+            final isLoading = _messageListRepository.isLoading && _messageListRepository.length == 0;
+            return IconButton(
+              onPressed: isLoading ? null : () => _messageListRepository.refresh(true),
+              icon: isLoading
+                ? Shimmer.fromColors(
+                    baseColor: Colors.grey[300]!,
+                    highlightColor: Colors.grey[100]!,
+                    child: const Icon(Icons.refresh),
+                  )
+                : const Icon(Icons.refresh),
+            );
+          }
+        ),
+      ],
     );
   }
 
   Widget? _buildIndicator(BuildContext context, IndicatorStatus status) {
     Widget? widget;
+    
     switch (status) {
+      case IndicatorStatus.none:
+        return null;
       case IndicatorStatus.loadingMoreBusying:
-        widget = const Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              width: 20,
-              height: 20,
-              child: CircularProgressIndicator(strokeWidth: 2),
-            ),
-            SizedBox(width: 8),
-            Text('加载中...'),
-          ],
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Shimmer.fromColors(
+            baseColor: Colors.grey[300]!,
+            highlightColor: Colors.grey[100]!,
+            child: _buildShimmerItem(),
+          ),
         );
-        break;
-      case IndicatorStatus.noMoreLoad:
-        widget = const Center(child: Text('没有更多消息了'));
-        break;
+      case IndicatorStatus.fullScreenBusying:
+        widget = Shimmer.fromColors(
+          baseColor: Colors.grey[300]!,
+          highlightColor: Colors.grey[100]!,
+          child: Column(
+            children: List.generate(3, (index) => _buildShimmerItem()),
+          ),
+        );
+        return SliverFillRemaining(child: widget);
       case IndicatorStatus.error:
-        widget = const Center(child: Text('加载失败'));
-        break;
-      default:
-        break;
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Card(
+            elevation: 0,
+            color: Theme.of(context).colorScheme.errorContainer,
+            child: InkWell(
+              onTap: () => _messageListRepository.errorRefresh(),
+              borderRadius: BorderRadius.circular(12),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Icon(
+                      Icons.error_outline,
+                      size: 20,
+                      color: Theme.of(context).colorScheme.error,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      '加载失败,点击重试',
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.error,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      case IndicatorStatus.fullScreenError:
+        widget = Card(
+          elevation: 0,
+          color: Theme.of(context).colorScheme.errorContainer,
+          child: InkWell(
+            onTap: () => _messageListRepository.errorRefresh(),
+            borderRadius: BorderRadius.circular(12),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 32),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Icon(
+                    Icons.error_outline,
+                    size: 48,
+                    color: Theme.of(context).colorScheme.error,
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    '加载失败',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.error,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    '点击重试',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onErrorContainer,
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+        return SliverFillRemaining(
+          hasScrollBody: false,
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: widget,
+            ),
+          ),
+        );
+      case IndicatorStatus.noMoreLoad:
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Center(
+            child: Text(
+              '没有更多消息了',
+              style: TextStyle(
+                color: Theme.of(context).textTheme.bodySmall?.color,
+              ),
+            ),
+          ),
+        );
+      case IndicatorStatus.empty:
+        widget = Container(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.chat_bubble_outline,
+                size: 48,
+                color: Theme.of(context).hintColor,
+              ),
+              const SizedBox(height: 16),
+              Text(
+                '暂无消息',
+                style: TextStyle(
+                  color: Theme.of(context).hintColor,
+                  fontSize: 16,
+                ),
+              ),
+            ],
+          ),
+        );
+        return SliverFillRemaining(
+          hasScrollBody: false,
+          child: Center(child: widget),
+        );
     }
-    return widget != null
-        ? Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: widget,
-          )
-        : null;
+  }
+
+  Widget _buildShimmerItem() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 40,
+            height: 40,
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.circle,
+            ),
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      width: 100,
+                      height: 14,
+                      color: Colors.white,
+                    ),
+                    const SizedBox(width: 8),
+                    Container(
+                      width: 50,
+                      height: 12,
+                      color: Colors.white,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 4),
+                Container(
+                  width: double.infinity,
+                  height: 60,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _buildMessageItem(BuildContext context, MessageModel message) {
     final bool isMe = message.user.id == _userService.currentUser.value?.id;
+    final ConversationService _conversationService = Get.find<ConversationService>();
+
+    Future<void> _showDeleteConfirmation() async {
+      await showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return SafeArea(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ListTile(
+                  leading: Icon(
+                    Icons.delete_outline,
+                    color: Theme.of(context).colorScheme.error,
+                  ),
+                  title: const Text('删除此消息'),
+                  subtitle: const Text('此操作不可撤销'),
+                  onTap: () async {
+                    Navigator.pop(context);
+                    final result = await _conversationService.deleteMessage(message.id);
+                    if (result.isSuccess) {
+                      _messageListRepository.refresh(true);
+                    }
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.close),
+                  title: const Text('取消'),
+                  onTap: () => Navigator.pop(context),
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    }
+
+    void _showTranslationDialog() {
+      Get.dialog(
+        TranslationDialog(text: message.body),
+        barrierDismissible: true,
+      );
+    }
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
@@ -171,22 +400,72 @@ class _MessageListWidgetState extends State<MessageListWidget> {
                   ),
                 ),
                 const SizedBox(height: 2),
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: isMe
-                        ? Theme.of(context).primaryColor.withOpacity(0.1)
-                        : Theme.of(context).cardColor,
-                    borderRadius: BorderRadius.circular(16),
-                    border: !isMe ? Border.all(
-                      color: Theme.of(context).dividerColor.withOpacity(0.5),
-                      width: 0.5,
-                    ) : null,
-                  ),
-                  child: Text(
-                    message.body,
-                    style: const TextStyle(fontSize: 16),
-                  ),
+                Row(
+                  mainAxisAlignment: isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    if (isMe) ...[
+                      IconButton(
+                        icon: Icon(
+                          Icons.delete_outline,
+                          size: 18,
+                          color: Theme.of(context).hintColor,
+                        ),
+                        onPressed: _showDeleteConfirmation,
+                        padding: EdgeInsets.zero,
+                        constraints: const BoxConstraints(
+                          minWidth: 24,
+                          minHeight: 24,
+                        ),
+                      ),
+                      IconButton(
+                        icon: Icon(
+                          Icons.translate,
+                          size: 18,
+                          color: Theme.of(context).hintColor,
+                        ),
+                        onPressed: _showTranslationDialog,
+                        padding: EdgeInsets.zero,
+                        constraints: const BoxConstraints(
+                          minWidth: 24,
+                          minHeight: 24,
+                        ),
+                      ),
+                    ],
+                    Flexible(
+                      child: Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: isMe
+                              ? Theme.of(context).primaryColor.withOpacity(0.1)
+                              : Theme.of(context).cardColor,
+                          borderRadius: BorderRadius.circular(16),
+                          border: !isMe ? Border.all(
+                            color: Theme.of(context).dividerColor.withOpacity(0.5),
+                            width: 0.5,
+                          ) : null,
+                        ),
+                        child: CustomMarkdownBody(
+                          data: message.body,
+                          initialShowUnprocessedText: false,
+                          clickInternalLinkByUrlLaunch: false,
+                        ),
+                      ),
+                    ),
+                    if (!isMe) IconButton(
+                      icon: Icon(
+                        Icons.translate,
+                        size: 18,
+                        color: Theme.of(context).hintColor,
+                      ),
+                      onPressed: _showTranslationDialog,
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(
+                        minWidth: 24,
+                        minHeight: 24,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -268,6 +547,13 @@ class MessageListRepository extends LoadingMoreBase<MessageModel> {
       LogUtils.e('加载消息失败', tag: 'MessageListRepository', error: e);
       return false;
     }
+  }
+
+  @override
+  Future<bool> refresh([bool notifyStateChanged = false]) async {
+    _lastMessageTime = null;
+    _hasMoreMessages = true;
+    return super.refresh(notifyStateChanged);
   }
 
   @override
